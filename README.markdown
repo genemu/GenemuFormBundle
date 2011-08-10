@@ -85,11 +85,6 @@ Example Validator ReCaptcha :
          * @Genemu\Reaptcha
          */
         $recaptcha;
-
-        public fucntion getRecaptcha()
-        {
-            return null;
-        }
     }
 
 ## Note
