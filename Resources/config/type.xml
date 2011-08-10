@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="genemu_recaptcha.form.type.class">Genemu\Bundle\FormBundle\Form\Type\ReCaptchaType</parameter>
+        <parameter key="genemu_tinymce.form.type.class">Genemu\Bundle\FormBundle\Form\Type\TinymceType</parameter>
+        <parameter key="genemu_doublelist.form.type.class">Genemu\Bundle\FormBundle\Form\Type\DoubleListType</parameter>
+        <parameter key="genemu_jquerydate.form.type.class">Genemu\Bundle\FormBundle\Form\Type\JQueryDateType</parameter>
+    </parameters>
+
+    <services>
+        <service id="genemu_recaptcha.form.type" class="%genemu_recaptcha.form.type.class%">
+            <tag name="form.type" alias="genemu_recaptcha" />
+            <argument type="service" id="service_container" />
+        </service>
+        <service id="genemu_tinymce.form.type" class="%genemu_tinymce.form.type.class%">
+            <tag name="form.type" alias="genemu_tinymce" />
+            <argument type="service" id="service_container" />
+        </service>
+        <service id="genemu_doublelist.form.type" class="%genemu_doublelist.form.type.class%">
+            <tag name="form.type" alias="genemu_doublelist" />
+            <argument type="service" id="service_container" />
+        </service>
+        <service id="genemu_jquerydate.form.type" class="%genemu_jquerydate.form.type.class%">
+            <tag name="form.type" alias="genemu_jquerydate" />
+            <argument type="service" id="service_container" />
+        </service>
+    </services>
+</container>
