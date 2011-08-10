@@ -21,6 +21,9 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
  */
 class FormPass implements CompilerPassInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function process(ContainerBuilder $container)
     {
         $resources = $container->getParameter('twig.form.resources');

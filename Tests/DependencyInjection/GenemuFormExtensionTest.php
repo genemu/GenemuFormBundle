@@ -11,7 +11,12 @@
 
 namespace Genemu\Bundle\FormBundle\Tests\DependencyInjection;
 
-abstract class GenemuFormExtensionTest extends ContainerTest
+/**
+ * abstract GenemuFormExtensionTest
+ *
+ * @author Olivier Chauvel <olivier@gmail.com>
+ */
+abstract class GenemuFormExtensionTest extends ContainerCaseTest
 {
     public function testTinymce()
     {

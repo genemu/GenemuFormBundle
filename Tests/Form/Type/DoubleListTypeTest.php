@@ -13,6 +13,11 @@ namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
 
 use Genemu\Bundle\FormBundle\Tests\Form\TypeTestCase;
 
+/**
+ * DoubleListTypeTest
+ *
+ * @author Olivier Chauvel <olivier@gmail.com>
+ */
 class DoubleListTypeTest extends TypeTestCase
 {
     public function testDefaultClass()

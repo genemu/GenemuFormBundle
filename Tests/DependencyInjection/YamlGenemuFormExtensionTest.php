@@ -15,6 +15,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
+/**
+ * YamlGenemuFormExtensionTest
+ *
+ * @author Olivier Chauvel <olivier@gmail.com>
+ */
 class YamlGenemuFormExtensionTest extends GenemuFormExtensionTest
 {
     protected function loadFromFile(ContainerBuilder $container, $file)

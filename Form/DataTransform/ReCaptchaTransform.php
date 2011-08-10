@@ -14,20 +14,36 @@ namespace Genemu\Bundle\FormBundle\Form\dataTransform;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * ReCaptchaTransform
+ *
+ * @author Olivier Chauvel <olivier@gmail.com>
+ */
 class ReCaptchaTransform implements DataTransformerInterface
 {
     protected $request;
     
+    /**
+     * Construct
+     * 
+     * @param Request $request
+     */
     public function __construct(Request $request)
     {
         $this->request = $request;
     }
     
+    /**
+     * {@inheritdoc}
+     */
     public function transform($value)
     {
         return $value;
     }
     
+    /**
+     * {@inheritdoc}
+     */
     public function reverseTransform($value)
     {
         $request = $this->request->request;

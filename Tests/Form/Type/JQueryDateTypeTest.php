@@ -13,6 +13,11 @@ namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
 
 use Genemu\Bundle\FormBundle\Tests\Form\TypeTestCase;
 
+/**
+ * JQueryDatetTypeTest
+ *
+ * @author Olivier Chauvel <olivier@gmail.com>
+ */
 class JQueryDatetTypeTest extends TypeTestCase
 {
     protected function setup()

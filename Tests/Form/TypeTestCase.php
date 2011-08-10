@@ -14,6 +14,11 @@ namespace Genemu\Bundle\FormBundle\Tests\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactory;
 
+/**
+ * abstract TypeTestCase
+ *
+ * @author Olivier Chauvel <olivier@gmail.com>
+ */
 abstract class TypeTestCase extends \PHPUnit_Framework_TestCase
 {
     protected $factory;

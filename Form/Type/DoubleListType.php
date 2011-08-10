@@ -107,7 +107,7 @@ class DoubleListType extends AbstractType
         $view
             ->set('value', null)
             ->set('label_associated', $form->getAttribute('label_associated'))
-            ->set('unassociated', $form->getAttribute('unassociated'))
+            ->set('unassociated', $unassociated)
             ->set('float', $float)
             ->set('next', $next)
             ->set('previous', $previous)

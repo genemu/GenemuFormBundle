@@ -13,6 +13,11 @@ namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
 
 use Genemu\Bundle\FormBundle\Tests\Form\TypeTestCase;
 
+/**
+ * TinymceTypeTest
+ *
+ * @author Olivier Chauvel <olivier@gmail.com>
+ */
 class TinymceTypeTest extends TypeTestCase
 {
     public function testCulture()

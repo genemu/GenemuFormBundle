@@ -69,8 +69,6 @@ class ReCaptchaType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
-        $key = $this->publicKey;
-
         if(!$this->publicKey) {
             throw new FormException('The child node "public_key" at path "genenu_form.captcha" must be configured.');
         }

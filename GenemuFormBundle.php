@@ -23,9 +23,7 @@ use Genemu\Bundle\FormBundle\DependencyInjection\Compiler\FormPass;
 class GenemuFormBundle extends Bundle
 {
     /**
-     * Builds the bundle.
-     *
-     * @param ContainerBuilder $container A ContainerBuilder instance
+     * {@inheritdoc}
      */
     public function build(ContainerBuilder $container)
     {

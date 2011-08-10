@@ -35,12 +35,7 @@ class ReCaptchaValidator extends ConstraintValidator
     }
 
     /**
-     * Checks if the passed value is valid.
-     *
-     * @param mixed      $value      The value that should be validated
-     * @param Constraint $constraint The constrain for the validation
-     *
-     * @return Boolean Whether or not the value is valid
+     * {@inheritdoc}
      */
     public function isValid($value, Constraint $constraint)
     {
