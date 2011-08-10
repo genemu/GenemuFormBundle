@@ -14,13 +14,18 @@ namespace Genemu\Bundle\FormBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
+/**
+ * Add a new twig.form.resources
+ *
+ * @author Olivier Chauvel <olchauvel@gmail.com>
+ */
 class FormPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
         $resources = $container->getParameter('twig.form.resources');
         $resources[] = 'GenemuFormBundle:Form:fields.html.twig';
-        
+
         $container->setParameter('twig.form.resources', $resources);
     }
 }

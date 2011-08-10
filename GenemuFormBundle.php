@@ -15,8 +15,18 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Genemu\Bundle\FormBundle\DependencyInjection\Compiler\FormPass;
 
+/**
+ * An extends of Symfony\Component\HttpKernel\Bundle\Bundle
+ *
+ * @author Olivier Chauvel <olivier@gmail.com>
+ */
 class GenemuFormBundle extends Bundle
 {
+    /**
+     * Builds the bundle.
+     *
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);

@@ -17,21 +17,34 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
+/**
+ * TinymceType
+ *
+ * @author Olivier Chauvel <olivier@gmail.com>
+ */
 class TinymceType extends AbstractType
 {
     private $container;
-    
+
+    /**
+     * Construct.
+     *
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         if(!$options['script_url']) {
             throw new FormException('The child node "script_url" at path "genenu_form.tinymce" must be configured.');
         }
-        
+
         $builder
             ->setAttribute('theme', $options['theme'])
             ->setAttribute('script_url', $options['script_url'])
@@ -39,9 +52,12 @@ class TinymceType extends AbstractType
             ->setAttribute('width', $options['width'])
             ->setAttribute('config', $options['config']);
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildView(FormView $view, FormInterface $form)
-    {        
+    {
         $view
             ->set('theme', $form->getAttribute('theme'))
             ->set('script_url', $form->getAttribute('script_url'))
@@ -50,7 +66,10 @@ class TinymceType extends AbstractType
             ->set('config', $form->getAttribute('config'))
             ->set('culture', \Locale::getDefault());
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
@@ -64,12 +83,18 @@ class TinymceType extends AbstractType
 
         return array_replace($defaultOptions, $options);
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getParent(array $options)
     {
         return 'textarea';
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'genemu_tinymce';

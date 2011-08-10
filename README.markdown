@@ -40,39 +40,39 @@ Adds the following configuration to your `app/config/config.yml`:
     genemu_form:
         tinymce:
             script_url:  /tinymce/tiny_mce.js
-	    theme:       advanced
-	    width:       ~
-	    height:      ~
-	    config:      your perso config
-	recaptcha:
-	    server_url:     http://api.recaptcha.net
-	    server_url_ssl: https://api-secure.recaptcha.net
-	    public_key:     your public key
-	    private_key:    your private key
-	    use_ssl:        false
-	    theme:          clean
-	doublelist:
-	    associated_first:   true
-	    class:              double_list
-	    class_select:       double_list_select
-	    label_associated:   Associated
-	    label_unassociated: Unassociated
-	jquerydate:
-	    image:  your url to image
-	    config: your perso config
+            theme:       advanced
+            width:       ~
+            height:      ~
+            config:      your perso config
+        recaptcha:
+            server_url:     http://api.recaptcha.net
+            server_url_ssl: https://api-secure.recaptcha.net
+            public_key:     your public key
+            private_key:    your private key
+            use_ssl:        false
+            theme:          clean
+        doublelist:
+            associated_first:   true
+            class:              double_list
+            class_select:       double_list_select
+            label_associated:   Associated
+            label_unassociated: Unassociated
+        jquerydate:
+            image:  your url to image
+            config: your perso config
 
 ## Usage
 
 The usage look like the field type. One full example :
 
     $builder
-	->add('content', 'genemu_tinymce')
+        ->add('content', 'genemu_tinymce')
         ->add('recaptcha', 'genemu_recaptcha')
-	->add('date', 'genemu_jquerydate')
-	->add('list', 'genemu_doublelist', array('choices' => array(
-	    'foo' => 'foo',
-	    'bar' => 'bar'
-	)));
+        ->add('date', 'genemu_jquerydate')
+        ->add('list', 'genemu_doublelist', array('choices' => array(
+            'foo' => 'foo',
+            'bar' => 'bar'
+        )));
 
 ## Note
 

@@ -17,15 +17,28 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
+/**
+ * JQueryDateType
+ *
+ * @author Olivier Chauvel <olivier@gmail.com>
+ */
 class JQueryDateType extends AbstractType
 {
     private $container;
-    
+
+    /**
+     * Construct.
+     *
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
@@ -34,16 +47,18 @@ class JQueryDateType extends AbstractType
             ->setAttribute('image', $options['image'])
             ->setAttribute('config', ($options['config'])?$options['config']:'{}');
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildView(FormView $view, FormInterface $form)
     {
         if($form->getAttribute('widget') == 'single_text') {
-             $pattern = $form->getAttribute('formatter')->getPattern();
-             
+            $pattern = $form->getAttribute('formatter')->getPattern();
         } else {
             $pattern = 'yy-mm-dd';
         }
-        
+
         $view
             ->set('min_year', $form->getAttribute('min_year'))
             ->set('max_year', $form->getAttribute('max_year'))
@@ -52,7 +67,10 @@ class JQueryDateType extends AbstractType
             ->set('culture', \Locale::getDefault())
             ->set('javascript_format', $pattern);
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
@@ -62,12 +80,18 @@ class JQueryDateType extends AbstractType
 
         return array_replace($defaultOptions, $options);
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getParent(array $options)
     {
         return 'date';
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'genemu_jquerydate';

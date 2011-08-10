@@ -1,11 +1,22 @@
 <?php
 
+/*
+ * This file is part of the Symfony package.
+ *
+ * (c) Olivier Chauvel <olchauvel@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Genemu\Bundle\FormBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
+ * 
+ * @author Olivier Chauvel <olivier@gmail.com>
  */
 class ReCaptcha extends Constraint
 {
@@ -19,7 +30,10 @@ class ReCaptcha extends Constraint
     {
         return Constraint::PROPERTY_CONSTRAINT;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDefaultOption()
     {
         return array(

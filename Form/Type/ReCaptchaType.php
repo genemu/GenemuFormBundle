@@ -18,37 +18,56 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Exception\FormException;
 
+/**
+ * ReCaptchaType
+ *
+ * @author Olivier Chauvel <olivier@gmail.com>
+ */
 class ReCaptchaType extends AbstractType
 {
     private $container;
-    
+
+    /**
+     * Construct.
+     *
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
             ->setAttribute('server', $this->getServerUrl($options))
             ->setAttribute('theme', $options['theme']);
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildView(FormView $view, FormInterface $form)
     {
         $key = $this->container->getParameter('genemu.form.recaptcha.public_key');
-        
+
         if(!$key) {
             throw new FormException('The child node "public_key" at path "genenu_form.captcha" must be configured.');
         }
-        
+
         $view
             ->set('key', $key)
             ->set('server', $form->getAttribute('server'))
             ->set('theme', $form->getAttribute('theme'))
             ->set('culture', \Locale::getDefault());
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
@@ -60,18 +79,27 @@ class ReCaptchaType extends AbstractType
 
         return array_replace($defaultOptions, $options);
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getParent(array $options)
     {
         return 'field';
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'genemu_recaptcha';
     }
-    
-    protected function getServerUrl(array $options)
+
+    /**
+     * {@inheritdoc}
+     */
+    private function getServerUrl(array $options)
     {
         return $options['use_ssl']?$options['server_url_ssl']:$options['server_url'];
     }
