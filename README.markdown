@@ -74,6 +74,24 @@ The usage look like the field type. One full example :
             'bar' => 'bar'
         )));
 
+Example Validator ReCaptcha : 
+
+    // ...
+    use Genemu\Bundle\FormBundle\Validator\Constrains as Genemu;
+
+    class MyClass {
+        // ...
+        /**
+         * @Genemu\Reaptcha
+         */
+        $recaptcha;
+
+        public fucntion getRecaptcha()
+        {
+            return null;
+        }
+    }
+
 ## Note
 
 There is maybe bugs in this implementations, this package is just an idea of a form
