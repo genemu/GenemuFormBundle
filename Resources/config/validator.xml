@@ -11,7 +11,7 @@
     <services>
         <service id="genemu_recaptcha.validator" class="%genemu_recaptcha.validator.class%">
             <tag name="validator.constraint_validator" alias="genemu_validator.recaptcha" />
-            <argument type="service" id="service_container" />
+            <argument>%genemu.form.recaptcha.private_key%</argument>
         </service>
     </services>
 </container>

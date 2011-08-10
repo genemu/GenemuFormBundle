@@ -11,12 +11,13 @@
 
 namespace Genemu\Bundle\FormBundle\Form\Type;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Exception\FormException;
+use Symfony\Component\HttpFoundation\Request;
+use Genemu\Bundle\FormBundle\Form\DataTransform\ReCaptchaTransform;
 
 /**
  * ReCaptchaType
@@ -25,16 +26,30 @@ use Symfony\Component\Form\Exception\FormException;
  */
 class ReCaptchaType extends AbstractType
 {
-    private $container;
+    protected $request;
+    protected $publicKey;
+    protected $options;
 
     /**
      * Construct.
      *
-     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param Request $request
+     * @param string $theme
+     * @param string $publicKey
+     * @param string $useSsl
+     * @param string $serverUrl
+     * @param string $serverUrlSsl
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(Request $request, $theme, $publicKey, $useSsl, $serverUrl, $serverUrlSsl)
     {
-        $this->container = $container;
+        $this->request = $request;
+        $this->publicKey = $publicKey;
+        $this->options = array(
+            'theme' => $theme,
+            'use_ssl' => $useSsl,
+            'server_url' => $serverUrl,
+            'server_url_ssl' => $serverUrlSsl
+        );
     }
 
     /**
@@ -42,6 +57,8 @@ class ReCaptchaType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
+        $builder->appendClientTransformer(new ReCaptchaTransform($this->request));
+        
         $builder
             ->setAttribute('server', $this->getServerUrl($options))
             ->setAttribute('theme', $options['theme']);
@@ -52,14 +69,14 @@ class ReCaptchaType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
-        $key = $this->container->getParameter('genemu.form.recaptcha.public_key');
+        $key = $this->publicKey;
 
-        if(!$key) {
+        if(!$this->publicKey) {
             throw new FormException('The child node "public_key" at path "genenu_form.captcha" must be configured.');
         }
 
         $view
-            ->set('key', $key)
+            ->set('key', $this->publicKey)
             ->set('server', $form->getAttribute('server'))
             ->set('theme', $form->getAttribute('theme'))
             ->set('culture', \Locale::getDefault());
@@ -70,14 +87,7 @@ class ReCaptchaType extends AbstractType
      */
     public function getDefaultOptions(array $options)
     {
-        $defaultOptions = array(
-            'use_ssl' => $this->container->getParameter('genemu.form.recaptcha.use_ssl'),
-            'server_url' => $this->container->getParameter('genemu.form.recaptcha.server_url'),
-            'server_url_ssl' => $this->container->getParameter('genemu.form.recaptcha.server_url_ssl'),
-            'theme' => $this->container->getParameter('genemu.form.recaptcha.theme')
-        );
-
-        return array_replace($defaultOptions, $options);
+        return array_replace($this->options, $options);
     }
 
     /**

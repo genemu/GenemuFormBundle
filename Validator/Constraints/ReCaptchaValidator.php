@@ -11,7 +11,6 @@
 
 namespace Genemu\Bundle\FormBundle\Validator\Constraints;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ValidatorException;
@@ -23,16 +22,16 @@ use Symfony\Component\Validator\Exception\ValidatorException;
  */
 class ReCaptchaValidator extends ConstraintValidator
 {
-    protected $container;
+    protected $privateKey;
 
     /**
      * Construct.
      *
-     * @param ContainerInterface $container An ContainerInterface instance
+     * @param string $privateKey
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct($privateKey)
     {
-        $this->container = $container;
+        $this->privateKey = $privateKey;
     }
 
     /**
@@ -45,27 +44,16 @@ class ReCaptchaValidator extends ConstraintValidator
      */
     public function isValid($value, Constraint $constraint)
     {
-        $request = $this->container->get('request');
-
-        $privatekey = $this->container->getParameter('genemu.form.recaptcha.private_key');
-        $challenge = $request->request->get('recaptcha_challenge_field');
-        $response = $request->request->get('recaptcha_response_field');
-
-        if(!$privatekey) {
+        if(!$this->privateKey) {
             throw new ValidatorException('The child node "private_key" at path "genenu_form.captcha" must be configured.');
         }
 
-        if(empty($challenge) || empty($response)) {
+        if(empty($value['challenge']) || empty($value['response'])) {
             $this->setMessage(sprintf($constraint->message, 'invalid captcha'));
             return false;
         }
 
-        if(true !== ($answer = $this->check(array(
-            'privatekey' => $privatekey,
-            'remoteip' => $request->server->get('REMOTE_ADDR'),
-            'challenge' => $challenge,
-            'response' => $response
-        ), $constraint))) {
+        if(true !== ($answer = $this->check(array_merge(array('privatekey' => $this->privateKey), $value), $constraint))) {
             $this->setMessage(sprintf($constraint->message, $answer));
             return false;
         }

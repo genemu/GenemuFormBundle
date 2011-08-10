@@ -11,7 +11,6 @@
 
 namespace Genemu\Bundle\FormBundle\Form\Type;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
@@ -24,16 +23,20 @@ use Symfony\Component\Form\FormView;
  */
 class JQueryDateType extends AbstractType
 {
-    private $container;
+    protected $options;
 
     /**
      * Construct.
      *
-     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param string $image
+     * @param string $config
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct($image, $config)
     {
-        $this->container = $container;
+        $this->options = array(
+            'image' => $image,
+            'config' => $config
+        );
     }
 
     /**
@@ -73,12 +76,7 @@ class JQueryDateType extends AbstractType
      */
     public function getDefaultOptions(array $options)
     {
-        $defaultOptions = array(
-            'image' => $this->container->getParameter('genemu.form.jquerydate.image'),
-            'config' => $this->container->getParameter('genemu.form.jquerydate.config')
-        );
-
-        return array_replace($defaultOptions, $options);
+        return array_replace($this->options, $options);
     }
 
     /**

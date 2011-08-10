@@ -35,6 +35,16 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('genenu_form');
         
+        $this->addRecaptcha($rootNode);
+        $this->addTinymce($rootNode);
+        $this->addDoublelist($rootNode);
+        $this->addJquerydate($rootNode);
+        
+        return $treeBuilder;
+    }
+    
+    private function addRecaptcha(ArrayNodeDefinition $rootNode)
+    {
         $rootNode
             ->children()
                 ->arrayNode('recaptcha')
@@ -48,6 +58,14 @@ class Configuration implements ConfigurationInterface
                         ->variableNode('private_key')->defaultNull()->end()
                     ->end()
                 ->end()
+            ->end()
+        ;
+    }
+    
+    private function addTinymce(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
                 ->arrayNode('tinymce')
                     ->isRequired()
                     ->children()
@@ -58,6 +76,14 @@ class Configuration implements ConfigurationInterface
                         ->variableNode('config')->defaultNull()->end()
                     ->end()
                 ->end()
+            ->end()
+        ;
+    }
+    
+    private function addDoublelist(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
                 ->arrayNode('doublelist')
                     ->isRequired()
                     ->children()
@@ -68,6 +94,14 @@ class Configuration implements ConfigurationInterface
                         ->variableNode('label_unassociated')->defaultValue('Unassociated')->end()
                     ->end()
                 ->end()
+            ->end()
+        ;
+    }
+    
+    private function addJquerydate(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
                 ->arrayNode('jquerydate')
                     ->isRequired()
                     ->children()
@@ -75,8 +109,7 @@ class Configuration implements ConfigurationInterface
                         ->variableNode('config')->defaultNull()->end()
                     ->end()
                 ->end()
-            ->end();
-        
-        return $treeBuilder;
+            ->end()
+        ;
     }
 }

@@ -11,11 +11,11 @@
 
 namespace Genemu\Bundle\FormBundle\Form\Type;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\Exception\FormException;
 
 /**
  * TinymceType
@@ -24,16 +24,26 @@ use Symfony\Component\Form\FormView;
  */
 class TinymceType extends AbstractType
 {
-    private $container;
+    protected $options;
 
     /**
      * Construct.
      *
-     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param string $theme
+     * @param string $scriptUrl
+     * @param string $width
+     * @param string $height
+     * @param mixed $config
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct($theme, $scriptUrl, $width, $height, $config)
     {
-        $this->container = $container;
+        $this->options = array(
+            'theme' => $theme,
+            'script_url' => $scriptUrl,
+            'width' => $width,
+            'height' => $height,
+            'config' => $config
+        );
     }
 
     /**
@@ -72,14 +82,9 @@ class TinymceType extends AbstractType
      */
     public function getDefaultOptions(array $options)
     {
-        $defaultOptions = array(
-            'theme' => $this->container->getParameter('genemu.form.tinymce.theme'),
-            'script_url' => $this->container->getParameter('genemu.form.tinymce.script_url'),
-            'width' => $this->container->getParameter('genemu.form.tinymce.width'),
-            'height' => $this->container->getParameter('genemu.form.tinymce.height'),
-            'config' => $this->container->getParameter('genemu.form.tinymce.config'),
+        $defaultOptions = array_merge(array(
             'required' => false
-        );
+        ), $this->options);
 
         return array_replace($defaultOptions, $options);
     }

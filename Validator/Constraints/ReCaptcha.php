@@ -26,14 +26,6 @@ class ReCaptcha extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
-    {
-        return Constraint::PROPERTY_CONSTRAINT;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefaultOption()
     {
         return array(

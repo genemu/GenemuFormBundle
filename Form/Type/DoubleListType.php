@@ -11,7 +11,6 @@
 
 namespace Genemu\Bundle\FormBundle\Form\Type;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
@@ -24,16 +23,26 @@ use Symfony\Component\Form\FormBuilder;
  */
 class DoubleListType extends AbstractType
 {
-    private $container;
+    protected $options;
 
     /**
      * Construct.
      *
-     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param string $class
+     * @param string $classSelect
+     * @param string $labelAccosiated
+     * @param string $labelUnassociated
+     * @param string $associatedFirst
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct($class, $classSelect, $labelAccosiated, $labelUnassociated, $associatedFirst)
     {
-        $this->container = $container;
+        $this->options = array(
+            'class' => $class,
+            'class_select' => $classSelect,
+            'label_associated' => $labelAccosiated,
+            'label_unassociated' => $labelUnassociated,
+            'associated_first' => $associatedFirst,
+        );
     }
 
     /**
@@ -84,8 +93,8 @@ class DoubleListType extends AbstractType
         $view
             ->set('choices', $associatedValues)
             ->set('attr', array_merge($view->get('attr'), array('class' => $form->getAttribute('class_select').'-selected')));
-
-        if($form->getAttribute('label_associated')) {
+        
+        if($form->getAttribute('associated_first')) {
             $float = 'left';
             $next = $view->get('id');
             $previous = $unassociated->get('id');
@@ -96,8 +105,9 @@ class DoubleListType extends AbstractType
         }
 
         $view
+            ->set('value', null)
             ->set('label_associated', $form->getAttribute('label_associated'))
-            ->set('unassociated', $unassociated)
+            ->set('unassociated', $form->getAttribute('unassociated'))
             ->set('float', $float)
             ->set('next', $next)
             ->set('previous', $previous)
@@ -111,15 +121,10 @@ class DoubleListType extends AbstractType
      */
     public function getDefaultOptions(array $options)
     {
-        $defaultOptions = array(
-            'class' => $this->container->getParameter('genemu.form.doublelist.class'),
-            'class_select' => $this->container->getParameter('genemu.form.doublelist.class_select'),
-            'label_associated' => $this->container->getParameter('genemu.form.doublelist.label_associated'),
-            'label_unassociated' => $this->container->getParameter('genemu.form.doublelist.label_unassociated'),
-            'associated_first' => $this->container->getParameter('genemu.form.doublelist.associated_first'),
+        $defaultOptions = array_merge(array(
             'multiple' => true,
             'required' => false
-        );
+        ), $this->options);
 
         return array_replace($defaultOptions, $options);
     }
