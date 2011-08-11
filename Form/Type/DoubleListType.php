@@ -15,6 +15,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilder;
+use Genemu\Bundle\FormBundle\Form\DataTransform\DoubleListTransform;
+use Genemu\Bundle\FormBundle\Form\EventListener\DoubleListListener;
 
 /**
  * DoubleListType
@@ -60,7 +62,7 @@ class DoubleListType extends AbstractType
         $unassociated
             ->set('attr', array_merge($unassociated->get('attr'), array('class' => $options['class_select'])))
             ->set('label', $options['label_unassociated']);
-
+        
         $builder
             ->setAttribute('unassociated', $unassociated)
             ->setAttribute('label_associated', $options['label_associated'])

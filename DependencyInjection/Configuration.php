@@ -37,6 +37,7 @@ class Configuration implements ConfigurationInterface
         $this->addTinymce($rootNode);
         $this->addDoublelist($rootNode);
         $this->addJquerydate($rootNode);
+        $this->addJqueryautocompleter($rootNode);
         
         return $treeBuilder;
     }
@@ -104,6 +105,22 @@ class Configuration implements ConfigurationInterface
                     ->isRequired()
                     ->children()
                         ->variableNode('image')->defaultFalse()->end()
+                        ->variableNode('config')->defaultNull()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+    
+    private function addJqueryautocompleter(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('jqueryautocompleter')
+                    ->isRequired()
+                    ->children()
+                        ->variableNode('url')->defaultNull()->end()
+                        ->variableNode('value_callback')->defaultNull()->end()
                         ->variableNode('config')->defaultNull()->end()
                     ->end()
                 ->end()

@@ -148,7 +148,11 @@
                         beforeShow: wfd_{{ name }}_read_linked,
                         onSelect: wfd_{{ name }}_update_linked
                         {% if image %}, buttonImage: '{{ image }}', buttonImageOnly: true{% endif %}
-                    }, jQuery.datepicker.regional['{{ culture }}'], {{ config }}, {dateFormat: '{{ javascript_format }}'}));
+                    }, jQuery.datepicker.regional['{{ culture }}'], {
+                        {% for type,value in config %}
+                            {{ type }}: {{ value }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    }, {dateFormat: '{{ javascript_format }}'}));
                     wfd_{{ name }}_check_linked_days();
                 });
             </script>
@@ -156,3 +160,34 @@
     {% endif %}
 {% endspaceless %}
 {% endblock genemu_jquerydate_widget %}
+
+{% block genemu_jqueryautocompleter_widget %}
+    {{ block('hidden_widget') }}
+
+    {% set id = 'autocomplete_' ~ id %}
+    {{ block('field_widget') }}
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            jQuery('#{{ id }}').autocomplete('{{ url }}', jQuery.extend({}, {
+                dataType: 'json',
+                parse:    function(data) {
+                    var parsed = [];
+                    for (key in data) {
+                        parsed[parsed.length] = { data: [ data[key], key ], value: data[key], result: data[key] };
+                    }
+                    return parsed;
+                }
+            }, {
+                {% for type,value in config %}
+                    {{ type }}: {{ value }}{% if not loop.last %},{% endif %}
+                {% endfor %}
+            }))
+            .result(function(event, data) { jQuery('#{{ form.get('id') }}').val(data[1]); })
+            .keyup(function() {
+                if(this.value.length == 0) {
+                    jQuery('#{{ form.get('id') }}').val('');
+                }
+            });
+        });
+    </script>
+{% endblock genemu_jqueryautocompleter_widget %}

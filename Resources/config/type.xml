@@ -9,6 +9,7 @@
         <parameter key="genemu_tinymce.form.type.class">Genemu\Bundle\FormBundle\Form\Type\TinymceType</parameter>
         <parameter key="genemu_doublelist.form.type.class">Genemu\Bundle\FormBundle\Form\Type\DoubleListType</parameter>
         <parameter key="genemu_jquerydate.form.type.class">Genemu\Bundle\FormBundle\Form\Type\JQueryDateType</parameter>
+        <parameter key="genemu_jqueryautocompleter.form.type.class">Genemu\Bundle\FormBundle\Form\Type\JQueryAutocompleterType</parameter>
     </parameters>
 
     <services>
@@ -41,6 +42,12 @@
             <tag name="form.type" alias="genemu_jquerydate" />
             <argument>%genemu.form.jquerydate.image%</argument>
             <argument>%genemu.form.jquerydate.config%</argument>
+        </service>
+        <service id="genemu_jqueryautocompleter.form.type" class="%genemu_jqueryautocompleter.form.type.class%">
+            <tag name="form.type" alias="genemu_jqueryautocompleter" />
+            <argument>%genemu.form.jqueryautocompleter.url%</argument>
+            <argument>%genemu.form.jqueryautocompleter.value_callback%</argument>
+            <argument>%genemu.form.jqueryautocompleter.config%</argument>
         </service>
     </services>
 </container>

@@ -60,6 +60,10 @@ Adds the following configuration to your `app/config/config.yml`:
         jquerydate:
             image:  your url to image
             config: your perso config
+        jqueryautocompleter:
+            url:            ~
+            value_callback: ~
+            config:         your perso config
 
 ## Usage
 
@@ -72,7 +76,8 @@ The usage look like the field type. One full example :
         ->add('list', 'genemu_doublelist', array('choices' => array(
             'foo' => 'foo',
             'bar' => 'bar'
-        )));
+        )))
+        ->add('city', 'genemu_jqueryautocompleter', array('url' => '/cities'));
 
 Example Validator ReCaptcha : 
 
@@ -85,6 +90,30 @@ Example Validator ReCaptcha :
          * @Genemu\Reaptcha
          */
         $recaptcha;
+    }
+
+Example Request for JQueyAutocompleterType :
+
+    //...
+    // url is "/cities"
+    public function citiesAction()
+    {
+        $request = $this->getRequest();
+        $value = $request->get('q');
+        $limit = $request->get('limit');
+
+        $cities = $this->getDoctrine()->getepository('MyBundle:MyEntity')->findByValue($value, $limit);
+
+        $results = array();
+        foreach($cities as $city) {
+            $results[$city->getId()] = $city->getName();
+        }
+
+        $response = new Response();
+        $response->setCharset('application/json');
+        $response->setContent(json_encode($results));
+
+        rturn $response;
     }
 
 ## Note

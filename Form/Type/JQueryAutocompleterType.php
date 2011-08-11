@@ -15,26 +15,29 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\Exception\FormException;
 
 /**
- * JQueryDateType
+ * JQueryAutocompleterType
  *
  * @author Olivier Chauvel <olivier@gmail.com>
  */
-class JQueryDateType extends AbstractType
+class JQueryAutocompleterType extends AbstractType
 {
     protected $options;
 
     /**
      * Construct.
      *
-     * @param string $image
+     * @param string $url
+     * @param string $valueCallback
      * @param string $config
      */
-    public function __construct($image, $config)
+    public function __construct($url, $valueCallback, $config)
     {
         $this->options = array(
-            'image' => $image,
+            'url' => $url,
+            'value_callback' => $valueCallback,
             'config' => $config
         );
     }
@@ -44,11 +47,14 @@ class JQueryDateType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
+        if(!$options['url']) {
+            throw new FormException('The option "url" must be configured.');
+        }
+        
         $builder
-            ->setAttribute('min_year', min($options['years']))
-            ->setAttribute('max_year', max($options['years']))
-            ->setAttribute('image', $options['image'])
-            ->setAttribute('config', $options['config']);
+            ->setAttribute('url', $options['url'])
+            ->setAttribute('config', $options['config'])
+            ->setAttribute('value_callback', $options['value_callback']);
     }
 
     /**
@@ -56,19 +62,13 @@ class JQueryDateType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
-        if($form->getAttribute('widget') == 'single_text') {
-            $pattern = $form->getAttribute('formatter')->getPattern();
-        } else {
-            $pattern = 'yy-mm-dd';
-        }
-
+        $value = $form->getClientData();
+        $visibleValue = $form->getAttribute('value_callback')?call_user_func($form->getAttribute('value_callback'), $value):$value;
+        
         $view
-            ->set('min_year', $form->getAttribute('min_year'))
-            ->set('max_year', $form->getAttribute('max_year'))
-            ->set('image', $form->getAttribute('image'))
-            ->set('config', $form->getAttribute('config'))
-            ->set('culture', \Locale::getDefault())
-            ->set('javascript_format', $pattern);
+            ->set('value', $visibleValue)
+            ->set('url', $form->getAttribute('url'))
+            ->set('config', $form->getAttribute('config'));
     }
 
     /**
@@ -84,7 +84,7 @@ class JQueryDateType extends AbstractType
      */
     public function getParent(array $options)
     {
-        return 'date';
+        return 'field';
     }
 
     /**
@@ -92,6 +92,6 @@ class JQueryDateType extends AbstractType
      */
     public function getName()
     {
-        return 'genemu_jquerydate';
+        return 'genemu_jqueryautocompleter';
     }
 }
