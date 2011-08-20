@@ -16,40 +16,31 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Exception\FormException;
-use Symfony\Component\HttpFoundation\Request;
-use Genemu\Bundle\FormBundle\Form\DataTransform\ReCaptchaTransform;
+use Symfony\Component\Form\FormValidatorInterface;
 
 /**
  * ReCaptchaType
  *
- * @author Olivier Chauvel <olivier@gmail.com>
+ * @author Olivier Chauvel <olchauvel@gmail.com>
  */
 class ReCaptchaType extends AbstractType
 {
-    protected $request;
-    protected $publicKey;
-    protected $options;
+    protected $_validator;
+    protected $_publicKey;
+    protected $_options;
 
-    /**
-     * Construct.
+    /*
+     * Construct
      *
-     * @param Request $request
-     * @param string $theme
-     * @param string $publicKey
-     * @param string $useSsl
-     * @param string $serverUrl
-     * @param string $serverUrlSsl
+     * @param FormValidatoInterface $validator
+     * @param string                $pulicKey
+     * @param array                 $options
      */
-    public function __construct(Request $request, $theme, $publicKey, $useSsl, $serverUrl, $serverUrlSsl)
+    public function __construct(FormValidatorInterface $validator, $publicKey, array $options)
     {
-        $this->request = $request;
-        $this->publicKey = $publicKey;
-        $this->options = array(
-            'theme' => $theme,
-            'use_ssl' => $useSsl,
-            'server_url' => $serverUrl,
-            'server_url_ssl' => $serverUrlSsl
-        );
+        $this->_validator = $validator;
+        $this->_publicKey = $publicKey;
+        $this->_options = $options;
     }
 
     /**
@@ -57,11 +48,27 @@ class ReCaptchaType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder->appendClientTransformer(new ReCaptchaTransform($this->request));
-        
+        if (!$this->_publicKey) {
+            throw new FormException('The child node "public_key" at path "genenu_form.captcha" must be configured.');
+        }
+
+        $configs = array(
+            'theme' => $options['theme'],
+            'lang' => \Locale::getDefault()
+        );
+
+        $optionValidator = array(
+            'server_host' => $options['server_host'],
+            'server_port' => $options['server_port'],
+            'server_path' => $options['server_path'],
+            'server_timeout' => $options['server_timeout']
+        );
+
         $builder
+            ->addValidator($this->_validator)
+            ->setAttribute('option_validator', $optionValidator)
             ->setAttribute('server', $this->getServerUrl($options))
-            ->setAttribute('theme', $options['theme']);
+            ->setAttribute('configs', $configs);
     }
 
     /**
@@ -69,15 +76,10 @@ class ReCaptchaType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
-        if(!$this->publicKey) {
-            throw new FormException('The child node "public_key" at path "genenu_form.captcha" must be configured.');
-        }
-
         $view
-            ->set('key', $this->publicKey)
+            ->set('public_key', $this->_publicKey)
             ->set('server', $form->getAttribute('server'))
-            ->set('theme', $form->getAttribute('theme'))
-            ->set('culture', \Locale::getDefault());
+            ->set('configs', $form->getAttribute('configs'));
     }
 
     /**
@@ -85,15 +87,14 @@ class ReCaptchaType extends AbstractType
      */
     public function getDefaultOptions(array $options)
     {
-        return array_replace($this->options, $options);
-    }
+        $defaultOptions = array_merge(array(
+            'server_host' => 'api-verify.recaptcha.net',
+            'server_port' => 80,
+            'server_path' => '/verify',
+            'server_timeout' => 10
+        ), $this->_options);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent(array $options)
-    {
-        return 'field';
+        return array_replace($defaultOptions, $options);
     }
 
     /**
@@ -104,10 +105,14 @@ class ReCaptchaType extends AbstractType
         return 'genemu_recaptcha';
     }
 
-    /**
-     * {@inheritdoc}
+    /*
+     * Return a server url for option use_ssl
+     *
+     * @param array $options
+     *
+     * @return url server for option use_ssl
      */
-    private function getServerUrl(array $options)
+    protected function getServerUrl(array $options)
     {
         return $options['use_ssl']?$options['server_url_ssl']:$options['server_url'];
     }

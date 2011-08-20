@@ -2,38 +2,19 @@
 {% spaceless %}
     {{ block('textarea_widget') }}
     <script type="text/javascript">
-        jQuery('#{{ id }}').tinymce({
-            mode: 'textareas',
-            script_url : '{{ script_url }}',
-            theme: '{{ theme }}',
-            language: '{{ culture }}',
-            {% if width %}width: '{{ width }}',{% endif %}
-            {% if height %}height: '{{ height }}',{% endif %}
-            theme_advanced_toolbar_location: 'top',
-            theme_advanced_toolbar_align: 'left',
-            theme_advanced_statusbar_location: 'bottom',
-            theme_advanced_resizing: true
-            {% if config %},
-                {% for type,value in config %}
-                    {{ type }}: '{{ value }}'{% if not loop.last %},{% endif %}
-                {% endfor %}
-            {% endif %}
-        });
+        jQuery('#{{ id }}').tinymce({{ configs|json_encode|raw }});
     </script>
-{% endspaceless %}
+{% endspaceless  %}
 {% endblock genemu_tinymce_widget %}
 
 {% block genemu_recaptcha_widget %}
 {% spaceless %}
     <script type="text/javascript">
-        var RecaptchaOptions = {
-            theme: '{{ theme }}',
-            lang: '{{ culture }}'
-        };
+        var RecaptchaOptions = {{ configs|json_encode|raw }};
     </script>
-    <script type="text/javascript" src="{{ server }}/challenge?k={{ key }}"></script>
+    <script type="text/javascript" src="{{ server }}/challenge?k={{ public_key }}"></script>
     <noscript>
-        <iframe src="{{ server }}/noscript?k={{ key }}" height="300" width="500" frameborder="0"></iframe>
+        <iframe src="{{ server }}/noscript?k={{ public_key }}" width="500" height="300" frameborder="0" />
         <br />
         <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
         <input type="hidden" name="recaptcha_response_field" value="manual_challenge" />
@@ -41,153 +22,96 @@
 {% endspaceless %}
 {% endblock genemu_recaptcha_widget %}
 
-{% block genemu_doublelist_widget %}
-{% spaceless %}
-    <div class="{{ class }}">
-        <div style="float:{{ float }};">
-            <div style="float:{{ float }};">
-                {% set label = label_associated %}
-                <div class="double_list_label">{{ block('field_label') }}</div>
-                {{ block('choice_widget') }}
-            </div>
-            <div style="float:{{ float }};margin-top:2em;">
-                {% if not associated_first %}
-                    {{ block('genemu_doublelist_previous') }}<br />{{ block('genemu_doublelist_next') }}
-                {% else %}
-                    {{ block('genemu_doublelist_next') }}<br />{{ block('genemu_doublelist_previous') }}
-                {% endif %}
-            </div>
-            <div style="float:{{ float }};">
-                <div class="double_list_label">{{ form_label(unassociated) }}</div>
-                {{ form_widget(unassociated) }}
-            </div>
-        </div>
-        <br style="clear:both;" />
-        <script type="text/javascript">
-            genemuDoubleList.init(document.getElementById('{{ form.get('id') }}'), '{{ class_select }}');
-        </script>
-    </div>
-{% endspaceless %}
-{% endblock genemu_doublelist_widget %}
-
-{% block genemu_doublelist_previous %}
-{% spaceless %}
-    <a href="#" onclick="genemuDoubleList.move('{{ previous }}', '{{ next }}'); return false;">
-        {% image output="/images/form/previous.png" '@GenemuFormBundle/Resources/public/images/previous.png' %}
-            <img src="{{ asset_url }}" alt="{{ unassociated.get('label')|trans }}" width="16" height="16" />
-        {% endimage %}
-    </a>
-{% endspaceless %}
-{% endblock genemu_doublelist_previous %}
-
-{% block genemu_doublelist_next %}
-{% spaceless %}
-    <a href="#" onclick="genemuDoubleList.move('{{ next }}', '{{ previous }}'); return false;">
-        {% image output="/images/form/next.png" '@GenemuFormBundle/Resources/public/images/next.png' %}
-            <img src="{{ asset_url }}" alt="{{ form.get('label')|trans }}" width="16" height="16" />
-        {% endimage %}
-    </a>
-{% endspaceless %}
-{% endblock genemu_doublelist_next %}
-
 {% block genemu_jquerydate_widget %}
 {% spaceless %}
+    <div>
     {% if widget == 'single_text' %}
         {{ block('field_widget') }}
-        <script type="text/javascript">
-            jQuery(document).ready(function() {
-                jQuery('#{{ id }}').datepicker(jQuery.extend({}, {
-                    showOn: 'button',
-                    minDate: new Date({{ min_year }}, 1 - 1, 1),
-                    maxDate: new Date({{ max_year }}, 12 - 1, 31)
-                    {% if image %}, buttonImage: '{{ image }}', buttonImageOnly: true{% endif %}
-                }, jQuery.datepicker.regional['{{ culture }}'], {{ config }}, {dateFormat: '{{ javascript_format }}'}));
-            });
-        </script>
     {% else %}
-        <div {{ block('widget_container_attributes') }}>
-            {{ date_pattern|replace({
-                '{{ year }}':  form_widget(form.year),
-                '{{ month }}': form_widget(form.month),
-                '{{ day }}':   form_widget(form.day),
-            })|raw }}
+        {{ date_pattern|replace({
+            '{{ year }}':  form_widget(form.year),
+            '{{ month }}': form_widget(form.month),
+            '{{ day }}':   form_widget(form.day),
+        })|raw }}
 
-            {% set id = id ~ '_jquery_control' %}
-            {% set attr = attr|merge({'disabled': 'disabled', 'size': 10}) %}
-            {{ block('hidden_widget') }}
-            <script type="text/javascript">
-                function wfd_{{ name }}_read_linked() {
-                    jQuery('#{{ id }}').val(jQuery('#{{ form.year.get('id') }}').val()+'-'+jQuery('#{{ form.month.get('id') }}').val()+'-'+jQuery('#{{ form.day.get('id') }}').val());
-                    return {};
-                }
-
-                function wfd_{{ name }}_update_linked(date) {
-                    jQuery('#{{ form.year.get('id') }}').val(parseInt(date.substring(0, 4), 10));
-                    jQuery('#{{ form.month.get('id') }}').val(parseInt(date.substring(5, 7), 10));
-                    jQuery('#{{ form.day.get('id') }}').val(parseInt(date.substring(8), 10));
-
-                    wfd_{{ name }}_check_linked_days();
-                }
-
-                function wfd_{{ name }}_check_linked_days() {
-                    var daysInMonth = 32 - new Date(jQuery('#{{ form.year.get('id') }}').val(), jQuery('#{{ form.month.get('id') }}').val() - 1, 32).getDate();
-
-                    jQuery('#{{ form.day.get('id') }} option').attr('disabled', '');
-                    jQuery('#{{ form.day.get('id') }} option:gt('+(daysInMonth{% if not required %}-1{% endif %})+')').attr('disabled', 'disabled');
-
-                    if(jQuery('#{{ form.day.get('id') }}').val() > daysInMonth) {
-                        jQuery('#{{ form.day.get('id') }}').val(daysInMonth);
-                    }
-                }
-
-                jQuery(document).ready(function() {
-                    jQuery('#{{ id }}').datepicker(jQuery.extend({}, {
-                        showOn: 'button',
-                        minDate: new Date({{ min_year }}, 1 - 1, 1),
-                        maxDate: new Date({{ max_year }}, 12 - 1, 31),
-                        beforeShow: wfd_{{ name }}_read_linked,
-                        onSelect: wfd_{{ name }}_update_linked
-                        {% if image %}, buttonImage: '{{ image }}', buttonImageOnly: true{% endif %}
-                    }, jQuery.datepicker.regional['{{ culture }}'], {
-                        {% for type,value in config %}
-                            {{ type }}: {{ value }}{% if not loop.last %},{% endif %}
-                        {% endfor %}
-                    }, {dateFormat: '{{ javascript_format }}'}));
-                    wfd_{{ name }}_check_linked_days();
-                });
-            </script>
-        </div>
+        {% set id = id ~ '_jquery_control' %}
+        {% set attr = attr|merge({'size': 10}) %}
+        {{ block('hidden_widget') }}
     {% endif %}
+    <script type="text/javascript">
+        {% if widget == 'choice' %}
+        var year = jQuery('#{{ form.year.get('id') }}');
+        var month = jQuery('#{{ form.month.get('id') }}');
+        var day = jQuery('#{{ form.day.get('id') }}');
+        {% endif %}
+        jQuery('#{{ id }}').datepicker(jQuery.extend({}, {
+            minDate: new Date({{ min_year }}, 0, 1),
+            maxDate: new Date({{ max_year }}, 11, 31)
+            {% if widget == 'choice' %}
+            , beforeShow: function() {
+                jQuery('#{{ id }}').val(year.val()+'-'+month.val()+'-'+day.val());
+                return {};
+            },
+            onSelect: function(date) {
+                year.val(parseInt(date.substring(0, 4), 10));
+                month.val(parseInt(date.substring(5, 7), 10));
+                day.val(parseInt(date.substring(8), 10));
+            }
+            {% endif %}
+        }, jQuery.datepicker.regional['{{ culture }}'], {{ configs|json_encode|raw }}, {dateFormat: '{{ javascript_format }}'}));
+    </script>
+    </div>
 {% endspaceless %}
 {% endblock genemu_jquerydate_widget %}
 
 {% block genemu_jqueryautocompleter_widget %}
+{% spaceless %}
     {{ block('hidden_widget') }}
 
     {% set id = 'autocomplete_' ~ id %}
+    {% set full_name = 'autocompleter_' ~ full_name %}
+    {% set value = autocomplete_value %}
     {{ block('field_widget') }}
     <script type="text/javascript">
-        jQuery(document).ready(function() {
-            jQuery('#{{ id }}').autocomplete('{{ url }}', jQuery.extend({}, {
-                dataType: 'json',
-                parse:    function(data) {
-                    var parsed = [];
-                    for (key in data) {
-                        parsed[parsed.length] = { data: [ data[key], key ], value: data[key], result: data[key] };
-                    }
-                    return parsed;
+        var {{ name }}_choices = {{ choices|json_encode|raw }};
+        jQuery('#{{ id }}')
+            .bind('keydown', function(event) {
+                if(event.keyCode === $.ui.keyCode.TAB && jQuery(this).data('autocomplete').menu.active) {
+                    event.preventDefault();
                 }
-            }, {
-                {% for type,value in config %}
-                    {{ type }}: {{ value }}{% if not loop.last %},{% endif %}
-                {% endfor %}
-            }))
-            .result(function(event, data) { jQuery('#{{ form.get('id') }}').val(data[1]); })
-            .keyup(function() {
-                if(this.value.length == 0) {
-                    jQuery('#{{ form.get('id') }}').val('');
+            })
+            .autocomplete({
+                source: {{ name }}_choices,
+                focus: function(event, ui) {
+                    return false;
+                },
+                select: function(event, ui) {
+                {% if multiple %}
+                    terms = this.value.split(/,\s*/);
+                    terms.pop();
+                    terms.push(ui.item.label);
+                    terms.push('');
+                    this.value = terms.join(', ');
+
+                    terms = jQuery('#{{ form.get('id') }}').val().split(/,\s*/);
+                    terms.pop();
+                    terms.push(ui.item.value);
+                    terms.push('');
+                    jQuery('#{{ form.get('id') }}').val(terms.join(','));
+                {% else %}
+                    this.value = ui.item.label;
+                    jQuery('#{{ form.get('id') }}').val(ui.item.value);
+                {% endif %}
+                    return false;
                 }
             });
-        });
+        {% if multiple %}
+            var {{ name }}_source = jQuery('#{{ id }}').data('autocomplete').source;
+            jQuery('#{{ id }}').autocomplete('option', 'source', function(request, response) {
+                request.term = request.term.split(/,\s*/).pop();
+                {{ name }}_source(request, response);
+            });
+        {% endif %}
     </script>
+{% endspaceless %}
 {% endblock genemu_jqueryautocompleter_widget %}

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Tests\Form;
+namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
 
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactory;
@@ -17,36 +17,34 @@ use Symfony\Component\Form\FormFactory;
 /**
  * abstract TypeTestCase
  *
- * @author Olivier Chauvel <olivier@gmail.com>
+ * @author Olivier Chauvel <olchauvel@gmail.com>
  */
 abstract class TypeTestCase extends \PHPUnit_Framework_TestCase
 {
-    protected $factory;
     protected $builder;
+    protected $factory;
     protected $dispatcher;
-    protected $typeLoader;
 
     protected function setUp()
     {
         $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $this->factory = new FormFactory($this->getExtensions());
         $this->builder = new FormBuilder(null, $this->factory, $this->dispatcher);
-        
+
         \Locale::setDefault('de_DE');
     }
 
     protected function tearDown()
     {
-        $this->builder = null;
         $this->dispatcher = null;
         $this->factory = null;
-        $this->typeLoader = null;
+        $this->builder = null;
     }
 
     protected function getExtensions()
     {
         return array(
-            new TypeExtensionTest(),
+            new TypeExtensionTest()
         );
     }
-}
+} 

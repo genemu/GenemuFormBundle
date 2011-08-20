@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Tests\Form;
+namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
 
 use Genemu\Bundle\FormBundle\Form\Type;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
 
-/**
- * Represents the main form extension, which loads the core functionality.
+/*
+ * TypeExtensionTest
  *
  * @author Olivier Chauvel <olchauvel@gmail.com>
  */
@@ -23,12 +23,8 @@ class TypeExtensionTest extends CoreExtension
 {
     protected function loadTypes()
     {
-        $extensions = parent::loadTypes();
-        
-        return array_merge($extensions, array(
-            new Type\TinymceType('advanced', '/tinymce/tiny_mce.js', null, null, null),
-            new Type\DoubleListType('double_list', 'double_list_select', 'Associated', 'Unassociated', true),
-            new Type\JQueryDateType(false, array())
+        return array_merge(parent::loadTypes(), array(
+            new Type\TinymceType('advanced', '/tinymce/tiny_mce.js', array())
         ));
     }
 }

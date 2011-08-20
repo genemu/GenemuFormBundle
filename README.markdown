@@ -39,31 +39,25 @@ Adds the following configuration to your `app/config/config.yml`:
 
     genemu_form:
         tinymce:
-            script_url:  /tinymce/tiny_mce.js
             theme:       advanced
-            width:       ~
-            height:      ~
-            config:      your perso config
+            script_url:  /tinymce/tiny_mce.js
+            configs:
+                width:                           500px
+                height:                          200px
+                theme_advanced_toolbar_location: top
+                // ...
         recaptcha:
-            server_url:     http://api.recaptcha.net
-            server_url_ssl: https://api-secure.recaptcha.net
-            public_key:     your public key
-            private_key:    your private key
-            use_ssl:        false
-            theme:          clean
-        doublelist:
-            associated_first:   true
-            class:              double_list
-            class_select:       double_list_select
-            label_associated:   Associated
-            label_unassociated: Unassociated
+            public_key:  your public key
+            private_key: your private key
+            options:
+                theme:   clean
+                use_ssl: false
         jquerydate:
-            image:  your url to image
-            config: your perso config
-        jqueryautocompleter:
-            url:            ~
-            value_callback: ~
-            config:         your perso config
+            configs:
+                buttonImage:     /images/date_button.png
+                buttonImageOnly: true
+                showAnim:        show
+                // ....
 
 ## Usage
 
@@ -73,48 +67,26 @@ The usage look like the field type. One full example :
         ->add('content', 'genemu_tinymce')
         ->add('recaptcha', 'genemu_recaptcha')
         ->add('date', 'genemu_jquerydate')
-        ->add('list', 'genemu_doublelist', array('choices' => array(
-            'foo' => 'foo',
-            'bar' => 'bar'
-        )))
-        ->add('city', 'genemu_jqueryautocompleter', array('url' => '/cities'));
-
-Example Validator ReCaptcha : 
-
-    // ...
-    use Genemu\Bundle\FormBundle\Validator\Constrains as Genemu;
-
-    class MyClass {
-        // ...
-        /**
-         * @Genemu\Reaptcha
-         */
-        $recaptcha;
-    }
-
-Example Request for JQueyAutocompleterType :
-
-    //...
-    // url is "/cities"
-    public function citiesAction()
-    {
-        $request = $this->getRequest();
-        $value = $request->get('q');
-        $limit = $request->get('limit');
-
-        $cities = $this->getDoctrine()->getepository('MyBundle:MyEntity')->findByValue($value, $limit);
-
-        $results = array();
-        foreach($cities as $city) {
-            $results[$city->getId()] = $city->getName();
-        }
-
-        $response = new Response();
-        $response->setCharset('application/json');
-        $response->setContent(json_encode($results));
-
-        rturn $response;
-    }
+        ->add('date2', 'genemu_jquerydate', array(
+            'widget' => 'single_text'
+        ))
+        ->add('country', 'genemu_jqueryautocompleter', array(
+            'widget' => 'country'
+        ))
+        ->add('language', 'genemu_jqueryautocompleter', array(
+            'widget' => 'language'
+        ))
+        ->add('choices', 'genemu_jqueryautocompleter', array(
+            'choices' => array(
+                'foo' => 'Foo',
+                'bar' => 'Bar'
+            ),
+            'multiple' => true
+        ))
+        ->add('member', 'genemu_jqueryautocompleter', array(
+            'widget' => 'entity'
+            'class' => 'Genemu\Bundle\EntityBundle\Entity\Member'
+        ));
 
 ## Note
 

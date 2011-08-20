@@ -25,43 +25,22 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    /**
+     /**
      * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('genenu_form');
-        
-        $this->addRecaptcha($rootNode);
+
         $this->addTinymce($rootNode);
-        $this->addDoublelist($rootNode);
-        $this->addJquerydate($rootNode);
-        $this->addJqueryautocompleter($rootNode);
-        
+        $this->addReCaptcha($rootNode);
+        $this->addJQueryDate($rootNode);
+
         return $treeBuilder;
     }
-    
-    private function addRecaptcha(ArrayNodeDefinition $rootNode)
-    {
-        $rootNode
-            ->children()
-                ->arrayNode('recaptcha')
-                    ->isRequired()
-                    ->children()
-                        ->variableNode('use_ssl')->defaultFalse()->end()
-                        ->variableNode('server_url')->defaultValue('http://api.recaptcha.net')->end()
-                        ->variableNode('server_url_ssl')->defaultValue('https://api-secure.recaptcha.net')->end()
-                        ->variableNode('theme')->defaultValue('clean')->end()
-                        ->variableNode('public_key')->defaultNull()->end()
-                        ->variableNode('private_key')->defaultNull()->end()
-                    ->end()
-                ->end()
-            ->end()
-        ;
-    }
-    
-    private function addTinymce(ArrayNodeDefinition $rootNode)
+
+    protected function addTinymce(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()
@@ -69,62 +48,46 @@ class Configuration implements ConfigurationInterface
                     ->isRequired()
                     ->children()
                         ->variableNode('theme')->defaultValue('advanced')->end()
-                        ->variableNode('width')->defaultNull()->end()
-                        ->variableNode('height')->defaultNull()->end()
                         ->variableNode('script_url')->defaultNull()->end()
-                        ->variableNode('config')->defaultNull()->end()
+                        ->variableNode('configs')->defaultValue(array())->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
     }
-    
-    private function addDoublelist(ArrayNodeDefinition $rootNode)
+
+    protected function addReCaptcha(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()
-                ->arrayNode('doublelist')
+                ->arrayNode('recaptcha')
                     ->isRequired()
                     ->children()
-                        ->variableNode('associated_first')->defaultTrue()->end()
-                        ->variableNode('class')->defaultValue('double_list')->end()
-                        ->variableNode('class_select')->defaultValue('double_list_select')->end()
-                        ->variableNode('label_associated')->defaultValue('Associated')->end()
-                        ->variableNode('label_unassociated')->defaultValue('Unassociated')->end()
+                        ->variableNode('public_key')->defaultNull()->end()
+                        ->variableNode('private_key')->defaultNull()->end()
+                        ->arrayNode('options')
+                            ->isRequired()
+                            ->children()
+                                ->variableNode('theme')->defaultValue('clean')->end()
+                                ->booleanNode('use_ssl')->defaultFalse()->end()
+                                ->variableNode('server_url')->defaultValue('http://api.recaptcha.net')->end()
+                                ->variableNode('server_url_ssl')->defaultValue('https://api-secure.recaptcha.net')->end()
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
     }
-    
-    private function addJquerydate(ArrayNodeDefinition $rootNode)
+
+    protected function addJQueryDate(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()
                 ->arrayNode('jquerydate')
                     ->isRequired()
                     ->children()
-                        ->variableNode('image')->defaultFalse()->end()
-                        ->variableNode('config')->defaultNull()->end()
+                        ->variableNode('configs')->defaultValue(array())->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
-    }
-    
-    private function addJqueryautocompleter(ArrayNodeDefinition $rootNode)
-    {
-        $rootNode
-            ->children()
-                ->arrayNode('jqueryautocompleter')
-                    ->isRequired()
-                    ->children()
-                        ->variableNode('url')->defaultNull()->end()
-                        ->variableNode('value_callback')->defaultNull()->end()
-                        ->variableNode('config')->defaultNull()->end()
-                    ->end()
-                ->end()
-            ->end()
-        ;
+            ->end();
     }
 }

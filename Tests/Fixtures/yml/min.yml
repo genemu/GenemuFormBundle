@@ -1,8 +1,0 @@
-genemu_form:
-    recaptcha:
-        public_key:  6Ldv48YSAAAAAFz8xkAnPXEhvckefEy_NaDyjL8j
-        private_key: 6Ldv48YSAAAAABGLdVG__UD-JaMeqXMJ6SqV7dZ9
-    tinymce:
-        script_url: /tinymce/tiny_mce.js
-    doublelist: ~
-    jquerydate: ~

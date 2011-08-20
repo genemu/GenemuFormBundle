@@ -11,84 +11,45 @@
 
 namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
 
-use Genemu\Bundle\FormBundle\Tests\Form\TypeTestCase;
-
-/**
- * TinymceTypeTest
+/*
+ * TinymceTest
  *
- * @author Olivier Chauvel <olivier@gmail.com>
+ * @author Olivier Chauvel <olchauvel@gmail.com>
  */
 class TinymceTypeTest extends TypeTestCase
 {
-    public function testCulture()
+    public function testDefaultConfigs()
     {
         $form = $this->factory->create('genemu_tinymce');
         $view = $form->createView();
-        
-        $this->assertEquals('de_DE', $view->get('culture'));
+
+        $configs = $view->get('configs');
+
+        $this->assertEquals('de_DE', $configs['language']);
+        $this->assertEquals('advanced', $configs['theme']);
+        $this->assertEquals('/tinymce/tiny_mce.js', $configs['script_url']);
+        $this->assertEquals('textareas', $configs['mode']);
     }
-    
-    public function testDefaultTheme()
-    {
-        $form = $this->factory->create('genemu_tinymce');
-        $view = $form->createView();
-        
-        $this->assertEquals('advanced', $view->get('theme'));
-    }
-    
-    public function testOptionTheme()
+
+    public function testConfigs()
     {
         $form = $this->factory->create('genemu_tinymce', null, array(
-            'theme' => 'simple'
+            'configs' => array(
+                'mode' => 'exact',
+                'theme' => 'simple',
+                'script_url' => '/js/tinymce/tiny_mce.js',
+                'theme_advanced_toolbar_location' => 'top',
+                'theme_advanced_toolbar_align' => 'left'
+            )
         ));
         $view = $form->createView();
-        
-        $this->assertEquals('simple', $view->get('theme'));
+
+        $configs = $view->get('configs');
+
+        $this->assertEquals('exact', $configs['mode']);
+        $this->assertEquals('simple', $configs['theme']);
+        $this->assertEquals('/js/tinymce/tiny_mce.js', $configs['script_url']);
+        $this->assertEquals('top', $configs['theme_advanced_toolbar_location']);
+        $this->assertEquals('left', $configs['theme_advanced_toolbar_align']);
     }
-    
-    public function testWidth()
-    {
-        $form = $this->factory->create('genemu_tinymce', null, array(
-            'width' => '80%'
-        ));
-        $view = $form->createView();
-        
-        $this->assertEquals('80%', $view->get('width'));
-    }
-    
-    public function testHeight()
-    {
-        $form = $this->factory->create('genemu_tinymce', null, array(
-            'height' => '400px'
-        ));
-        $view = $form->createView();
-        
-        $this->assertEquals('400px', $view->get('height'));
-    }
-    
-    public function testScriptUrl()
-    {
-        $form = $this->factory->create('genemu_tinymce', null, array(
-            'script_url' => '/tinymce/tiny_mce.js'
-        ));
-        $view = $form->createView();
-        
-        $this->assertEquals('/tinymce/tiny_mce.js', $view->get('script_url'));
-    }
-    
-    public function testSubmitValue()
-    {
-        $form = $this->factory->create('genemu_tinymce');
-        $form->bind('<p>Value of content tinymce</p>');
-        
-        $this->assertEquals('<p>Value of content tinymce</p>', $form->getData());
-    }
-    
-    public function testSubmitEmptyValue()
-    {
-        $form = $this->factory->create('genemu_tinymce');
-        $form->bind(null);
-        
-        $this->assertNull($form->getData());
-    }    
 }

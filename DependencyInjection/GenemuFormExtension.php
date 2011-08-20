@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 
 /**
- * GenemuFormkExtension.
+ * GenemuFormExtension.
  *
  * @author Olivier Chauvel <olchauvel@gmail.com>
  */
@@ -36,10 +36,8 @@ class GenemuFormExtension extends Extension
         $loader->load('validator.xml');
 
         $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
-
-        foreach($config as $type => $values) {
-            foreach($values as $name => $value) {
+        foreach ($this->processConfiguration($configuration, $configs) as $type => $values) {
+            foreach ($values as $name => $value) {
                 $container->setParameter('genemu.form.'.$type.'.'.$name, $value);
             }
         }
