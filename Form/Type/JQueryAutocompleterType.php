@@ -50,6 +50,9 @@ class JQueryAutocompleterType extends AbstractType
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildView(FormView $view, FormInterface $form)
     {
         $data = $form->getClientData();
@@ -70,8 +73,6 @@ class JQueryAutocompleterType extends AbstractType
                 }
             }
         }
-
-        var_dump($value);
 
         $view->set('autocomplete_value', $value);
     }

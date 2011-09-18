@@ -29,7 +29,7 @@ class ReCaptchaType extends AbstractType
     protected $_publicKey;
     protected $_options;
 
-    /*
+    /**
      * Construct
      *
      * @param FormValidatoInterface $validator
@@ -105,7 +105,7 @@ class ReCaptchaType extends AbstractType
         return 'genemu_recaptcha';
     }
 
-    /*
+    /**
      * Return a server url for option use_ssl
      *
      * @param array $options

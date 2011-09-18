@@ -25,7 +25,7 @@ class JQueryDateType extends AbstractType
 {
     protected $_options;
 
-    /*
+    /**
      * Construct
      *
      * @param array $configs
@@ -90,7 +90,7 @@ class JQueryDateType extends AbstractType
         return 'genemu_jquerydate';
     }
 
-    /*
+    /**
      * Create format Date Javascript
      *
      * @param FormInterface $form

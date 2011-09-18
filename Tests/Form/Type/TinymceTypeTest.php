@@ -11,7 +11,7 @@
 
 namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
 
-/*
+/**
  * TinymceTest
  *
  * @author Olivier Chauvel <olchauvel@gmail.com>

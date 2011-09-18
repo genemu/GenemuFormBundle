@@ -14,7 +14,7 @@ namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
 use Genemu\Bundle\FormBundle\Form\Type;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
 
-/*
+/**
  * TypeExtensionTest
  *
  * @author Olivier Chauvel <olchauvel@gmail.com>
@@ -24,7 +24,9 @@ class TypeExtensionTest extends CoreExtension
     protected function loadTypes()
     {
         return array_merge(parent::loadTypes(), array(
-            new Type\TinymceType('advanced', '/tinymce/tiny_mce.js', array())
+            new Type\TinymceType('advanced', '/tinymce/tiny_mce.js', array()),
+            new Type\JQueryDateType(array()),
+            new Type\JQueryAutocompleterType()
         ));
     }
 }

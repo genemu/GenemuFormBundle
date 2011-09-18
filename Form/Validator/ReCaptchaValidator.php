@@ -27,7 +27,7 @@ class ReCaptchaValidator implements FormValidatorInterface
     protected $_request;
     protected $_privateKey;
 
-    /*
+    /**
      * Construct
      *
      * @param Request $request
@@ -39,7 +39,7 @@ class ReCaptchaValidator implements FormValidatorInterface
         $this->_privateKey = $privateKey;
     }
 
-    /*
+    /**
      * {@inheritdoc}
      */
     public function validate(FormInterface $form)
