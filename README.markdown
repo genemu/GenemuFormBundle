@@ -3,13 +3,13 @@ FormBundle
 
 ## Installation
 
-### Get the bundle
+### Installation using the `bin/vendor` method
 
-To install the bundle, place it in the `vendor/bundles/Genemu/Bundle` directory of your project
-(so that it lives at `vendor/bundles/Genemu/Bundle/FormBundle`). You can do this by adding
-the bundle as a submodule, cloning it, or simply downloading the source.
+If you're using the `bin/vendors` method to manage your vendor libraries, add the following entries to the deps in the root of your project file:
 
-    git submodule add https://github.com/genemu/GenemuFormBundle.git vendor/bundles/Genemu/Bundle/FormBundle
+    [GenemuFormBundle]
+        git=http://github.com/genemu/GenemuFormBundle.git
+        target=bundles/Genemu/Bundle/FormBundle
 
 ### Add the namespace to your autoloader
 
