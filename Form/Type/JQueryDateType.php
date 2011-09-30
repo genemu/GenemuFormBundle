@@ -23,7 +23,7 @@ use Symfony\Component\Form\FormView;
  */
 class JQueryDateType extends AbstractType
 {
-    protected $_options;
+    protected $options;
 
     /**
      * Construct
@@ -32,7 +32,7 @@ class JQueryDateType extends AbstractType
      */
     public function __construct(array $configs)
     {
-        $this->_options = array(
+        $this->options = array(
             'configs' => $configs
         );
     }
@@ -71,7 +71,7 @@ class JQueryDateType extends AbstractType
      */
     public function getDefaultOptions(array $options)
     {
-        return array_replace($this->_options, $options);
+        return array_replace($this->options, $options);
     }
 
     /**

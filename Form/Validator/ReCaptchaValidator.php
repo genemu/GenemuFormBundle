@@ -24,8 +24,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ReCaptchaValidator implements FormValidatorInterface
 {
-    protected $_request;
-    protected $_privateKey;
+    protected $request;
+    protected $privateKey;
 
     /**
      * Construct
@@ -35,8 +35,8 @@ class ReCaptchaValidator implements FormValidatorInterface
      */
     public function __construct(Request $request, $privateKey)
     {
-        $this->_request = $request;
-        $this->_privateKey = $privateKey;
+        $this->request = $request;
+        $this->privateKey = $privateKey;
     }
 
     /**
@@ -44,15 +44,15 @@ class ReCaptchaValidator implements FormValidatorInterface
      */
     public function validate(FormInterface $form)
     {
-        if (!$this->_privateKey) {
+        if (!$this->privateKey) {
             throw new ValidatorException('The child node "private_key" at path "genenu_form.recaptcha" must be configured.');
         }
 
-        $request = $this->_request->request;
-        $server = $this->_request->server;
+        $request = $this->request->request;
+        $server = $this->request->server;
 
         $parameters = array(
-            'privatekey' => $this->_privateKey,
+            'privatekey' => $this->privateKey,
             'challenge' => $request->get('recaptcha_challenge_field'),
             'response' => $request->get('recaptcha_response_field'),
             'remoteip' => $server->get('REMOTE_ADDR')

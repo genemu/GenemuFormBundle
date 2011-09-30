@@ -25,9 +25,9 @@ use Symfony\Component\Form\FormValidatorInterface;
  */
 class ReCaptchaType extends AbstractType
 {
-    protected $_validator;
-    protected $_publicKey;
-    protected $_options;
+    protected $validator;
+    protected $publicKey;
+    protected $options;
 
     /**
      * Construct
@@ -38,9 +38,9 @@ class ReCaptchaType extends AbstractType
      */
     public function __construct(FormValidatorInterface $validator, $publicKey, array $options)
     {
-        $this->_validator = $validator;
-        $this->_publicKey = $publicKey;
-        $this->_options = $options;
+        $this->validator = $validator;
+        $this->publicKey = $publicKey;
+        $this->options = $options;
     }
 
     /**
@@ -48,7 +48,7 @@ class ReCaptchaType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        if (!$this->_publicKey) {
+        if (!$this->publicKey) {
             throw new FormException('The child node "public_key" at path "genenu_form.captcha" must be configured.');
         }
 
@@ -65,7 +65,7 @@ class ReCaptchaType extends AbstractType
         );
 
         $builder
-            ->addValidator($this->_validator)
+            ->addValidator($this->validator)
             ->setAttribute('option_validator', $optionValidator)
             ->setAttribute('server', $this->getServerUrl($options))
             ->setAttribute('configs', $configs);
@@ -77,7 +77,7 @@ class ReCaptchaType extends AbstractType
     public function buildView(FormView $view, FormInterface $form)
     {
         $view
-            ->set('public_key', $this->_publicKey)
+            ->set('public_key', $this->publicKey)
             ->set('server', $form->getAttribute('server'))
             ->set('configs', $form->getAttribute('configs'));
     }
@@ -92,7 +92,7 @@ class ReCaptchaType extends AbstractType
             'server_port' => 80,
             'server_path' => '/verify',
             'server_timeout' => 10
-        ), $this->_options);
+        ), $this->options);
 
         return array_replace($defaultOptions, $options);
     }

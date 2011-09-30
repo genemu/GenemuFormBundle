@@ -1,6 +1,7 @@
 {% block genemu_tinymce_widget %}
 {% spaceless %}
     {{ block('textarea_widget') }}
+    {% set configs = configs|merge({'script_url': asset(script_url)}) %}
     <script type="text/javascript">
         jQuery('#{{ id }}').tinymce({{ configs|json_encode|raw }});
     </script>

@@ -24,7 +24,7 @@ use Symfony\Component\Form\Exception\FormException;
  */
 class TinymceType extends AbstractType
 {
-    protected $_options;
+    protected $options;
 
     /**
      * Construct
@@ -35,7 +35,7 @@ class TinymceType extends AbstractType
      */
     public function __construct($theme, $scriptUrl, array $configs)
     {
-        $this->_options = array(
+        $this->options = array(
             'theme' => $theme,
             'script_url' => $scriptUrl,
             'configs' => $configs
@@ -53,7 +53,6 @@ class TinymceType extends AbstractType
 
         $configs = array_merge(array(
             'theme' => $options['theme'],
-            'script_url' => $options['script_url'],
             'language' => \Locale::getDefault()
         ), $options['configs']);
 
@@ -61,7 +60,8 @@ class TinymceType extends AbstractType
             $configs['mode'] = 'textareas';
         }
 
-        $builder->setAttribute('configs', $configs);
+        $builder->setAttribute('configs', $configs)
+            ->setAttribute('script_url', $options['script_url']);
     }
 
     /**
@@ -69,7 +69,8 @@ class TinymceType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
-        $view->set('configs', $form->getAttribute('configs'));
+        $view->set('configs', $form->getAttribute('configs'))
+            ->set('script_url', $form->getAttribute('script_url'));
     }
 
     /**
@@ -79,7 +80,7 @@ class TinymceType extends AbstractType
     {
         $defaultOptions = array_merge(array(
             'required' => false
-        ), $this->_options);
+        ), $this->options);
 
         return array_replace($defaultOptions, $options);
     }
