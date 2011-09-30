@@ -46,11 +46,17 @@ class JQueryDateType extends AbstractType
         if ($options['widget'] != 'single_text' || isset($options['configs']['buttonImage'])) {
             $configs['showOn'] = 'button';
         }
+        $configs = array_replace($configs, $options['configs']);
+
+        if (isset($configs['buttonImage'])) {
+            $builder->setAttribute('buttonImage', $configs['buttonImage']);
+            unset($configs['buttonImage']);
+        }
 
         $builder
             ->setAttribute('min_year', min($options['years']))
             ->setAttribute('max_year', max($options['years']))
-            ->setAttribute('configs', array_replace($configs, $options['configs']));
+            ->setAttribute('configs', $configs);
     }
 
     /**

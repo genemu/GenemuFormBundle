@@ -39,6 +39,11 @@
         {% set attr = attr|merge({'size': 10}) %}
         {{ block('hidden_widget') }}
     {% endif %}
+
+    {% if buttonImage is defined %}
+        {% set configs = configs|merge({'buttonImage': asset(buttonImage)}) %}
+    {% endif; %}
+
     <script type="text/javascript">
     {% if widget == 'choice' %}
         var year = jQuery('#{{ form.year.get('id') }}');
