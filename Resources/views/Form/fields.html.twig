@@ -36,6 +36,7 @@
         })|raw }}
 
         {% set id = id ~ '_jquery_control' %}
+        {% set full_name = id %}
         {% set attr = attr|merge({'size': 10}) %}
         {{ block('hidden_widget') }}
     {% endif %}
