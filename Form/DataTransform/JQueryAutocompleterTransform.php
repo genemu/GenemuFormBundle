@@ -27,7 +27,7 @@ class JQueryAutocompleterTransform implements DataTransformerInterface
      */
     public function transform($values)
     {
-        if (is_null($values)) {
+        if (is_null($values) || !$values) {
             return '';
         }
 
@@ -35,7 +35,15 @@ class JQueryAutocompleterTransform implements DataTransformerInterface
             return UnexpectedTypeException($values, 'array');
         }
 
-        return implode(', ', $values);
+        $results = array();
+        foreach ($values as $value => $label) {
+            $results[] = array(
+                'label' => $label,
+                'value' => $value
+            );
+        }
+
+        return json_encode($results);
     }
 
     /**
@@ -45,10 +53,9 @@ class JQueryAutocompleterTransform implements DataTransformerInterface
     {
         $results = array();
 
-        foreach (explode(',', $values[0]) as $value) {
-            if (trim($value) !== '') {
-                $results[] = $value;
-            }
+        $values = json_decode($values[0]);
+        foreach ($values as $value) {
+            $results[$value->value] = $value->label;
         }
 
         return $results;

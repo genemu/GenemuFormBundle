@@ -43,11 +43,14 @@ class JQueryAutocompleterType extends AbstractType
             $choiceList = new ArrayChoiceList($choices);
 
             $builder->setAttribute('choice_list', $choiceList);
-
-            if ($builder->getAttribute('multiple')) {
-                $builder->appendClientTransformer(new JQueryAutocompleterTransform());
-            }
         }
+
+        if (isset($options['multiple']) && $options['multiple']) {
+            $builder->appendClientTransformer(new JQueryAutocompleterTransform());
+        }
+
+        $builder
+            ->setAttribute('route_name', $options['route_name']);
     }
 
     /**
@@ -56,25 +59,31 @@ class JQueryAutocompleterType extends AbstractType
     public function buildView(FormView $view, FormInterface $form)
     {
         $data = $form->getClientData();
-        $choices = $form->getAttribute('choice_list')->getChoices();
         $value = '';
 
-        if ($form->getAttribute('multiple')) {
-            $data = explode(', ', $data);
-            foreach ($choices as $choice) {
-                if (in_array($choice['value'], $data)) {
-                    $value .= $choice['label'].', ';
-                }
+        if ($form->getAttribute('multiple') && $data) {
+            $data = json_decode($data);
+
+            foreach ($data as $val) {
+                $value .= $val->label.', ';
             }
         } else {
-            foreach ($choices as $choice) {
-                if ($choice['value'] == $data) {
-                    $value = $choice['label'];
+            $choices = $form->getAttribute('choice_list')->getChoices();
+
+            if ($choices) {
+                foreach ($choices as $choice) {
+                    if ($choice['value'] == $data) {
+                        $value = $choice['label'];
+                    }
                 }
+            } else {
+                $value = $data;
             }
         }
 
-        $view->set('autocomplete_value', $value);
+        $view
+            ->set('autocomplete_value', $value)
+            ->set('route_name', $form->getAttribute('route_name'));
     }
 
     /**
@@ -83,7 +92,8 @@ class JQueryAutocompleterType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
-            'widget' => 'choice'
+            'widget' => 'choice',
+            'route_name' => null
         );
 
         return array_replace($defaultOptions, $options);

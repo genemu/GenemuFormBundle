@@ -84,7 +84,7 @@
                 }
             })
             .autocomplete({
-                source: {{ name }}_choices,
+                source: {% if route_name %}"{{ path(route_name)}}"{% else %}{{ name }}_choices{% endif %},
                 focus: function(event, ui) {
                     return false;
                 },
@@ -96,11 +96,11 @@
                     terms.push('');
                     this.value = terms.join(', ');
 
-                    terms = jQuery('#{{ form.get('id') }}').val().split(/,\s*/);
-                    terms.pop();
-                    terms.push(ui.item.value);
-                    terms.push('');
-                    jQuery('#{{ form.get('id') }}').val(terms.join(','));
+                    terms = jQuery('#{{ form.get('id') }}').val();
+                    terms = !terms?[]:JSON.parse(terms);
+                    terms.push(ui.item);
+                    terms = JSON.stringify(terms);
+                    jQuery('#{{ form.get('id') }}').val(terms);
                 {% else %}
                     this.value = ui.item.label;
                     jQuery('#{{ form.get('id') }}').val(ui.item.value);

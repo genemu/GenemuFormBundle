@@ -88,6 +88,69 @@ The usage look like the field type. One full example :
             'class' => 'Genemu\Bundle\EntityBundle\Entity\Member'
         ));
 
+## Create your autoloading ajax to genemu_jqueryautocompleter
+
+Add to FormType :
+
+    $builder
+        ->add('ajax', 'genemu_jqueryautocompleter', array(
+            'route_name' => 'ajax_multiple',
+            'multiple' => true
+        ))
+        ->add('ajax2', 'genemu_jqueryautocompleter', array(
+            'route_name' => 'ajax_simple'
+        ));
+
+Add to Controller :
+
+    namespace MyNamespace;
+
+    class MyClass extends Controller
+    {
+        /**
+         * @Route("/ajax", name="ajax_multiple")
+         */
+        public function ajaxAction()
+        {
+            $request = $this->getRequest();
+            $value = $request->get('term');
+
+            // .... (Search values)
+
+            $response = new Response();
+            $response->setContent(json_encode(
+                array(
+                    array(
+                        'label' => 'Foo',
+                        'value' => 'foo'
+                    ),
+                    array(
+                        'label' => 'Bar',
+                        'value' => 'bar'
+                    )
+                )
+            ));
+
+            return $response;
+        }
+
+        /**
+         * @Route("/ajax2", name="ajax_simple")
+         */
+        public function ajax2Action()
+        {
+            $request = $this->getRequest();
+            $value = $request->get('term');
+
+            // .... (Search values)
+
+            $response = new Response();
+            $response->setContent(json_encode(array('foo', 'bar')));
+
+            return $reponse;
+        }
+    }
+
 ## Note
 
 There is maybe bugs in this implementations, this package is just an idea of a form
