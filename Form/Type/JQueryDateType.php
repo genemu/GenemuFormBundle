@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony package.
  *
- * (c) Olivier Chauvel <olchauvel@gmail.com>
+ * (c) Olivier Chauvel <olivier@generation-multiple.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@ use Symfony\Component\Form\FormView;
 /**
  * JQueryDateType
  *
- * @author Olivier Chauvel <olchauvel@gmail.com>
+ * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 class JQueryDateType extends AbstractType
 {
@@ -64,6 +64,8 @@ class JQueryDateType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
+        $attr = $form->getAttribute('attr');
+
         $view
             ->set('min_year', $form->getAttribute('min_year'))
             ->set('max_year', $form->getAttribute('max_year'))

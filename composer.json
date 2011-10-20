@@ -1,0 +1,21 @@
+{
+    "name": "genemu/form-bundle",
+    "type": "form-bundle",
+    "description": "Genemu FormBundle",
+    "version": "0.5",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Olivier Chauvel",
+            "email": "olivier@generation-multiple.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/form": ">=2.1"
+    },
+    "suggest": {
+        "symfony/doctrine-bridge": ">=2.1",
+        "symfony/twig-bridge": ">=2.1"
+    }
+}
