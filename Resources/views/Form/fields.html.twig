@@ -118,3 +118,23 @@
     </script>
 {% endspaceless %}
 {% endblock genemu_jqueryautocompleter_widget %}
+
+{% block genemu_jqueryslider_widget %}
+{% spaceless %}
+    {{ block('hidden_widget') }}
+    <div id="{{ id }}_slider"></div>
+
+    <script type="text/javascript">
+        jQuery('#{{ id }}_slider').slider({
+            min: {{ configs.min }},
+            max: {{ configs.max }},
+            step: {{ configs.step }},
+            orientation: '{{ configs.orientation }}',
+            value: {{ value?value:0 }},
+            slide: function (event, ui) {
+                jQuery('#{{ id }}').val(ui.value);
+            }
+        });
+    </script>
+{% endspaceless %}
+{% endblock genemu_jqueryslider_widget %}

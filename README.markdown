@@ -86,6 +86,12 @@ The usage look like the field type. One full example :
         ->add('member', 'genemu_jqueryautocompleter', array(
             'widget' => 'entity'
             'class' => 'Genemu\Bundle\EntityBundle\Entity\Member'
+        ))
+        ->add('price', 'genemu_jqueryslider', array(
+            'min' => 1,
+            'max' => 100,
+            'step' => 1,
+            'orientation' => 'horizontal'
         ));
 
 ## Create your autoloading ajax to genemu_jqueryautocompleter
