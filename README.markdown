@@ -94,7 +94,29 @@ The usage look like the field type. One full example :
             'orientation' => 'horizontal'
         ));
 
-## Create your autoloading ajax to genemu_jqueryautocompleter
+## Add `form_javascript` to view
+
+    {% block stylesheets %}
+        <link href="{{ asset('css/ui-lightness/jquery-ui-1.8.16.custom.css') }}" rel="stylesheet" />
+    {% endblock %}
+
+    {% block javascripts %}
+        <script src="{{ asset('js/jquery-1.6.4.min.js') }}"></script>
+        <script src="{{ asset('js/jquery-ui-1.8.16.custom.min.js') }}"></script>
+        <script src="{{ asset('tinymce/jquery.tinymce.js') }}"></script>
+
+        {{ form_javascript(form) }}
+    {% endblock %}
+
+    {% block body %}
+        <form action="" type="post" {{ form_enctype(form) }}>
+            {{ form_widget(form) }}
+
+            <input type="submit" />
+        </form>
+    {% endblock %}
+
+## Create your autoloading ajax to `genemu_jqueryautocompleter`
 
 Add to FormType :
 
