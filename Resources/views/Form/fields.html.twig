@@ -89,12 +89,16 @@
 
         jQuery('#{{ id }}').datepicker(jQuery.extend({}, {
             minDate: new Date({{ min_year }}, 0, 1),
-            maxDate: new Date({{ max_year }}, 11, 31)
+            maxDate: new Date({{ max_year }}, 11, 31),
         {% if widget == 'choice' %}
-            , onSelect: function(date) {
+            onSelect: function(date) {
                 year.val(parseInt(date.substring(0, 4), 10));
                 month.val(parseInt(date.substring(5, 7), 10));
                 day.val(parseInt(date.substring(8), 10));
+            }
+        {% else %}
+            onClose: function (dateText, inst) {
+                jQuery(this).val(dateText.toLowerCase());
             }
         {% endif %}
         }, jQuery.datepicker.regional['{{ culture }}'], {{ configs|json_encode|raw }}, {

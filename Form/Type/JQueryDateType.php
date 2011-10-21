@@ -102,7 +102,7 @@ class JQueryDateType extends AbstractType
     {
         if ($form->getAttribute('widget') == 'single_text') {
             $pattern = $form->getAttribute('formatter')->getPattern();
-            $formats = preg_split('([\\\/.:_;\s-\ ]{1})', $pattern);
+            $formats = preg_split('([\\\/.:_;,\s-\ ]{1})', $pattern);
 
             // Transform pattern for JQuery ui datepicker
             $values = array();
