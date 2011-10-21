@@ -15,7 +15,6 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\Exception\FormException;
 
 /**
  * TinymceType
@@ -33,12 +32,12 @@ class TinymceType extends AbstractType
      * @param string $scriptUrl
      * @param array $configs
      */
-    public function __construct($theme, $scriptUrl, array $configs)
+    public function __construct($theme, $scriptUrl, array $options)
     {
         $this->options = array(
             'theme' => $theme,
             'script_url' => $scriptUrl,
-            'configs' => $configs
+            'options' => $options
         );
     }
 
@@ -47,21 +46,16 @@ class TinymceType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        if (!$options['script_url']) {
-            throw new FormException('The child node "script_url" at path "genenu_form.tinymce" must be configured.');
-        }
-
-        $configs = array_merge(array(
+        $options = array_merge(array(
             'theme' => $options['theme'],
-            'language' => \Locale::getDefault()
-        ), $options['configs']);
+            'script_url' => $options['script_url']
+        ), $options['options']);
 
-        if (empty($configs['mode'])) {
-            $configs['mode'] = 'textareas';
+        if (empty($options['language'])) {
+            $options['language'] = \Locale::getDefault();
         }
 
-        $builder->setAttribute('configs', $configs)
-            ->setAttribute('script_url', $options['script_url']);
+        $builder->setAttribute('options', $options);
     }
 
     /**
@@ -69,8 +63,7 @@ class TinymceType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
-        $view->set('configs', $form->getAttribute('configs'))
-            ->set('script_url', $form->getAttribute('script_url'));
+        $view->set('options', $form->getAttribute('options'));
     }
 
     /**

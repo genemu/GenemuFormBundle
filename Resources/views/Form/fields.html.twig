@@ -1,9 +1,9 @@
 {% block genemu_tinymce_widget %}
 {% spaceless %}
     {{ block('textarea_widget') }}
-    {% set configs = configs|merge({'script_url': asset(script_url)}) %}
+    {% set options = options|replace({'script_url': asset(options.script_url)}) %}
     <script type="text/javascript">
-        jQuery('#{{ id }}').tinymce({{ configs|json_encode|raw }});
+        jQuery('#{{ id }}').tinymce({{ options|json_encode|raw }});
     </script>
 {% endspaceless %}
 {% endblock genemu_tinymce_widget %}
@@ -25,44 +25,47 @@
 
 {% block genemu_jquerydate_widget %}
 {% spaceless %}
+    {% if configs.buttonImage is defined %}
+        {% set configs = configs|merge({'buttonImage': asset(configs.buttonImage)}) %}
+    {% endif %}
+
     <div>
-    {% if widget == 'single_text' %}
-        {{ block('field_widget') }}
-    {% else %}
-        {{ date_pattern|replace({
-            '{{ year }}':  form_widget(form.year),
-            '{{ month }}': form_widget(form.month),
-            '{{ day }}':   form_widget(form.day),
-        })|raw }}
+        {% if widget == 'single_text' %}
+            {{ block('field_widget') }}
+        {% else %}
+            {{ date_pattern|replace({
+                '{{ year }}':  form_widget(form.year),
+                '{{ month }}': form_widget(form.month),
+                '{{ day }}':   form_widget(form.day),
+            })|raw }}
 
-        {% set id = id ~ '_jquery_control' %}
-        {% set full_name = id %}
-        {% set attr = attr|merge({'size': 10}) %}
-        {{ block('hidden_widget') }}
-    {% endif %}
-
-    {% if buttonImage is defined %}
-        {% set configs = configs|merge({'buttonImage': asset(buttonImage)}) %}
-    {% endif %}
-
-    <script type="text/javascript">
-    {% if widget == 'choice' %}
-        var year = jQuery('#{{ form.year.get('id') }}');
-        var month = jQuery('#{{ form.month.get('id') }}');
-        var day = jQuery('#{{ form.day.get('id') }}');
-    {% endif %}
-        jQuery('#{{ id }}').datepicker(jQuery.extend({}, {
-            minDate: new Date({{ min_year }}, 0, 1),
-            maxDate: new Date({{ max_year }}, 11, 31)
-        {% if widget == 'choice' %}
-            , onSelect: function(date) {
-                year.val(parseInt(date.substring(0, 4), 10));
-                month.val(parseInt(date.substring(5, 7), 10));
-                day.val(parseInt(date.substring(8), 10));
-            }
+            {% set id = id ~ '_jquery_control' %}
+            {% set full_name = id %}
+            {% set attr = attr|merge({'size': 10}) %}
+            {{ block('hidden_widget') }}
         {% endif %}
-        }, jQuery.datepicker.regional['{{ culture }}'], {{ configs|json_encode|raw }}, {dateFormat: '{{ javascript_format }}'}));
-    </script>
+
+        <script type="text/javascript">
+        {% if widget == 'choice' %}
+            var year = jQuery('#{{ form.year.get('id') }}');
+            var month = jQuery('#{{ form.month.get('id') }}');
+            var day = jQuery('#{{ form.day.get('id') }}');
+        {% endif %}
+
+            jQuery('#{{ id }}').datepicker(jQuery.extend({}, {
+                minDate: new Date({{ min_year }}, 0, 1),
+                maxDate: new Date({{ max_year }}, 11, 31)
+            {% if widget == 'choice' %}
+                , onSelect: function(date) {
+                    year.val(parseInt(date.substring(0, 4), 10));
+                    month.val(parseInt(date.substring(5, 7), 10));
+                    day.val(parseInt(date.substring(8), 10));
+                }
+            {% endif %}
+            }, jQuery.datepicker.regional['{{ culture }}'], {{ configs|json_encode|raw }}, {
+                dateFormat: '{{ javascript_format }}'
+            }));
+        </script>
     </div>
 {% endspaceless %}
 {% endblock genemu_jquerydate_widget %}
@@ -75,8 +78,14 @@
     {% set full_name = 'autocompleter_' ~ full_name %}
     {% set value = autocomplete_value %}
     {{ block('field_widget') }}
+
     <script type="text/javascript">
+    {% if route_name is null %}
         var {{ name }}_choices = {{ choices|json_encode|raw }};
+    {% else %}
+        var {{ name }}_choices = '{{ path(route_name) }}';
+    {% endif %}
+
         jQuery('#{{ id }}')
             .bind('keydown', function(event) {
                 if(event.keyCode === $.ui.keyCode.TAB && jQuery(this).data('autocomplete').menu.active) {
@@ -84,7 +93,7 @@
                 }
             })
             .autocomplete({
-                source: {% if route_name %}"{{ path(route_name)}}"{% else %}{{ name }}_choices{% endif %},
+                source: {{ name }}_choices,
                 focus: function(event, ui) {
                     return false;
                 },
@@ -99,8 +108,7 @@
                     terms = jQuery('#{{ form.get('id') }}').val();
                     terms = !terms?[]:JSON.parse(terms);
                     terms.push(ui.item);
-                    terms = JSON.stringify(terms);
-                    jQuery('#{{ form.get('id') }}').val(terms);
+                    jQuery('#{{ form.get('id') }}').val(JSON.stringify(terms));
                 {% else %}
                     this.value = ui.item.label;
                     jQuery('#{{ form.get('id') }}').val(ui.item.value);

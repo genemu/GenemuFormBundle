@@ -14,7 +14,6 @@ namespace Genemu\Bundle\FormBundle\Form\Validator;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormValidatorInterface;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -44,10 +43,6 @@ class ReCaptchaValidator implements FormValidatorInterface
      */
     public function validate(FormInterface $form)
     {
-        if (!$this->privateKey) {
-            throw new ValidatorException('The child node "private_key" at path "genenu_form.recaptcha" must be configured.');
-        }
-
         $request = $this->request->request;
         $server = $this->request->server;
 
@@ -78,8 +73,7 @@ class ReCaptchaValidator implements FormValidatorInterface
     protected function check(array $parameters, array $options)
     {
         if (false === ($fs = @fsockopen($options['server_host'], $options['server_port'], $errno, $errstr, $options['server_timeout']))) {
-            $this->setMessage(sprintf($constraint->serverProblem, $errorstr));
-            return false;
+            return $errstr;
         }
 
         $query = http_build_query($parameters, null, '&');

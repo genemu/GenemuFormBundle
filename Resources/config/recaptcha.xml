@@ -5,14 +5,29 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="genemu.form.type.recaptcha.class">Genemu\Bundle\FormBundle\Form\Type\ReCaptchaType</parameter>
         <parameter key="genemu.form.type_recaptcha.validator.class">Genemu\Bundle\FormBundle\Form\Validator\ReCaptchaValidator</parameter>
+
+        <parameter key="genemu.form.recaptcha.public_key" />
+        <parameter key="genemu.form.recaptcha.private_key" />
+        <parameter key="genemu.form.recaptcha.options" />
     </parameters>
 
     <services>
         <service id="genemu.form.type_recaptcha.validator" class="%genemu.form.type_recaptcha.validator.class%">
             <tag name="validator.constraint_validator" alias="genemu_validator.recaptcha" />
+
             <argument type="service" id="request" strict="false" />
             <argument>%genemu.form.recaptcha.private_key%</argument>
         </service>
+
+        <service id="genemu.form.type.recaptcha" class="%genemu.form.type.recaptcha.class%">
+            <tag name="form.type" alias="genemu_recaptcha" />
+
+            <argument type="service" id="genemu.form.type_recaptcha.validator" />
+            <argument>%genemu.form.recaptcha.public_key%</argument>
+            <argument>%genemu.form.recaptcha.options%</argument>
+        </service>
     </services>
+
 </container>

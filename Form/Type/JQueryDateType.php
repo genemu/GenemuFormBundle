@@ -48,11 +48,6 @@ class JQueryDateType extends AbstractType
         }
         $configs = array_replace($configs, $options['configs']);
 
-        if (isset($configs['buttonImage'])) {
-            $builder->setAttribute('buttonImage', $configs['buttonImage']);
-            unset($configs['buttonImage']);
-        }
-
         $builder
             ->setAttribute('min_year', min($options['years']))
             ->setAttribute('max_year', max($options['years']))
@@ -64,8 +59,6 @@ class JQueryDateType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
-        $attr = $form->getAttribute('attr');
-
         $view
             ->set('min_year', $form->getAttribute('min_year'))
             ->set('max_year', $form->getAttribute('max_year'))

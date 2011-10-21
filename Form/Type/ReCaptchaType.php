@@ -15,7 +15,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\FormValidatorInterface;
 
 /**
@@ -48,20 +47,16 @@ class ReCaptchaType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        if (!$this->publicKey) {
-            throw new FormException('The child node "public_key" at path "genenu_form.captcha" must be configured.');
-        }
-
-        $configs = array(
-            'theme' => $options['theme'],
-            'lang' => \Locale::getDefault()
-        );
-
         $optionValidator = array(
             'server_host' => $options['server_host'],
             'server_port' => $options['server_port'],
             'server_path' => $options['server_path'],
             'server_timeout' => $options['server_timeout']
+        );
+
+        $configs = array(
+            'theme' => $options['theme'],
+            'lang' => \Locale::getDefault()
         );
 
         $builder
