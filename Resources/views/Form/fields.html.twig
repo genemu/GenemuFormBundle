@@ -1,21 +1,8 @@
-{% block genemu_tinymce_widget %}
-{% spaceless %}
-    {{ block('textarea_widget') }}
-    {% set options = options|replace({'script_url': asset(options.script_url)}) %}
-    <script type="text/javascript">
-        jQuery('#{{ id }}').tinymce({{ options|json_encode|raw }});
-    </script>
-{% endspaceless %}
-{% endblock genemu_tinymce_widget %}
-
 {% block genemu_recaptcha_widget %}
 {% spaceless %}
-    <script type="text/javascript">
-        var RecaptchaOptions = {{ configs|json_encode|raw }};
-    </script>
-    <script type="text/javascript" src="{{ server }}/challenge?k={{ public_key }}"></script>
+    <div id="{{ id }}_div"></div>
     <noscript>
-        <iframe src="{{ server }}/noscript?k={{ public_key }}" width="500" height="300" frameborder="0" />
+        <iframe src="{{ server }}/noscript?k={{ public_key }}" width="500" height="300" frameborder="0"></iframe>
         <br />
         <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
         <input type="hidden" name="recaptcha_response_field" value="manual_challenge" />
@@ -25,10 +12,6 @@
 
 {% block genemu_jquerydate_widget %}
 {% spaceless %}
-    {% if configs.buttonImage is defined %}
-        {% set configs = configs|merge({'buttonImage': asset(configs.buttonImage)}) %}
-    {% endif %}
-
     <div>
         {% if widget == 'single_text' %}
             {{ block('field_widget') }}
@@ -44,28 +27,6 @@
             {% set attr = attr|merge({'size': 10}) %}
             {{ block('hidden_widget') }}
         {% endif %}
-
-        <script type="text/javascript">
-        {% if widget == 'choice' %}
-            var year = jQuery('#{{ form.year.get('id') }}');
-            var month = jQuery('#{{ form.month.get('id') }}');
-            var day = jQuery('#{{ form.day.get('id') }}');
-        {% endif %}
-
-            jQuery('#{{ id }}').datepicker(jQuery.extend({}, {
-                minDate: new Date({{ min_year }}, 0, 1),
-                maxDate: new Date({{ max_year }}, 11, 31)
-            {% if widget == 'choice' %}
-                , onSelect: function(date) {
-                    year.val(parseInt(date.substring(0, 4), 10));
-                    month.val(parseInt(date.substring(5, 7), 10));
-                    day.val(parseInt(date.substring(8), 10));
-                }
-            {% endif %}
-            }, jQuery.datepicker.regional['{{ culture }}'], {{ configs|json_encode|raw }}, {
-                dateFormat: '{{ javascript_format }}'
-            }));
-        </script>
     </div>
 {% endspaceless %}
 {% endblock genemu_jquerydate_widget %}
@@ -78,52 +39,6 @@
     {% set full_name = 'autocompleter_' ~ full_name %}
     {% set value = autocomplete_value %}
     {{ block('field_widget') }}
-
-    <script type="text/javascript">
-    {% if route_name is null %}
-        var {{ name }}_choices = {{ choices|json_encode|raw }};
-    {% else %}
-        var {{ name }}_choices = '{{ path(route_name) }}';
-    {% endif %}
-
-        jQuery('#{{ id }}')
-            .bind('keydown', function(event) {
-                if(event.keyCode === $.ui.keyCode.TAB && jQuery(this).data('autocomplete').menu.active) {
-                    event.preventDefault();
-                }
-            })
-            .autocomplete({
-                source: {{ name }}_choices,
-                focus: function(event, ui) {
-                    return false;
-                },
-                select: function(event, ui) {
-                {% if multiple %}
-                    terms = this.value.split(/,\s*/);
-                    terms.pop();
-                    terms.push(ui.item.label);
-                    terms.push('');
-                    this.value = terms.join(', ');
-
-                    terms = jQuery('#{{ form.get('id') }}').val();
-                    terms = !terms?[]:JSON.parse(terms);
-                    terms.push(ui.item);
-                    jQuery('#{{ form.get('id') }}').val(JSON.stringify(terms));
-                {% else %}
-                    this.value = ui.item.label;
-                    jQuery('#{{ form.get('id') }}').val(ui.item.value);
-                {% endif %}
-                    return false;
-                }
-            });
-        {% if multiple %}
-            var {{ name }}_source = jQuery('#{{ id }}').data('autocomplete').source;
-            jQuery('#{{ id }}').autocomplete('option', 'source', function(request, response) {
-                request.term = request.term.split(/,\s*/).pop();
-                {{ name }}_source(request, response);
-            });
-        {% endif %}
-    </script>
 {% endspaceless %}
 {% endblock genemu_jqueryautocompleter_widget %}
 
@@ -131,8 +46,121 @@
 {% spaceless %}
     {{ block('hidden_widget') }}
     <div id="{{ id }}_slider"></div>
+{% endspaceless %}
+{% endblock genemu_jqueryslider_widget %}
 
-    <script type="text/javascript">
+
+{% block form_javascript %}
+{% spaceless %}
+    {% for child in form %}
+        {{ form_javascript(child) }}
+    {% endfor %}
+{% endspaceless %}
+{% endblock form_javascript %}
+
+{% block field_javascript "" %}
+
+{% block genemu_tinymce_javascript %}
+{% spaceless %}
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        {% set options = options|replace({'script_url': asset(options.script_url)}) %}
+        jQuery('#{{ id }}').tinymce({{ options|json_encode|raw }});
+    });
+</script>
+{% endspaceless %}
+{% endblock genemu_tinymce_javascript %}
+
+{% block genemu_jquerydate_javascript %}
+{% spaceless %}
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+    {% if configs.buttonImage is defined %}
+        {% set configs = configs|merge({'buttonImage': asset(configs.buttonImage)}) %}
+    {% endif %}
+
+    {% if widget == 'choice' %}
+        var year = jQuery('#{{ form.year.get('id') }}');
+        var month = jQuery('#{{ form.month.get('id') }}');
+        var day = jQuery('#{{ form.day.get('id') }}');
+
+        {% set id = id ~ '_jquery_control' %}
+    {% endif %}
+
+        jQuery('#{{ id }}').datepicker(jQuery.extend({}, {
+            minDate: new Date({{ min_year }}, 0, 1),
+            maxDate: new Date({{ max_year }}, 11, 31)
+        {% if widget == 'choice' %}
+            , onSelect: function(date) {
+                year.val(parseInt(date.substring(0, 4), 10));
+                month.val(parseInt(date.substring(5, 7), 10));
+                day.val(parseInt(date.substring(8), 10));
+            }
+        {% endif %}
+        }, jQuery.datepicker.regional['{{ culture }}'], {{ configs|json_encode|raw }}, {
+            dateFormat: '{{ javascript_format }}'
+        }));
+    });
+</script>
+{% endspaceless %}
+{% endblock genemu_jquerydate_javascript %}
+
+{% block genemu_jqueryautocompleter_javascript %}
+{% spaceless %}
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+    {% set id = 'autocomplete_' ~ id %}
+    {% if route_name is null %}
+        var {{ name }}_choices = {{ choices|json_encode|raw }};
+    {% else %}
+        var {{ name }}_choices = '{{ path(route_name) }}';
+    {% endif %}
+
+        jQuery('#{{ id }}').bind('keydown', function(event) {
+            if(event.keyCode === $.ui.keyCode.TAB && jQuery(this).data('autocomplete').menu.active) {
+                event.preventDefault();
+            }
+        }).autocomplete({
+            source: {{ name }}_choices,
+            focus: function(event, ui) {
+                return false;
+            },
+            select: function(event, ui) {
+            {% if multiple %}
+                terms = this.value.split(/,\s*/);
+                terms.pop();
+                terms.push(ui.item.label);
+                terms.push('');
+                this.value = terms.join(', ');
+
+                terms = jQuery('#{{ form.get('id') }}').val();
+                terms = !terms?[]:JSON.parse(terms);
+                terms.push(ui.item);
+                jQuery('#{{ form.get('id') }}').val(JSON.stringify(terms));
+            {% else %}
+                this.value = ui.item.label;
+                jQuery('#{{ form.get('id') }}').val(ui.item.value);
+            {% endif %}
+                return false;
+            }
+        });
+
+    {% if multiple %}
+        var {{ name }}_source = jQuery('#{{ id }}').data('autocomplete').source;
+        jQuery('#{{ id }}').autocomplete('option', 'source', function(request, response) {
+            request.term = request.term.split(/,\s*/).pop();
+            {{ name }}_source(request, response);
+        });
+    {% endif %}
+    });
+</script>
+{% endspaceless %}
+{% endblock genemu_jqueryautocompleter_javascript %}
+
+{% block genemu_jqueryslider_javascript %}
+{% spaceless %}
+<script type="text/javascript">
+    jQuery(document).ready(function () {
         jQuery('#{{ id }}_slider').slider({
             min: {{ configs.min }},
             max: {{ configs.max }},
@@ -143,6 +171,20 @@
                 jQuery('#{{ id }}').val(ui.value);
             }
         });
+    });
+</script>
+{% endspaceless %}
+{% endblock genemu_jqueryslider_javascript %}
+
+{% block genemu_recaptcha_javascript %}
+{% spaceless %}
+    <script type="text/javascript" src="{{ server }}/js/recaptcha_ajax.js"></script>
+    <script type="text/javascript">
+        var {{ name }}Show = function() {
+            Recaptcha.create('{{ public_key }}', '{{ id }}_div', {{ configs|json_encode|raw }});
+        };
+
+        window.onload = {{ name }}Show;
     </script>
 {% endspaceless %}
-{% endblock genemu_jqueryslider_widget %}
+{% endblock genemu_recaptcha_javascript %}

@@ -35,6 +35,8 @@ class GenemuFormExtension extends Extension
         $configuration = new Configuration();
         $configs = $this->processConfiguration($configuration, $configs);
 
+        $loader->load('twig.xml');
+
         $loader->load('jqueryautocompleter.xml');
         $loader->load('jqueryslider.xml');
 
