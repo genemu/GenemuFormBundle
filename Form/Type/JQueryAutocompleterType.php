@@ -97,6 +97,10 @@ class JQueryAutocompleterType extends AbstractType
             }
         }
 
+        if (!$value) {
+            $view->set('value', '');
+        }
+
         $view
             ->set('autocomplete_value', $value)
             ->set('route_name', $form->getAttribute('route_name'));
