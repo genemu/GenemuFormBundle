@@ -65,6 +65,7 @@ class JQueryAutocompleterType extends AbstractType
         }
 
         $builder
+            ->setAttribute('multiple', $options['multiple'])
             ->setAttribute('route_name', $options['route_name']);
     }
 
@@ -73,10 +74,11 @@ class JQueryAutocompleterType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
+        $multiple = $form->getAttribute('multiple');
         $data = $form->getClientData();
         $value = '';
 
-        if ($form->hasAttribute('multiple') && $form->getAttribute('multiple') && $data) {
+        if ($multiple && $data) {
             $data = is_array($data) ? current($data) : $data;
             $data = json_decode($data);
 
@@ -98,6 +100,7 @@ class JQueryAutocompleterType extends AbstractType
         }
 
         $view
+            ->set('multiple', $multiple)
             ->set('autocomplete_value', $value)
             ->set('route_name', $form->getAttribute('route_name'));
     }
@@ -108,6 +111,7 @@ class JQueryAutocompleterType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
+            'multiple' => false,
             'widget' => 'choice',
             'route_name' => null
         );

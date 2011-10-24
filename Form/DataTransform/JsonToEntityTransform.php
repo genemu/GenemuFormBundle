@@ -45,7 +45,7 @@ class JsonToEntityTransform implements DataTransformerInterface
         }
 
         if (!is_array($identifiers)) {
-            return UnexpectedTypeException($values, 'array');
+            throw new UnexpectedTypeException($values, 'array');
         }
 
         $array = array();
