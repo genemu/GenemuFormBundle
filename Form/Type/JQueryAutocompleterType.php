@@ -16,7 +16,9 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
-use Genemu\Bundle\FormBundle\Form\DataTransform\JQueryAutocompleterTransform;
+
+use Genemu\Bundle\FormBundle\Form\DataTransform\JsonToChoicesTransform;
+use Genemu\Bundle\FormBundle\Form\DataTransform\JsonToEntityTransform;
 
 /**
  * JQueryAutocompleterType
@@ -30,8 +32,15 @@ class JQueryAutocompleterType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        if ($options['choices'] || $options['choice_list']) {
-            $choiceList = $options['choice_list']?$options['choice_list']->getChoices():$options['choices'];
+        if (
+            (
+                isset($options['choices']) ||
+                isset($options['choice_list'])
+            ) && !$options['route_name']
+        ) {
+            $choiceList = $options['choice_list']
+                ?$options['choice_list']->getChoices()
+                :$options['choices'];
 
             $choices = array();
             foreach ($choiceList as $value => $label) {
@@ -40,13 +49,19 @@ class JQueryAutocompleterType extends AbstractType
                     'value' => $value
                 );
             }
-            $choiceList = new ArrayChoiceList($choices);
 
-            $builder->setAttribute('choice_list', $choiceList);
+            $builder
+                ->setAttribute('choice_list', new ArrayChoiceList($choices));
         }
 
         if (isset($options['multiple']) && $options['multiple']) {
-            $builder->appendClientTransformer(new JQueryAutocompleterTransform());
+            if ($options['widget'] === 'entity') {
+                $builder
+                    ->appendClientTransformer(new JsonToEntityTransform($options['choice_list']));
+            } else {
+                $builder
+                    ->appendClientTransformer(new JsonToChoicesTransform());
+            }
         }
 
         $builder
@@ -61,16 +76,17 @@ class JQueryAutocompleterType extends AbstractType
         $data = $form->getClientData();
         $value = '';
 
-        if ($form->getAttribute('multiple') && $data) {
+        if ($form->hasAttribute('multiple') && $form->getAttribute('multiple') && $data) {
+            $data = is_array($data) ? current($data) : $data;
             $data = json_decode($data);
 
             foreach ($data as $val) {
                 $value .= $val->label.', ';
             }
         } else {
-            $choices = $form->getAttribute('choice_list')->getChoices();
+            if ($form->hasAttribute('choice_list')) {
+                $choices = $form->getAttribute('choice_list')->getChoices();
 
-            if ($choices) {
                 foreach ($choices as $choice) {
                     if ($choice['value'] == $data) {
                         $value = $choice['label'];

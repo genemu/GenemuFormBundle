@@ -127,6 +127,12 @@ Add to FormType :
         ))
         ->add('ajax2', 'genemu_jqueryautocompleter', array(
             'route_name' => 'ajax_simple'
+        ))
+        ->add('cities', 'genemu_jqueryautocompleter', array(
+            'route_name' => 'ajax_city',
+            'multiple' => true,
+            'widget' => 'entity',
+            'class' => 'Genemu\Bundle\CityBundle\Entity\City'
         ));
 
 Add to Controller :
@@ -174,6 +180,31 @@ Add to Controller :
 
             $response = new Response();
             $response->setContent(json_encode(array('foo', 'bar')));
+
+            return $reponse;
+        }
+
+        /**
+         * @Route("/ajax_city", name="ajax_city")
+         */
+        public function ajaxEntityAction()
+        {
+            $request = $this->getRequest();
+            $value = $request->get('term');
+
+            $em = $this->getDoctrine()->getEntityManager();
+            $cities = $em->getRepository('GenemuCityBundle:City')->findAjaxTerm($term);
+
+            $array = array();
+            foreach ($cities as $city) {
+                $array[] = array(
+                    'label' => $city->getName(),
+                    'value' => $city->getId()
+                );
+            }
+
+            $response = new Response();
+            $response->setContent(json_encode($array));
 
             return $reponse;
         }
