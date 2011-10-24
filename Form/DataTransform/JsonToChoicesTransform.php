@@ -36,7 +36,7 @@ class JsonToChoicesTransform implements DataTransformerInterface
         }
 
         if (!is_array($values)) {
-            return UnexpectedTypeException($values, 'array');
+            return new UnexpectedTypeException($values, 'array');
         }
 
         $results = array();
