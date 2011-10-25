@@ -112,7 +112,6 @@ class JQueryAutocompleterType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
-            'multiple' => false,
             'widget' => 'choice',
             'route_name' => null
         );

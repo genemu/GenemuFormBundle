@@ -13,15 +13,26 @@ namespace Genemu\Bundle\FormBundle\Form\DataTransform;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 /**
- * JQueryAutocompleterDataTransform
+ * JsonToChoicesTransform
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 
 class JsonToChoicesTransform implements DataTransformerInterface
 {
+    protected $encoder;
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
+        $this->encoder = new JsonEncoder();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -39,15 +50,15 @@ class JsonToChoicesTransform implements DataTransformerInterface
             throw new UnexpectedTypeException($values, 'array');
         }
 
-        $results = array();
+        $array = array();
         foreach ($values as $value => $label) {
-            $results[] = array(
+            $array[] = array(
                 'label' => $label,
                 'value' => $value
             );
         }
 
-        return json_encode($results);
+        return $this->encoder->encode($array, 'json');
     }
 
     /**
@@ -55,13 +66,6 @@ class JsonToChoicesTransform implements DataTransformerInterface
      */
     public function reverseTransform($values)
     {
-        $results = array();
-
-        $values = json_decode($values[0]);
-        foreach ($values as $value) {
-            $results[$value->value] = $value->label;
-        }
-
-        return $results;
+        return $this->decode($values[0], 'json');
     }
 }

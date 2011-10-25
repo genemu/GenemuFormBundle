@@ -1,3 +1,10 @@
+{% block genemu_captcha_widget %}
+{% spaceless %}
+    <img src="{{ captcha.src }}" width="{{ captcha.width }}" height="{{ captcha.height }}" title="{{ name|trans }}" />
+    {{ form_widget(form) }}
+{% endspaceless %}
+{% endblock genemu_captcha_widget %}
+
 {% block genemu_recaptcha_widget %}
 {% spaceless %}
     <div id="{{ id }}_div"></div>

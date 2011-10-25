@@ -18,7 +18,7 @@ need to add the `Genemu` namespace to your autoloader:
 
     // app/autoload.php
     $loader->registerNamespaces(array(
-        'Genemu'                         => __DIR__.'/../vendor/bundles'
+        'Genemu' => __DIR__.'/../vendor/bundles'
         // ...
     ));
 
@@ -38,6 +38,18 @@ file is usually located at `app/AppKernel`:
 Adds the following configuration to your `app/config/config.yml`:
 
     genemu_form:
+        captcha:
+            width:            100
+            height:           40
+            length:           4
+            format:           png
+            chars:            0123456789
+            font_size:        18
+            font_color:       ['252525', '8B8787', '550707', '3526E6', '88531E']
+            font_dir:         %kernel.root_dir%/../web/bundles/genemuform/fonts
+            fonts:            ['akbar.ttf', 'brushcut.ttf', 'molten.ttf', 'planetbe.ttf', 'whoobub.ttf']
+            background_color: DDDDDD
+            border_color:     000000
         tinymce:
             theme:       advanced
             script_url:  /tinymce/tiny_mce.js
@@ -64,6 +76,7 @@ Adds the following configuration to your `app/config/config.yml`:
 The usage look like the field type. One full example :
 
     $builder
+        ->add('captcha', 'genemu_captcha')
         ->add('content', 'genemu_tinymce')
         ->add('recaptcha', 'genemu_recaptcha')
         ->add('date', 'genemu_jquerydate')

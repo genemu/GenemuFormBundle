@@ -13,6 +13,7 @@ namespace Genemu\Bundle\FormBundle\Form\DataTransform;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 /**
@@ -23,6 +24,7 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 class JsonToEntityTransform implements DataTransformerInterface
 {
+    protected $encoder;
     protected $choiceList;
 
     /**
@@ -33,32 +35,33 @@ class JsonToEntityTransform implements DataTransformerInterface
     public function __construct(EntityChoiceList $choiceList)
     {
         $this->choiceList = $choiceList;
+        $this->encoder = new JsonEncoder();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function transform($identifiers)
+    public function transform($ids)
     {
-        if (null === $identifiers || !$identifiers) {
+        if (null === $ids || !$ids) {
             return array();
         }
 
-        if (!is_array($identifiers)) {
-            throw new UnexpectedTypeException($values, 'array');
+        if (!is_array($ids)) {
+            throw new UnexpectedTypeException($ids, 'array');
         }
 
         $array = array();
-        foreach ($identifiers as $identifier) {
-            $entity = $this->choiceList->getEntity($identifier);
+        foreach ($ids as $id) {
+            $entity = $this->choiceList->getEntity($id);
 
             $array[] = array(
                 'label' => $entity->__toString(),
-                'value' => $identifier
+                'value' => $id
             );
         }
 
-        return json_encode($array);
+        return $this->encoder->encode($array, 'json');
     }
 
     /**
@@ -66,13 +69,13 @@ class JsonToEntityTransform implements DataTransformerInterface
      */
     public function reverseTransform($values)
     {
-        $results = array();
+        $array = array();
 
-        $values = json_decode($values[0]);
+        $values = $this->encoder->decode($values[0], 'json');
         foreach ($values as $value) {
-            $results[] = $value->value;
+            $array[] = $value['value'];
         }
 
-        return $results;
+        return $array;
     }
 }

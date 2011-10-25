@@ -40,6 +40,11 @@ class GenemuFormExtension extends Extension
         $loader->load('jqueryautocompleter.xml');
         $loader->load('jqueryslider.xml');
 
+        if (isset($configs['captcha'])) {
+            $loader->load('captcha.xml');
+            $this->configureCaptcha($configs['captcha'], $container);
+        }
+
         if (isset($configs['tinymce'])) {
             $loader->load('tinymce.xml');
             $this->configureTinymce($configs['tinymce'], $container);
@@ -54,6 +59,25 @@ class GenemuFormExtension extends Extension
             $loader->load('jquerydate.xml');
             $this->configureJQueryDate($configs['jquerydate'], $container);
         }
+    }
+
+    /**
+     * Configure Captcha
+     *
+     * @param array            $configs
+     * @param ContainerBuilder $container
+     */
+    protected function configureCaptcha(array $configs, ContainerBuilder $container)
+    {
+        if (!in_array($configs['format'], array('jpeg', 'png', 'gif'))) {
+            throw new \Exception('Format does not supprt. Choice (jpeg, png or gif)');
+        }
+
+        if (!function_exists('image'.$configs['format'])) {
+            throw new \Exception('Format does not support.');
+        }
+
+        $container->setParameter('genemu.form.captcha.options', $configs);
     }
 
     /**

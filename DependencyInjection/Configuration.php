@@ -33,11 +33,52 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('genenu_form');
 
+        $this->addCaptcha($rootNode);
         $this->addTinymce($rootNode);
         $this->addReCaptcha($rootNode);
         $this->addJQueryDate($rootNode);
 
         return $treeBuilder;
+    }
+
+    protected function addCaptcha(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('captcha')
+                ->canBeUnset()
+                ->children()
+                    ->scalarNode('width')->defaultValue(100)->end()
+                    ->scalarNode('height')->defaultValue(40)->end()
+                    ->scalarNode('length')->defaultValue(4)->end()
+                    ->scalarNode('format')->defaultValue('png')->end()
+                    ->scalarNode('chars')->defaultValue('0123456789')->end()
+                    ->scalarNode('font_size')->defaultValue(18)->end()
+                    ->variableNode('font_color')
+                        ->defaultValue(array(
+                            '252525',
+                            '8B8787',
+                            '550707',
+                            '3526E6',
+                            '88531E'
+                        ))
+                    ->end()
+                    ->scalarNode('font_dir')
+                        ->defaultValue('%kernel.root_dir%/../web/bundles/genemuform/fonts')
+                    ->end()
+                    ->variableNode('fonts')
+                        ->defaultValue(array(
+                            'akbar.ttf',
+                            'brushcut.ttf',
+                            'molten.ttf',
+                            'planetbe.ttf',
+                            'whoobub.ttf'
+                        ))
+                    ->end()
+                    ->scalarNode('background_color')->defaultValue('DDDDDD')->end()
+                    ->scalarNode('border_color')->defaultValue('000000')->end()
+                ->end()
+            ->end();
     }
 
     protected function addTinymce(ArrayNodeDefinition $rootNode)
