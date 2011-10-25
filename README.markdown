@@ -70,7 +70,7 @@ Adds the following configuration to your `app/config/config.yml`:
 
 ## Usage
 
-### ReCaptcha
+### ReCaptcha (`http://www.google.com/recaptcha`)
 
 Adds the following configuration to your `app/config/config.yml`:
 
@@ -155,9 +155,9 @@ The usage look like the field type. One example :
 
     $builder
         ->add('price', 'genemu_jqueryslider', array(
-            'min' => 1,
-            'max' => 100,
-            'step' => 1,
+            'min'         => 1,
+            'max'         => 100,
+            'step'        => 1,
             'orientation' => 'horizontal'
         ));
 
@@ -181,7 +181,7 @@ The usage look like the field type. One example :
         ))
         ->add('member', 'genemu_jqueryautocompleter', array(
             'widget' => 'entity'
-            'class' => 'Genemu\Bundle\EntityBundle\Entity\Member'
+            'class'  => 'Genemu\Bundle\EntityBundle\Entity\Member'
         ));
 
 Create your autoloading ajax to `genemu_jqueryautocompleter` :
@@ -190,16 +190,16 @@ Add to FormType :
     $builder
         ->add('ajax', 'genemu_jqueryautocompleter', array(
             'route_name' => 'ajax_multiple',
-            'multiple' => true
+            'multiple'   => true
         ))
         ->add('ajax2', 'genemu_jqueryautocompleter', array(
             'route_name' => 'ajax_simple'
         ))
         ->add('cities', 'genemu_jqueryautocompleter', array(
             'route_name' => 'ajax_city',
-            'multiple' => true,
-            'widget' => 'entity',
-            'class' => 'Genemu\Bundle\CityBundle\Entity\City'
+            'multiple'   => true,
+            'widget'     => 'entity',
+            'class'      => 'Genemu\Bundle\CityBundle\Entity\City'
         ));
 
 Add to Controller :
