@@ -3,7 +3,7 @@ FormBundle
 
 ## Installation
 
-### Installation using the `bin/vendor` method
+### Step 1: Installation using the `bin/vendor` method
 
 If you're using the `bin/vendors` method to manage your vendor libraries, add the following entries to the deps in the root of your project file:
 
@@ -11,7 +11,7 @@ If you're using the `bin/vendors` method to manage your vendor libraries, add th
         git=http://github.com/genemu/GenemuFormBundle.git
         target=bundles/Genemu/Bundle/FormBundle
 
-### Add the namespace to your autoloader
+### Step 2: Add the namespace to your autoloader
 
 If it is the first Genemu bundle you install in your Symfony 2 project, you
 need to add the `Genemu` namespace to your autoloader:
@@ -22,7 +22,7 @@ need to add the `Genemu` namespace to your autoloader:
         // ...
     ));
 
-### Initialize the bundle
+### Step 3: Initialize the bundle
 
 To start using the bundle, initialize the bundle in your Kernel. This
 file is usually located at `app/AppKernel`:
@@ -34,6 +34,60 @@ file is usually located at `app/AppKernel`:
             new Genemu\Bundle\FormBundle\GenemuFormBundle(),
         );
     )
+
+### Step 4: Minimal Configuration
+
+Adds the following configuration to your `app/config/config.yml`:
+
+    genemu_form: ~
+
+## Add `form_javascript` to view
+
+    {% block stylesheets %}
+        <link href="{{ asset('css/ui-lightness/jquery-ui-1.8.16.custom.css') }}" rel="stylesheet" />
+
+        <link href="{{ asset('css/uploadify/uploadify.css') }}" rel="stylesheet" />
+    {% endblock %}
+
+    {% block javascripts %}
+        <script src="{{ asset('js/jquery-1.6.4.min.js') }}"></script>
+        <script src="{{ asset('js/jquery-ui-1.8.16.custom.min.js') }}"></script>
+        <script src="{{ asset('tinymce/jquery.tinymce.js') }}"></script>
+
+        <script src="{{ asset('js/uploadify/jquery.uploadify.v2.1.4.min.js') }}"></script>
+        <script src="{{ asset('js/uploadify/swfobject.js') }}"></script>
+
+        {{ form_javascript(form) }}
+    {% endblock %}
+
+    {% block body %}
+        <form action="" type="post" {{ form_enctype(form) }}>
+            {{ form_widget(form) }}
+
+            <input type="submit" />
+        </form>
+    {% endblock %}
+
+## Usage
+
+### ReCaptcha
+
+Adds the following configuration to your `app/config/config.yml`:
+
+    genemu_form:
+        recaptcha:
+            public_key:  `your public key is required`
+            private_key: `your private key is required`
+            options:
+                theme:   clean
+                use_ssl: false
+
+The usage look like the field type. One example :
+
+    $builder
+        ->add('recaptcha', 'genemu_recaptcha');
+
+### Captcha GD
 
 Adds the following configuration to your `app/config/config.yml`:
 
@@ -50,20 +104,36 @@ Adds the following configuration to your `app/config/config.yml`:
             fonts:            ['akbar.ttf', 'brushcut.ttf', 'molten.ttf', 'planetbe.ttf', 'whoobub.ttf']
             background_color: DDDDDD
             border_color:     000000
+
+The usage look like the field type. One example :
+
+    $builder
+        ->add('captcha', 'genemu_captcha');
+
+### Tinymce (`http://www.tinymce.com/`)
+
+Adds the following configuration to your `app/config/config.yml`:
+
+    genemu_form:
         tinymce:
             theme:       advanced
-            script_url:  /tinymce/tiny_mce.js
+            script_url:  /tinymce/tiny_mce.js `(required)`
             configs:
                 width:                           500px
                 height:                          200px
                 theme_advanced_toolbar_location: top
                 // ...
-        recaptcha:
-            public_key:  your public key
-            private_key: your private key
-            options:
-                theme:   clean
-                use_ssl: false
+
+The usage look like the field type. One example :
+
+    $builder
+        ->add('content', 'genemu_tinymce');
+
+### JQueryDate (`http://jqueryui.com/demos/datepicker/`)
+
+Adds the following configuration to your `app/config/config.yml`:
+
+    genemu_form
         jquerydate:
             configs:
                 buttonImage:     /images/date_button.png
@@ -71,18 +141,31 @@ Adds the following configuration to your `app/config/config.yml`:
                 showAnim:        show
                 // ....
 
-## Usage
-
-The usage look like the field type. One full example :
+The usage look like the field type. One example :
 
     $builder
-        ->add('captcha', 'genemu_captcha')
-        ->add('content', 'genemu_tinymce')
-        ->add('recaptcha', 'genemu_recaptcha')
-        ->add('date', 'genemu_jquerydate')
-        ->add('date2', 'genemu_jquerydate', array(
+        ->add('createdAt', 'genemu_jquerydate')
+        ->add('updatedAt', 'genemu_jquerydate', array(
             'widget' => 'single_text'
-        ))
+        ));
+
+### JQuerySlider (`http://jqueryui.com/demos/slider/`)
+
+The usage look like the field type. One example :
+
+    $builder
+        ->add('price', 'genemu_jqueryslider', array(
+            'min' => 1,
+            'max' => 100,
+            'step' => 1,
+            'orientation' => 'horizontal'
+        ));
+
+### JQueryAutocomplete (`http://jqueryui.com/demos/autocomplete/`)
+
+The usage look like the field type. One example :
+
+    $builder
         ->add('country', 'genemu_jqueryautocompleter', array(
             'widget' => 'country'
         ))
@@ -99,38 +182,9 @@ The usage look like the field type. One full example :
         ->add('member', 'genemu_jqueryautocompleter', array(
             'widget' => 'entity'
             'class' => 'Genemu\Bundle\EntityBundle\Entity\Member'
-        ))
-        ->add('price', 'genemu_jqueryslider', array(
-            'min' => 1,
-            'max' => 100,
-            'step' => 1,
-            'orientation' => 'horizontal'
         ));
 
-## Add `form_javascript` to view
-
-    {% block stylesheets %}
-        <link href="{{ asset('css/ui-lightness/jquery-ui-1.8.16.custom.css') }}" rel="stylesheet" />
-    {% endblock %}
-
-    {% block javascripts %}
-        <script src="{{ asset('js/jquery-1.6.4.min.js') }}"></script>
-        <script src="{{ asset('js/jquery-ui-1.8.16.custom.min.js') }}"></script>
-        <script src="{{ asset('tinymce/jquery.tinymce.js') }}"></script>
-
-        {{ form_javascript(form) }}
-    {% endblock %}
-
-    {% block body %}
-        <form action="" type="post" {{ form_enctype(form) }}>
-            {{ form_widget(form) }}
-
-            <input type="submit" />
-        </form>
-    {% endblock %}
-
-## Create your autoloading ajax to `genemu_jqueryautocompleter`
-
+Create your autoloading ajax to `genemu_jqueryautocompleter` :
 Add to FormType :
 
     $builder
@@ -222,6 +276,25 @@ Add to Controller :
             return $reponse;
         }
     }
+
+### JQueryFile (`http://www.uploadify.com`)
+
+Adds the following configuration to your `app/config/config.yml`:
+
+    genemu_form:
+        jqueryfile:
+            uploader:   /uploadify/uploadify.swf
+            script:     /uploadify/uploadify.php
+            cancel_img: /uploadify/cancel.png
+            folder:     /uploads
+            configs:
+                auto: true
+                // ....
+
+The usage look like the field type. One example :
+
+    $builder
+        ->add('file', 'genemu_jqueryfile');
 
 ## Note
 
