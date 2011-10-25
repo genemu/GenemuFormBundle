@@ -46,8 +46,6 @@ class Captcha extends Image
     {
         $code = $this->newCode();
 
-        $this->setCode($code);
-
         $img = $this->create();
         $this->addStrip();
         $this->addText($code);
@@ -70,7 +68,11 @@ class Captcha extends Image
             $value.= $chars[array_rand($chars)];
         }
 
-        return trim($value);
+        $code = trim($value);
+
+        $this->setCode($code);
+
+        return $code;
     }
 
     /**

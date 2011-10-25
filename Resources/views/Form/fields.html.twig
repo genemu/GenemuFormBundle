@@ -57,6 +57,27 @@
 {% endblock genemu_jqueryslider_widget %}
 
 
+{% block genemu_jqueryfile_javascript %}
+{% spaceless %}
+{% set configs = configs|replace({
+    'uploader': asset(configs.uploader),
+    'script': asset(configs.script),
+    'cancelImg': asset(configs.cancelImg)
+}) %}
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#{{ id }}').uploadify({{ configs|json_encode|raw }});
+
+        {% if configs.auto is not defined %}
+        jQuery('form').submit(function(event) {
+            jQuery('#{{ id }}').uploadifyUpload();
+        });
+        {% endif %}
+    });
+</script>
+{% endspaceless %}
+{% endblock genemu_jqueryfile_javascript %}
+
 {% block form_javascript %}
 {% spaceless %}
     {% for child in form %}

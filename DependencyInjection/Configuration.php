@@ -37,6 +37,7 @@ class Configuration implements ConfigurationInterface
         $this->addTinymce($rootNode);
         $this->addReCaptcha($rootNode);
         $this->addJQueryDate($rootNode);
+        $this->addJQueryFile($rootNode);
 
         return $treeBuilder;
     }
@@ -49,7 +50,7 @@ class Configuration implements ConfigurationInterface
                 ->canBeUnset()
                 ->children()
                     ->scalarNode('width')->defaultValue(100)->end()
-                    ->scalarNode('height')->defaultValue(40)->end()
+                    ->scalarNode('height')->defaultValue(30)->end()
                     ->scalarNode('length')->defaultValue(4)->end()
                     ->scalarNode('format')->defaultValue('png')->end()
                     ->scalarNode('chars')->defaultValue('0123456789')->end()
@@ -122,6 +123,23 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('jquerydate')
                     ->canBeUnset()
                     ->children()
+                        ->variableNode('configs')->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    protected function addJQueryFile(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('jqueryfile')
+                    ->canBeUnset()
+                    ->children()
+                        ->scalarNode('uploader')->isRequired()->end()
+                        ->scalarNode('script')->isRequired()->end()
+                        ->scalarNode('cancel_img')->isRequired()->end()
+                        ->scalarNode('folder')->isRequired()->end()
                         ->variableNode('configs')->end()
                     ->end()
                 ->end()

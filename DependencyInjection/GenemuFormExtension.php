@@ -59,6 +59,11 @@ class GenemuFormExtension extends Extension
             $loader->load('jquerydate.xml');
             $this->configureJQueryDate($configs['jquerydate'], $container);
         }
+
+        if (isset($configs['jqueryfile'])) {
+            $loader->load('jqueryfile.xml');
+            $this->configureJQueryFile($configs['jqueryfile'], $container);
+        }
     }
 
     /**
@@ -128,5 +133,25 @@ class GenemuFormExtension extends Extension
         $options = isset($configs['configs'])?$configs['configs']:array();
 
         $container->setParameter('genemu.form.jquerydate.options', $options);
+    }
+
+    /**
+     * Configure JQueryFile
+     *
+     * @param array            $configs
+     * @param ContainerBuilder $container
+     */
+    protected function configureJQueryFile(array $configs, ContainerBuilder $container)
+    {
+        $options = isset($configs['configs'])?$configs['configs']:array();
+
+        $options = array_merge($options, array(
+            'uploader' => $configs['uploader'],
+            'script' => $configs['script'],
+            'cancelImg' => $configs['cancel_img'],
+            'folder' => $configs['folder']
+        ));
+
+        $container->setParameter('genemu.form.jqueryfile.options', $options);
     }
 }
