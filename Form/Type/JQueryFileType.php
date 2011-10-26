@@ -16,8 +16,6 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 
-use Genemu\Bundle\FormBundle\Form\EventListener\FileListener;
-
 /**
  * JQueryFileType
  *
@@ -42,7 +40,7 @@ class JQueryFileType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $configs = $options['configs'];
+        $configs = array_merge($this->options, $options['configs']);
 
         if (isset($options['multiple']) && $options['multiple']) {
             $configs['multi'] = true;
@@ -68,10 +66,10 @@ class JQueryFileType extends AbstractType
     {
         $defaultOptions = array(
             'required' => false,
-            'configs' => $this->options
+            'configs' => array()
         );
 
-        return array_replace_recursive($defaultOptions, $options);
+        return array_replace($defaultOptions, $options);
     }
 
     /**
