@@ -41,12 +41,14 @@ Adds the following configuration to your `app/config/config.yml`:
 
     genemu_form: ~
 
-## Add `form_javascript` to view
+## Add `form_javascript` and `form_stylesheet` to view
 
     {% block stylesheets %}
         <link href="{{ asset('css/ui-lightness/jquery-ui-1.8.16.custom.css') }}" rel="stylesheet" />
 
         <link href="{{ asset('css/uploadify/uploadify.css') }}" rel="stylesheet" />
+
+        {{ form_stylesheet(form) }}
     {% endblock %}
 
     {% block javascripts %}
@@ -279,7 +281,7 @@ Add to Controller :
 
 ### JQueryFile (`http://www.uploadify.com`)
 
-Add your routing file `app/config/routing.yml`
+Adds the following routing to your `app/config/routing.yml`:
 
     _genemu_upload:
         resource: "@GenemuFormBundle/Controller/UploadController.php"
