@@ -53,7 +53,9 @@ class CaptchaType extends AbstractType
     public function buildView(FormView $view, FormInterface $form)
     {
         $view
-            ->set('captcha', $this->captcha);
+            ->set('src', $this->captcha->getSrc())
+            ->set('width', $this->captcha->getWidth())
+            ->set('height', $this->captcha->getHeight());
     }
 
     /**

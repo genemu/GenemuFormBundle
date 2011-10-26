@@ -1,0 +1,272 @@
+{% block form_javascript %}
+{% spaceless %}
+    {% for child in form %}
+        {{ form_javascript(child) }}
+    {% endfor %}
+{% endspaceless %}
+{% endblock form_javascript %}
+
+{% block field_javascript "" %}
+
+{% block genemu_tinymce_javascript %}
+{% spaceless %}
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var {{ name }}Configs = {{ options|merge({
+            'script_url': asset(options.script_url)
+        })|json_encode|raw }};
+
+        jQuery('#{{ id }}').tinymce({{ name }}Configs);
+    });
+</script>
+{% endspaceless %}
+{% endblock genemu_tinymce_javascript %}
+
+{% block genemu_jqueryfile_javascript %}
+{% spaceless %}
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var {{ name }}Configs = {{ configs|merge({
+            'uploader':  asset(configs.uploader),
+            'cancelImg': asset(configs.cancelImg),
+            'script':    path(configs.script),
+            'queueID':   id ~ 'Queue'
+        })|json_encode|raw }};
+
+        {{ name }}Configs.onError = function() {
+            alert('error');
+        }
+
+    {% if configs.auto is not defined or configs.auto is sameas(false) %}
+        {{ name }}Configs.onAllComplete = function(event, queueID, fileObj, response, data) {
+            jQuery('form').submit();
+        };
+
+        jQuery('form').submit(function(event) {
+            jQuery('#{{ id }}').uploadifyUpload();
+
+            if (event.originalEvent && jQuery('#{{ id }}Queue').children().length > 0) {
+                event.preventDefault();
+            }
+        });
+    {% endif %}
+
+        jQuery('#{{ id }}').uploadify({{ name }}Configs);
+    });
+</script>
+{% endspaceless %}
+{% endblock genemu_jqueryfile_javascript %}
+
+{% block genemu_jqueryimage_javascript %}
+{% spaceless %}
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var {{ name }}Preview = function (coords) {
+            if (parseInt(coords.w) > 0) {
+                var rx = 100 / coords.w;
+                var ry = 100 / coords.h;
+
+                jQuery('#{{ id }}ImgPreview').css({
+                    width: Math.round(rx * $imgpos.width) + 'px',
+                    height: Math.round(ry * $imgpos.height) + 'px',
+                    marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+                    marginTop: '-' + Math.round(ry * coords.y) + 'px'
+                });
+            }
+        }
+
+        var {{ name }}Configs = {{ configs|merge({
+            'uploader':  asset(configs.uploader),
+            'cancelImg': asset(configs.cancelImg),
+            'script':    path(configs.script),
+            'queueID':   id ~ 'Queue'
+        })|json_encode|raw }};
+
+        {{ name }}Configs.onComplete = function(event, queueID, fileObj, response, data) {
+            jQuery('#{{ id }}Uploader').remove();
+            var {{ name }}Response = eval('(' + response + ')');
+
+            if ({{ name }}Response.result == '1') {
+                if ({{ name }}Response.image != 0) {
+                    var {{ name }}Img = new Image();
+
+                    jQuery({{ name }}Img).load(function() {
+                        $imgpos = {
+                            width: {{ name }}Response.image.width,
+                            height: {{ name }}Response.image.height
+                        }
+
+                        jQuery(this).attr('id', 'cropbox').hide();
+
+                        jQuery('#{{ id }}Crop').append(this);
+
+                        jQuery(this).fadeIn().Jcrop({
+                            onChange: {{ name }}Preview,
+                            onSelect: {{ name }}Preview,
+                            aspectRatio: 1,
+                            setSelect: [ 0, 0, 150, 150 ]
+                        });
+
+                        var {{ name }}Imgprev = jQuery('<img>')
+                            .attr('id', '{{ id }}ImgPreview')
+                            .attr('src', {{ name }}Response.file);
+
+                        jQuery('#{{ id }}Preview').append({{ name }}Imgprev);
+
+                    }).attr('src', {{ name }}Response.file);
+                }
+            } else {
+                alert('error');
+            }
+        }
+
+        {{ name }}Configs.onError = function() {
+            alert('error');
+        }
+
+        jQuery('#{{ id }}').uploadify({{ name }}Configs);
+
+        $imgpos = {
+            width: 100,
+            height: 100
+        }
+    });
+</script>
+{% endspaceless %}
+{% endblock genemu_jqueryimage_javascript %}
+
+{% block genemu_jquerydate_javascript %}
+{% spaceless %}
+    {% if configs.buttonImage is defined %}
+        {% set configs = configs|merge({'buttonImage': asset(configs.buttonImage)}) %}
+    {% endif %}
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var {{ name }}Configs = {
+            minDate: new Date({{ min_year }}, 0, 1),
+            maxDate: new Date({{ max_year }}, 11, 31)
+        };
+    {% if widget == 'choice' %}
+        {% set id = form.datepicker.get('id') %}
+
+        var year = jQuery('#{{ form.year.get('id') }}');
+        var month = jQuery('#{{ form.month.get('id') }}');
+        var day = jQuery('#{{ form.day.get('id') }}');
+
+        {{ name }}Configs.onSelect = function(date) {
+            year.val(parseInt(date.substring(0, 4), 10));
+            month.val(parseInt(date.substring(5, 7), 10));
+            day.val(parseInt(date.substring(8), 10));
+        }
+    {% else %}
+        {{ name }}Configs.onClose = function() {
+            jQuery(this).val(dateText.toLowerCase());
+        }
+    {% endif %}
+
+        jQuery('#{{ id }}').datepicker(jQuery.extend(
+            {},
+            {{ name }}Configs,
+            jQuery.datepicker.regional['{{ culture }}'],
+            {{ configs|json_encode|raw }},
+            { dateFormat: '{{ javascript_format }}' }
+        ));
+    });
+</script>
+{% endspaceless %}
+{% endblock genemu_jquerydate_javascript %}
+
+{% block genemu_jqueryautocompleter_javascript %}
+{% spaceless %}
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var {{ name }}Autocomplete = jQuery('#autocomplete_{{ id }}');
+
+    {% if route_name is null %}
+        var {{ name }}Choices = {{ choices|json_encode|raw }};
+    {% else %}
+        var {{ name }}Choices = '{{ path(route_name) }}';
+    {% endif %}
+
+        var {{ name }}Configs = {
+            source: {{ name }}Choices,
+            focus: function(event, ui) {
+                return false;
+            }
+        };
+
+    {% if multiple %}
+        {{ name }}Configs.select = function(event, ui) {
+            terms = this.value.split(/,\s*/);
+            terms.pop();
+            terms.push(ui.item.label);
+            terms.push('');
+            this.value = terms.join(', ');
+
+            terms = jQuery('#{{ id }}').val();
+            terms = !terms?[]:JSON.parse(terms);
+            terms.push(ui.item);
+            jQuery('#{{ id }}').val(JSON.stringify(terms));
+
+            return false;
+        }
+    {% else %}
+        {{ name }}Configs.select = function(event, ui) {
+            this.value = ui.item.label;
+            jQuery('#{{ id }}').val(ui.item.value);
+
+            return false;
+        }
+    {% endif %}
+
+        {{ name }}Autocomplete.bind('keydown', function(event) {
+            if(event.keyCode === $.ui.keyCode.TAB && jQuery(this).data('autocomplete').menu.active) {
+                event.preventDefault();
+            }
+        })
+        .autocomplete({{ name }}Configs);
+
+    {% if multiple %}
+        var {{ name }}Source = {{ name }}Autocomplete.data('autocomplete').source;
+        {{ name }}Autocomplete.autocomplete('option', 'source', function(request, response) {
+            request.term = request.term.split(/,\s*/).pop();
+            {{ name }}Source(request, response);
+        });
+    {% endif %}
+    });
+</script>
+{% endspaceless %}
+{% endblock genemu_jqueryautocompleter_javascript %}
+
+{% block genemu_jqueryslider_javascript %}
+{% spaceless %}
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        jQuery('#{{ id }}Slider').slider({
+            min: {{ configs.min }},
+            max: {{ configs.max }},
+            step: {{ configs.step }},
+            orientation: '{{ configs.orientation }}',
+            value: {{ value?value:0 }},
+            slide: function (event, ui) {
+                jQuery('#{{ id }}').val(ui.value);
+            }
+        });
+    });
+</script>
+{% endspaceless %}
+{% endblock genemu_jqueryslider_javascript %}
+
+{% block genemu_recaptcha_javascript %}
+{% spaceless %}
+<script type="text/javascript" src="{{ server }}/js/recaptcha_ajax.js"></script>
+<script type="text/javascript">
+    var {{ name }}Show = function() {
+        Recaptcha.create('{{ public_key }}', '{{ id }}_div', {{ configs|json_encode|raw }});
+    };
+
+    window.onload = {{ name }}Show;
+</script>
+{% endspaceless %}
+{% endblock genemu_recaptcha_javascript %}

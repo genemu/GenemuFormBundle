@@ -21,18 +21,44 @@ use Symfony\Component\Form\FormView;
  */
 class FormExtension extends BaseFormExtension
 {
+    /**
+     * {@inheritdoc}
+     */
     public function getFunctions()
     {
         return array(
-            'form_javascript' => new \Twig_Function_Method($this, 'renderJavascript', array('is_safe' => array('html')))
+            'form_javascript' => new \Twig_Function_Method($this, 'renderJavascript', array('is_safe' => array('html'))),
+            'form_stylesheet' => new \Twig_Function_Method($this, 'renderStylesheet', array('is_safe' => array('html')))
         );
     }
 
+    /**
+     * Render Function Form Javascript
+     *
+     * @param FromView $view
+     *
+     * @return string
+     */
     public function renderJavascript(FormView $view)
     {
         return $this->render($view, 'javascript');
     }
 
+    /**
+     * Render Function Form Stylesheet
+     *
+     * @param FromView $view
+     *
+     * @return string
+     */
+    public function renderStylesheet(FormView $view)
+    {
+        return $this->render($view, 'stylesheet');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'genemu.twig.extension.form';

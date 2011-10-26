@@ -49,6 +49,7 @@ class JQueryDateType extends AbstractType
         $configs = array_replace($configs, $options['configs']);
 
         $builder
+            ->add('datepicker', 'hidden', array('attr' => array('size' => 10)))
             ->setAttribute('min_year', min($options['years']))
             ->setAttribute('max_year', max($options['years']))
             ->setAttribute('configs', $configs);

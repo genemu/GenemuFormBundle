@@ -1,0 +1,30 @@
+{% block form_stylesheet %}
+{% spaceless %}
+    {% for child in form %}
+        {{ form_stylesheet(child) }}
+    {% endfor %}
+{% endspaceless %}
+{% endblock form_stylesheet %}
+
+{% block field_stylesheet "" %}
+
+{% block genemu_jqueryimage_stylesheet %}
+{% spaceless %}
+<style type="text/css" media="screen">
+    #{{ id }}Preview {
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+        margin-bottom: 5px;
+    }
+
+    #{{ id }}Container .left, #{{ id }}Container .right {
+        float: left;
+    }
+
+    object {
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    }
+</style>
+{% endspaceless %}
+{% endblock genemu_jqueryimage_stylesheet %}

@@ -279,16 +279,22 @@ Add to Controller :
 
 ### JQueryFile (`http://www.uploadify.com`)
 
+Add your routing file `app/config/routing.yml`
+
+    _genemu_upload:
+        resource: "@GenemuFormBundle/Controller/UploadController.php"
+        type:     annotation
+
 Adds the following configuration to your `app/config/config.yml`:
 
     genemu_form:
         jqueryfile:
             uploader:   /uploadify/uploadify.swf
-            script:     /uploadify/uploadify.php
             cancel_img: /uploadify/cancel.png
             folder:     /uploads
             configs:
-                auto: true
+                auto:  true
+                multi: true
                 // ....
 
 The usage look like the field type. One example :

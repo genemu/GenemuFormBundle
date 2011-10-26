@@ -16,40 +16,18 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 
-use Genemu\Bundle\FormBundle\Form\EventListener\FileListener;
-
 /**
  * JQueryFileType
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class JQueryFileType extends AbstractType
+class JQueryImageType extends AbstractType
 {
-    protected $options;
-
-    /**
-     * Construct
-     *
-     * @param array $options
-     */
-    public function __construct(array $options)
-    {
-        $this->options = $options;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $configs = $options['configs'];
-
-        if (isset($options['multiple']) && $options['multiple']) {
-            $configs['multi'] = true;
-        }
-
-        $builder
-            ->setAttribute('configs', $configs);
     }
 
     /**
@@ -57,8 +35,6 @@ class JQueryFileType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
-        $view
-            ->set('configs', $form->getAttribute('configs'));
     }
 
     /**
@@ -66,12 +42,7 @@ class JQueryFileType extends AbstractType
      */
     public function getDefaultOptions(array $options)
     {
-        $defaultOptions = array(
-            'required' => false,
-            'configs' => $this->options
-        );
-
-        return array_replace_recursive($defaultOptions, $options);
+        return $options;
     }
 
     /**
@@ -79,7 +50,7 @@ class JQueryFileType extends AbstractType
      */
     public function getParent(array $options)
     {
-        return 'file';
+        return 'genemu_jqueryfile';
     }
 
     /**
@@ -87,6 +58,6 @@ class JQueryFileType extends AbstractType
      */
     public function getName()
     {
-        return 'genemu_jqueryfile';
+        return 'genemu_jqueryimage';
     }
 }

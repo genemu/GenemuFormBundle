@@ -62,6 +62,7 @@ class GenemuFormExtension extends Extension
 
         if (isset($configs['jqueryfile'])) {
             $loader->load('jqueryfile.xml');
+            $loader->load('jqueryimage.xml');
             $this->configureJQueryFile($configs['jqueryfile'], $container);
         }
     }
@@ -146,8 +147,8 @@ class GenemuFormExtension extends Extension
         $options = isset($configs['configs'])?$configs['configs']:array();
 
         $options = array_merge($options, array(
+            'script' => 'genemu_upload',
             'uploader' => $configs['uploader'],
-            'script' => $configs['script'],
             'cancelImg' => $configs['cancel_img'],
             'folder' => $configs['folder']
         ));

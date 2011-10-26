@@ -137,7 +137,6 @@ class Configuration implements ConfigurationInterface
                     ->canBeUnset()
                     ->children()
                         ->scalarNode('uploader')->isRequired()->end()
-                        ->scalarNode('script')->isRequired()->end()
                         ->scalarNode('cancel_img')->isRequired()->end()
                         ->scalarNode('folder')->isRequired()->end()
                         ->variableNode('configs')->end()

@@ -28,6 +28,8 @@ class FormPass implements CompilerPassInterface
     {
         $resources = $container->getParameter('twig.form.resources');
         $resources[] = 'GenemuFormBundle:Form:div_layout.html.twig';
+        $resources[] = 'GenemuFormBundle:Form:javascript_layout.html.twig';
+        $resources[] = 'GenemuFormBundle:Form:stylesheet_layout.html.twig';
 
         $container->setParameter('twig.form.resources', $resources);
     }
