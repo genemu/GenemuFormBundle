@@ -11,6 +11,8 @@
 
 namespace Genemu\Bundle\FormBundle\Controller;
 
+use Symfony\Component\HttpFoundation\File\File;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,29 +29,33 @@ class UploadController extends Controller
     {
         $request = $this->getRequest();
 
-        $targetPath = $this->container->getParameter('kernel.root_dir').'/../web';
+        $targetPath = $this->container->getParameter('genemu.form.jqueryfile.root_dir');
         $handle = $request->files->get('Filedata');
         $folder = $request->get('folder');
-
-        $name = $handle->getClientOriginalName();
+        
+        $options = $this->container->getParameter('genemu.form.jqueryfile.options');
+        $folder = $options['folder'];
+        
+        $name = uniqid() . '.' . $handle->guessExtension();
+        
         $json = array();
-
-        if ($handle = $handle->move($targetPath.'/'.$folder, $name)) {
+        
+        if ($handle = $handle->move($targetPath . '/' . $folder, $name)) {
             $json = array(
                 'result' => 1,
-                'file' => $folder.'/'.$name.'?'.time()
+                'file' => $folder . '/' . $handle->getFilename().'?'.time()
             );
 
             $json['image'] = 0;
             if (preg_match('/image/', $handle->getMimeType())) {
-                $size = GetImageSize($targetPath.'/'.$folder.'/'.$name);
+                $size = GetImageSize($handle->getPathname());
 
                 $json['image'] = array(
                     'width' => $size[0],
                     'height' => $size[1]
                 );
             }
-
+            
         } else {
             $json['result'] = 0;
         }
