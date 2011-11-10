@@ -25,7 +25,11 @@
 {% block genemu_jqueryfile_javascript %}
 {% spaceless %}
 <script type="text/javascript">
-    jQuery(document).ready(function() {
+    jQuery(document).ready(function($) {
+        var $field = $('#{{ id }}');
+        var $form = $field.closest('form');
+        var $queue = $('#{{ id }}Queue');
+        
         var {{ name }}Configs = {{ configs|merge({
             'uploader':  asset(configs.uploader),
             'cancelImg': asset(configs.cancelImg),
@@ -36,22 +40,41 @@
         {{ name }}Configs.onError = function() {
             alert('error');
         }
-
+        
     {% if configs.auto is not defined or configs.auto is sameas(false) %}
         {{ name }}Configs.onAllComplete = function(event, queueID, fileObj, response, data) {
-            jQuery('form').submit();
+            $form.submit();
         };
 
-        jQuery('form').submit(function(event) {
-            jQuery('#{{ id }}').uploadifyUpload();
+        $form.submit(function(event) {
+            $field.uploadifyUpload();
 
-            if (event.originalEvent && jQuery('#{{ id }}Queue').children().length > 0) {
+            if (event.originalEvent && $queue.children().length > 0) {
                 event.preventDefault();
             }
         });
+    {% else %}
+        {{ name }}Configs.onComplete = function(event, queueID, fileObj, response, data) {
+            var response = eval('(' + response + ')');
+            
+            var current = $field.data('files');
+            if (!current) {
+                current = [];
+            }
+            current.push(response.file);
+            $field.data('files', current);
+        };
+        $form.submit(function(event){
+            var files = $field.data('files');
+            if (!files) {
+                return true;
+            }
+            $field.val(files.join(','));
+            return true;
+            });
     {% endif %}
 
-        jQuery('#{{ id }}').uploadify({{ name }}Configs);
+        $field.uploadify({{ name }}Configs);
     });
 </script>
 {% endspaceless %}

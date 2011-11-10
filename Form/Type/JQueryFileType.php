@@ -11,10 +11,15 @@
 
 namespace Genemu\Bundle\FormBundle\Form\Type;
 
+use Symfony\Component\HttpFoundation\Session;
+
+use Symfony\Component\Form\Form;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Genemu\Bundle\FormBundle\Form\EventListener\JQueryFileListener;
 
 /**
  * JQueryFileType
@@ -24,15 +29,17 @@ use Symfony\Component\Form\FormInterface;
 class JQueryFileType extends AbstractType
 {
     protected $options;
+    protected $rootDir;
 
     /**
      * Construct
      *
      * @param array $options
      */
-    public function __construct(array $options)
+    public function __construct(array $options, $rootDir)
     {
         $this->options = $options;
+        $this->rootDir = $rootDir;
     }
 
     /**
@@ -48,6 +55,10 @@ class JQueryFileType extends AbstractType
 
         $builder
             ->setAttribute('configs', $configs);
+            
+        if ($configs['auto']) {
+            $builder->addEventSubscriber(new JQueryFileListener($this->rootDir, $configs['multi']));
+        }
     }
 
     /**
