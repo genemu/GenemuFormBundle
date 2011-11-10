@@ -55,7 +55,9 @@
 
 {% block genemu_jqueryfile_widget %}
 {% spaceless %}
-    {{ block('field_widget') }}
+    {% set type = 'hidden' %}
+    {{ block('hidden_widget') }}
+    
     <div class="queue">
         <div id="{{ id }}Queue"></div>
     </div>
