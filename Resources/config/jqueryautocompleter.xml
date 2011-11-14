@@ -11,7 +11,6 @@
     <services>
         <service id="genemu.form.type.jqueryautocompleter" class="%genemu.form.type.jqueryautocompleter.class%">
             <tag name="form.type" alias="genemu_jqueryautocompleter" />
-            <argument type="service" id="doctrine" />
         </service>
     </services>
 

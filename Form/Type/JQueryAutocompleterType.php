@@ -16,7 +16,6 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
-use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
 
 use Genemu\Bundle\FormBundle\Form\DataTransform\JsonToChoicesTransform;
 use Genemu\Bundle\FormBundle\Form\DataTransform\JsonToEntityTransform;
