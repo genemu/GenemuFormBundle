@@ -13,6 +13,7 @@ namespace Genemu\Bundle\FormBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -23,31 +24,37 @@ class UploadController extends Controller
     /**
      * @Route("/genemu_upload", name="genemu_upload")
      */
-    public function uploadAction()
+    public function uploadAction(Request $request)
     {
-        $request = $this->getRequest();
-
-        $targetPath = $this->container->getParameter('kernel.root_dir').'/../web';
+        $targetPath = $this->container->getParameter('genemu.form.jqueryfile.root_dir');
         $handle = $request->files->get('Filedata');
-        $folder = $request->get('folder');
+        $name = uniqid() . '.' . $handle->guessExtension();
 
-        $name = $handle->getClientOriginalName();
+        $options = $this->container->getParameter('genemu.form.jqueryfile.options');
+        $folder = $options['folder'];
+
+        if (!is_dir($targetPath . '/' . $folder)) {
+            mkdir($targetPath . '/' . $folder, 0777);
+        }
+
         $json = array();
 
-        if ($handle = $handle->move($targetPath.'/'.$folder, $name)) {
+        if ($handle = $handle->move($targetPath . '/' . $folder, $name)) {
             $json = array(
                 'result' => 1,
-                'file' => $folder.'/'.$name.'?'.time()
+                'file' => $folder . '/' . $handle->getFilename() . '?' . time()
             );
 
             $json['image'] = 0;
             if (preg_match('/image/', $handle->getMimeType())) {
-                $size = GetImageSize($targetPath.'/'.$folder.'/'.$name);
+                $size = GetImageSize($handle->getPathname());
 
-                $json['image'] = array(
-                    'width' => $size[0],
-                    'height' => $size[1]
-                );
+                if (is_array($size)) {
+                    $json['image'] = array(
+                        'width' => $size[0],
+                        'height' => $size[1]
+                    );
+                }
             }
 
         } else {

@@ -42,7 +42,14 @@ class JQueryImageType extends AbstractType
      */
     public function getDefaultOptions(array $options)
     {
-        return $options;
+        $defaultOptions = array(
+            'configs' => array(
+                'fileExt' => '*.jpg;*.gif;*.png;*.jpeg',
+                'fileDesc' => 'Web Image Files (.jpg, .gif, .png, .jpeg)'
+            )
+        );
+
+        return array_replace($defaultOptions, $options);
     }
 
     /**

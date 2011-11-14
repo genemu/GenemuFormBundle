@@ -55,7 +55,8 @@
 
 {% block genemu_jqueryfile_widget %}
 {% spaceless %}
-    {{ block('field_widget') }}
+    {% set type = 'hidden' %}
+    {{ block('hidden_widget') }}
     <div class="queue">
         <div id="{{ id }}Queue"></div>
     </div>
@@ -68,7 +69,15 @@
         <div class="left">
             <div id="{{ id }}Preview">
                 {{ block('field_widget') }}
+                <img id="{{ id }}ImgPreview" src="{{ asset('bundles/genemuform/images/default.jpg') }}" />
             </div>
+            <ul id="#{{ id }}Options" class="options">
+                <li class="rotate _change"></li>
+                <li class="bw _change"></li>
+                <li class="negative _change"></li>
+                <li class="sepia _change"></li>
+            </ul>
+            <div id="{{ id }}Loading" style="display:none;"></div>
             <div class="queue">
                 <div id="{{ id }}Queue"></div>
             </div>

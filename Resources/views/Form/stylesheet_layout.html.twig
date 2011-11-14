@@ -11,11 +11,14 @@
 {% block genemu_jqueryimage_stylesheet %}
 {% spaceless %}
 <style type="text/css" media="screen">
+    #{{ id }}Container {
+        overflow: hidden;
+    }
+
     #{{ id }}Preview {
         width: 100px;
         height: 100px;
         overflow: hidden;
-        margin-bottom: 5px;
     }
 
     #{{ id }}Container .left, #{{ id }}Container .right {
@@ -24,6 +27,41 @@
 
     object {
         filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    }
+
+    ul.options {
+        float: left;
+        margin-top: 100px;
+        padding: 0px;
+        margin: 0px;
+        border: 2px solid #f0f0f0;
+        list-style-type: none;
+    }
+
+    ul.options li {
+        background: transparent url(bundles/genemuform/images/icons.png);
+
+        display: inline;
+        float: left;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+    }
+
+    ul.options .rotate {
+        background-position: 0 0;
+    }
+
+    ul.options .bw {
+        background-position: 0 -24px;
+    }
+
+    ul.options .negative {
+        background-position: -24px 0;
+    }
+
+    ul.options .sepia {
+        background-position: -24px -24px;
     }
 </style>
 {% endspaceless %}

@@ -11,12 +11,14 @@
 {% block genemu_tinymce_javascript %}
 {% spaceless %}
 <script type="text/javascript">
-    jQuery(document).ready(function() {
+    jQuery(document).ready(function($) {
+        var $field = $('#{{ id }}');
+
         var {{ name }}Configs = {{ options|merge({
             'script_url': asset(options.script_url)
         })|json_encode|raw }};
 
-        jQuery('#{{ id }}').tinymce({{ name }}Configs);
+        $field.tinymce({{ name }}Configs);
     });
 </script>
 {% endspaceless %}
@@ -25,7 +27,11 @@
 {% block genemu_jqueryfile_javascript %}
 {% spaceless %}
 <script type="text/javascript">
-    jQuery(document).ready(function() {
+    jQuery(document).ready(function($) {
+        var $field = $('#{{ id }}');
+        var $form = $field.closest('form');
+        var $queue = $('#{{ id }}Queue');
+
         var {{ name }}Configs = {{ configs|merge({
             'uploader':  asset(configs.uploader),
             'cancelImg': asset(configs.cancelImg),
@@ -39,19 +45,42 @@
 
     {% if configs.auto is not defined or configs.auto is sameas(false) %}
         {{ name }}Configs.onAllComplete = function(event, queueID, fileObj, response, data) {
-            jQuery('form').submit();
+            $form.submit();
         };
 
-        jQuery('form').submit(function(event) {
-            jQuery('#{{ id }}').uploadifyUpload();
+        $form.submit(function(event) {
+            $field.uploadifyUpload();
 
-            if (event.originalEvent && jQuery('#{{ id }}Queue').children().length > 0) {
+            if (event.originalEvent && $queue.children().length > 0) {
                 event.preventDefault();
             }
+
+        });
+    {% else %}
+        {{ name }}Configs.onComplete = function(event, queueID, fileObj, response, data) {
+            var response = eval('(' + response + ')');
+            var current = $field.data('files');
+
+            if (!current) {
+                current = [];
+            }
+
+            current.push(response.file);
+            $field.data('files', current);
+        };
+
+        $form.submit(function(event) {
+            var files = $field.data('files');
+            if (!files) {
+                return true;
+            }
+            $field.val(files.join(','));
+
+            return true;
         });
     {% endif %}
 
-        jQuery('#{{ id }}').uploadify({{ name }}Configs);
+        $field.uploadify({{ name }}Configs);
     });
 </script>
 {% endspaceless %}
@@ -60,15 +89,15 @@
 {% block genemu_jqueryimage_javascript %}
 {% spaceless %}
 <script type="text/javascript">
-    jQuery(document).ready(function() {
-        var {{ name }}Preview = function (coords) {
+    jQuery(document).ready(function($) {
+        var {{ name }}Preview = function(coords) {
             if (parseInt(coords.w) > 0) {
                 var rx = 100 / coords.w;
                 var ry = 100 / coords.h;
 
-                jQuery('#{{ id }}ImgPreview').css({
-                    width: Math.round(rx * $imgpos.width) + 'px',
-                    height: Math.round(ry * $imgpos.height) + 'px',
+                $('#{{ id }}ImgPreview').css({
+                    width: Math.round(rx * ${{ name }}Imgpos.width) + 'px',
+                    height: Math.round(ry * ${{ name }}Imgpos.height) + 'px',
                     marginLeft: '-' + Math.round(rx * coords.x) + 'px',
                     marginTop: '-' + Math.round(ry * coords.y) + 'px'
                 });
@@ -79,7 +108,9 @@
             'uploader':  asset(configs.uploader),
             'cancelImg': asset(configs.cancelImg),
             'script':    path(configs.script),
-            'queueID':   id ~ 'Queue'
+            'queueID':   id ~ 'Queue',
+            'width':     19,
+            'height':    19
         })|json_encode|raw }};
 
         {{ name }}Configs.onComplete = function(event, queueID, fileObj, response, data) {
@@ -87,34 +118,38 @@
             var {{ name }}Response = eval('(' + response + ')');
 
             if ({{ name }}Response.result == '1') {
-                if ({{ name }}Response.image != 0) {
-                    var {{ name }}Img = new Image();
+                var {{ name }}Img = new Image();
 
-                    jQuery({{ name }}Img).load(function() {
-                        $imgpos = {
-                            width: {{ name }}Response.image.width,
-                            height: {{ name }}Response.image.height
-                        }
+                $({{ name }}Img).load(function() {
+                    ${{ name }}Imgpos = {
+                        width: {{ name }}Response.image.width,
+                        height: {{ name }}Response.image.height
+                    }
 
-                        jQuery(this).attr('id', 'cropbox').hide();
+                    $('#cropbox').remove();
+                    $('.jcrop-holder').remove();
 
-                        jQuery('#{{ id }}Crop').append(this);
+                    $(this).attr('id', 'cropbox').hide();
 
-                        jQuery(this).fadeIn().Jcrop({
-                            onChange: {{ name }}Preview,
-                            onSelect: {{ name }}Preview,
-                            aspectRatio: 1,
-                            setSelect: [ 0, 0, 150, 150 ]
-                        });
+                    $('#{{ id }}Crop').append(this);
 
-                        var {{ name }}Imgprev = jQuery('<img>')
-                            .attr('id', '{{ id }}ImgPreview')
-                            .attr('src', {{ name }}Response.file);
+                    $(this).fadeIn().Jcrop({
+                        onChange: {{ name }}Preview,
+                        onSelect: {{ name }}Preview,
+                        aspectRatio: 1,
+                        setSelect: [ 0, 0, 150, 150 ]
+                    });
 
-                        jQuery('#{{ id }}Preview').append({{ name }}Imgprev);
+                    var {{ name }}Imgprev = jQuery('<img>')
+                        .attr('id', '{{ id }}ImgPreview')
+                        .attr('src', {{ name }}Response.file);
 
-                    }).attr('src', {{ name }}Response.file);
-                }
+                    $('#{{ id }}ImgPreview').remove();
+                    $("#{{ id }}Options").hide();
+
+                    $('#{{ id }}Preview').append({{ name }}Imgprev);
+
+                }).attr('src', {{ name }}Response.file);
             } else {
                 alert('error');
             }
@@ -124,9 +159,9 @@
             alert('error');
         }
 
-        jQuery('#{{ id }}').uploadify({{ name }}Configs);
+        $('#{{ id }}').uploadify({{ name }}Configs);
 
-        $imgpos = {
+        ${{ name }}Imgpos = {
             width: 100,
             height: 100
         }
@@ -142,7 +177,9 @@
     {% endif %}
 
 <script type="text/javascript">
-    jQuery(document).ready(function() {
+    jQuery(document).ready(function($) {
+        var $field = $('#{{ id }}');
+
         var {{ name }}Configs = {
             minDate: new Date({{ min_year }}, 0, 1),
             maxDate: new Date({{ max_year }}, 11, 31)
@@ -150,9 +187,9 @@
     {% if widget == 'choice' %}
         {% set id = form.datepicker.get('id') %}
 
-        var year = jQuery('#{{ form.year.get('id') }}');
-        var month = jQuery('#{{ form.month.get('id') }}');
-        var day = jQuery('#{{ form.day.get('id') }}');
+        var year = $('#{{ form.year.get('id') }}');
+        var month = $('#{{ form.month.get('id') }}');
+        var day = $('#{{ form.day.get('id') }}');
 
         {{ name }}Configs.onSelect = function(date) {
             year.val(parseInt(date.substring(0, 4), 10));
@@ -161,11 +198,11 @@
         }
     {% else %}
         {{ name }}Configs.onClose = function() {
-            jQuery(this).val(dateText.toLowerCase());
+            $(this).val(dateText.toLowerCase());
         }
     {% endif %}
 
-        jQuery('#{{ id }}').datepicker(jQuery.extend(
+        $field.datepicker(jQuery.extend(
             {},
             {{ name }}Configs,
             jQuery.datepicker.regional['{{ culture }}'],
@@ -180,8 +217,9 @@
 {% block genemu_jqueryautocompleter_javascript %}
 {% spaceless %}
 <script type="text/javascript">
-    jQuery(document).ready(function() {
-        var {{ name }}Autocomplete = jQuery('#autocomplete_{{ id }}');
+    jQuery(document).ready(function($) {
+        var $field = $('#{{ id }}');
+        var {{ name }}Autocomplete = $('#autocomplete_{{ id }}');
 
     {% if route_name is null %}
         var {{ name }}Choices = {{ choices|json_encode|raw }};
@@ -204,24 +242,24 @@
             terms.push('');
             this.value = terms.join(', ');
 
-            terms = jQuery('#{{ id }}').val();
+            terms = $field.val();
             terms = !terms?[]:JSON.parse(terms);
             terms.push(ui.item);
-            jQuery('#{{ id }}').val(JSON.stringify(terms));
+            $field.val(JSON.stringify(terms));
 
             return false;
         }
     {% else %}
         {{ name }}Configs.select = function(event, ui) {
             this.value = ui.item.label;
-            jQuery('#{{ id }}').val(ui.item.value);
+            $field.val(ui.item.value);
 
             return false;
         }
     {% endif %}
 
         {{ name }}Autocomplete.bind('keydown', function(event) {
-            if(event.keyCode === $.ui.keyCode.TAB && jQuery(this).data('autocomplete').menu.active) {
+            if(event.keyCode === $.ui.keyCode.TAB && $(this).data('autocomplete').menu.active) {
                 event.preventDefault();
             }
         })
@@ -242,15 +280,18 @@
 {% block genemu_jqueryslider_javascript %}
 {% spaceless %}
 <script type="text/javascript">
-    jQuery(document).ready(function() {
-        jQuery('#{{ id }}Slider').slider({
+    jQuery(document).ready(function($) {
+        var $field = $('#{{ id }}');
+        var $silder = $('#{{ id }}Slider');
+
+        $silder.slider({
             min: {{ configs.min }},
             max: {{ configs.max }},
             step: {{ configs.step }},
             orientation: '{{ configs.orientation }}',
             value: {{ value?value:0 }},
-            slide: function (event, ui) {
-                jQuery('#{{ id }}').val(ui.value);
+            slide: function(event, ui) {
+                $field.val(ui.value);
             }
         });
     });

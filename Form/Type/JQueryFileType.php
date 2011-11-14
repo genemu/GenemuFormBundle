@@ -16,6 +16,8 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 
+use Genemu\Bundle\FormBundle\Form\EventListener\JQueryFileListener;
+
 /**
  * JQueryFileType
  *
@@ -24,15 +26,17 @@ use Symfony\Component\Form\FormInterface;
 class JQueryFileType extends AbstractType
 {
     protected $options;
+    protected $rootDir;
 
     /**
      * Construct
      *
      * @param array $options
      */
-    public function __construct(array $options)
+    public function __construct(array $options, $rootDir)
     {
         $this->options = $options;
+        $this->rootDir = $rootDir;
     }
 
     /**
@@ -42,12 +46,20 @@ class JQueryFileType extends AbstractType
     {
         $configs = array_merge($this->options, $options['configs']);
 
-        if (isset($options['multiple']) && $options['multiple']) {
+        if (
+            (isset($options['multiple']) && $options['multiple']) or
+            (isset($configs['multi']) && $configs['multi'])
+        ) {
             $configs['multi'] = true;
+        } else {
+            $configs['multi'] = false;
         }
 
-        $builder
-            ->setAttribute('configs', $configs);
+        if (isset($configs['auto']) && $configs['auto']) {
+            $builder->addEventSubscriber(new JQueryFileListener($this->rootDir, $configs['multi']));
+        }
+
+        $builder->setAttribute('configs', $configs);
     }
 
     /**
@@ -55,8 +67,7 @@ class JQueryFileType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
-        $view
-            ->set('configs', $form->getAttribute('configs'));
+        $view->set('configs', $form->getAttribute('configs'));
     }
 
     /**

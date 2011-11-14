@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="genemu.form.type.jqueryfile.class">Genemu\Bundle\FormBundle\Form\Type\JQueryFileType</parameter>
 
+        <parameter key="genemu.form.jqueryfile.root_dir">%kernel.root_dir%/../web</parameter>
         <parameter key="genemu.form.jqueryfile.options" />
     </parameters>
 
@@ -14,6 +15,7 @@
         <service id="genemu.form.type.jqueryfile" class="%genemu.form.type.jqueryfile.class%">
             <tag name="form.type" alias="genemu_jqueryfile" />
             <argument>%genemu.form.jqueryfile.options%</argument>
+            <argument>%genemu.form.jqueryfile.root_dir%</argument>
         </service>
     </services>
 
