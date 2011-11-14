@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
+use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
 
 use Genemu\Bundle\FormBundle\Form\DataTransform\JsonToChoicesTransform;
 use Genemu\Bundle\FormBundle\Form\DataTransform\JsonToEntityTransform;
@@ -50,8 +51,7 @@ class JQueryAutocompleterType extends AbstractType
                 );
             }
 
-            $builder
-                ->setAttribute('choice_list', new ArrayChoiceList($choices));
+            $builder->setAttribute('choice_list', new ArrayChoiceList($choices));
         }
 
         if (isset($options['multiple']) && $options['multiple']) {
@@ -64,8 +64,7 @@ class JQueryAutocompleterType extends AbstractType
             }
         }
 
-        $builder
-            ->setAttribute('route_name', $options['route_name']);
+        $builder->setAttribute('route_name', $options['route_name']);
     }
 
     /**

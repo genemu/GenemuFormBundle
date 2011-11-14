@@ -33,10 +33,6 @@ class UploadController extends Controller
         $options = $this->container->getParameter('genemu.form.jqueryfile.options');
         $folder = $options['folder'];
 
-        if (!is_dir($targetPath . '/' . $folder)) {
-            mkdir($targetPath . '/' . $folder, 0777);
-        }
-
         $json = array();
 
         if ($handle = $handle->move($targetPath . '/' . $folder, $name)) {

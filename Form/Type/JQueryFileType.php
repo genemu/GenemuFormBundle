@@ -22,6 +22,7 @@ use Genemu\Bundle\FormBundle\Form\EventListener\JQueryFileListener;
  * JQueryFileType
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
+ * @author Bernhard Schussek <bernhard.schussek@symfony-project.com>
  */
 class JQueryFileType extends AbstractType
 {

@@ -43,7 +43,7 @@ class JsonToEntityTransform implements DataTransformerInterface
      */
     public function transform($ids)
     {
-        if (null === $ids || !$ids) {
+        if (null === $ids && !$ids) {
             return array();
         }
 

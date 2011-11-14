@@ -19,18 +19,24 @@
         width: 100px;
         height: 100px;
         overflow: hidden;
+        position: relative;
     }
 
-    #{{ id }}Container .left, #{{ id }}Container .right {
+    #{{ id }}Preview object {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    #{{ id }}Container .left {
         float: left;
     }
 
-    object {
-        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    #{{ id }}Container .right {
+        float: right;
     }
 
-    ul.options {
-        float: left;
+    #{{ id }}Options {
         margin-top: 100px;
         padding: 0px;
         margin: 0px;
@@ -38,7 +44,7 @@
         list-style-type: none;
     }
 
-    ul.options li {
+    #{{ id }}Options li {
         background: transparent url(bundles/genemuform/images/icons.png);
 
         display: inline;
@@ -48,19 +54,19 @@
         cursor: pointer;
     }
 
-    ul.options .rotate {
+    #{{ id }}Options .rotate {
         background-position: 0 0;
     }
 
-    ul.options .bw {
+    #{{ id }}Options .bw {
         background-position: 0 -24px;
     }
 
-    ul.options .negative {
+    #{{ id }}Options .negative {
         background-position: -24px 0;
     }
 
-    ul.options .sepia {
+    #{{ id }}Options .sepia {
         background-position: -24px -24px;
     }
 </style>

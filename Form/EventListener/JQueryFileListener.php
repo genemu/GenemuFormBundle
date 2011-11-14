@@ -11,10 +11,10 @@
 
 namespace Genemu\Bundle\FormBundle\Form\EventListener;
 
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Adds a protocol to a URL if it doesn't already have one.
@@ -26,12 +26,21 @@ class JQueryFileListener implements EventSubscriberInterface
     protected $rootDir;
     protected $multiple;
 
+    /**
+     * Construct
+     *
+     * @param string  $rootDir
+     * @param boolean $multiple
+     */
     public function __construct($rootDir, $multiple = false)
     {
         $this->rootDir = $rootDir;
         $this->multiple = $multiple;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function onBindNormData(DataEvent $event)
     {
         $data = $event->getData();
@@ -54,6 +63,9 @@ class JQueryFileListener implements EventSubscriberInterface
         }
     }
 
+    /**
+     * Delete info after `?`
+     */
     protected function stripQueryString($file)
     {
         if (($pos = strpos($file, '?')) !== false) {
@@ -63,6 +75,9 @@ class JQueryFileListener implements EventSubscriberInterface
         return $file;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     static public function getSubscribedEvents()
     {
         return array(FormEvents::BIND_NORM_DATA => 'onBindNormData');

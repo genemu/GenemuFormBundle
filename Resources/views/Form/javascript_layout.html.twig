@@ -90,6 +90,8 @@
 {% spaceless %}
 <script type="text/javascript">
     jQuery(document).ready(function($) {
+        var $field = $('#{{ id }}');
+
         var {{ name }}Preview = function(coords) {
             if (parseInt(coords.w) > 0) {
                 var rx = 100 / coords.w;
@@ -114,24 +116,36 @@
         })|json_encode|raw }};
 
         {{ name }}Configs.onComplete = function(event, queueID, fileObj, response, data) {
-            jQuery('#{{ id }}Uploader').remove();
+            var $uploader = $('#{{ id }}Uploader');
+            var $crop = $('#{{ id }}Crop');
+            var $imgPreview = $('#{{ id }}ImgPreview');
+            var $preview = $('#{{ id }}Preview');
+            var $options = $('#{{ id }}Options');
+
+            $uploader.remove();
             var {{ name }}Response = eval('(' + response + ')');
 
             if ({{ name }}Response.result == '1') {
                 var {{ name }}Img = new Image();
 
                 $({{ name }}Img).load(function() {
+                    $crop.children().remove();
+                    $imgPreview.remove();
+
+                    $options.hide();
+                    $(this).hide();
+
                     ${{ name }}Imgpos = {
                         width: {{ name }}Response.image.width,
                         height: {{ name }}Response.image.height
                     }
 
-                    $('#cropbox').remove();
-                    $('.jcrop-holder').remove();
+                    var {{ name }}Imgprev = jQuery('<img>')
+                        .attr('id', '{{ id }}ImgPreview')
+                        .attr('src', {{ name }}Response.file);
 
-                    $(this).attr('id', 'cropbox').hide();
-
-                    $('#{{ id }}Crop').append(this);
+                    $crop.append(this);
+                    $preview.append({{ name }}Imgprev);
 
                     $(this).fadeIn().Jcrop({
                         onChange: {{ name }}Preview,
@@ -139,16 +153,6 @@
                         aspectRatio: 1,
                         setSelect: [ 0, 0, 150, 150 ]
                     });
-
-                    var {{ name }}Imgprev = jQuery('<img>')
-                        .attr('id', '{{ id }}ImgPreview')
-                        .attr('src', {{ name }}Response.file);
-
-                    $('#{{ id }}ImgPreview').remove();
-                    $("#{{ id }}Options").hide();
-
-                    $('#{{ id }}Preview').append({{ name }}Imgprev);
-
                 }).attr('src', {{ name }}Response.file);
             } else {
                 alert('error');
@@ -159,7 +163,7 @@
             alert('error');
         }
 
-        $('#{{ id }}').uploadify({{ name }}Configs);
+        $field.uploadify({{ name }}Configs);
 
         ${{ name }}Imgpos = {
             width: 100,
