@@ -68,7 +68,9 @@
     <div id="{{ id }}Container">
         <div class="left">
             <div id="{{ id }}Preview">
-                {{ block('field_widget') }}
+                {% set type = 'hidden' %}
+                {{ block('hidden_widget') }}
+
                 <img id="{{ id }}ImgPreview" src="{{ asset('bundles/genemuform/images/default.jpg') }}" />
             </div>
             <ul id="{{ id }}Options" class="options">

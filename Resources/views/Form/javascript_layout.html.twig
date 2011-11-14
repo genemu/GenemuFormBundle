@@ -32,6 +32,15 @@
         var $form = $field.closest('form');
         var $queue = $('#{{ id }}Queue');
 
+        var {{ name }}JoinFiles = function() {
+            var files = $field.data('files');
+            if (files) {
+                $field.val(files.join(','));
+            }
+
+            return true;
+        }
+
         var {{ name }}Configs = {{ configs|merge({
             'uploader':  asset(configs.uploader),
             'cancelImg': asset(configs.cancelImg),
@@ -44,19 +53,24 @@
         }
 
     {% if configs.auto is not defined or configs.auto is sameas(false) %}
-        {{ name }}Configs.onAllComplete = function(event, queueID, fileObj, response, data) {
+        {{ name }}Configs.onAllComplete = function(event, data) {
             $form.submit();
         };
 
         $form.submit(function(event) {
-            $field.uploadifyUpload();
-
             if (event.originalEvent && $queue.children().length > 0) {
+                $field.uploadifyUpload();
                 event.preventDefault();
+            } else {
+                return {{ name }}JoinFiles();
             }
-
         });
     {% else %}
+        $form.submit(function(event) {
+            return {{ name }}JoinFiles();
+        });
+    {% endif %}
+
         {{ name }}Configs.onComplete = function(event, queueID, fileObj, response, data) {
             var response = eval('(' + response + ')');
             var current = $field.data('files');
@@ -68,17 +82,6 @@
             current.push(response.file);
             $field.data('files', current);
         };
-
-        $form.submit(function(event) {
-            var files = $field.data('files');
-            if (!files) {
-                return true;
-            }
-            $field.val(files.join(','));
-
-            return true;
-        });
-    {% endif %}
 
         $field.uploadify({{ name }}Configs);
     });
@@ -191,14 +194,14 @@
     {% if widget == 'choice' %}
         {% set id = form.datepicker.get('id') %}
 
-        var year = $('#{{ form.year.get('id') }}');
-        var month = $('#{{ form.month.get('id') }}');
-        var day = $('#{{ form.day.get('id') }}');
+        var $year = $('#{{ form.year.get('id') }}');
+        var $month = $('#{{ form.month.get('id') }}');
+        var $day = $('#{{ form.day.get('id') }}');
 
         {{ name }}Configs.onSelect = function(date) {
-            year.val(parseInt(date.substring(0, 4), 10));
-            month.val(parseInt(date.substring(5, 7), 10));
-            day.val(parseInt(date.substring(8), 10));
+            $year.val(parseInt(date.substring(0, 4), 10));
+            $month.val(parseInt(date.substring(5, 7), 10));
+            $day.val(parseInt(date.substring(8), 10));
         }
     {% else %}
         {{ name }}Configs.onClose = function() {

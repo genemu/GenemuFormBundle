@@ -51,16 +51,14 @@ class JQueryFileType extends AbstractType
             (isset($options['multiple']) && $options['multiple']) or
             (isset($configs['multi']) && $configs['multi'])
         ) {
-            $configs['multi'] = true;
+            $options['multiple'] = true;
         } else {
-            $configs['multi'] = false;
+            $options['multiple'] = false;
         }
 
-        if (isset($configs['auto']) && $configs['auto']) {
-            $builder->addEventSubscriber(new JQueryFileListener($this->rootDir, $configs['multi']));
-        }
-
-        $builder->setAttribute('configs', $configs);
+        $builder
+            ->addEventSubscriber(new JQueryFileListener($this->rootDir, $options['multiple']))
+            ->setAttribute('configs', $configs);
     }
 
     /**
