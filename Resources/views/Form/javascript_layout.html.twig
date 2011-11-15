@@ -95,21 +95,7 @@
     jQuery(document).ready(function($) {
         var $field = $('#{{ id }}');
 
-        var {{ name }}Preview = function(coords) {
-            if (parseInt(coords.w) > 0) {
-                var rx = 100 / coords.w;
-                var ry = 100 / coords.h;
-
-                $('#{{ id }}ImgPreview').css({
-                    width: Math.round(rx * ${{ name }}Imgpos.width) + 'px',
-                    height: Math.round(ry * ${{ name }}Imgpos.height) + 'px',
-                    marginLeft: '-' + Math.round(rx * coords.x) + 'px',
-                    marginTop: '-' + Math.round(ry * coords.y) + 'px'
-                });
-            }
-        }
-
-        var {{ name }}Configs = {{ configs|merge({
+        var $configs = {{ configs|merge({
             'uploader':  asset(configs.uploader),
             'cancelImg': asset(configs.cancelImg),
             'script':    path(configs.script),
@@ -118,60 +104,70 @@
             'height':    19
         })|json_encode|raw }};
 
-        {{ name }}Configs.onComplete = function(event, queueID, fileObj, response, data) {
-            var $uploader = $('#{{ id }}Uploader');
-            var $crop = $('#{{ id }}Crop');
-            var $imgPreview = $('#{{ id }}ImgPreview');
-            var $preview = $('#{{ id }}Preview');
-            var $options = $('#{{ id }}Options');
+        var $crop = null;
+        var createCrop = function () {
+            if ($crop) {
+                $crop.destroy();
+            }
 
-            $uploader.remove();
-            var {{ name }}Response = eval('(' + response + ')');
+            $crop = $.Jcrop('#{{ id }}ImgPreview');
+        }
 
-            if ({{ name }}Response.result == '1') {
-                var {{ name }}Img = new Image();
+        $configs.onComplete = function(event, queueID, fileObj, response, data) {
+            var $response = eval('(' + response + ')');
 
-                $({{ name }}Img).load(function() {
-                    $crop.children().remove();
-                    $imgPreview.remove();
+            $field.data('files', $response.file);
 
-                    $options.hide();
-                    $(this).hide();
+            if ($response.result == '1') {
+                var $img = {
+                    dom:    $('#{{ id }}ImgPreview'),
+                    file:   new Image(),
+                    src:    $response.file,
+                    width:  $response.image.width,
+                    height: $response.image.height,
+                    ratio:  $response.image.width / $response.image.height
+                };
 
-                    ${{ name }}Imgpos = {
-                        width: {{ name }}Response.image.width,
-                        height: {{ name }}Response.image.height
-                    }
+                $($img.file).load(function() {
+                    $img.dom
+                        .width($img.width > 500 ? 500 : $img.width)
+                        .height($img.width > 500 ? $img.height / ( $img.width / 500 ) : $img.height)
+                        .attr('src', this.src);
 
-                    var {{ name }}Imgprev = jQuery('<img>')
-                        .attr('id', '{{ id }}ImgPreview')
-                        .attr('src', {{ name }}Response.file);
-
-                    $crop.append(this);
-                    $preview.append({{ name }}Imgprev);
-
-                    $(this).fadeIn().Jcrop({
-                        onChange: {{ name }}Preview,
-                        onSelect: {{ name }}Preview,
-                        aspectRatio: 1,
-                        setSelect: [ 0, 0, 150, 150 ]
-                    });
-                }).attr('src', {{ name }}Response.file);
+                    createCrop();
+                }).attr('src', $img.src);
             } else {
                 alert('error');
             }
         }
 
-        {{ name }}Configs.onError = function() {
+        $('._change').click(function() {
+            var $this = $(this);
+
+            $this.addClass('loading');
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ path('genemu_form_image') }}',
+                data: {
+                    filter: $this.attr('class').replace('_change loading', ''),
+                    image: $field.data('files')
+                },
+                success: function(data) {
+                    $('#{{ id }}ImgPreview').attr('src', data.file);
+
+                    createCrop();
+
+                    $this.removeClass('loading');
+                }
+            });
+        });
+
+        $configs.onError = function() {
             alert('error');
         }
 
-        $field.uploadify({{ name }}Configs);
-
-        ${{ name }}Imgpos = {
-            width: 100,
-            height: 100
-        }
+        $field.uploadify($configs);
     });
 </script>
 {% endspaceless %}
@@ -192,7 +188,7 @@
             maxDate: new Date({{ max_year }}, 11, 31)
         };
     {% if widget == 'choice' %}
-        {% set id = form.datepicker.get('id') %}
+        {% set id = id ~ '_datepicker' %}
 
         var $year = $('#{{ form.year.get('id') }}');
         var $month = $('#{{ form.month.get('id') }}');
@@ -203,16 +199,12 @@
             $month.val(parseInt(date.substring(5, 7), 10));
             $day.val(parseInt(date.substring(8), 10));
         }
-    {% else %}
-        {{ name }}Configs.onClose = function() {
-            $(this).val(dateText.toLowerCase());
-        }
     {% endif %}
 
         $field.datepicker(jQuery.extend(
             {},
             {{ name }}Configs,
-            jQuery.datepicker.regional['{{ culture }}'],
+            jQuery.datepicker.regional['{{ culture == 'en' ? 'en-GB' : culture }}'],
             {{ configs|json_encode|raw }},
             { dateFormat: '{{ javascript_format }}' }
         ));

@@ -49,7 +49,7 @@ class JQueryImageType extends AbstractType
             )
         );
 
-        return array_replace($defaultOptions, $options);
+        return array_replace_recursive($defaultOptions, $options);
     }
 
     /**

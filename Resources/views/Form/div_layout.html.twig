@@ -29,6 +29,9 @@
                 '{{ day }}':   form_widget(form.day),
             })|raw }}
 
+            {% set attr = attr|merge({'size': 10}) %}
+            {% set id = id ~ '_datepicker' %}
+            {{ block('hidden_widget') }}
             {{ form_widget(form.datepicker) }}
         </div>
     {% endif %}
@@ -71,21 +74,19 @@
                 {% set type = 'hidden' %}
                 {{ block('hidden_widget') }}
 
-                <img id="{{ id }}ImgPreview" src="{{ asset('bundles/genemuform/images/default.jpg') }}" />
+                <a id="{{ id }}Overlay" href="#">&nbsp;</a>
+                <img id="{{ id }}ImgPreview" src="{{ asset('bundles/genemuform/images/default.png') }}" alt="{% trans %}Preview{% endtrans %}" />
             </div>
             <ul id="{{ id }}Options" class="options">
                 <li class="rotate _change"></li>
                 <li class="bw _change"></li>
                 <li class="negative _change"></li>
                 <li class="sepia _change"></li>
+                <li id="{{ id }}Loading" class="loading" style="display:none;">&nbsp;</li>
             </ul>
-            <div id="{{ id }}Loading" style="display:none;"></div>
             <div class="queue">
                 <div id="{{ id }}Queue"></div>
             </div>
-        </div>
-        <div class="right">
-            <div id="{{ id }}Crop"></div>
         </div>
     </div>
 {% endspaceless %}

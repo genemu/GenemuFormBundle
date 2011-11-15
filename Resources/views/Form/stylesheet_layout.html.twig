@@ -16,32 +16,41 @@
     }
 
     #{{ id }}Preview {
-        width: 100px;
-        height: 100px;
         overflow: hidden;
         position: relative;
     }
 
-    #{{ id }}Preview object {
+    #{{ id }}Preview object, #{{ id }}Overlay {
         position: absolute;
         top: 0;
         right: 0;
+        width: 19px;
+        height: 19px;
+        text-decoration: none;
+        display: block;
+        z-index: 9998;
+
+        background: url(bundles/genemuform/images/edit.gif);
+    }
+
+    #{{ id }}Preview object {
+        opacity: 0;
+        z-index: 9999;
     }
 
     #{{ id }}Container .left {
         float: left;
-    }
-
-    #{{ id }}Container .right {
-        float: right;
+        position: relative;
     }
 
     #{{ id }}Options {
-        margin-top: 100px;
         padding: 0px;
         margin: 0px;
-        border: 2px solid #f0f0f0;
         list-style-type: none;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 9999;
     }
 
     #{{ id }}Options li {
@@ -68,6 +77,12 @@
 
     #{{ id }}Options .sepia {
         background-position: -24px -24px;
+    }
+
+    #{{ id }}Options .loading {
+        background: #FFF url(bundles/genemuform/images/ajax-loader.gif);
+        padding: 6px 0;
+        height: 11px;
     }
 </style>
 {% endspaceless %}
