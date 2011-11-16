@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Genemu\Bundle\FormBundle\Gd\Gd;
 use Genemu\Bundle\FormBundle\Gd\Filter\Rotate;
 use Genemu\Bundle\FormBundle\Gd\Filter\Negate;
-use Genemu\Bundle\FormBundle\Gd\Filter\Sepia;
+use Genemu\Bundle\FormBundle\Gd\Filter\Colorize;
 use Genemu\Bundle\FormBundle\Gd\Filter\GrayScale;
 
 /**
@@ -57,9 +57,12 @@ class Image extends File
         $this->gd->addFilter(new Negate());
     }
 
-    public function sepia()
+    public function sepia($color)
     {
-        $this->gd->addFilter(new Sepia());
+        $this->gd->addFilters(array(
+            new GrayScale(),
+            new Colorize($color)
+        ));
     }
 
     public function grayScale()
@@ -77,12 +80,8 @@ class Image extends File
         return $this->gd->getHeight();
     }
 
-    public function save($type = 'jpeg')
+    public function save($quality = 100)
     {
-        $this->gd->applyFilters();
-
-        $type = 'image'.$type;
-
-        $type($this->gd->getResource(), $this->getPathname(), 100);
+        $this->gd->save($this->getPathname(), $this->guessExtension(), $quality);
     }
 }

@@ -31,6 +31,9 @@ class ImageController extends Controller
         $targetPath = $this->container->getParameter('genemu.form.jqueryfile.root_dir');
         $src = $request->get('image');
 
+        $options = $this->container->getParameter('genemu.form.jqueryfile.options');
+        $folder = $options['folder'];
+
         $handle = new Image($targetPath . $this->stripQueryString($src));
 
         switch ($request->get('filter')) {
@@ -44,7 +47,7 @@ class ImageController extends Controller
                 $handle->grayScale();
                 break;
             case 'sepia':
-                $handle->sepia();
+                $handle->sepia('#C68039');
             default:
                 break;
         }
@@ -52,7 +55,7 @@ class ImageController extends Controller
         $handle->save();
 
         $json = array(
-            'file' => $this->stripQueryString($src).'?'.time(),
+            'file' => $folder . '/' . $handle->getFilename().'?'.time(),
             'width' => $handle->getWidth(),
             'height' => $handle->getHeight()
         );

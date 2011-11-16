@@ -16,17 +16,20 @@ use Genemu\Bundle\FormBundle\Gd\Gd;
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class Sepia extends Gd implements Filter
+class Colorize extends Gd implements Filter
 {
-    public function __construct()
-    {
+    protected $color;
 
+    public function __construct($color)
+    {
+        $this->color = $color;
     }
 
     public function apply()
     {
-        imagefilter($this->resource, IMG_FILTER_GRAYSCALE);
-        imagefilter($this->resource, IMG_FILTER_COLORIZE, 100, 50, 0);
+        list($red, $green, $blue) = $this->hexColor($this->color);
+
+        imagefilter($this->resource, IMG_FILTER_COLORIZE, $red, $green, $blue);
 
         return $this->resource;
     }

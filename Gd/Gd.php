@@ -11,6 +11,8 @@
 
 namespace Genemu\Bundle\FormBundle\Gd;
 
+use Symfony\Component\HttpFoundation\File\File;
+
 use Genemu\Bundle\FormBundle\Gd\Filter\Filter;
 
 /**
@@ -28,6 +30,13 @@ class Gd implements GdInterface
     public function __construct($resource)
     {
         $this->setResource($resource);
+    }
+
+    public function checkFormat($format)
+    {
+        if (!function_exists('image'.$format)) {
+            throw new \Exception('Format '.$format.' does not support.');
+        }
     }
 
     public function addBackground($color)
@@ -59,14 +68,27 @@ class Gd implements GdInterface
 
     public function getBase64($format = 'png')
     {
-        $this->applyFilters();
-
+        $format = 'jpg' === $format ? 'jpeg' : $format;
         $generate = 'image'.$format;
+
+        $this->checkFormat($format);
+        $this->applyFilters();
 
         ob_start();
         $generate($this->resource);
 
         return 'data:image/'.$format.';base64,'.base64_encode(ob_get_clean());
+    }
+
+    public function save($file, $format = 'png', $quality = 100)
+    {
+        $format = 'jpg' === $format ? 'jpeg' : $format;
+        $generate = 'image'.$format;
+
+        $this->checkFormat($format);
+        $this->applyFilters();
+
+        $generate($this->resource, $file, $quality);
     }
 
     public function addFilter(Filter $filter)
@@ -132,13 +154,20 @@ class Gd implements GdInterface
             throw new \Exception('Resource does not exists.');
         }
 
+        list($red, $green, $blue) = $this->hexColor($color);
+
+        return imagecolorallocate($this->resource, $red, $green, $blue);
+    }
+
+    public function hexColor($color)
+    {
         $color = str_replace('#', '', $color);
 
         if (strlen($color) != 6) {
             throw new \Exception('Color #'.$color.' is not exactly.');
         }
 
-        return imagecolorallocate($this->resource,
+        return array(
             hexdec(substr($color, 0, 2)),
             hexdec(substr($color, 2, 2)),
             hexdec(substr($color, 4, 2))
