@@ -86,9 +86,7 @@ class Gd implements GdInterface
         foreach ($this->filters as $filter) {
             $filter->setResource($this->resource);
 
-            $this->resource = $filter->apply();
-            $this->width = imagesx($this->resource);
-            $this->height = imagesy($this->resource);
+            $this->setResource($filter->apply());
         }
     }
 
