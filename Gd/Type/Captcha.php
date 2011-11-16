@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Session;
 
 use Genemu\Bundle\FormBundle\Gd\Filter\Text;
 use Genemu\Bundle\FormBundle\Gd\Filter\Strip;
+use Genemu\Bundle\FormBundle\Gd\Filter\Background;
+use Genemu\Bundle\FormBundle\Gd\Filter\Border;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
@@ -24,8 +26,8 @@ class Captcha extends Rectangle
     protected $session;
     protected $secret;
 
-    protected $text;
-    protected $strip;
+    protected $background;
+    protected $border;
 
     protected $fonts;
     protected $chars;
@@ -45,16 +47,14 @@ class Captcha extends Rectangle
      */
     public function __construct(Session $session, $secret, array $options)
     {
+        parent::__construct($options['width'], $options['height']);
+
         $this->session = $session;
         $this->secret = $secret;
         $this->key = 'genemu_captcha';
 
-        parent::__construct(
-            $options['width'],
-            $options['height'],
-            $options['background_color'],
-            $options['border_color']
-        );
+        $this->background = $options['background_color'];
+        $this->border = $options['border_color'];
 
         $this->fonts = array();
         foreach ($options['fonts'] as $font) {
@@ -72,6 +72,8 @@ class Captcha extends Rectangle
         $code = $this->newCode(str_split($this->chars), $this->length);
 
         $this->addFilters(array(
+            new Background($this->background),
+            new Border($this->border),
             new Text($code, $this->fontSize, $this->fonts, $this->fontColor),
             new Strip($this->fontColor)
         ));

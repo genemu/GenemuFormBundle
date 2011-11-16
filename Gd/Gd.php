@@ -39,23 +39,6 @@ class Gd implements GdInterface
         }
     }
 
-    public function addBackground($color)
-    {
-        $color = $this->allocateColor($color);
-
-        imagefill($this->resource, 0, 0, $color);
-    }
-
-    public function addBorder($color, $size = 1)
-    {
-        $color = $this->allocateColor($color);
-
-        imagefilledrectangle($this->resource, 0, 0, $this->width, $size - 1, $color);
-        imagefilledrectangle($this->resource, 0, 0, $size - 1, $this->height, $color);
-        imagefilledrectangle($this->resource, 0, $this->height, $this->width, $this->height - $size, $color);
-        imagefilledrectangle($this->resource, $this->width, 0, $this->width - $size, $this->height, $color);
-    }
-
     public function getWidth()
     {
         return $this->width;
@@ -131,11 +114,6 @@ class Gd implements GdInterface
         $this->resource = $resource;
         $this->width = imagesx($resource);
         $this->height = imagesy($resource);
-    }
-
-    public function getResource()
-    {
-        return $this->resource;
     }
 
     public function allocateColors(array $colors)
