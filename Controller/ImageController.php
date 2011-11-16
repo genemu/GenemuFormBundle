@@ -16,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-use Symfony\Component\HttpFoundation\File\File;
+use Genemu\Bundle\FormBundle\Gd\File\Image;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
@@ -31,44 +31,31 @@ class ImageController extends Controller
         $targetPath = $this->container->getParameter('genemu.form.jqueryfile.root_dir');
         $src = $request->get('image');
 
-        $handle = new File($targetPath . $this->stripQueryString($src));
-        $source = imagecreatefromjpeg($handle->getPathname());
+        $handle = new Image($targetPath . $this->stripQueryString($src));
 
-        $transform = null;
         switch ($request->get('filter')) {
             case 'rotate':
-                $transform = imagerotate($source, 90, 0);
+                $handle->rotate(90);
                 break;
             case 'negative':
-                if (imagefilter($source, IMG_FILTER_NEGATE)) {
-                    $transform = $source;
-                }
+                $handle->negate();
                 break;
             case 'bw':
-                if (imagefilter($source, IMG_FILTER_GRAYSCALE)) {
-                    $transform = $source;
-                }
+                $handle->grayScale();
                 break;
             case 'sepia':
-                imagefilter($source, IMG_FILTER_GRAYSCALE);
-                imagefilter($source, IMG_FILTER_COLORIZE, 100, 50, 0);
-
-                $transform = $source;
+                $handle->sepia();
             default:
                 break;
         }
 
-        if ($transform) {
-            imagejpeg($transform, $handle->getPathname(), 100);
-        }
+        $handle->save();
 
-        $json = array('file' => $this->stripQueryString($src).'?'.time());
-
-        $size = GetImageSize($handle->getPathname());
-        if (is_array($size)) {
-            $json['width'] = $size[0];
-            $json['height'] = $size[1];
-        }
+        $json = array(
+            'file' => $this->stripQueryString($src).'?'.time(),
+            'width' => $handle->getWidth(),
+            'height' => $handle->getHeight()
+        );
 
         return new Response(json_encode($json));
     }

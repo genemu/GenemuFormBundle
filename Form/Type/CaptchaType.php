@@ -55,9 +55,7 @@ class CaptchaType extends AbstractType
         $builder
             ->addValidator(new CaptchaValidator($captcha))
             ->setAttribute('captcha', $captcha)
-            ->setAttribute('format', $options['format'])
-            ->setAttribute('width', $options['width'])
-            ->setAttribute('height', $options['height']);
+            ->setAttribute('format', $options['format']);
     }
 
     /**
@@ -69,8 +67,8 @@ class CaptchaType extends AbstractType
 
         $view
             ->set('src', $captcha->getBase64($form->getAttribute('format')))
-            ->set('width', $form->getAttribute('width'))
-            ->set('height', $form->getAttribute('height'));
+            ->set('width', $captcha->getWidth())
+            ->set('height', $captcha->getHeight());
     }
 
     /**

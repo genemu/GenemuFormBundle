@@ -22,7 +22,11 @@ interface GdInterface
 
     public function getBase64($format = 'png');
 
+    public function create($width, $height);
+
     public function reset();
+
+    public function setResource($resource);
 
     public function allocateColors(array $colors);
 

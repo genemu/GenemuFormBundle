@@ -11,6 +11,8 @@
 
 namespace Genemu\Bundle\FormBundle\Gd;
 
+use Genemu\Bundle\FormBundle\Gd\Filter\Filter;
+
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
@@ -18,19 +20,14 @@ class Gd implements GdInterface
 {
     protected $resource;
 
+    protected $filters = array();
+
     protected $width;
     protected $height;
 
     public function __construct($resource)
     {
-        if (!is_resource($resource)) {
-            throw new Exception('Resource does not exists.');
-        }
-
-        $this->resource = $resource;
-
-        $this->width = imagesx($resource);
-        $this->height = imagesy($resource);
+        $this->setResource($resource);
     }
 
     public function addBackground($color)
@@ -62,6 +59,8 @@ class Gd implements GdInterface
 
     public function getBase64($format = 'png')
     {
+        $this->applyFilters();
+
         $generate = 'image'.$format;
 
         ob_start();
@@ -70,9 +69,53 @@ class Gd implements GdInterface
         return 'data:image/'.$format.';base64,'.base64_encode(ob_get_clean());
     }
 
+    public function addFilter(Filter $filter)
+    {
+        $this->filters[] = $filter;
+    }
+
+    public function addFilters(array $filters)
+    {
+        foreach ($filters as $filter) {
+            $this->addFilter($filter);
+        }
+    }
+
+    public function applyFilters()
+    {
+        foreach ($this->filters as $filter) {
+            $filter->setResource($this->resource);
+
+            $this->resource = $filter->apply();
+            $this->width = imagesx($this->resource);
+            $this->height = imagesy($this->resource);
+        }
+    }
+
+    public function create($width, $height)
+    {
+        $this->setResource(imagecreatetruecolor($width, $height));
+    }
+
     public function reset()
     {
-        $this->resource = imagecreatetruecolor($this->width, $this->height);
+        $this->create($this->width, $this->height);
+    }
+
+    public function setResource($resource)
+    {
+        if (!is_resource($resource)) {
+            throw new \Exception('Resource does not exists.');
+        }
+
+        $this->resource = $resource;
+        $this->width = imagesx($resource);
+        $this->height = imagesy($resource);
+    }
+
+    public function getResource()
+    {
+        return $this->resource;
     }
 
     public function allocateColors(array $colors)

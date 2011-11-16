@@ -16,20 +16,24 @@ use Genemu\Bundle\FormBundle\Gd\Gd;
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class Strip extends Gd
+class Strip extends Gd implements Filter
 {
-    public function __construct($resource)
+    protected $colors;
+    protected $nb;
+
+    public function __construct(array $colors, $nb = 15)
     {
-        parent::__construct($resource);
+        $this->colors = $colors;
+        $this->nb = $nb;
     }
 
-    public function apply(array $colors, $nb = 15)
+    public function apply()
     {
-        $colors = $this->allocateColors($colors);
+        $colors = $this->allocateColors($this->colors);
 
         $nbColor = count($colors) - 1;
 
-        for ($i = 0; $i < $nb; ++$i) {
+        for ($i = 0; $i < $this->nb; ++$i) {
             $x = mt_rand(0, $this->width);
             $y = mt_rand(0, $this->height);
 
@@ -40,5 +44,7 @@ class Strip extends Gd
 
             imageline($this->resource, $x, $y, $x2, $y2, $color);
         }
+
+        return $this->resource;
     }
 }

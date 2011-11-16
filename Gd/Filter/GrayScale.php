@@ -9,22 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Gd\Type;
+namespace Genemu\Bundle\FormBundle\Gd\Filter;
 
 use Genemu\Bundle\FormBundle\Gd\Gd;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class Rectangle extends Gd
+class GrayScale extends Gd implements Filter
 {
-    public function __construct($width, $height, $background = '000000', $border = null, $borderSize = 1)
+    public function __construct()
     {
-        $this->create($width, $height);
-        $this->addBackground($background);
 
-        if ($border) {
-            $this->addBorder($border, $borderSize);
-        }
+    }
+
+    public function apply()
+    {
+        imagefilter($this->resource, IMG_FILTER_GRAYSCALE);
+
+        return $this->resource;
     }
 }

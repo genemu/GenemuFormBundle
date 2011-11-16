@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Gd\Text;
+namespace Genemu\Bundle\FormBundle\Gd\Filter;
 
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -18,7 +18,7 @@ use Genemu\Bundle\FormBundle\Gd\Gd;
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class Text extends Gd
+class Text extends Gd implements Filter
 {
     protected $text;
     protected $fontSize;
@@ -27,30 +27,29 @@ class Text extends Gd
 
     protected $length;
 
-    public function __construct($resource, $text, $fontSize = 12)
-    {
-        parent::__construct($resource);
+    protected $fonts;
+    protected $colors;
 
+    public function __construct($text, $fontSize = 12, array $fonts, array $colors)
+    {
         $this->text = $text;
         $this->fontSize = $fontSize;
         $this->fontWidth = imagefontwidth($fontSize) + $this->width / 30;
         $this->fontHeight = imagefontheight($fontSize);
 
         $this->length = strlen($text);
+
+        $this->fonts = $fonts;
+        $this->colors = $colors;
     }
 
-    public function getLength()
+    public function apply()
     {
-        return $this->length;
-    }
-
-    public function apply(array $fonts, array $colors)
-    {
-        foreach ($fonts as $index => $font) {
+        foreach ($this->fonts as $index => $font) {
             $fonts[$index] = new File($font);
         }
 
-        $colors = $this->allocateColors($colors);
+        $colors = $this->allocateColors($this->colors);
 
         $len = $this->length;
         $nbF = count($fonts) - 1;
@@ -76,5 +75,7 @@ class Text extends Gd
 
             imagettftext($this->resource, $s, $r, $x, $y, $c, $f->getPathname(), $this->text[$i]);
         }
+
+        return $this->resource;
     }
 }

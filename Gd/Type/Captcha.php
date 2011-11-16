@@ -13,7 +13,7 @@ namespace Genemu\Bundle\FormBundle\Gd\Type;
 
 use Symfony\Component\HttpFoundation\Session;
 
-use Genemu\Bundle\FormBundle\Gd\Text\Text;
+use Genemu\Bundle\FormBundle\Gd\Filter\Text;
 use Genemu\Bundle\FormBundle\Gd\Filter\Strip;
 
 /**
@@ -71,11 +71,10 @@ class Captcha extends Rectangle
     {
         $code = $this->newCode(str_split($this->chars), $this->length);
 
-        $this->text = new Text($this->resource, $code, $this->fontSize);
-        $this->text->apply($this->fonts, $this->fontColor);
-
-        $this->strip = new Strip($this->resource);
-        $this->strip->apply($this->fontColor);
+        $this->addFilters(array(
+            new Text($code, $this->fontSize, $this->fonts, $this->fontColor),
+            new Strip($this->fontColor)
+        ));
 
         return parent::getBase64($format);
     }
