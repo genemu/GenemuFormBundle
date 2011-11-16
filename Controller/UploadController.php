@@ -16,6 +16,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use Genemu\Bundle\FormBundle\Gd\File\Image;
+
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
@@ -36,23 +38,18 @@ class UploadController extends Controller
         $json = array();
 
         if ($handle = $handle->move($targetPath . '/' . $folder, $name)) {
-            $json = array(
-                'result' => 1,
-                'file' => $folder . '/' . $handle->getFilename() . '?' . time()
-            );
+            $json['result'] = 1;
 
-            $json['image'] = 0;
             if (preg_match('/image/', $handle->getMimeType())) {
-                $size = GetImageSize($handle->getPathname());
+                $handle = new Image($handle->getPathname());
 
-                if (is_array($size)) {
-                    $json['image'] = array(
-                        'width' => $size[0],
-                        'height' => $size[1]
-                    );
-                }
+                $json['image'] = array(
+                    'width' => $handle->getWidth(),
+                    'height' => $handle->getHeight()
+                );
             }
 
+            $json['file'] = $folder . '/' . $handle->getFilename() . '?' . time();
         } else {
             $json['result'] = 0;
         }

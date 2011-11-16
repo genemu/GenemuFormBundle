@@ -15,8 +15,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Session;
 
-use Genemu\Bundle\FormBundle\Gd\Captcha;
+use Genemu\Bundle\FormBundle\Gd\Type\Captcha;
 use Genemu\Bundle\FormBundle\Form\Validator\CaptchaValidator;
 
 /**
@@ -26,6 +27,10 @@ use Genemu\Bundle\FormBundle\Form\Validator\CaptchaValidator;
  */
 class CaptchaType extends AbstractType
 {
+    protected $session;
+    protected $secret;
+    protected $options;
+
     protected $captcha;
 
     /**
@@ -33,9 +38,11 @@ class CaptchaType extends AbstractType
      *
      * @param Captcha $captcha
      */
-    public function __construct(Captcha $captcha)
+    public function __construct(Session $session, $secret, array $options)
     {
-        $this->captcha = $captcha;
+        $this->session = $session;
+        $this->scret = $secret;
+        $this->options = $options;
     }
 
     /**
@@ -43,8 +50,14 @@ class CaptchaType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
+        $captcha = new Captcha($this->session, $this->secret, $options);
+
         $builder
-            ->addValidator(new CaptchaValidator($this->captcha));
+            ->addValidator(new CaptchaValidator($captcha))
+            ->setAttribute('captcha', $captcha)
+            ->setAttribute('format', $options['format'])
+            ->setAttribute('width', $options['width'])
+            ->setAttribute('height', $options['height']);
     }
 
     /**
@@ -52,10 +65,12 @@ class CaptchaType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
+        $captcha = $form->getAttribute('captcha');
+
         $view
-            ->set('src', $this->captcha->getSrc())
-            ->set('width', $this->captcha->getWidth())
-            ->set('height', $this->captcha->getHeight());
+            ->set('src', $captcha->getBase64($form->getAttribute('format')))
+            ->set('width', $form->getAttribute('width'))
+            ->set('height', $form->getAttribute('height'));
     }
 
     /**
@@ -63,19 +78,7 @@ class CaptchaType extends AbstractType
      */
     public function getDefaultOptions(array $options)
     {
-        $defaultOptions = array(
-            'width' => $this->captcha->getWidth(),
-            'height' => $this->captcha->getHeight(),
-            'length' => $this->captcha->getLength()
-        );
-
-        $options = array_replace($defaultOptions, $options);
-
-        $this->captcha->setWidth($options['width']);
-        $this->captcha->setHeight($options['height']);
-        $this->captcha->setLength($options['length']);
-
-        return $options;
+        return array_replace($this->options, $options);
     }
 
     /**

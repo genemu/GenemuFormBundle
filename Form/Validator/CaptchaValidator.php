@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormValidatorInterface;
 use Symfony\Component\Form\FormError;
 
-use Genemu\Bundle\FormBundle\Gd\Captcha;
+use Genemu\Bundle\FormBundle\Gd\GdInterface;
 
 /**
  * CaptchaValidator
@@ -31,7 +31,7 @@ class CaptchaValidator implements FormValidatorInterface
      *
      * @param Captcha $captcha
      */
-    public function __construct(Captcha $captcha)
+    public function __construct(GdInterface $captcha)
     {
         $this->captcha = $captcha;
     }

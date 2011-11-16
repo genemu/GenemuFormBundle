@@ -105,12 +105,21 @@
         })|json_encode|raw }};
 
         var $crop = null;
-        var createCrop = function () {
+        var createCrop = function (data) {
             if ($crop) {
                 $crop.destroy();
             }
 
-            $crop = $.Jcrop('#{{ id }}ImgPreview');
+            var $img = new Image();
+
+            $($img).load(function() {
+                $('#{{ id }}ImgPreview')
+                    .width(data.width > 500 ? 500 : data.width)
+                    .height(data.width > 500 ? data.height / ( data.width / 500 ) : data.height)
+                    .attr('src', this.src);
+
+                $crop = $.Jcrop('#{{ id }}ImgPreview');
+            }).attr('src', data.src);
         }
 
         $configs.onComplete = function(event, queueID, fileObj, response, data) {
@@ -119,23 +128,11 @@
             $field.data('files', $response.file);
 
             if ($response.result == '1') {
-                var $img = {
-                    dom:    $('#{{ id }}ImgPreview'),
-                    file:   new Image(),
-                    src:    $response.file,
-                    width:  $response.image.width,
+                createCrop({
+                    width: $response.image.width,
                     height: $response.image.height,
-                    ratio:  $response.image.width / $response.image.height
-                };
-
-                $($img.file).load(function() {
-                    $img.dom
-                        .width($img.width > 500 ? 500 : $img.width)
-                        .height($img.width > 500 ? $img.height / ( $img.width / 500 ) : $img.height)
-                        .attr('src', this.src);
-
-                    createCrop();
-                }).attr('src', $img.src);
+                    src: $response.file
+                });
             } else {
                 alert('error');
             }
@@ -150,13 +147,16 @@
                 type: 'POST',
                 url: '{{ path('genemu_form_image') }}',
                 data: {
-                    filter: $this.attr('class').replace('_change loading', ''),
+                    filter: $this.attr('class').replace(' _change loading', ''),
                     image: $field.data('files')
                 },
+                dataType: 'json',
                 success: function(data) {
-                    $('#{{ id }}ImgPreview').attr('src', data.file);
-
-                    createCrop();
+                    createCrop({
+                        width: data.width,
+                        height: data.height,
+                        src: data.file
+                    });
 
                     $this.removeClass('loading');
                 }
