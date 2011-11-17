@@ -41,7 +41,7 @@ class CaptchaType extends AbstractType
     public function __construct(Session $session, $secret, array $options)
     {
         $this->session = $session;
-        $this->scret = $secret;
+        $this->secret = $secret;
         $this->options = $options;
     }
 
