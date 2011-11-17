@@ -13,6 +13,7 @@ namespace Genemu\Bundle\FormBundle\Gd\Type;
 
 use Symfony\Component\HttpFoundation\Session;
 
+use Genemu\Bundle\FormBundle\Gd\Gd;
 use Genemu\Bundle\FormBundle\Gd\Filter\Text;
 use Genemu\Bundle\FormBundle\Gd\Filter\Strip;
 use Genemu\Bundle\FormBundle\Gd\Filter\Background;
@@ -21,7 +22,7 @@ use Genemu\Bundle\FormBundle\Gd\Filter\Border;
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class Captcha extends Rectangle
+class Captcha extends Gd
 {
     protected $session;
     protected $secret;
@@ -47,7 +48,7 @@ class Captcha extends Rectangle
      */
     public function __construct(Session $session, $secret, array $options)
     {
-        parent::__construct($options['width'], $options['height']);
+        $this->create($options['width'], $options['height']);
 
         $this->session = $session;
         $this->secret = $secret;
@@ -67,6 +68,9 @@ class Captcha extends Rectangle
         $this->fontColor = $options['font_color'];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBase64($format = 'png')
     {
         $code = $this->newCode(str_split($this->chars), $this->length);
@@ -81,6 +85,11 @@ class Captcha extends Rectangle
         return parent::getBase64($format);
     }
 
+    /**
+     * Get length
+     *
+     * @return int $length
+     */
     public function getLength()
     {
         return $this->length;
@@ -88,6 +97,9 @@ class Captcha extends Rectangle
 
     /**
      * Create a new code
+     *
+     * @param array $chars
+     * @param int   $nb
      *
      * @return string
      */

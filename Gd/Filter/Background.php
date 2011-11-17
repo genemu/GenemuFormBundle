@@ -20,11 +20,19 @@ class Background extends Gd implements Filter
 {
     protected $color;
 
+    /**
+     * Construct
+     *
+     * @param string $color
+     */
     public function __construct($color)
     {
         $this->color = $color;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function apply()
     {
         $color = $this->allocateColor($this->color);

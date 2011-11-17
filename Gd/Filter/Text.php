@@ -26,6 +26,14 @@ class Text extends Gd implements Filter
     protected $fonts;
     protected $colors;
 
+    /**
+     * Construct
+     *
+     * @param string $text
+     * @param int    $fontSize
+     * @param array  $fonts
+     * @param array  $colors
+     */
     public function __construct($text, $fontSize = 12, array $fonts, array $colors)
     {
         $this->text = $text;
@@ -35,6 +43,9 @@ class Text extends Gd implements Filter
         $this->colors = $colors;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function apply()
     {
         foreach ($this->fonts as $index => $font) {

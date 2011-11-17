@@ -20,9 +20,11 @@ class Negate extends Gd implements Filter
 {
     public function __construct()
     {
-
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function apply()
     {
         imagefilter($this->resource, IMG_FILTER_NEGATE);

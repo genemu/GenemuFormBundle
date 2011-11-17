@@ -27,9 +27,7 @@ class Image extends File
     protected $gd;
 
     /**
-     * Construct
-     *
-     * @param string $path
+     * {@inheritdoc}
      */
     public function __construct($path, $checkPath = true)
     {
@@ -47,16 +45,29 @@ class Image extends File
         $this->gd = new Gd($type($this->getPathname()));
     }
 
+    /**
+     * Add filter rotate to image
+     *
+     * @param int $rotate
+     */
     public function rotate($rotate = 90)
     {
         $this->gd->addFilter(new Rotate($rotate));
     }
 
+    /**
+     * Add filter negate to image
+     */
     public function negate()
     {
         $this->gd->addFilter(new Negate());
     }
 
+    /**
+     * Add filter sepia to image
+     *
+     * @param string $color
+     */
     public function sepia($color)
     {
         $this->gd->addFilters(array(
@@ -65,21 +76,39 @@ class Image extends File
         ));
     }
 
+    /**
+     * Add filter gray scale to image
+     */
     public function grayScale()
     {
         $this->gd->addFilter(new GrayScale());
     }
 
+    /**
+     * Get width
+     *
+     * @return int
+     */
     public function getWidth()
     {
         return $this->gd->getWidth();
     }
 
+    /**
+     * Get height
+     *
+     * @return int
+     */
     public function getHeight()
     {
         return $this->gd->getHeight();
     }
 
+    /**
+     * Save image file
+     *
+     * @param int $quality
+     */
     public function save($quality = 100)
     {
         $this->gd->save($this->getPathname(), $this->guessExtension(), $quality);

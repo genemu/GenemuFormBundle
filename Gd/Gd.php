@@ -27,11 +27,19 @@ class Gd implements GdInterface
     protected $width;
     protected $height;
 
+    /**
+     * Construct
+     *
+     * @param resource $resource
+     */
     public function __construct($resource)
     {
         $this->setResource($resource);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function checkFormat($format)
     {
         if (!function_exists('image'.$format)) {
@@ -39,16 +47,25 @@ class Gd implements GdInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getWidth()
     {
         return $this->width;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getHeight()
     {
         return $this->height;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBase64($format = 'png')
     {
         $format = 'jpg' === $format ? 'jpeg' : $format;
@@ -63,7 +80,10 @@ class Gd implements GdInterface
         return 'data:image/'.$format.';base64,'.base64_encode(ob_get_clean());
     }
 
-    public function save($file, $format = 'png', $quality = 100)
+    /**
+     * {@inheritdoc}
+     */
+    public function save($path, $format = 'png', $quality = 100)
     {
         $format = 'jpg' === $format ? 'jpeg' : $format;
         $generate = 'image'.$format;
@@ -71,14 +91,20 @@ class Gd implements GdInterface
         $this->checkFormat($format);
         $this->applyFilters();
 
-        $generate($this->resource, $file, $quality);
+        $generate($this->resource, $path, $quality);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function addFilter(Filter $filter)
     {
         $this->filters[] = $filter;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function addFilters(array $filters)
     {
         foreach ($filters as $filter) {
@@ -86,6 +112,9 @@ class Gd implements GdInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function applyFilters()
     {
         foreach ($this->filters as $filter) {
@@ -95,16 +124,25 @@ class Gd implements GdInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function create($width, $height)
     {
         $this->setResource(imagecreatetruecolor($width, $height));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function reset()
     {
         $this->create($this->width, $this->height);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setResource($resource)
     {
         if (!is_resource($resource)) {
@@ -116,6 +154,9 @@ class Gd implements GdInterface
         $this->height = imagesy($resource);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function allocateColors(array $colors)
     {
         $array = array();
@@ -126,6 +167,9 @@ class Gd implements GdInterface
         return $array;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function allocateColor($color)
     {
         if (!is_resource($this->resource)) {
@@ -137,6 +181,9 @@ class Gd implements GdInterface
         return imagecolorallocate($this->resource, $red, $green, $blue);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hexColor($color)
     {
         $color = str_replace('#', '', $color);

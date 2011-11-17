@@ -21,12 +21,21 @@ class Border extends Gd implements Filter
     protected $color;
     protected $size;
 
+    /**
+     * Construct
+     *
+     * @param string $color
+     * @param int    $size
+     */
     public function __construct($color, $size = 1)
     {
         $this->color = $color;
         $this->size = $size;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function apply()
     {
         $color = $this->allocateColor($this->color);

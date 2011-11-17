@@ -20,11 +20,19 @@ class Colorize extends Gd implements Filter
 {
     protected $color;
 
+    /**
+     * Construct
+     *
+     * @param string $color
+     */
     public function __construct($color)
     {
         $this->color = $color;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function apply()
     {
         list($red, $green, $blue) = $this->hexColor($this->color);
