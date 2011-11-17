@@ -16,9 +16,12 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Genemu\Bundle\FormBundle\Form\DataTransform\JsonToChoicesTransform;
 use Genemu\Bundle\FormBundle\Form\DataTransform\JsonToEntityTransform;
+
+use Genemu\Bundle\FormBundle\Form\ChoiceList\AjaxChoiceList;
 
 /**
  * JQueryAutocompleterType
@@ -27,6 +30,18 @@ use Genemu\Bundle\FormBundle\Form\DataTransform\JsonToEntityTransform;
  */
 class JQueryAutocompleterType extends AbstractType
 {
+    protected $registry;
+
+    /**
+     * Construct
+     *
+     * @param Registry $registry
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        $this->registry = $registry;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -111,10 +126,29 @@ class JQueryAutocompleterType extends AbstractType
     {
         $defaultOptions = array(
             'widget' => 'choice',
-            'route_name' => null
+            'route_name' => null,
+            'em' => null,
+            'class' => null,
+            'property' => null,
+            'query_builder' => null,
+            'choices' => array(),
+            'group_by' => null,
         );
 
-        return array_replace($defaultOptions, $options);
+        $options = array_replace($defaultOptions, $options);
+
+        if ('entity' === $options['widget'] && $options['route_name']) {
+            $options['choice_list'] = new AjaxChoiceList(
+                $this->registry->getManager($options['em']),
+                $options['class'],
+                $options['property'],
+                $options['query_builder'],
+                $options['choices'],
+                $options['group_by']
+            );
+        }
+
+        return $options;
     }
 
     /**
