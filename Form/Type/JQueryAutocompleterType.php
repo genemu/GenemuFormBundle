@@ -126,14 +126,19 @@ class JQueryAutocompleterType extends AbstractType
     {
         $defaultOptions = array(
             'widget' => 'choice',
-            'route_name' => null,
-            'em' => null,
-            'class' => null,
-            'property' => null,
-            'query_builder' => null,
-            'choices' => array(),
-            'group_by' => null,
+            'route_name' => null
         );
+
+        if (isset($options['widget']) && 'entity' === $options['widget']) {
+            $defaultOptions = array_replace($defaultOptions, array(
+                'em' => null,
+                'class' => null,
+                'property' => null,
+                'query_builder' => null,
+                'choices' => array(),
+                'group_by' => null
+            ));
+        }
 
         $options = array_replace($defaultOptions, $options);
 
