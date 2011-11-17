@@ -30,7 +30,7 @@
         width: 19px;
         height: 19px;
 
-        background: url(bundles/genemuform/images/edit.gif);
+        background: url({{ asset('bundles/genemuform/images/edit.gif') }});
     }
 
     #{{ id }}Preview object {
@@ -54,7 +54,7 @@
     }
 
     #{{ id }}Options li {
-        background: transparent url(bundles/genemuform/images/icons.png);
+        background: transparent url({{ asset('bundles/genemuform/images/icons.png') }});
 
         display: inline;
         float: left;
@@ -84,7 +84,7 @@
     }
 
     #{{ id }}Options .loading {
-        background: #FFF url(bundles/genemuform/images/ajax-loader.gif);
+        background: #FFF url({{ asset('bundles/genemuform/images/ajax-loader.gif') }});
         padding: 6px 0;
         height: 11px;
     }
