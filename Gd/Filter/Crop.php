@@ -26,7 +26,10 @@ class Crop extends Gd implements Filter
     /**
      * Construct
      *
-     * @param string $color
+     * @param int $x
+     * @param int $y
+     * @param int $w
+     * @param int $h
      */
     public function __construct($x, $y, $w, $h)
     {

@@ -190,18 +190,29 @@ class Gd implements GdInterface
     /**
      * {@inheritdoc}
      */
-    public function hexColor($color)
+    public function hexColor($color, $asString = false, $separator = ',')
     {
-        $color = str_replace('#', '', $color);
+        $color = preg_replace('/[^0-9A-Fa-f]/', '', $color);
+        $array = array();
 
-        if (strlen($color) != 6) {
+        if (6 === strlen($color)) {
+            $color = hexdec($color);
+
+            $array = array(
+                0xFF & ($color >> 0x10),
+                0xFF & ($color >> 0x8),
+                0xFF & $color
+            );
+        } elseif (3 === strlen($color)) {
+            $array = array(
+                hexdec(str_repeat(substr($color, 0, 1), 2)),
+                hexdec(str_repeat(substr($color, 1, 1), 2)),
+                hexdec(str_repeat(substr($color, 2, 1), 2))
+            );
+        } else {
             throw new \Exception('Color #'.$color.' is not exactly.');
         }
 
-        return array(
-            hexdec(substr($color, 0, 2)),
-            hexdec(substr($color, 2, 2)),
-            hexdec(substr($color, 4, 2))
-        );
+        return $asString ? implode($separator, $array) : $array;
     }
 }
