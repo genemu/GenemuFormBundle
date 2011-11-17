@@ -48,6 +48,13 @@ class ImageController extends Controller
                 break;
             case 'sepia':
                 $handle->sepia('#C68039');
+                break;
+            case 'crop':
+                $x = $request->get('x');
+                $y = $request->get('y');
+                $w = $request->get('w');
+                $h = $request->get('h');
+                $handle->crop($x, $y, $w, $h);
             default:
                 break;
         }

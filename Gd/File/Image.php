@@ -14,6 +14,7 @@ namespace Genemu\Bundle\FormBundle\Gd\File;
 use Symfony\Component\HttpFoundation\File\File;
 
 use Genemu\Bundle\FormBundle\Gd\Gd;
+use Genemu\Bundle\FormBundle\Gd\Filter\Crop;
 use Genemu\Bundle\FormBundle\Gd\Filter\Rotate;
 use Genemu\Bundle\FormBundle\Gd\Filter\Negate;
 use Genemu\Bundle\FormBundle\Gd\Filter\Colorize;
@@ -58,6 +59,11 @@ class Image extends File
         }
 
         return $format;
+    }
+
+    public function crop($x, $y, $w, $h)
+    {
+        $this->gd->addFilter(new Crop($x, $y, $w, $h));
     }
 
     /**

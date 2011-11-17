@@ -104,7 +104,9 @@
             'height':    19
         })|json_encode|raw }};
 
+        var $coords = {};
         var $crop = null;
+
         var createCrop = function (data) {
             if ($crop) {
                 $crop.destroy();
@@ -113,12 +115,23 @@
             var $img = new Image();
 
             $($img).load(function() {
+                var $ratio = data.width > 500 ? data.width / 500 : 1;
+
                 $('#{{ id }}ImgPreview')
-                    .width(data.width > 500 ? 500 : data.width)
-                    .height(data.width > 500 ? data.height / ( data.width / 500 ) : data.height)
+                    .width(data.width / $ratio)
+                    .height(data.height / $ratio)
                     .attr('src', this.src);
 
-                $crop = $.Jcrop('#{{ id }}ImgPreview');
+                $crop = $.Jcrop('#{{ id }}ImgPreview', {
+                    onSelect: function (c) {
+                        $coords = {
+                            x: c.x * $ratio,
+                            y: c.y * $ratio,
+                            w: c.w * $ratio,
+                            h: c.h * $ratio
+                        };
+                    }
+                });
             }).attr('src', data.src);
         }
 
@@ -140,16 +153,24 @@
 
         $('._change').click(function() {
             var $this = $(this);
+            var $regex = new RegExp('^\\b(.*?) (.*)\\b', 'g');
+            var $filter = $this.attr('class').replace($regex, '$1');
+
+            var $data = {
+                filter: $filter,
+                image: $field.data('files')
+            };
 
             $this.addClass('loading');
+
+            if ($filter == 'crop') {
+                $data = $.extend($data, $coords);
+            }
 
             $.ajax({
                 type: 'POST',
                 url: '{{ path('genemu_form_image') }}',
-                data: {
-                    filter: $this.attr('class').replace(' _change loading', ''),
-                    image: $field.data('files')
-                },
+                data: $data,
                 dataType: 'json',
                 success: function(data) {
                     createCrop({
@@ -201,7 +222,7 @@
         }
     {% endif %}
 
-        $field.datepicker(jQuery.extend(
+        $field.datepicker($.extend(
             {},
             {{ name }}Configs,
             jQuery.datepicker.regional['{{ culture == 'en' ? 'en-GB' : culture }}'],
