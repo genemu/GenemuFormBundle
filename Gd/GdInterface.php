@@ -125,9 +125,11 @@ interface GdInterface
     /**
      * Transform color to hexadecimal
      *
-     * @param string $color
+     * @param string  $color
+     * @param boolean $asString
+     * @param string  $separator
      *
-     * @return array $color (red, green, blue)
+     * @return mixed $color (red, green, blue)
      */
-    public function hexColor($color);
+    public function hexColor($color, $asString, $separator);
 }
