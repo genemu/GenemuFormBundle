@@ -47,7 +47,7 @@ class Gd implements GdInterface
     public function checkResource()
     {
         if (!is_resource($this->resource)) {
-            throw new Exception('Resource does not exists.');
+            throw new \Exception('Resource does not exists.');
         }
     }
 
