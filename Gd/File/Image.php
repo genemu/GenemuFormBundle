@@ -40,7 +40,8 @@ class Image extends File
         $format = $this->checkFormat($this->guessExtension());
         $generate = 'imagecreatefrom'.$format;
 
-        $this->gd = new Gd($generate($this->getPathname()));
+        $this->gd = new Gd();
+        $this->gd->setResource($generate($this->getPathname()));
     }
 
     /**
@@ -116,6 +117,16 @@ class Image extends File
     public function getHeight()
     {
         return $this->gd->getHeight();
+    }
+
+    /**
+     * Get base64 image
+     *
+     * @return string
+     */
+    public function getBase64()
+    {
+        return $this->gd->getBase64($this->guessExtension());
     }
 
     /**

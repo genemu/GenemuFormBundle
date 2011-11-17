@@ -18,10 +18,6 @@ use Genemu\Bundle\FormBundle\Gd\Gd;
  */
 class GrayScale extends Gd implements Filter
 {
-    public function __construct()
-    {
-    }
-
     /**
      * {@inheritdoc}
      */

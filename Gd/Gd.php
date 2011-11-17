@@ -28,16 +28,6 @@ class Gd implements GdInterface
     protected $height;
 
     /**
-     * Construct
-     *
-     * @param resource $resource
-     */
-    public function __construct($resource)
-    {
-        $this->setResource($resource);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function checkFormat($format)
@@ -49,6 +39,16 @@ class Gd implements GdInterface
         }
 
         return $format;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checkResource()
+    {
+        if (!is_resource($this->resource)) {
+            throw new Exception('Resource does not exists.');
+        }
     }
 
     /**
@@ -72,6 +72,8 @@ class Gd implements GdInterface
      */
     public function getBase64($format = 'png')
     {
+        $this->checkResource();
+
         $format = $this->checkFormat($format);
         $generate = 'image'.$format;
 
@@ -88,6 +90,8 @@ class Gd implements GdInterface
      */
     public function save($path, $format = 'png', $quality = 100)
     {
+        $this->checkResource();
+
         $format = $this->checkFormat($format);
         $generate = 'image'.$format;
 
@@ -119,6 +123,8 @@ class Gd implements GdInterface
      */
     public function applyFilters()
     {
+        $this->checkResource();
+
         foreach ($this->filters as $filter) {
             $filter->setResource($this->resource);
 
@@ -174,9 +180,7 @@ class Gd implements GdInterface
      */
     public function allocateColor($color)
     {
-        if (!is_resource($this->resource)) {
-            throw new \Exception('Resource does not exists.');
-        }
+        $this->checkResource();
 
         list($red, $green, $blue) = $this->hexColor($color);
 

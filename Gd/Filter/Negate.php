@@ -18,10 +18,6 @@ use Genemu\Bundle\FormBundle\Gd\Gd;
  */
 class Negate extends Gd implements Filter
 {
-    public function __construct()
-    {
-    }
-
     /**
      * {@inheritdoc}
      */

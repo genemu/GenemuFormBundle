@@ -19,9 +19,16 @@ use Genemu\Bundle\FormBundle\Gd\Filter\Filter;
 interface GdInterface
 {
     /**
+     * Check if $resource is a type resource
+     */
+    public function checkResource();
+
+    /**
      * Check format image
      *
      * @param string $format
+     *
+     * @return string $format
      */
     public function checkFormat($format);
 
