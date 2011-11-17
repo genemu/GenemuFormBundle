@@ -61,6 +61,14 @@ class Image extends File
         return $format;
     }
 
+    /**
+     * Add filter crop to image
+     *
+     * @param int $x
+     * @param int $y
+     * @param int $w
+     * @param int $h
+     */
     public function crop($x, $y, $w, $h)
     {
         $this->gd->addFilter(new Crop($x, $y, $w, $h));

@@ -17,6 +17,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 
 use Genemu\Bundle\FormBundle\Form\EventListener\JQueryFileListener;
+use Symfony\Component\HttpFoundation\File\File;
+
+use Genemu\Bundle\FormBundle\Gd\File\Image;
 
 /**
  * JQueryFileType
@@ -58,7 +61,8 @@ class JQueryFileType extends AbstractType
 
         $builder
             ->addEventSubscriber(new JQueryFileListener($this->rootDir, $options['multiple']))
-            ->setAttribute('configs', $configs);
+            ->setAttribute('configs', $configs)
+            ->setAttribute('rootDir', $this->rootDir);
     }
 
     /**
@@ -66,7 +70,26 @@ class JQueryFileType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
-        $view->set('configs', $form->getAttribute('configs'));
+        $value = $form->getClientData();
+        $configs = $form->getAttribute('configs');
+
+        if (!$value instanceof File) {
+            $value = new File($this->rootDir . '/' . $value);
+
+            if (preg_match('/image/', $value->getMimeType())) {
+                $value = new Image($value->getPathname());
+            }
+        }
+
+        if ($value instanceof Image) {
+            $view
+                ->set('width', $value->getWidth())
+                ->set('height', $value->getHeight());
+        }
+
+        $view
+            ->set('value', $configs['folder'] . '/' . $value->getFilename())
+            ->set('configs', $form->getAttribute('configs'));
     }
 
     /**

@@ -32,28 +32,31 @@
         var $form = $field.closest('form');
         var $queue = $('#{{ id }}Queue');
 
-        var {{ name }}JoinFiles = function() {
-            var files = $field.data('files');
-            if (files) {
-                $field.val(files.join(','));
-            }
-
-            return true;
-        }
-
-        var {{ name }}Configs = {{ configs|merge({
+        var $configs = $.extend({{ configs|merge({
             'uploader':  asset(configs.uploader),
             'cancelImg': asset(configs.cancelImg),
             'script':    path(configs.script),
             'queueID':   id ~ 'Queue'
-        })|json_encode|raw }};
+        })|json_encode|raw }}, {
+            onComplete: function(event, queueID, fileObj, response, data) {
+                var $response = eval('(' + response + ')');
 
-        {{ name }}Configs.onError = function() {
-            alert('error');
-        }
+                if ($response == '1') {
+                    var $current = $field.data('files') ? $field.data('files') : [];
+
+                    $current.push($response.file);
+                    $field.data('files', $current);
+                } else {
+                    alert('Error');
+                }
+            },
+            onError: function() {
+                alert('error');
+            }
+        });
 
     {% if configs.auto is not defined or configs.auto is sameas(false) %}
-        {{ name }}Configs.onAllComplete = function(event, data) {
+        $configs.onAllComplete = function(event, data) {
             $form.submit();
         };
 
@@ -71,19 +74,15 @@
         });
     {% endif %}
 
-        {{ name }}Configs.onComplete = function(event, queueID, fileObj, response, data) {
-            var response = eval('(' + response + ')');
-            var current = $field.data('files');
-
-            if (!current) {
-                current = [];
+        var {{ name }}JoinFiles = function() {
+            if ($files = $filed.data('files')) {
+                $field.val($files.join(','));
             }
 
-            current.push(response.file);
-            $field.data('files', current);
-        };
+            return true;
+        }
 
-        $field.uploadify({{ name }}Configs);
+        $field.uploadify($configs);
     });
 </script>
 {% endspaceless %}
@@ -94,18 +93,41 @@
 <script type="text/javascript">
     jQuery(document).ready(function($) {
         var $field = $('#{{ id }}');
+        var $form = $field.closest('form');
+        var $preview = $('#{{ id }}ImgPreview');
+        var $options = $('#{{ id }}Options');
 
-        var $configs = {{ configs|merge({
+        var $coords = {};
+        var $crop = null;
+        var $ratio = 1;
+
+        var $configs = $.extend({{ configs|merge({
             'uploader':  asset(configs.uploader),
             'cancelImg': asset(configs.cancelImg),
             'script':    path(configs.script),
             'queueID':   id ~ 'Queue',
             'width':     19,
             'height':    19
-        })|json_encode|raw }};
+        })|json_encode|raw }}, {
+            onComplete: function(event, queueID, fileObj, response, data) {
+                var $response = eval('(' + response + ')');
 
-        var $coords = {};
-        var $crop = null;
+                $field.val($response.file);
+
+                if ($response.result == '1') {
+                    createCrop({
+                        width: $response.image.width,
+                        height: $response.image.height,
+                        src: $response.file
+                    });
+                } else {
+                    alert('error');
+                }
+            },
+            onError: function() {
+                alert('error');
+            }
+        });
 
         var createCrop = function (data) {
             if ($crop) {
@@ -115,50 +137,50 @@
             var $img = new Image();
 
             $($img).load(function() {
-                var $ratio = data.width > 500 ? data.width / 500 : 1;
+                $ratio = data.width > 500 ? data.width / 500 : 1;
 
-                $('#{{ id }}ImgPreview')
-                    .width(data.width / $ratio)
-                    .height(data.height / $ratio)
+                $('.crop', $options).hide();
+
+                $preview
+                    .width(Math.round(data.width / $ratio))
+                    .height(Math.round(data.height / $ratio))
                     .attr('src', this.src);
 
-                $crop = $.Jcrop('#{{ id }}ImgPreview', {
-                    onSelect: function (c) {
-                        $coords = {
-                            x: c.x * $ratio,
-                            y: c.y * $ratio,
-                            w: c.w * $ratio,
-                            h: c.h * $ratio
-                        };
-                    }
+                if (!$crop) {
+                    $options.fadeIn();
+                }
+
+                $crop = $.Jcrop($preview, {
+                    onSelect: checkCoords,
+                    onChange: checkCoords
                 });
             }).attr('src', data.src);
         }
 
-        $configs.onComplete = function(event, queueID, fileObj, response, data) {
-            var $response = eval('(' + response + ')');
+        var checkCoords = function(coords) {
 
-            $field.data('files', $response.file);
+            if (coords.w > 0 && coords.h > 0) {
+                $('.crop', $options).fadeIn();
 
-            if ($response.result == '1') {
-                createCrop({
-                    width: $response.image.width,
-                    height: $response.image.height,
-                    src: $response.file
-                });
+                $coords = {
+                    x: coords.x * $ratio,
+                    y: coords.y * $ratio,
+                    w: coords.w * $ratio,
+                    h: coords.h * $ratio
+                };
             } else {
-                alert('error');
+                $('.crop', $options).fadeOut();
             }
         }
 
-        $('._change').click(function() {
+        $('._change', $options).click(function() {
             var $this = $(this);
             var $regex = new RegExp('^\\b(.*?) (.*)\\b', 'g');
             var $filter = $this.attr('class').replace($regex, '$1');
 
             var $data = {
                 filter: $filter,
-                image: $field.data('files')
+                image: $field.val()
             };
 
             $this.addClass('loading');
@@ -184,9 +206,15 @@
             });
         });
 
-        $configs.onError = function() {
-            alert('error');
-        }
+    {% if value %}
+        createCrop({
+            src: '{{ value }}',
+            width: {{ width }},
+            height: {{ height }}
+        });
+    {% else %}
+        $options.hide();
+    {% endif %}
 
         $field.uploadify($configs);
     });
@@ -309,7 +337,7 @@
             max: {{ configs.max }},
             step: {{ configs.step }},
             orientation: '{{ configs.orientation }}',
-            value: {{ value?value:0 }},
+            value: {{ value ? value : 0 }},
             slide: function(event, ui) {
                 $field.val(ui.value);
             }

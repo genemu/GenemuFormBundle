@@ -304,6 +304,28 @@ The usage look like the field type. One example :
     $builder
         ->add('file', 'genemu_jqueryfile');
 
+### JQueryImage (`http://www.uploadify.com` and `http://deepliquid.com/content/Jcrop.html`)
+
+Configuration is the same as `jqueryfile`.
+Available filters are:
+
+    - Crop
+    - Rotate
+    - Sepia
+    - Negate
+    - Black and White
+
+Adds the following routing to your `app/config/routing.yml`:
+
+    _genemu_filter_and_upload_image:
+        resource: "@GenemuFormBundle/Controller"
+        type:     annotation
+
+The usage look like the field type. One example :
+
+    $builder
+        ->add('icon', 'genemu_jqueryimage');
+
 ## Note
 
 There is maybe bugs in this implementations, this package is just an idea of a form

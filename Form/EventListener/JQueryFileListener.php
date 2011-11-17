@@ -16,10 +16,13 @@ use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
+use Genemu\Bundle\FormBundle\Gd\File\Image;
+
 /**
  * Adds a protocol to a URL if it doesn't already have one.
  *
  * @author Bernhard Schussek <bernhard.schussek@symfony-project.com>
+ * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 class JQueryFileListener implements EventSubscriberInterface
 {
@@ -54,12 +57,24 @@ class JQueryFileListener implements EventSubscriberInterface
 
             $data = array();
             foreach ($files as $file) {
-                $data[] = new File($this->rootDir . $this->stripQueryString($file));
+                $file = new File($this->rootDir . $this->stripQueryString($file));
+
+                if (preg_match('/image/', $file->getMimeType())) {
+                    $file = new Image($file->getPathname());
+                }
+
+                $data[] = $file;
             }
 
             $event->setData($data);
         } else {
-            $event->setData(new File($this->rootDir . $this->stripQueryString($data)));
+            $file = new File($this->rootDir . $this->stripQueryString($data));
+
+            if (preg_match('/image/', $file->getMimeType())) {
+                $file = new Image($file->getPathname());
+            }
+
+            $event->setData($file);
         }
     }
 

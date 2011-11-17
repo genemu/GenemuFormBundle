@@ -16,6 +16,8 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 
+use Genemu\Bundle\FormBundle\Gd\File\Image;
+
 /**
  * JQueryFileType
  *
@@ -23,20 +25,6 @@ use Symfony\Component\Form\FormInterface;
  */
 class JQueryImageType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilder $builder, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form)
-    {
-    }
-
     /**
      * {@inheritdoc}
      */

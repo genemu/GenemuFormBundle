@@ -75,7 +75,13 @@
                 {{ block('hidden_widget') }}
 
                 <a id="{{ id }}Overlay" href="#">&nbsp;</a>
-                <img id="{{ id }}ImgPreview" src="{{ asset('bundles/genemuform/images/default.png') }}" alt="{% trans %}Preview{% endtrans %}" />
+
+                {% if value %}
+                    {% set ratio = width > 500 ? width / 500 : 1 %}
+                    <img id="{{ id }}ImgPreview" src="{{ asset(value) }}" width="{{ width / ratio }}" height="{{ height / ratio }}" />
+                {% else %}
+                    <img id="{{ id }}ImgPreview" src="{{ asset('bundles/genemuform/images/default.png') }}" width="96" height="96" />
+                {% endif %}
             </div>
             <ul id="{{ id }}Options" class="options">
                 <li class="rotate _change"></li>
