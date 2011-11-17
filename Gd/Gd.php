@@ -42,9 +42,13 @@ class Gd implements GdInterface
      */
     public function checkFormat($format)
     {
-        if (!function_exists('image'.$format)) {
-            throw new \Exception('Format '.$format.' does not support.');
+        $function = 'image'.$format;
+
+        if (!function_exists($function)) {
+            return $this->checkFormat('jpeg');
         }
+
+        return $format;
     }
 
     /**
@@ -68,10 +72,9 @@ class Gd implements GdInterface
      */
     public function getBase64($format = 'png')
     {
-        $format = 'jpg' === $format ? 'jpeg' : $format;
+        $format = $this->checkFormat($format);
         $generate = 'image'.$format;
 
-        $this->checkFormat($format);
         $this->applyFilters();
 
         ob_start();
@@ -85,10 +88,9 @@ class Gd implements GdInterface
      */
     public function save($path, $format = 'png', $quality = 100)
     {
-        $format = 'jpg' === $format ? 'jpeg' : $format;
+        $format = $this->checkFormat($format);
         $generate = 'image'.$format;
 
-        $this->checkFormat($format);
         $this->applyFilters();
 
         $generate($this->resource, $path, $quality);

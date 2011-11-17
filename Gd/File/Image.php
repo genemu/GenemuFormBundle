@@ -37,12 +37,26 @@ class Image extends File
             throw new \Exception('Is not a image file.');
         }
 
-        $type = 'imagecreatefrom'.('jpg' === $this->guessExtension() ) ? 'jpeg' : $this->guessExtension();
-        if (!function_exists($type)) {
-            $type = 'imagecreatefromjpeg';
+        $format = $this->checkFormat($this->guessExtension());
+        $generate = 'imagecreatefrom'.$format;
+
+        $this->gd = new Gd($generate($this->getPathname()));
+    }
+
+    /**
+     * Check format image
+     *
+     * @param string $format
+     */
+    public function checkFormat($format)
+    {
+        $function = 'imagecreatefrom'.$format;
+
+        if (!function_exists($function)) {
+            return $this->checkFormat('jpeg');
         }
 
-        $this->gd = new Gd($type($this->getPathname()));
+        return $format;
     }
 
     /**
