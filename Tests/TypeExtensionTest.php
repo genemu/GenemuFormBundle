@@ -62,7 +62,7 @@ class TypeExtensionTest extends CoreExtension
                 'uploader' => '/swf/uploadify.swf',
                 'cancel_img' => '/images/cancel.png',
                 'folder' => '/upload'
-            ), __DIR__.'/../../../../..'),
+            ), __DIR__.'/Fixtures'),
         ));
     }
 }
