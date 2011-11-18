@@ -61,7 +61,8 @@ class JQueryFileType extends AbstractType
         $builder
             ->addEventSubscriber(new JQueryFileListener($this->rootDir, $options['multiple']))
             ->setAttribute('configs', $configs)
-            ->setAttribute('rootDir', $this->rootDir);
+            ->setAttribute('rootDir', $this->rootDir)
+            ->setAttribute('multiple', $options['multiple']);
     }
 
     /**
@@ -72,10 +73,12 @@ class JQueryFileType extends AbstractType
         $data = $form->getClientData();
         $configs = $form->getAttribute('configs');
 
-        if ($data && !is_array($data)) {
-            $paths = explode(',', $data);
+        if ($data) {
+            if ($form->getAttribute('multiple')) {
+                $data = is_array($data) ? implode(',', $data) : $data;
 
-            if (count($paths) == 1) {
+                $view->set('value', $data);
+            } else {
                 if (!$data instanceof File) {
                     $data = new File($this->rootDir . $data);
                 }
@@ -89,11 +92,7 @@ class JQueryFileType extends AbstractType
                 }
 
                 $view->set('value', $configs['folder'] . '/' . $data->getFilename());
-            } else {
-                $view->set('value', $data);
             }
-        } elseif (is_array($data)) {
-            $view->set('value', implode(',', $data));
         }
 
         $view->set('configs', $configs);

@@ -97,7 +97,8 @@ class JQueryAutocompleterType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
-        $data = json_decode($form->getClientData(), true);
+        $data = $form->getClientData();
+        $data = is_array($data) ? json_decode($data, true) : $data;
         $value = '';
 
         if ($form->hasAttribute('multiple') && $form->getAttribute('multiple') && $data) {
@@ -109,7 +110,7 @@ class JQueryAutocompleterType extends AbstractType
                 $choices = $form->getAttribute('choice_list')->getChoices();
 
                 foreach ($choices as $val => $label) {
-                    if ($val === $data) {
+                    if ($val == $data) {
                         $value = $label;
                     }
                 }

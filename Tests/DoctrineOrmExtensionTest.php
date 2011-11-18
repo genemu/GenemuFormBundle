@@ -11,24 +11,19 @@
 
 namespace Genemu\Bundle\FormBundle\Tests;
 
-use Symfony\Tests\Component\Form\Extension\Core\Type\TypeTestCase as BaseTypeTestCase;
+use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
+
+use Genemu\Bundle\FormBundle\Form\Type;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-abstract class TypeTestCase extends BaseTypeTestCase
+class DoctrineOrmExtensionTest extends DoctrineOrmExtension
 {
-    public function setUp()
+    protected function loadTypes()
     {
-        parent::setUp();
-
-        \Locale::setDefault('de_DE');
-    }
-
-    protected function getExtensions()
-    {
-        return array(
-            new TypeExtensionTest()
-        );
+        return array_merge(parent::loadTypes(), array(
+            new Type\JQueryAutocompleterType($this->registry)
+        ));
     }
 }

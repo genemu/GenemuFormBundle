@@ -11,11 +11,18 @@
 
 namespace Genemu\Bundle\FormBundle\Tests;
 
+use Symfony\Component\HttpFoundation\File\File;
+
+use Genemu\Bundle\FormBundle\Gd\File\Image;
+
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 class JQueryFileTypeTest extends TypeTestCase
 {
+    const FILE_CLASS = 'Symfony\Component\HttpFoundation\File\File';
+    const IMAGE_CLASS = 'Genemu\Bundle\FormBundle\Gd\File\Image';
+
     public function testDefaultConfigs()
     {
         $form = $this->factory->create('genemu_jqueryfile');
@@ -61,6 +68,34 @@ class JQueryFileTypeTest extends TypeTestCase
         $view = $form->createView();
 
         $this->assertEquals('/upload/symfony.png', $form->getClientData());
+        $this->assertEquals('/upload/symfony.png', $view->get('value'));
+    }
+
+    public function testFileValue()
+    {
+        $form = $this->factory->create('genemu_jqueryfile');
+
+        $form->setData(new File(__DIR__ . '/../../Fixtures/upload/symfony.png'));
+        $view = $form->createView();
+
+        $data = $form->getClientData();
+
+        $this->assertInstanceOf(self::FILE_CLASS, $data);
+        $this->assertEquals('/upload/symfony.png', $view->get('value'));
+    }
+
+    public function testImageValue()
+    {
+        $form = $this->factory->create('genemu_jqueryfile');
+
+        $form->setData(new Image(__DIR__ . '/../../Fixtures/upload/symfony.png'));
+        $view = $form->createView();
+
+        $data = $form->getClientData();
+
+        $this->assertInstanceOf(self::IMAGE_CLASS, $data);
+        $this->assertEquals(160, $data->getWidth());
+        $this->assertEquals(134, $data->getHeight());
         $this->assertEquals('/upload/symfony.png', $view->get('value'));
     }
 
