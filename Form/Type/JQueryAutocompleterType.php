@@ -85,7 +85,7 @@ class JQueryAutocompleterType extends AbstractType
                     if (isset($options['choice_list']) && $options['choice_list']) {
                         $transformer = new ChoiceToJsonTransformer($options['choice_list']);
                     } else {
-                        $transformer = new ArrayToJsonTransformer($options['choice_list']);
+                        $transformer = new ArrayToJsonTransformer();
                     }
                 default:
                     break;
