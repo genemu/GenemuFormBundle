@@ -9,11 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
+namespace Genemu\Bundle\FormBundle\Tests;
 
 /**
- * TinymceTest
- *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 class TinymceTypeTest extends TypeTestCase
@@ -23,33 +21,31 @@ class TinymceTypeTest extends TypeTestCase
         $form = $this->factory->create('genemu_tinymce');
         $view = $form->createView();
 
-        $configs = $view->get('configs');
+        $options = $view->get('options');
 
-        $this->assertEquals('de_DE', $configs['language']);
-        $this->assertEquals('advanced', $configs['theme']);
-        $this->assertEquals('/tinymce/tiny_mce.js', $configs['script_url']);
-        $this->assertEquals('textareas', $configs['mode']);
+        $this->assertEquals('de_DE', $options['language']);
+        $this->assertEquals('advanced', $options['theme']);
+        $this->assertEquals('/js/tinymce/jquery.tinymce.js', $options['script_url']);
     }
 
     public function testConfigs()
     {
         $form = $this->factory->create('genemu_tinymce', null, array(
-            'configs' => array(
-                'mode' => 'exact',
-                'theme' => 'simple',
-                'script_url' => '/js/tinymce/tiny_mce.js',
+            'theme' => 'simple',
+            'options' => array(
                 'theme_advanced_toolbar_location' => 'top',
                 'theme_advanced_toolbar_align' => 'left'
             )
         ));
+
         $view = $form->createView();
 
-        $configs = $view->get('configs');
+        $options = $view->get('options');
 
-        $this->assertEquals('exact', $configs['mode']);
-        $this->assertEquals('simple', $configs['theme']);
-        $this->assertEquals('/js/tinymce/tiny_mce.js', $configs['script_url']);
-        $this->assertEquals('top', $configs['theme_advanced_toolbar_location']);
-        $this->assertEquals('left', $configs['theme_advanced_toolbar_align']);
+        $this->assertEquals('de_DE', $options['language']);
+        $this->assertEquals('simple', $options['theme']);
+        $this->assertEquals('/js/tinymce/jquery.tinymce.js', $options['script_url']);
+        $this->assertEquals('top', $options['theme_advanced_toolbar_location']);
+        $this->assertEquals('left', $options['theme_advanced_toolbar_align']);
     }
 }

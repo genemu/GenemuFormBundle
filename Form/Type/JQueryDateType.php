@@ -100,7 +100,7 @@ class JQueryDateType extends AbstractType
      */
     protected function getFormatJavascript(FormInterface $form)
     {
-        if ($form->getAttribute('widget') == 'single_text') {
+        if ('single_text' === $form->getAttribute('widget')) {
             $pattern = $form->getAttribute('formatter')->getPattern();
             $formats = preg_split('([\\\/.:_;,\s-\ ]{1})', $pattern);
 

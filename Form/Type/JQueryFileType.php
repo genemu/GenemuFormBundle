@@ -73,7 +73,7 @@ class JQueryFileType extends AbstractType
         $value = $form->getClientData();
         $configs = $form->getAttribute('configs');
 
-        if (!$value instanceof File) {
+        if ($value && !$value instanceof File) {
             $value = new File($this->rootDir . '/' . $value);
 
             if (preg_match('/image/', $value->getMimeType())) {
@@ -81,14 +81,14 @@ class JQueryFileType extends AbstractType
             }
         }
 
-        if ($value instanceof Image) {
+        if ($value && $value instanceof Image) {
             $view
                 ->set('width', $value->getWidth())
                 ->set('height', $value->getHeight());
         }
 
         $view
-            ->set('value', $configs['folder'] . '/' . $value->getFilename())
+            ->set('value', $value ? $configs['folder'] . '/' . $value->getFilename() : null)
             ->set('configs', $form->getAttribute('configs'));
     }
 

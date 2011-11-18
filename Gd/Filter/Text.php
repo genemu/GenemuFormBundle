@@ -11,8 +11,6 @@
 
 namespace Genemu\Bundle\FormBundle\Gd\Filter;
 
-use Symfony\Component\HttpFoundation\File\File;
-
 use Genemu\Bundle\FormBundle\Gd\Gd;
 
 /**
@@ -48,14 +46,10 @@ class Text extends Gd implements Filter
      */
     public function apply()
     {
-        foreach ($this->fonts as $index => $font) {
-            $fonts[$index] = new File($font);
-        }
-
         $colors = $this->allocateColors($this->colors);
 
         $len = strlen($this->text);
-        $nbF = count($fonts) - 1;
+        $nbF = count($this->fonts) - 1;
         $nbC = count($colors) - 1;
 
         $fs = $this->fontSize;
@@ -69,7 +63,7 @@ class Text extends Gd implements Filter
             $rotate = mt_rand(-25, 25);
             $size = $fs + $fs * (mt_rand(0, 3) / 10);
 
-            $font = $fonts[mt_rand(0, $nbF)]->getPathname();
+            $font = $this->fonts[mt_rand(0, $nbF)]->getPathname();
             $color = $colors[mt_rand(0, $nbC)];
 
             $box = imagettfbbox($size, $rotate, $font, $this->text[$i]);

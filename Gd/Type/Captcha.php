@@ -12,6 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Gd\Type;
 
 use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\HttpFoundation\File\File;
 
 use Genemu\Bundle\FormBundle\Gd\Gd;
 use Genemu\Bundle\FormBundle\Gd\Filter\Text;
@@ -59,7 +60,7 @@ class Captcha extends Gd
 
         $this->fonts = array();
         foreach ($options['fonts'] as $font) {
-            $this->fonts[] = $options['font_dir'].'/'.$font;
+            $this->fonts[] = new File($options['font_dir'].'/'.$font);
         }
 
         $this->chars = $options['chars'];
