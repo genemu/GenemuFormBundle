@@ -68,6 +68,6 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
      */
     public function reverseTransform($values)
     {
-        return json_decode($values[0], true);
+        return json_decode($values, true);
     }
 }

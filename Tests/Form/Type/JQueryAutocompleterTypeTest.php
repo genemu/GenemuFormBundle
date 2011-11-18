@@ -82,7 +82,7 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
         $this->assertNull($view->get('route_name'));
     }
 
-    public function testConfigs()
+    public function testValue()
     {
         $form = $this->factory->create('genemu_jqueryautocompleter', null, array(
             'choices' => array('foo' => 'Foo', 'bar' => 'Bar')
@@ -113,10 +113,7 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
 
         $form->setData(array('foo' => 'Foo'));
         $view = $form->createView();
-
-        $this->assertEquals(json_encode(array(
-            'label' => 'Foo', 'value' => 'foo'
-        )), $form->getClientData());
+        $form->bind(json_encode(array('bar' => 'Bar')));
 
         $this->assertFalse($form->hasAttribute('choice_list'));
         $this->assertEquals(json_encode(array(
@@ -124,6 +121,12 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
         )), $view->get('value'));
 
         $this->assertEquals('Foo', $view->get('autocompleter_value'));
+
+        $this->assertEquals(array('bar' => 'Bar'), $form->getData());
+        $this->assertEquals(json_encode(array(
+            'label' => 'Bar', 'value' => 'bar'
+        )), $form->getClientData());
+
     }
 
     public function testValueMultipleWithAjax()
@@ -135,19 +138,19 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
 
         $form->setData(array('foo' => 'Foo', 'bar' => 'Bar'));
         $view = $form->createView();
-
-        $this->assertEquals(json_encode(array(
-            array('label' => 'Foo', 'value' => 'foo'),
-            array('label' => 'Bar', 'value' => 'bar'),
-        )), $form->getClientData());
+        $form->bind(json_encode(array('foo' => 'Foo', 'ri' => 'Ri')));
 
         $this->assertEquals(array(), $form->getAttribute('choice_list')->getChoices());
+        $this->assertEquals(json_encode(array(
+            array('label' => 'Foo', 'value' => 'foo'),
+            array('label' => 'Ri', 'value' => 'ri'),
+        )), $form->getClientData());
+        $this->assertEquals(array('foo' => 'Foo', 'ri' => 'Ri'), $form->getData());
 
         $this->assertEquals(json_encode(array(
             array('label' => 'Foo', 'value' => 'foo'),
             array('label' => 'Bar', 'value' => 'bar'),
         )), $view->get('value'));
-
         $this->assertEquals('Foo, Bar, ', $view->get('autocompleter_value'));
     }
 
@@ -160,11 +163,13 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
 
         $form->setData(array('foo', 'bar'));
         $view = $form->createView();
+        $form->bind(json_encode(array('foo')));
 
         $this->assertEquals(json_encode(array(
             array('label' => 'Foo', 'value' => 'foo'),
-            array('label' => 'Bar', 'value' => 'bar')
         )), $form->getClientData());
+
+        $this->assertEquals(array('foo'), $form->getData());
 
         $this->assertEquals(array(
             array('label' => 'Foo', 'value' => 'foo'),

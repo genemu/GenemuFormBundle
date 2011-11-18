@@ -52,11 +52,6 @@ class ArrayToJsonTransformer implements DataTransformerInterface
      */
     public function reverseTransform($values)
     {
-        $array = array();
-        foreach (json_decode($values[0], true) as $value) {
-            $array[] = $value['value'];
-        }
-
-        return $array;
+        return json_decode($values, true);
     }
 }
