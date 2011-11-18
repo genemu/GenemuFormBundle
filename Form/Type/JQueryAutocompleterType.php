@@ -18,6 +18,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
+use Genemu\Bundle\FormBundle\Form\DataTransformer\FieldToJsonTransformer;
+use Genemu\Bundle\FormBundle\Form\DataTransformer\ArrayToJsonTransformer;
 use Genemu\Bundle\FormBundle\Form\DataTransformer\ChoiceToJsonTransformer;
 use Genemu\Bundle\FormBundle\Form\DataTransformer\EntityIdToJsonTransformer;
 
@@ -67,7 +69,8 @@ class JQueryAutocompleterType extends AbstractType
                     );
                 }
 
-                $builder->setAttribute('choice_list', new ArrayChoiceList($choices));
+                $options['choice_list'] = new ArrayChoiceList($choices);
+                $builder->setAttribute('choice_list', $options['choice_list']);
             }
         }
 
@@ -79,7 +82,11 @@ class JQueryAutocompleterType extends AbstractType
                     $transformer = new EntityIdToJsonTransformer($options['choice_list']);
                     break;
                 case 'choice':
-                    $transformer = new ChoiceToJsonTransformer();
+                    if (isset($options['choice_list']) && $options['choice_list']) {
+                        $transformer = new ChoiceToJsonTransformer($options['choice_list']);
+                    } else {
+                        $transformer = new ArrayToJsonTransformer($options['choice_list']);
+                    }
                 default:
                     break;
             }
@@ -87,6 +94,14 @@ class JQueryAutocompleterType extends AbstractType
             if ($transformer) {
                 $builder->appendClientTransformer($transformer);
             }
+
+            $builder->setAttribute('multiple', true);
+        } else {
+            if (!isset($options['choice_list']) && $options['route_name']) {
+                $builder->appendClientTransformer(new FieldToJsonTransformer());
+            }
+
+            $builder->setAttribute('multiple', false);
         }
 
         $builder->setAttribute('route_name', $options['route_name']);
@@ -98,7 +113,11 @@ class JQueryAutocompleterType extends AbstractType
     public function buildView(FormView $view, FormInterface $form)
     {
         $data = $form->getClientData();
-        $data = is_array($data) ? json_decode($data, true) : $data;
+
+        if ($form->getAttribute('multiple') || $form->getAttribute('route_name')) {
+            $data = json_decode($data, true);
+        }
+
         $value = '';
 
         if ($form->hasAttribute('multiple') && $form->getAttribute('multiple') && $data) {
@@ -109,11 +128,14 @@ class JQueryAutocompleterType extends AbstractType
             if ($form->hasAttribute('choice_list') && $form->getAttribute('choice_list')) {
                 $choices = $form->getAttribute('choice_list')->getChoices();
 
-                foreach ($choices as $val => $label) {
-                    if ($val == $data) {
-                        $value = $label;
+                foreach ($choices as $choice) {
+                    if ($choice['value'] === $data) {
+                        $value = $choice['label'];
+                        break;
                     }
                 }
+            } elseif ($form->getAttribute('route_name')) {
+                $value = $data['label'];
             } else {
                 $value = $data;
             }
@@ -160,6 +182,18 @@ class JQueryAutocompleterType extends AbstractType
                 $options['choices'],
                 $options['group_by']
             );
+        }
+
+        if (
+            'choice' === $options['widget'] &&
+            $options['route_name'] &&
+            !isset($options['choices']) &&
+            (
+                !isset($options['multiple']) ||
+                isset($options['multiple']) && !$options['multiple']
+            )
+        ) {
+            $options['widget'] = 'field';
         }
 
         return $options;

@@ -76,7 +76,9 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
 
         $this->assertInstanceOf(self::CHOICELIST_CLASS, $form->getAttribute('choice_list'));
         $this->assertEquals(array(), $form->getAttribute('choice_list')->getChoices());
+        $this->assertEquals('', $form->getClientData());
         $this->assertEquals('', $view->get('value'));
+        $this->assertEquals('', $view->get('autocompleter_value'));
         $this->assertNull($view->get('route_name'));
     }
 
@@ -100,6 +102,82 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
 
         $this->assertEquals('foo', $form->getClientData());
         $this->assertEquals('foo', $view->get('value'));
+        $this->assertEquals('Foo', $view->get('autocompleter_value'));
+    }
+
+    public function testValueWithAjax()
+    {
+        $form = $this->factory->create('genemu_jqueryautocompleter', null, array(
+            'route_name' => 'genemu_choice'
+        ));
+
+        $form->setData(array('foo' => 'Foo'));
+        $view = $form->createView();
+
+        $this->assertEquals(json_encode(array(
+            'label' => 'Foo', 'value' => 'foo'
+        )), $form->getClientData());
+
+        $this->assertFalse($form->hasAttribute('choice_list'));
+        $this->assertEquals(json_encode(array(
+            'label' => 'Foo', 'value' => 'foo'
+        )), $view->get('value'));
+
+        $this->assertEquals('Foo', $view->get('autocompleter_value'));
+    }
+
+    public function testValueMultipleWithAjax()
+    {
+        $form = $this->factory->create('genemu_jqueryautocompleter', null, array(
+            'route_name' => 'genemu_choice',
+            'multiple' => true
+        ));
+
+        $form->setData(array('foo' => 'Foo', 'bar' => 'Bar'));
+        $view = $form->createView();
+
+        $this->assertEquals(json_encode(array(
+            array('label' => 'Foo', 'value' => 'foo'),
+            array('label' => 'Bar', 'value' => 'bar'),
+        )), $form->getClientData());
+
+        $this->assertEquals(array(), $form->getAttribute('choice_list')->getChoices());
+
+        $this->assertEquals(json_encode(array(
+            array('label' => 'Foo', 'value' => 'foo'),
+            array('label' => 'Bar', 'value' => 'bar'),
+        )), $view->get('value'));
+
+        $this->assertEquals('Foo, Bar, ', $view->get('autocompleter_value'));
+    }
+
+    public function testValueMultiple()
+    {
+        $form = $this->factory->create('genemu_jqueryautocompleter', null, array(
+            'choices' => array('foo' => 'Foo', 'bar' => 'Bar', 'ri' => 'Ri'),
+            'multiple' => true
+        ));
+
+        $form->setData(array('foo', 'bar'));
+        $view = $form->createView();
+
+        $this->assertEquals(json_encode(array(
+            array('label' => 'Foo', 'value' => 'foo'),
+            array('label' => 'Bar', 'value' => 'bar')
+        )), $form->getClientData());
+
+        $this->assertEquals(array(
+            array('label' => 'Foo', 'value' => 'foo'),
+            array('label' => 'Bar', 'value' => 'bar'),
+            array('label' => 'Ri', 'value' => 'ri'),
+        ), $form->getAttribute('choice_list')->getChoices());
+
+        $this->assertEquals(json_encode(array(
+            array('label' => 'Foo', 'value' => 'foo'),
+            array('label' => 'Bar', 'value' => 'bar')
+        )), $view->get('value'));
+
+        $this->assertEquals('Foo, Bar, ', $view->get('autocompleter_value'));
     }
 
     protected function createRegistryMock($name, $em)

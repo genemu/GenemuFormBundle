@@ -13,6 +13,7 @@ namespace Genemu\Bundle\FormBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
 
 /**
  * JsonToChoicesTransform
@@ -22,6 +23,18 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 class ChoiceToJsonTransformer implements DataTransformerInterface
 {
+    protected $choiceList;
+
+    /**
+     * Construct
+     *
+     * @param ArrayChoiceList $choiceList
+     */
+    public function __construct(ArrayChoiceList $choiceList)
+    {
+        $this->choiceList = $choiceList;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -36,11 +49,15 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
         }
 
         $array = array();
-        foreach ($choices as $value => $label) {
-            $array[] = array(
-                'label' => $label,
-                'value' => $value
-            );
+        foreach ($choices as $value) {
+            foreach ($this->choiceList->getChoices() as $list) {
+                if ($value === $list['value']) {
+                    $array[] = array(
+                        'label' => $list['label'],
+                        'value' => $value
+                    );
+                }
+            }
         }
 
         return json_encode($array);
