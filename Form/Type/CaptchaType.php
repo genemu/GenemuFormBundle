@@ -36,7 +36,9 @@ class CaptchaType extends AbstractType
     /**
      * Construct
      *
-     * @param Captcha $captcha
+     * @param Session $session
+     * @param string  $secret
+     * @param array   $options
      */
     public function __construct(Session $session, $secret, array $options)
     {
