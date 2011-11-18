@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 use Genemu\Bundle\FormBundle\Form\DataTransform\JsonToChoicesTransform;
 use Genemu\Bundle\FormBundle\Form\DataTransform\JsonToEntityTransform;
@@ -37,7 +37,7 @@ class JQueryAutocompleterType extends AbstractType
      *
      * @param Registry $registry
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(RegistryInterface $registry)
     {
         $this->registry = $registry;
     }
