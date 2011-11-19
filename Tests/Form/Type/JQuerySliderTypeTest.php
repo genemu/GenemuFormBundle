@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Tests;
+namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
 
 use Symfony\Component\Form\Exception\FormException;
 

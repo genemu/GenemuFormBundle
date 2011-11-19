@@ -1,6 +1,8 @@
 {% block genemu_captcha_widget %}
 {% spaceless %}
     <img src="{{ src }}" width="{{ width }}" height="{{ height }}" title="{{ name|trans }}" />
+    {% set value = '' %}
+    {% set attr = attr|merge({'autocomplete': 'off'}) %}
     {{ block('field_widget') }}
 {% endspaceless %}
 {% endblock genemu_captcha_widget %}

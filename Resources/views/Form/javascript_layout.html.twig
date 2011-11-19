@@ -183,27 +183,36 @@
                 image: $field.val()
             };
 
-            $this.addClass('loading');
-
-            if ($filter == 'crop') {
+            if ('crop' === $filter && !$.isEmptyObject($coords)) {
                 $data = $.extend($data, $coords);
             }
 
-            $.ajax({
-                type: 'POST',
-                url: '{{ path('genemu_form_image') }}',
-                data: $data,
-                dataType: 'json',
-                success: function(data) {
-                    createCrop({
-                        width: data.width,
-                        height: data.height,
-                        src: data.file
-                    });
+            if (
+                $.inArray($filter, ['rotate', 'bw', 'negative', 'sepia']) !== -1 ||
+                ( 'crop' === $filter && !$.isEmptyObject($coords) )
+            ) {
+                $this.addClass('loading');
 
-                    $this.removeClass('loading');
-                }
-            });
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path('genemu_form_image') }}',
+                    data: $data,
+                    dataType: 'json',
+                    success: function(data) {
+                        if ('1' === data.result) {
+                            createCrop({
+                                width: data.width,
+                                height: data.height,
+                                src: data.file
+                            });
+                        } else {
+                            alert('Error');
+                        }
+
+                        $this.removeClass('loading');
+                    }
+                });
+            }
         });
 
     {% if value %}

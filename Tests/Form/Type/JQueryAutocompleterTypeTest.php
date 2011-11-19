@@ -9,13 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Tests;
+namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
 
-require_once __DIR__.'/../../Fixtures/SingleIdentEntity.php';
-
-use Doctrine\ORM\Tools\SchemaTool;
-
-use Genemu\Bundle\FormBundle\Tests\DoctrineOrmExtensionTest;
+use Genemu\Bundle\FormBundle\Tests\Form\Extension\DoctrineOrmExtensionTest;
 use Genemu\Bundle\FormBundle\Tests\DoctrineOrmTestCase;
 
 /**
@@ -23,8 +19,6 @@ use Genemu\Bundle\FormBundle\Tests\DoctrineOrmTestCase;
  */
 class JQueryAutocompleterTypeTest extends TypeTestCase
 {
-    const SINGLE_IDENT_CLASS = 'Genemu\Bundle\FormBundle\Tests\Fixtures\SingleIdentEntity';
-
     const CHOICELIST_CLASS = 'Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList';
 
     private $em;
@@ -38,21 +32,6 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
         $this->em = DoctrineOrmTestCase::createTestEntityManager();
 
         parent::setUp();
-
-        $schemaTool = new SchemaTool($this->em);
-        $classes = array(
-            $this->em->getClassMetadata(self::SINGLE_IDENT_CLASS)
-        );
-
-         try {
-            $schemaTool->dropSchema($classes);
-        } catch (\Exception $e) {
-        }
-
-        try {
-            $schemaTool->createSchema($classes);
-        } catch(\Exception $e) {
-        }
     }
 
     protected function tearDown()
@@ -187,14 +166,6 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
 
     protected function createRegistryMock($name, $em)
     {
-        $registry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        /*
-        $registry->expects($this->any())
-            ->method('getManager')
-            ->with($this->equalTo($name))
-            ->will($this->returnValue($em));
-        */
-
-        return $registry;
+        return $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
     }
 }

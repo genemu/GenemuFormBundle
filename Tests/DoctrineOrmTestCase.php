@@ -49,6 +49,7 @@ abstract class DoctrineOrmTestCase extends \PHPUnit_Framework_TestCase
 
         $params = array(
             'driver' => 'pdo_pgsql',
+            'dbname' => 'test',
             'memory' => true,
         );
 

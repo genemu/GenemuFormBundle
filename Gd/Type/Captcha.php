@@ -79,8 +79,8 @@ class Captcha extends Gd
         $this->addFilters(array(
             new Background($this->background),
             new Border($this->border),
+            new Strip($this->fontColor),
             new Text($code, $this->fontSize, $this->fonts, $this->fontColor),
-            new Strip($this->fontColor)
         ));
 
         return parent::getBase64($format);

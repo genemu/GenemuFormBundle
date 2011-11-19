@@ -54,6 +54,7 @@ class ImageController extends Controller
                 $y = $request->get('y');
                 $w = $request->get('w');
                 $h = $request->get('h');
+
                 $handle->crop($x, $y, $w, $h);
             default:
                 break;
@@ -62,6 +63,7 @@ class ImageController extends Controller
         $handle->save();
 
         $json = array(
+            'result' => '1',
             'file' => $folder . '/' . $handle->getFilename().'?'.time(),
             'width' => $handle->getWidth(),
             'height' => $handle->getHeight()

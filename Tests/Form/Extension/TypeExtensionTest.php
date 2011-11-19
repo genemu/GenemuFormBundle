@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Tests;
+namespace Genemu\Bundle\FormBundle\Tests\Form\Extension;
 
 use Symfony\Component\Form\Extension\Core\CoreExtension;
 use Symfony\Component\HttpFoundation\Session;
@@ -46,7 +46,7 @@ class TypeExtensionTest extends CoreExtension
                     '3526E6',
                     '88531E'
                 ),
-                'font_dir' => __DIR__.'/Fixtures/fonts',
+                'font_dir' => __DIR__.'/../../Fixtures/fonts',
                 'fonts' => array(
                     'akbar.ttf',
                     'brushcut.ttf',
@@ -62,7 +62,7 @@ class TypeExtensionTest extends CoreExtension
                 'uploader' => '/swf/uploadify.swf',
                 'cancel_img' => '/images/cancel.png',
                 'folder' => '/upload'
-            ), __DIR__.'/Fixtures'),
+            ), __DIR__.'/../../Fixtures'),
         ));
     }
 }
