@@ -30,7 +30,12 @@ abstract class TypeTestCase extends BaseTypeTestCase
     protected function getExtensions()
     {
         return array(
-            new TypeExtensionTest()
+            new TypeExtensionTest($this->createRequestMock())
         );
+    }
+
+    protected function createRequestMock()
+    {
+        return $this->getMock('Symfony\Component\HttpFoundation\Request');
     }
 }

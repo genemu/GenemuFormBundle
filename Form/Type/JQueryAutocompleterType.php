@@ -174,7 +174,7 @@ class JQueryAutocompleterType extends AbstractType
         );
 
         if (isset($options['widget']) && 'entity' === $options['widget']) {
-            $defaultOptions = array_replace($defaultOptions, array(
+            $defaultOptions = array_merge($defaultOptions, array(
                 'em' => null,
                 'class' => null,
                 'property' => null,
@@ -186,17 +186,6 @@ class JQueryAutocompleterType extends AbstractType
 
         $options = array_replace($defaultOptions, $options);
 
-        if ('entity' === $options['widget'] && $options['route_name']) {
-            $options['choice_list'] = new AjaxChoiceList(
-                $this->registry->getManager($options['em']),
-                $options['class'],
-                $options['property'],
-                $options['query_builder'],
-                $options['choices'],
-                $options['group_by']
-            );
-        }
-
         if (
             'choice' === $options['widget'] &&
             $options['route_name'] &&
@@ -207,6 +196,17 @@ class JQueryAutocompleterType extends AbstractType
             )
         ) {
             $options['widget'] = 'field';
+        }
+
+        if ('entity' === $options['widget'] && $options['route_name']) {
+            $options['choice_list'] = new AjaxChoiceList(
+                $this->registry->getManager($options['em']),
+                $options['class'],
+                $options['property'],
+                $options['query_builder'],
+                $options['choices'],
+                $options['group_by']
+            );
         }
 
         return $options;

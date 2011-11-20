@@ -14,6 +14,7 @@ namespace Genemu\Bundle\FormBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Exception\FormException;
 
 /**
  * EntityIdToJsonTransform
@@ -52,6 +53,10 @@ class EntityIdToJsonTransformer implements DataTransformerInterface
 
         if ($this->routeName) {
             $entity = $this->choiceList->getEntity($id);
+
+            if (!method_exists($entity, '__toString')) {
+                    throw new FormException('Entities passed to the choice field must have a "__toString()" method defined because use Ajax.');
+            }
 
             return json_encode(array(
                 'label' => $entity->__toString(),

@@ -14,7 +14,9 @@ namespace Genemu\Bundle\FormBundle\Tests\Form\Extension;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
 use Symfony\Component\HttpFoundation\Session;
 use Symfony\Component\HttpFoundation\SessionStorage\ArraySessionStorage;
+use Symfony\Component\HttpFoundation\Request;
 
+use Genemu\Bundle\FormBundle\Form\Validator\ReCaptchaValidator;
 use Genemu\Bundle\FormBundle\Form\Type;
 
 /**
@@ -22,6 +24,13 @@ use Genemu\Bundle\FormBundle\Form\Type;
  */
 class TypeExtensionTest extends CoreExtension
 {
+    protected $request;
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
     protected function loadTypes()
     {
         return array_merge(parent::loadTypes(), array(
@@ -63,6 +72,12 @@ class TypeExtensionTest extends CoreExtension
                 'cancel_img' => '/images/cancel.png',
                 'folder' => '/upload'
             ), __DIR__.'/../../Fixtures'),
+            new Type\ReCaptchaType(new ReCaptchaValidator($this->request, 'privateKey'), 'publicKey', array(
+                'theme' => 'clean',
+                'use_ssl' => false,
+                'server_url' => 'http://api.recaptcha.net',
+                'server_url_ssl' => 'https://api-secure.recaptcha.net',
+            ))
         ));
     }
 }

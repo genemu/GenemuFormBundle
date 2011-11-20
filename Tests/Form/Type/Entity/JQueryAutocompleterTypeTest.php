@@ -146,16 +146,19 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
             'widget' => 'entity',
         ));
         $form->setData($entity1);
-
         $view = $form->createView();
+        $form->bind(json_encode(array(
+            'label' => 'Bar',
+            'value' => 2
+        )));
 
         $this->assertEquals(array(1 => 'Foo', 2 => 'Bar'), $form->getAttribute('choice_list')->getChoices());
 
         $this->assertEquals(json_encode(array(
-            'label' => 'Foo',
-            'value' => 1
+            'label' => 'Bar',
+            'value' => 2
         )), $form->getClientData());
-        $this->assertSame($entity1, $form->getData());
+        $this->assertSame($entity2, $form->getData());
 
         $this->assertNull($view->get('route_name'));
         $this->assertEquals('Foo', $view->get('autocompleter_value'));
@@ -219,7 +222,10 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
         $this->assertEquals('genemu_ajax', $view->get('route_name'));
 
         $this->assertEquals(array(), $form->getAttribute('choice_list')->getChoices());
-        $this->assertEquals(json_encode(array('label' => 'Bar', 'value' => 2)), $form->getClientData());
+        $this->assertEquals(json_encode(array(
+            'label' => 'Bar',
+            'value' => 2
+        )), $form->getClientData());
         $this->assertSame($entity2, $form->getData());
 
         $this->assertEquals('Foo', $view->get('autocompleter_value'));
@@ -238,7 +244,7 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
             'property' => 'name',
             'widget' => 'entity',
             'route_name' => 'genemu_ajax',
-            'multiple' => true
+            'multiple' => true,
         ));
         $existing = new ArrayCollection(array($entity1, $entity2));
 
