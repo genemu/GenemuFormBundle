@@ -5,6 +5,8 @@ php:
 env:
     - SYMFONY_VERSION=v2.0.5
     - SYMFONY_VERSION=origin/master
+    - DB=postgres
 before_script:
+    - sh -c "sudo apt-get install -y php5-intl php5-gd"
+    - sh -c "psql -c 'create database test;' -U postgres;"
     - php vendor/vendors.php
-    - ./bin/lib_gd.sh
