@@ -137,7 +137,7 @@ class Gd implements GdInterface
      */
     public function create($width, $height)
     {
-        $this->setResource(imagecreatetruecolor($width, $height));
+        $this->setResource(\imagecreatetruecolor($width, $height));
     }
 
     /**
