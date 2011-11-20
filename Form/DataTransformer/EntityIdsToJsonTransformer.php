@@ -21,10 +21,10 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 
-class EntityIdToJsonTransformer implements DataTransformerInterface
+class EntityIdsToJsonTransformer implements DataTransformerInterface
 {
     protected $choiceList;
-    protected $rooteName;
+    protected $routeName;
 
     /**
      * Construct
@@ -40,40 +40,49 @@ class EntityIdToJsonTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($id)
+    public function transform($ids)
     {
-        if (null === $id || !$id) {
+        if (null === $ids || !$ids) {
             return null;
         }
 
-        if (!is_integer($id)) {
-            throw new UnexpectedTypeException($id, 'integer');
+        if (!is_array($ids)) {
+            throw new UnexpectedTypeException($ids, 'array');
         }
 
+        $array = array();
         if ($this->routeName) {
-            $entity = $this->choiceList->getEntity($id);
+            foreach ($ids as $id) {
+                $entity = $this->choiceList->getEntity($id);
 
-            return json_encode(array(
-                'label' => $entity->__toString(),
-                'value' => $id
-            ));
+                $array[] = array(
+                    'label' => $entity->__toString(),
+                    'value' => $id
+                );
+            }
         } else {
             $choices = $this->choiceList->getChoices();
-
-            return json_encode(array(
-                'label' => $choices[$id],
-                'value' => $id
-            ));
+            foreach ($ids as $id) {
+                $array[] = array(
+                    'label' => $choices[$id],
+                    'value' => $id
+                );
+            }
         }
+
+        return json_encode($array);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($value)
+    public function reverseTransform($values)
     {
-        $value = json_decode($value, true);
+        $array = array();
+        foreach (json_decode($values, true) as $value) {
+            $array[] = $value['value'];
+        }
 
-        return $value['value'];
+        return $array;
     }
 }
