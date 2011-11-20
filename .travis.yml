@@ -1,8 +1,8 @@
-nguage: php
+language: php
 php:
     - 5.3
     - 5.4
 env:
     - SYMFONY_VERSION=v2.0.5
     - SYMFONY_VERSION=origin/master
-before_script: php vendor/vendors.php
+before_script: php Tests/vendor/vendors.php
