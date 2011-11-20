@@ -9,23 +9,41 @@
  * file that was distributed with this source code.
  */
 
-$vendorDir = __DIR__.'/vendor';
+$vendorDir = __DIR__.'/../vendor';
 require_once $vendorDir.'/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 
 $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
-    'Symfony' => array($vendorDir.'/symfony/src'),
+    'Symfony' => array($vendorDir.'/symfony/src', $vendorDir.'/symfony/tests'),
+    'Doctrine' => array($vendorDir.'/doctrine/lib'),
+    'Doctrine\\Common' => array($vendorDir.'/doctrine-common/lib'),
+    'Doctrine\\DBAL' => array($vendorDir.'/doctrine-dbal/lib'),
 ));
 $loader->registerPrefixes(array(
     'Twig_' => $vendorDir.'/twig/lib',
 ));
+
+// intl
+if (!function_exists('intl_get_error_code')) {
+    require_once __DIR__.'/../vendor/symfony/src/Symfony/Component/Locale/Resources/stubs/functions.php';
+
+    $loader->registerPrefixFallbacks(array(__DIR__.'/../vendor/symfony/src/Symfony/Component/Locale/Resources/stubs'));
+}
+
 $loader->register();
+
+AnnotationRegistry::registerLoader(function($class) use ($loader) {
+    $loader->loadClass($class);
+    return class_exists($class, false);
+});
+AnnotationRegistry::registerFile(__DIR__.'/../vendor/doctrine/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php');
 
 spl_autoload_register(function($class) {
     if (0 === strpos($class, 'Genemu\\Bundle\\FormBundle\\')) {
-        $path = __DIR__.'/../'.implode('/', array_slice(explode('\\', $class), 2)).'.php';
+        $path = __DIR__.'/../'.implode('/', array_slice(explode('\\', $class), 3)).'.php';
 
         if (!stream_resolve_include_path($path)) {
             return false;

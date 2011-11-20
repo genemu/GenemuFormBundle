@@ -5,4 +5,4 @@ php:
 env:
     - SYMFONY_VERSION=v2.0.5
     - SYMFONY_VERSION=origin/master
-before_script: php Tests/vendor/vendors.php
+before_script: php vendor/vendors.php
