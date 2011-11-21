@@ -114,6 +114,16 @@ class Image extends File
     }
 
     /**
+     * Get gd
+     *
+     * @return Gd $gd
+     */
+    public function getGd()
+    {
+        return $this->gd;
+    }
+
+    /**
      * Get width
      *
      * @return int

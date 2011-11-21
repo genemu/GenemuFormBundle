@@ -82,6 +82,7 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
 
     public function testDefaultValue()
     {
+
         $entity1 = new SingleIdentEntity(1, 'Foo');
         $entity2 = new SingleIdentEntity(2, 'Bar');
 
@@ -148,10 +149,13 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
         ));
         $form->setData($entity1);
         $view = $form->createView();
-        $form->bind(json_encode(array(
-            'label' => 'Bar',
-            'value' => 2
-        )));
+        $form->bind(array(
+            json_encode(array(
+                'label' => 'Bar',
+                'value' => 2
+            )),
+            array('autocompleter' => 'Foo')
+        ));
 
         $this->assertEquals(array(1 => 'Foo', 2 => 'Bar'), $form->getAttribute('choice_list')->getChoices());
 
@@ -184,10 +188,13 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
         $form->setData($existing);
         $view = $form->createView();
 
-        $form->bind(json_encode(array(
-            array('value' => 1, 'label' => 'Foo'),
-            array('value' => 2, 'label' => 'Bar'),
-        )));
+        $form->bind(array(
+            json_encode(array(
+                array('value' => 1, 'label' => 'Foo'),
+                array('value' => 2, 'label' => 'Bar'),
+            )),
+            array('autocompleter' => 'Foo, Bar, ')
+        ));
 
         $this->assertEquals(array(1 => 'Foo', 2 => 'Bar'), $form->getAttribute('choice_list')->getChoices());
 
@@ -218,7 +225,10 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
         $form->setData($entity1);
         $view = $form->createView();
 
-        $form->bind(json_encode(array('value' => 2, 'label' => 'Bar')));
+        $form->bind(array(
+            json_encode(array('value' => 2, 'label' => 'Bar')),
+            array('autocompleter' => 'Bar')
+        ));
 
         $this->assertEquals('genemu_ajax', $view->get('route_name'));
 
@@ -252,9 +262,12 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
         $form->setData($existing);
         $view = $form->createView();
 
-        $form->bind(json_encode(array(
-            array('value' => 2, 'label' => 'Bar')
-        )));
+        $form->bind(array(
+            json_encode(array(
+                array('value' => 2, 'label' => 'Bar')
+            )),
+            array('Bar, ')
+        ));
 
         $this->assertEquals('genemu_ajax', $view->get('route_name'));
 

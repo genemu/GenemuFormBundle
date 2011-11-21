@@ -77,7 +77,8 @@ class TypeExtensionTest extends CoreExtension
                 'use_ssl' => false,
                 'server_url' => 'http://api.recaptcha.net',
                 'server_url_ssl' => 'https://api-secure.recaptcha.net',
-            ))
+            )),
+            new Type\JQueryImageType()
         ));
     }
 }

@@ -204,7 +204,7 @@ class JQueryAutocompleterType extends AbstractType
         }
 
         if ('entity' === $options['widget'] && $options['route_name']) {
-            $method = $this->registry instanceof RegistryInterface ? 'getEntityManager' : 'getManager';
+            $method = $this->registry instanceof ManagerRegistry ? 'getManager' : 'getEntityManager';
 
             $options['choice_list'] = new AjaxChoiceList(
                 $this->registry->$method($options['em']),
