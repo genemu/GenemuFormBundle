@@ -8,8 +8,8 @@ task :test do
 
         system "sudo apt-get install -y php5-gd php5-intl"
 
-        system "echo 'extension=intl.so' >> `php --ini | grep 'Loaded Configuration' | sed -e 's|.*:\s*||`"
-        system "echo 'extension=gd.so' >> `php --ini | grep 'Loaded Configuration' | sed -e 's|.*:\s*||`"
+        system "echo \"extension=intl.so\" >> `php --ini | grep \"Loaded Configuration\" | sed -e \"s|.*:\s*||\"`"
+        system "echo \"extension=gd.so\" >> `php --ini | grep \"Loaded Configuration\" | sed -e \"s|.*:\s*||\"`"
     end
 
     puts "Testing default system"
