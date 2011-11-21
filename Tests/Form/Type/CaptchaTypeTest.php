@@ -18,6 +18,15 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
  */
 class CaptchaTypeTest extends TypeTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        if (!function_exists('gd_info')) {
+            $this->markTestSkipped('Gd not installed');
+        }
+    }
+
     public function testDefaultConfigs()
     {
         $form = $this->factory->create('genemu_captcha');

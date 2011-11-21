@@ -13,7 +13,7 @@
 >
     <testsuites>
         <testsuite name="GenemuFormBundle test suite">
-            <directory>./Tests</directory>
+            <directory suffix="Test.php">./Tests</directory>
         </testsuite>
     </testsuites>
 

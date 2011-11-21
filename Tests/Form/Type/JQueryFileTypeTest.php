@@ -23,6 +23,15 @@ class JQueryFileTypeTest extends TypeTestCase
     const FILE_CLASS = 'Symfony\Component\HttpFoundation\File\File';
     const IMAGE_CLASS = 'Genemu\Bundle\FormBundle\Gd\File\Image';
 
+    public function setUp()
+    {
+        parent::setUp();
+
+        if (!function_exists('gd_info')) {
+            $this->markTestSkipped('Gd not installed');
+        }
+    }
+
     public function testDefaultConfigs()
     {
         $form = $this->factory->create('genemu_jqueryfile');
