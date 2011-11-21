@@ -1,6 +1,10 @@
 task :test do
-    puts "Testing default system"
+    if ENV["TRAVIS"] == 'true'
+        puts "Travis CI"
+        system "pyrus install pecl/intl"
+    end
 
+    puts "Testing default system"
     system "phpunit"
 end
 
