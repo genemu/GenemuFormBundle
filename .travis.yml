@@ -6,6 +6,7 @@ env:
     - SYMFONY_VERSION=v2.0.5
     - SYMFONY_VERSION=origin/master
 before_script:
+    - ./Tests/bin.sh
     - sh -c "psql -c 'create database test;' -U postgres;"
     - php vendor/vendors.php
-script: rake test
+script: phpunit

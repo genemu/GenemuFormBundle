@@ -1,5 +1,6 @@
 FormBundle
-==========
+
+[![Build Status](https://secure.travis-ci.org/genemu/GenemuFormBundle.png)](https://secure.travis-ci.org/genemu/GenemuFormBundle)
 
 ## Installation
 
