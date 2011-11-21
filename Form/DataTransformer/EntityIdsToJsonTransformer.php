@@ -83,6 +83,8 @@ class EntityIdsToJsonTransformer implements DataTransformerInterface
      */
     public function reverseTransform($values)
     {
+        $values = is_array($values) ? current($values) : $values;
+
         $array = array();
         foreach (json_decode($values, true) as $value) {
             $array[] = $value['value'];

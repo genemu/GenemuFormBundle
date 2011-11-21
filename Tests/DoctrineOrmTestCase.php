@@ -42,7 +42,7 @@ abstract class DoctrineOrmTestCase extends \PHPUnit_Framework_TestCase
         $config = new Configuration();
         $config->setAutoGenerateProxyClasses(true);
         $config->setProxyDir(\sys_get_temp_dir());
-        $config->setProxyNamespace('Genemu\Bundle\FormBundle\Tests');
+        $config->setProxyNamespace('GenemuFormBundleTests\Doctrine');
         $config->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
         $config->setQueryCacheImpl(new ArrayCache());
         $config->setMetadataCacheImpl(new ArrayCache());

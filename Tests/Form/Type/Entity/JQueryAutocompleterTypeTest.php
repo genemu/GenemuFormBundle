@@ -11,6 +11,7 @@
 
 namespace Genemu\Bundle\FormBundle\Tests\From\Type\Entity;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Common\Collections\ArrayCollection;
 

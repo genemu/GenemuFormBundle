@@ -47,6 +47,8 @@ class FieldToJsonTransformer implements DataTransformerInterface
      */
     public function reverseTransform($values)
     {
+        $values = is_array($values) ? current($values) : $values;
+
         return json_decode($values, true);
     }
 }
