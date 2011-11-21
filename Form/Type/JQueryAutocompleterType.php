@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 use Genemu\Bundle\FormBundle\Form\DataTransformer\FieldToJsonTransformer;
 use Genemu\Bundle\FormBundle\Form\DataTransformer\ArrayToJsonTransformer;
@@ -38,9 +38,9 @@ class JQueryAutocompleterType extends AbstractType
     /**
      * Construct
      *
-     * @param ManagerRegistry $registry
+     * @param RegistryInterface $registry
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(RegistryInterface $registry)
     {
         $this->registry = $registry;
     }
@@ -200,7 +200,7 @@ class JQueryAutocompleterType extends AbstractType
 
         if ('entity' === $options['widget'] && $options['route_name']) {
             $options['choice_list'] = new AjaxChoiceList(
-                $this->registry->getManager($options['em']),
+                $this->registry->getEntityManager($options['em']),
                 $options['class'],
                 $options['property'],
                 $options['query_builder'],

@@ -166,10 +166,12 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
 
     protected function createRegistryMock($name, $em)
     {
-        if ($_SERVER['SYMFONY_VERSION'] === 'v2.0.5') {
-            return $this->getMock('Symfony\Bridge\Doctrine\RegistryInterface');
+        if (isset($_SERVER['SYMFONY_VERSION']) && $_SERVER['SYMFONY_VERSION'] === 'origin/master') {
+            $registry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
         } else {
-            return $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+            $registry = $this->getMock('Symfony\Bridge\Doctrine\RegistryInterface');
         }
+
+        return $registry;
     }
 }
