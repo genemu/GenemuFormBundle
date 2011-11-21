@@ -1,7 +1,9 @@
 task :test do
     if ENV["TRAVIS"] == 'true'
         puts "Travis CI"
-        system "pyrus install pecl/intl"
+
+        system "wget http://pecl.php.net/get/intl-1.1.2.tgz"
+        system "pear install intl-1.1.2.tgz"
     end
 
     puts "Testing default system"
