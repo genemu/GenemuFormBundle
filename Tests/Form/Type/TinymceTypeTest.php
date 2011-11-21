@@ -23,7 +23,7 @@ class TinymceTypeTest extends TypeTestCase
 
         $options = $view->get('options');
 
-        $this->assertEquals('de_DE', $options['language']);
+        $this->assertEquals('en', $options['language']);
         $this->assertEquals('advanced', $options['theme']);
         $this->assertEquals('/js/tinymce/jquery.tinymce.js', $options['script_url']);
     }
@@ -42,7 +42,7 @@ class TinymceTypeTest extends TypeTestCase
 
         $options = $view->get('options');
 
-        $this->assertEquals('de_DE', $options['language']);
+        $this->assertEquals('en', $options['language']);
         $this->assertEquals('simple', $options['theme']);
         $this->assertEquals('/js/tinymce/jquery.tinymce.js', $options['script_url']);
         $this->assertEquals('top', $options['theme_advanced_toolbar_location']);

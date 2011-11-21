@@ -24,7 +24,7 @@ abstract class TypeTestCase extends BaseTypeTestCase
     {
         parent::setUp();
 
-        \Locale::setDefault('de_DE');
+        \Locale::setDefault('en');
     }
 
     protected function getExtensions()

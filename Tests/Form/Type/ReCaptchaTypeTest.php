@@ -23,7 +23,7 @@ class ReCaptchaTypeTest extends TypeTestCase
 
         $this->assertEquals('publicKey', $view->get('public_key'));
         $this->assertEquals('http://api.recaptcha.net', $view->get('server'));
-        $this->assertEquals(array('theme' => 'clean', 'lang' => 'de_DE'), $view->get('configs'));
+        $this->assertEquals(array('theme' => 'clean', 'lang' => 'en'), $view->get('configs'));
 
         $this->assertEquals(array(
             'server_host' => 'api-verify.recaptcha.net',
@@ -44,7 +44,7 @@ class ReCaptchaTypeTest extends TypeTestCase
 
         $this->assertEquals('publicKey', $view->get('public_key'));
         $this->assertEquals('https://api-secure.recaptcha.net', $view->get('server'));
-        $this->assertEquals(array('theme' => 'blackglass', 'lang' => 'de_DE'), $view->get('configs'));
+        $this->assertEquals(array('theme' => 'blackglass', 'lang' => 'en'), $view->get('configs'));
 
         $this->assertEquals(array(
             'server_host' => 'api-verify.recaptcha.net',

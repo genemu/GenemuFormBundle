@@ -23,7 +23,7 @@ class JQueryDateTypeTest extends TypeTestCase
 
         $date = new \DateTime();
 
-        $this->assertEquals('de_DE', $view->get('culture'));
+        $this->assertEquals('en', $view->get('culture'));
         $this->assertEquals(array('showOn' => 'button'), $view->get('configs'));
         $this->assertEquals($date->format('Y') - 5, $view->get('min_year'));
         $this->assertEquals($date->format('Y') + 5, $view->get('max_year'));
@@ -45,7 +45,7 @@ class JQueryDateTypeTest extends TypeTestCase
 
         $date = new \DateTime();
 
-        $this->assertEquals('de_DE', $view->get('culture'));
+        $this->assertEquals('en', $view->get('culture'));
         $this->assertEquals(array(
             'buttonImage' => '/images/date_button.png',
             'buttonImageOnly' => true,
@@ -53,7 +53,7 @@ class JQueryDateTypeTest extends TypeTestCase
         ), $view->get('configs'));
         $this->assertEquals($date->format('Y') - 5, $view->get('min_year'));
         $this->assertEquals($date->format('Y') + 5, $view->get('max_year'));
-        $this->assertEquals('dd.mm.y', $view->get('javascript_format'));
+        $this->assertEquals('m/d/y', $view->get('javascript_format'));
     }
 
     public function testSingleTextFormatMediumConfigs()
@@ -66,7 +66,7 @@ class JQueryDateTypeTest extends TypeTestCase
         $view = $form->createView();
 
         $this->assertEquals(array(), $view->get('configs'));
-        $this->assertEquals('dd.mm.yy', $view->get('javascript_format'));
+        $this->assertEquals('M d, yy', $view->get('javascript_format'));
     }
 
     public function testSingleTextFormatLongConfigs()
@@ -78,7 +78,7 @@ class JQueryDateTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $this->assertEquals('d. MM yy', $view->get('javascript_format'));
+        $this->assertEquals('MM d, yy', $view->get('javascript_format'));
     }
 
     public function testSingleTextFormatFullConfigs()
@@ -90,7 +90,7 @@ class JQueryDateTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $this->assertEquals('DD, d. MM yy', $view->get('javascript_format'));
+        $this->assertEquals('DD, MM d, yy', $view->get('javascript_format'));
     }
 
     public function testSingleTextRangeYearsConfigs()
