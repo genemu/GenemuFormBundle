@@ -311,6 +311,17 @@ The usage look like the field type. One example :
 ### JQueryImage (`http://www.uploadify.com` and `http://deepliquid.com/content/Jcrop.html`)
 
 Configuration is the same as `jqueryfile`.
+Adds the following configuration to your `app/config/config.yml`:
+
+    genemu_form:
+        jqueryimage:
+            selected: large
+            thumbnails:
+                small:  [100, 100]
+                medium: [200, 200]
+                large:  [500, 500]
+                extra:  [1024, 768]
+
 Available filters are:
 
     - Crop

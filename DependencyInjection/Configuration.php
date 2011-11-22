@@ -38,6 +38,7 @@ class Configuration implements ConfigurationInterface
         $this->addReCaptcha($rootNode);
         $this->addJQueryDate($rootNode);
         $this->addJQueryFile($rootNode);
+        $this->addJQueryImage($rootNode);
 
         return $treeBuilder;
     }
@@ -140,6 +141,25 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('cancel_img')->isRequired()->end()
                         ->scalarNode('folder')->isRequired()->end()
                         ->variableNode('configs')->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    protected function addJQueryImage(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('jqueryimage')
+                    ->canBeUnset('jqueryimage')
+                    ->children()
+                        ->scalarNode('selected')->defaultValue('large')->end()
+                        ->variableNode('thumbnails')->defaultValue(array(
+                            'small'  => array(100, 100),
+                            'medium' => array(200, 200),
+                            'large'  => array(500, 500),
+                            'extra'  => array(1024, 768)
+                        ))->end()
                     ->end()
                 ->end()
             ->end();

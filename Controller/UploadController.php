@@ -36,22 +36,45 @@ class UploadController extends Controller
         $folder = $options['folder'];
 
         $json = array();
-
         if ($handle = $handle->move($targetPath . '/' . $folder, $name)) {
-            $json['result'] = 1;
+            $json = array(
+                'result' => '1',
+                'thumbnail' => array(),
+                'image' => array(),
+                'file' => ''
+            );
 
             if (preg_match('/image/', $handle->getMimeType())) {
                 $handle = new Image($handle->getPathname());
+                $thumbnail = $handle;
 
-                $json['image'] = array(
-                    'width' => $handle->getWidth(),
-                    'height' => $handle->getHeight()
-                );
+                if ($this->container->hasParameter('genemu.form.jqueryimage.thumbnails')) {
+                    $thumbnails = $this->container->getParameter('genemu.form.jqueryimage.thumbnails');
+
+                    foreach ($thumbnails as $name => $thumbnail) {
+                        $handle->createThumbnail($name, $thumbnail[0], $thumbnail[1]);
+                    }
+
+                    $selected = $this->container->getParameter('genemu.form.jqueryimage.selected');
+                    $thumbnail = $handle->getThumbnail($selected);
+                }
+
+                $json = array_replace($json, array(
+                    'thumbnail' => array(
+                        'file' => $folder . '/' . $thumbnail->getFilename() . '?' . time(),
+                        'width' => $thumbnail->getWidth(),
+                        'height' => $thumbnail->getHeight()
+                    ),
+                    'image' => array(
+                        'width' => $handle->getWidth(),
+                        'height' => $handle->getHeight()
+                    )
+                ));
             }
 
             $json['file'] = $folder . '/' . $handle->getFilename() . '?' . time();
         } else {
-            $json['result'] = 0;
+            $json['result'] = '0';
         }
 
         return new Response(json_encode($json));

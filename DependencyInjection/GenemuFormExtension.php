@@ -62,8 +62,12 @@ class GenemuFormExtension extends Extension
 
         if (isset($configs['jqueryfile'])) {
             $loader->load('jqueryfile.xml');
-            $loader->load('jqueryimage.xml');
             $this->configureJQueryFile($configs['jqueryfile'], $container);
+        }
+
+        if (isset($configs['jqueryimage'])) {
+            $loader->load('jqueryimage.xml');
+            $this->configureJQueryImage($configs['jqueryimage'], $container);
         }
     }
 
@@ -154,5 +158,21 @@ class GenemuFormExtension extends Extension
         ));
 
         $container->setParameter('genemu.form.jqueryfile.options', $options);
+    }
+
+    /**
+     * Configure JQueryImage
+     *
+     * @param array            $configs
+     * @param ContainerBuilder $container
+     */
+    protected function configureJQueryImage(array $configs, ContainerBuilder $container)
+    {
+        if (!isset($configs['thumbnails'][$configs['selected']])) {
+            throw new \Exception('Selected thumbnails please.');
+        }
+
+        $container->setParameter('genemu.form.jqueryimage.selected', $configs['selected']);
+        $container->setParameter('genemu.form.jqueryimage.thumbnails', $configs['thumbnails']);
     }
 }

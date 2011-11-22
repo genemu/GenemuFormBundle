@@ -23,6 +23,7 @@ class Gd implements GdInterface
     protected $resource;
 
     protected $filters = array();
+    protected $thumbnails = array();
 
     protected $width;
     protected $height;
@@ -49,6 +50,98 @@ class Gd implements GdInterface
         if (!is_resource($this->resource)) {
             throw new \Exception('Resource does not exists.');
         }
+    }
+
+    /**
+     * Create thumbnail
+     *
+     * @param string $name
+     * @param string $path
+     * @param int    $width
+     * @param int    $height
+     * @param string $format
+     */
+    public function createThumbnail($name, $path, $width, $height, $format = 'png', $quality = 90)
+    {
+        $width_tmp = $width;
+        $height_tmp = ($width / $this->width) * $this->height;
+
+        if ($height_tmp > $height) {
+            $height_tmp = $height;
+            $width_tmp = ($height / $this->height) * $this->width;
+        }
+
+        $tmp = imagecreatetruecolor($width_tmp, $height_tmp);
+
+        imagecopyresampled($tmp, $this->resource, 0, 0, 0, 0, $width_tmp, $height_tmp, $this->width, $this->height);
+
+        $format = $this->checkFormat($format);
+        $generate = 'image'.$format;
+
+        $generate($tmp, $path, $quality);
+
+        return $this->thumbnails[$name] = new File($path);
+    }
+
+    /**
+     * Set thumbnails
+     *
+     * @param array $thumbnails
+     */
+    public function setThumbnails(array $thumbnails)
+    {
+        foreach ($thumbnails as $name => $thumbnail) {
+            $this->setThumbnail($name, $thumbnail);
+        }
+    }
+
+    /**
+     * Set thumbnail
+     *
+     * @param string $name
+     * @param File   $thumbnail
+     */
+    public function setThumbnail($name, File $thumbnail)
+    {
+        $this->thumbnails[$name] = $thumbnail;
+    }
+
+    /**
+     * Get thumbnail
+     *
+     * @param string $name
+     *
+     * @return File|Image|null
+     */
+    public function getThumbnail($name)
+    {
+        if ($this->hasThumbnail($name)) {
+            return $this->thumbnails[$name];
+        }
+
+        return null;
+    }
+
+    /**
+     * Get thumbnails
+     *
+     * @return array $thumbnails
+     */
+    public function getThumbnails()
+    {
+        return $this->thumbnails;
+    }
+
+    /**
+     * Has thumbnail
+     *
+     * @param string $name
+     *
+     * @return boolean
+     */
+    public function hasThumbnail($name)
+    {
+        return isset($this->thumbnails[$name]);
     }
 
     /**

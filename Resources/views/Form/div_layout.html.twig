@@ -79,11 +79,18 @@
                 <a id="{{ id }}Overlay" href="#">&nbsp;</a>
 
                 {% if value %}
-                    {% set ratio = width > 500 ? width / 500 : 1 %}
-                    <img id="{{ id }}ImgPreview" src="{{ asset(value) }}" width="{{ width / ratio }}" height="{{ height / ratio }}" />
+                    {% set widthMax = thumbnail is defined ? thumbnail.width : 500 %}
+                    {% set ratio = width > widthMax ? width / widthMax : 1 %}
+                    {% set asset = asset(thumbnail is defined ? thumbnail.file : value) %}
+                    {% set width = width / ratio %}
+                    {% set height = height / ratio %}
                 {% else %}
-                    <img id="{{ id }}ImgPreview" src="{{ asset('bundles/genemuform/images/default.png') }}" width="96" height="96" />
+                    {% set asset = asset('bundles/genemuform/images/default.png') %}
+                    {% set width = 96 %}
+                    {% set height = 96 %}
                 {% endif %}
+
+                <img id="{{ id }}ImgPreview" src="{{ asset }}" width="{{ width }}" height="{{ height }}" />
             </div>
             <ul id="{{ id }}Options" class="options">
                 <li class="rotate _change"></li>

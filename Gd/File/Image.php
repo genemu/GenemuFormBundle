@@ -11,6 +11,7 @@
 
 namespace Genemu\Bundle\FormBundle\Gd\File;
 
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
 
 use Genemu\Bundle\FormBundle\Gd\Gd;
@@ -59,6 +60,99 @@ class Image extends File
         }
 
         return $format;
+    }
+
+    /**
+     * Create thumbnail image
+     *
+     * @param string $name
+     * @param int    $width
+     * @param int    $height
+     */
+    public function createThumbnail($name, $width, $height, $quality = 90)
+    {
+        $ext = $this->guessExtension();
+
+        $path  = $this->getPath() . '/';
+        $path .= $this->getBasename('.' . $ext) . $name;
+        $path .= '.' . $ext;
+
+        $thumbnail = $this->gd->createThumbnail($name, $path, $width, $height, $ext, $quality);
+
+        $this->gd->setThumbnail($name, new Image($thumbnail->getPathname()));
+    }
+
+    /**
+     * Search thumbnails
+     */
+    public function searchThumbnails()
+    {
+        $thumbnails = array();
+
+        $fileExt = $this->guessExtension();
+        $fileName = $this->getBasename('.' . $fileExt);
+
+        $files = new Finder();
+        $files
+            ->in($this->getPath())
+            ->name($fileName . '*.' . $fileExt)
+            ->notName($this->getFilename())
+            ->files();
+
+        foreach ($files as $file) {
+            $file = new Image($file->getPathname());
+            $thumbnail = preg_replace('/^' . $fileName . '(\w+)(.*)/', '$1', $file->getFilename());
+
+            $thumbnails[$thumbnail] = $file;
+        }
+
+        $this->gd->setThumbnails($thumbnails);
+    }
+
+    /**
+     * Get thumbnail
+     *
+     * @param string $name
+     *
+     * @return Image|null
+     */
+    public function getThumbnail($name)
+    {
+        if (!$this->hasThumbnail($name)) {
+            $this->searchThumbnails();
+        }
+
+        return $this->gd->getThumbnail($name);
+    }
+
+    /**
+     * Get thumbnails
+     *
+     * @return array
+     */
+    public function getThumbnails()
+    {
+        if (!$this->gd->getThumbnails()) {
+            $this->searchThumbnails();
+        }
+
+        return $this->gd->getThumbnails();
+    }
+
+    /**
+     * Has thumbnail
+     *
+     * @param string $name
+     *
+     * @return boolean
+     */
+    public function hasThumbnail($name)
+    {
+        if (!$this->gd->getThumbnails()) {
+            $this->searchThumbnails();
+        }
+
+        return $this->gd->hasThumbnail($name);
     }
 
     /**
@@ -158,7 +252,7 @@ class Image extends File
      *
      * @param int $quality
      */
-    public function save($quality = 100)
+    public function save($quality = 90)
     {
         $this->gd->save($this->getPathname(), $this->guessExtension(), $quality);
     }

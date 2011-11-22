@@ -116,9 +116,8 @@
 
                 if ($response.result == '1') {
                     createCrop({
-                        width: $response.image.width,
-                        height: $response.image.height,
-                        src: $response.file
+                        image: $response.image,
+                        thumbnail: $response.thumbnail
                     });
                 } else {
                     alert('error');
@@ -137,13 +136,14 @@
             var $img = new Image();
 
             $($img).load(function() {
-                $ratio = data.width > 500 ? data.width / 500 : 1;
+                {% set widthMax = thumbnail is defined ? thumbnail.width : 500 %}
 
+                $ratio = data.image.width > {{ widthMax }} ? data.image.width / {{ widthMax }} : 1;
                 $('.crop', $options).hide();
 
                 $preview
-                    .width(Math.round(data.width / $ratio))
-                    .height(Math.round(data.height / $ratio))
+                    .width(Math.round(data.image.width / $ratio))
+                    .height(Math.round(data.image.height / $ratio))
                     .attr('src', this.src);
 
                 if (!$crop) {
@@ -154,7 +154,7 @@
                     onSelect: checkCoords,
                     onChange: checkCoords
                 });
-            }).attr('src', data.src);
+            }).attr('src', data.thumbnail.file);
         }
 
         var checkCoords = function(coords) {
@@ -201,9 +201,10 @@
                     success: function(data) {
                         if ('1' === data.result) {
                             createCrop({
-                                width: data.width,
-                                height: data.height,
-                                src: data.file
+                                image: data.image,
+                                thumbnail: $.isEmptyObject(data.thumbnail) ? $.extend(data.image, {
+                                    file: data.file
+                                }) : data.thumbnail
                             });
                         } else {
                             alert('Error');
@@ -217,9 +218,15 @@
 
     {% if value %}
         createCrop({
-            src: '{{ value }}',
-            width: {{ width }},
-            height: {{ height }}
+            thumbnail: {
+                file: '{{ thumbnail is defined ? thumbnail.file : value }}',
+                width: {{ thumbnail is defined ? thumbnail.width : width }},
+                height: {{ thumbnail is defined ? thumbnail.height : height }},
+            },
+            image: {
+                width: {{ width }},
+                height: {{ height }}
+            }
         });
     {% else %}
         $options.hide();

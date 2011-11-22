@@ -18,7 +18,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
 use Genemu\Bundle\FormBundle\Form\EventListener\JQueryFileListener;
-use Genemu\Bundle\FormBundle\Gd\File\Image;
 
 /**
  * JQueryFileType
@@ -72,30 +71,36 @@ class JQueryFileType extends AbstractType
     {
         $data = $form->getClientData();
         $configs = $form->getAttribute('configs');
+        $value = '';
 
         if ($data) {
             if ($form->getAttribute('multiple')) {
-                $data = is_array($data) ? implode(',', $data) : $data;
+                if (is_array($data)) {
+                    $values = array();
+                    foreach ($data as $path) {
+                        if (!$path instanceof File) {
+                            $path = new File($this->rootDir . $path);
+                        }
 
-                $view->set('value', $data);
+                        $values[] = $configs['folder'] . '/' . $path->getFilename();
+                    }
+
+                    $value = implode(',', $values);
+                } else {
+                    $value = $data;
+                }
             } else {
                 if (!$data instanceof File) {
                     $data = new File($this->rootDir . $data);
                 }
 
-                if (preg_match('/image/', $data->getMimeType())) {
-                    $data = new Image($data->getPathname());
-
-                    $view
-                        ->set('width', $data->getWidth())
-                        ->set('height', $data->getHeight());
-                }
-
-                $view->set('value', $configs['folder'] . '/' . $data->getFilename());
+                $value = $configs['folder'] . '/' .$data->getFilename();
             }
         }
 
-        $view->set('configs', $configs);
+        $view
+            ->set('value', $value)
+            ->set('configs', $configs);
     }
 
     /**
