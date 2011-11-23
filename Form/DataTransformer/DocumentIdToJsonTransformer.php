@@ -12,17 +12,17 @@
 namespace Genemu\Bundle\FormBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
+use Symfony\Bundle\DoctrineMongoDBBundle\Form\ChoiceList\DocumentChoiceList;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Exception\FormException;
 
 /**
- * EntityIdToJsonTransform
+ * DocumentIdToJsonTransform
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 
-class EntityIdToJsonTransformer implements DataTransformerInterface
+class DocumentIdToJsonTransformer implements DataTransformerInterface
 {
     protected $choiceList;
     protected $rooteName;
@@ -30,9 +30,9 @@ class EntityIdToJsonTransformer implements DataTransformerInterface
     /**
      * Construct
      *
-     * @param EntityChoiceList $choiceList
+     * @param DocumentChoiceList $choiceList
      */
-    public function __construct(EntityChoiceList $choiceList, $routeName = null)
+    public function __construct(DocumentChoiceList $choiceList, $routeName = null)
     {
         $this->choiceList = $choiceList;
         $this->routeName = $routeName;
@@ -52,7 +52,7 @@ class EntityIdToJsonTransformer implements DataTransformerInterface
         }
 
         if ($this->routeName) {
-            $entity = $this->choiceList->getEntity($id);
+            $entity = $this->choiceList->getDocument($id);
 
             if (!method_exists($entity, '__toString')) {
                     throw new FormException('Entities passed to the choice field must have a "__toString()" method defined because use Ajax.');

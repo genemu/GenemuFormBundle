@@ -83,6 +83,12 @@ class TypeExtensionTest extends CoreExtension
                 'medium' => array(200, 200),
                 'large' => array(500, 500),
                 'extra' => array(1024, 768)
+            ), array(
+                'rotate',
+                'bw',
+                'negative',
+                'sepia',
+                'crop'
             ))
         ));
     }

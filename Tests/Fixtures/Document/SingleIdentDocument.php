@@ -9,25 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Tests\Fixtures;
+namespace Genemu\Bundle\FormBundle\Tests\Fixtures\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
- * @ORM\Entity()
+ * @MongoDB\Document()
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class SingleIdentEntity
+class SingleIdentDocument
 {
     /**
-     * @ORM\Id()
-     * @ORM\Column(type="integer")
+     * @MongoDB\Id(strategy="NONE")
      */
     protected $id;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @MongoDB\String()
      */
     public $name;
 

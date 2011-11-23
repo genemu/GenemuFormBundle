@@ -25,7 +25,11 @@ use Genemu\Bundle\FormBundle\Form\DataTransformer\ChoiceToJsonTransformer;
 use Genemu\Bundle\FormBundle\Form\DataTransformer\EntityIdsToJsonTransformer;
 use Genemu\Bundle\FormBundle\Form\DataTransformer\EntityIdToJsonTransformer;
 
-use Genemu\Bundle\FormBundle\Form\ChoiceList\AjaxChoiceList;
+use Genemu\Bundle\FormBundle\Form\DataTransformer\DocumentIdsToJsonTransformer;
+use Genemu\Bundle\FormBundle\Form\DataTransformer\DocumentIdToJsonTransformer;
+
+use Genemu\Bundle\FormBundle\Form\ChoiceList\AjaxEntityChoiceList;
+use Genemu\Bundle\FormBundle\Form\ChoiceList\AjaxDocumentChoiceList;
 
 /**
  * JQueryAutocompleterType
@@ -55,7 +59,7 @@ class JQueryAutocompleterType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        if (!$options['route_name'] && 'entity' !== $options['widget']) {
+        if (!$options['route_name'] && !in_array($options['widget'], array('entity', 'document'))) {
             $choiceList = null;
 
             if (isset($options['choices']) && $options['choices']) {
@@ -87,6 +91,9 @@ class JQueryAutocompleterType extends AbstractType
                 case 'entity':
                     $transformer = new EntityIdsToJsonTransformer($options['choice_list'], $options['route_name']);
                     break;
+                case 'document':
+                    $transformer = new DocumentIdsToJsonTransformer($options['choice_list'], $options['route_name']);
+                    break;
                 case 'choice':
                     if (isset($options['choice_list']) && $options['choice_list']) {
                         $transformer = new ChoiceToJsonTransformer($options['choice_list']);
@@ -107,6 +114,8 @@ class JQueryAutocompleterType extends AbstractType
                 $builder->appendClientTransformer(new FieldToJsonTransformer());
             } elseif ('entity' === $options['widget']) {
                 $builder->appendClientTransformer(new EntityIdToJsonTransformer($options['choice_list'], $options['route_name']));
+            } elseif ('document' === $options['widget']) {
+                $builder->appendClientTransformer(new DocumentIdToJsonTransformer($options['choice_list'], $options['route_name']));
             }
 
             $builder->setAttribute('multiple', false);
@@ -128,7 +137,7 @@ class JQueryAutocompleterType extends AbstractType
         if (
             $form->getAttribute('multiple') ||
             $form->getAttribute('route_name') ||
-            'entity' === $form->getAttribute('widget')
+            in_array($form->getAttribute('widget'), array('entity', 'document'))
         ) {
             $data = json_decode($data, true);
         }
@@ -143,7 +152,7 @@ class JQueryAutocompleterType extends AbstractType
             if ($form->hasAttribute('choice_list') && $form->getAttribute('choice_list')) {
                 $choices = $form->getAttribute('choice_list')->getChoices();
 
-                if ('entity' === $form->getAttribute('widget')) {
+                if (in_array($form->getAttribute('widget'), array('entity', 'document'))) {
                     $value = $data['label'];
                 } else {
                     foreach ($choices as $choice) {
@@ -189,6 +198,18 @@ class JQueryAutocompleterType extends AbstractType
                 'choices' => array(),
                 'group_by' => null
             ));
+        } elseif (isset($options['widget']) && 'document' === $options['widget']) {
+            $defaultOptions = array_merge($defaultOptions, array(
+                'choices' => array(),
+                'class' => null,
+                'document_manager' => null,
+                'expended' => null,
+                'multiple' => false,
+                'preferred_choices' => array(),
+                'property' => null,
+                'query_builder' => null,
+                'template' => 'choice'
+            ));
         }
 
         $options = array_replace($defaultOptions, $options);
@@ -208,7 +229,7 @@ class JQueryAutocompleterType extends AbstractType
         if ('entity' === $options['widget'] && $options['route_name']) {
             $method = $this->registry instanceof ManagerRegistry ? 'getManager' : 'getEntityManager';
 
-            $options['choice_list'] = new AjaxChoiceList(
+            $options['choice_list'] = new AjaxEntityChoiceList(
                 $this->registry->$method($options['em']),
                 $options['class'],
                 $options['property'],
@@ -216,6 +237,17 @@ class JQueryAutocompleterType extends AbstractType
                 $options['choices'],
                 $options['group_by']
             );
+        } elseif ('document' === $options['widget'] && $options['route_name']) {
+            $method = $this->registry instanceof ManagerRegistry ? 'getManager' : 'getEntityManager';
+
+            $options['choice_list'] = new AjaxDocumentChoiceList(
+                $this->registry->$method($options['document_manager']),
+                $options['class'],
+                $options['property'],
+                $options['query_builder'],
+                $options['choices']
+            );
+
         }
 
         return $options;

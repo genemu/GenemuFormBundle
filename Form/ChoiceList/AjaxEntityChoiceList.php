@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class AjaxChoiceList extends EntityChoiceList
+class AjaxEntityChoiceList extends EntityChoiceList
 {
     /**
      * {@inheritdoc}

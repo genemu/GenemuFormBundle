@@ -1,4 +1,4 @@
-# Use JQueryAutocomplete to Entity Ajax values
+# Use JQueryAutocomplete to MongoDB Ajax values
 
 ## Usage:
 
@@ -10,13 +10,13 @@ public function buildForm(FormBuilder $builder, array $options)
     $builder
         ->add('member', 'genemu_jqueryautocompleter', array(
             'route_name' => 'ajax_member',
-            'class' => 'Genemu\Bundle\EntityBundle\Entity\Member',
-            'widget' => 'entity'
+            'class' => 'Genemu\Bundle\DocumentBundle\Document\Member',
+            'widget' => 'document'
         ))
         ->add('cities', 'genemu_jqueryautocompleter', array(
             'route_name' => 'ajax_city',
-            'class' => 'Genemu\Bundle\EntityBundle\Entity\City',
-            'widget' => 'entity',
+            'class' => 'Genemu\Bundle\DocumentBundle\Document\City',
+            'widget' => 'document',
             'multiple' => true
         ));
 }
@@ -41,8 +41,8 @@ class MyClassAjaxController extends Controller
     {
         $value = $request->get('term');
 
-        $em = $this->getDoctrine()->getEntityManager();
-        $members = $em->getRepository('GenemuEntityBundle:Member')->findAjaxValue($value);
+        $documentManager = $this->get('doctrine.odm.mongodb.document_manager');
+        $members = $documentManager->getRepository('GenemuDocumentBundle:Member')->findAjaxValue($value);
 
         $json = array();
         foreach ($members as $member) {
@@ -65,8 +65,8 @@ class MyClassAjaxController extends Controller
     {
         $value = $request->get('term');
 
-        $em = $this->getDoctrine()->getEntityManager();
-        $cities = $em->getRepository('GenemuEntityBundle:City')->findAjaxValue($value);
+        $documentManager = $this->get('doctrine.odm.mongodb.document_manager');
+        $cities = $documentManager->getRepository('GenemuDocumentBundle:City')->findAjaxValue($value);
 
         $json = array();
         foreach ($cities as $city) {

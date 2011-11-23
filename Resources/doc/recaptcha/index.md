@@ -13,6 +13,7 @@ genemu_form:
 ## Default Usage:
 
 ``` php
+<?php
 // ...
 public function buildForm(FormBuilder $builder, array $options)
 {
@@ -21,3 +22,7 @@ public function buildForm(FormBuilder $builder, array $options)
         ->add('captcha', 'genemu_recaptcha');
 }
 ```
+
+## Extra:
+
+[Default configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/recaptcha/default_configuration.md)

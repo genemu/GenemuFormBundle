@@ -3,6 +3,7 @@
 ## Usage:
 
 ``` php
+<?php
 // ...
 public function buildForm(FormBuilder $builder, array $options)
 {

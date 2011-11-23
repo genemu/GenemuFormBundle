@@ -11,6 +11,7 @@ genemu_form:
 ## Default Usage:
 
 ``` php
+<?php
 // ...
 public function buildForm(FormBuilder $builder, array $options)
 {

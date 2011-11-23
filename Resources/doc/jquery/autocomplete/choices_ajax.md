@@ -3,6 +3,7 @@
 ## Usage:
 
 ``` php
+<?php
 // ...
 public function buildForm(FormBuilder $builder, array $options)
 {
@@ -20,13 +21,14 @@ public function buildForm(FormBuilder $builder, array $options)
 ## Add function ajaxAction to Controller:
 
 ``` php
+<?php
 namespace MyNamespace;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-class MyClassAjax extends Controller
+class MyClassAjaxController extends Controller
 {
     /**
      * @Route("/ajax", name="ajax")

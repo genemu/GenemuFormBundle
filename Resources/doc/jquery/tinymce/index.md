@@ -6,12 +6,13 @@
 # app/config/config.yml
 genemu_form:
     tinymce:
-        script_url:  /tinymce/tiny_mce.js `(required)`
+        script_url:  /tinymce/tiny_mce.js
 ```
 
 ## Default Usage:
 
 ``` php
+<?php
 // ...
 public function buildForm(FormBuilder $builder, array $options)
 {
@@ -20,3 +21,7 @@ public function buildForm(FormBuilder $builder, array $options)
         ->add('content', 'genemu_tinymce');
 }
 ```
+
+## Extra:
+
+[Default configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/tinymce/default_configuration.md)
