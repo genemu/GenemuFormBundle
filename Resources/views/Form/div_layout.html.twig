@@ -44,8 +44,8 @@
 {% spaceless %}
     {{ block('hidden_widget') }}
 
-    {% set id = id ~ '_autocompleter' %}
-    {% set full_name = full_name ~ '[autocompleter]' %}
+    {% set id = 'autocompleter_' ~ id %}
+    {% set full_name = 'autocompleter_' ~ full_name %}
     {% set value = autocompleter_value %}
     {{ block('field_widget') }}
 {% endspaceless %}

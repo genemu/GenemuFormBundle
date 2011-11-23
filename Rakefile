@@ -6,7 +6,6 @@ task :test do
     if ENV["TRAVIS"] == 'true'
         puts "Travis CI"
 
-        puts "Intall mongo"
         system "pecl install mongo"
         system "echo \"extension=mongo.so\" >> `php --ini | grep \"Loaded Configuration\" | sed -e \"s|.*:\s*||\"`"
     end
