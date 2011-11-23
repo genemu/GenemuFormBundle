@@ -17,7 +17,11 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 
 $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
-    'Symfony'                => array($vendorDir.'/symfony/src', $vendorDir.'/symfony/tests'),
+    'Symfony'                => array(
+        $vendorDir.'/symfony/src',
+        $vendorDir.'/symfony/tests',
+        $vendorDir.'/bundles'
+    ),
     'Doctrine'               => array($vendorDir.'/doctrine/lib'),
     'Doctrine\\Common'       => array($vendorDir.'/doctrine-common/lib'),
     'Doctrine\\DBAL'         => array($vendorDir.'/doctrine-dbal/lib'),
