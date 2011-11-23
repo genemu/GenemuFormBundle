@@ -17,10 +17,12 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 
 $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
-    'Symfony' => array($vendorDir.'/symfony/src', $vendorDir.'/symfony/tests'),
-    'Doctrine' => array($vendorDir.'/doctrine/lib'),
-    'Doctrine\\Common' => array($vendorDir.'/doctrine-common/lib'),
-    'Doctrine\\DBAL' => array($vendorDir.'/doctrine-dbal/lib'),
+    'Symfony'                => array($vendorDir.'/symfony/src', $vendorDir.'/symfony/tests'),
+    'Doctrine'               => array($vendorDir.'/doctrine/lib'),
+    'Doctrine\\Common'       => array($vendorDir.'/doctrine-common/lib'),
+    'Doctrine\\DBAL'         => array($vendorDir.'/doctrine-dbal/lib'),
+    'Doctrine\\ODM\\MongoDB' => array($vendorDir.'/doctrine-mongodb-odm/lib'),
+    'Doctrine\\MongoDB'      => array($vendorDir.'/doctrine-mongodb/lib'),
 ));
 $loader->registerPrefixes(array(
     'Twig_' => $vendorDir.'/twig/lib',
@@ -39,7 +41,12 @@ AnnotationRegistry::registerLoader(function($class) use ($loader) {
     $loader->loadClass($class);
     return class_exists($class, false);
 });
-AnnotationRegistry::registerFile(__DIR__.'/../vendor/doctrine/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php');
+AnnotationRegistry::registerFile(
+    $vendorDir.'/doctrine/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php'
+);
+AnnotationRegistry::registerFile(
+    $vendorDir.'/doctrine-mongodb-odm/lib/Doctrine/ODM/MongoDB/Mapping/Annotations/DoctrineAnnotations.php'
+);
 
 spl_autoload_register(function($class) {
     if (0 === strpos($class, 'Genemu\\Bundle\\FormBundle\\')) {
