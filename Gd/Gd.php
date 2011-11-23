@@ -60,15 +60,27 @@ class Gd implements GdInterface
      * @param int    $width
      * @param int    $height
      * @param string $format
+     * @param int    $quality
      */
     public function createThumbnail($name, $path, $width, $height, $format = 'png', $quality = 90)
     {
-        $width_tmp = $width;
-        $height_tmp = ($width / $this->width) * $this->height;
+        $ratio = ($this->width > $width || $this->height > $height)
+            ?($width > $height
+                ?$width / $height
+                :$height / $width
+            ):1;
+
+        $width_tmp = $this->width * $ratio;
+        $height_tmp = $this->height * $ratio;
 
         if ($height_tmp > $height) {
             $height_tmp = $height;
             $width_tmp = ($height / $this->height) * $this->width;
+        }
+
+        if ($width_tmp > $width) {
+            $width_tmp = $width;
+            $height_tmp = ($width / $this->width) * $this->height;
         }
 
         $tmp = imagecreatetruecolor($width_tmp, $height_tmp);
@@ -78,7 +90,13 @@ class Gd implements GdInterface
         $format = $this->checkFormat($format);
         $generate = 'image'.$format;
 
-        $generate($tmp, $path, $quality);
+        if ('jpeg' === $format) {
+            $generate($tmp, $path, $quality);
+        } else {
+            $generate($tmp, $path);
+        }
+
+        imagedestroy($tmp);
 
         return $this->thumbnails[$name] = new File($path);
     }
@@ -190,7 +208,11 @@ class Gd implements GdInterface
 
         $this->applyFilters();
 
-        $generate($this->resource, $path, $quality);
+        if ('jpeg' === $format) {
+            $generate($this->resource, $path, $quality);
+        } else {
+            $generate($this->resource, $path);
+        }
     }
 
     /**
@@ -251,8 +273,28 @@ class Gd implements GdInterface
         }
 
         $this->resource = $resource;
+
         $this->width = imagesx($resource);
         $this->height = imagesy($resource);
+    }
+
+    /**
+     * Get color
+     *
+     * @param int $x
+     * @param int $y
+     *
+     * @return array
+     */
+    public function getColor($x, $y)
+    {
+        $this->checkResource();
+
+        if ($x < 0 || $x > ($this->width-1) || $y < 0 || $y > ($this->height-1)) {
+            return 0xFFFFFF;
+        }
+
+        return imagecolorat($this->resource, $x, $y);
     }
 
     /**
@@ -271,13 +313,18 @@ class Gd implements GdInterface
     /**
      * {@inheritdoc}
      */
-    public function allocateColor($color)
+    public function allocateColor($color, $alpha = null)
     {
         $this->checkResource();
 
         list($red, $green, $blue) = $this->hexColor($color);
 
-        return imagecolorallocate($this->resource, $red, $green, $blue);
+        if ($alpha) {
+            return imagecolorallocatealpha($this->resource, $red, $green, $blue, 255 * $alpha);
+        } else {
+            return imagecolorallocate($this->resource, $red, $green, $blue);
+
+        }
     }
 
     /**
@@ -307,5 +354,37 @@ class Gd implements GdInterface
         }
 
         return $asString ? implode($separator, $array) : $array;
+    }
+
+    public function intColor($int)
+    {
+        $hex = imagecolorsforindex($this->resource, $int);
+
+        return array_values($hex);
+    }
+
+    public function bilinearInterpolate($x, $y, $nw, $ne, $sw, $se)
+    {
+        list($r0, $g0, $b0) = $this->intColor($nw);
+        list($r1, $g1, $b1) = $this->intColor($ne);
+        list($r2, $g2, $b2) = $this->intColor($sw);
+        list($r3, $g3, $b3) = $this->intColor($se);
+
+        $cx = 1.0 - $x;
+        $cy = 1.0 - $y;
+
+        $m0 = $cx * $r0 + $x * $r1;
+        $m1 = $cx * $r2 + $x * $r3;
+        $r = (int)($cy * $m0 + $y * $m1);
+
+        $m0 = $cx * $g0 + $x * $g1;
+        $m1 = $cx * $g2 + $x * $g3;
+        $g = (int)($cy * $m0 + $y * $m1);
+
+        $m0 = $cx * $b0 + $x * $b1;
+        $m1 = $cx * $b2 + $x * $b3;
+        $b = (int)($cy * $m0 + $y * $m1);
+
+        return ($r << 16) | ($g << 8) | $b;
     }
 }

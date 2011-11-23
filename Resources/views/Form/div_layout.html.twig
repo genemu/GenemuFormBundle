@@ -93,11 +93,9 @@
                 <img id="{{ id }}ImgPreview" src="{{ asset }}" width="{{ width }}" height="{{ height }}" />
             </div>
             <ul id="{{ id }}Options" class="options">
-                <li class="rotate _change"></li>
-                <li class="bw _change"></li>
-                <li class="negative _change"></li>
-                <li class="sepia _change"></li>
-                <li class="crop _change"></li>
+                {% for filter in filters %}
+                    <li class="{{ filter }} _change"></li>
+                {% endfor %}
             </ul>
             <div class="queue">
                 <div id="{{ id }}Queue"></div>

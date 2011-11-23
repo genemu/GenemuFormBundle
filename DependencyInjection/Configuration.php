@@ -154,6 +154,13 @@ class Configuration implements ConfigurationInterface
                     ->canBeUnset('jqueryimage')
                     ->children()
                         ->scalarNode('selected')->defaultValue('large')->end()
+                        ->variableNode('filters')->defaultValue(array(
+                            'rotate',
+                            'bw',
+                            'negative',
+                            'sepia',
+                            'crop'
+                        ))->end()
                         ->variableNode('thumbnails')->defaultValue(array(
                             'small'  => array(100, 100),
                             'medium' => array(200, 200),

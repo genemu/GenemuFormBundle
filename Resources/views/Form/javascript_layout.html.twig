@@ -180,7 +180,8 @@
 
             var $data = {
                 filter: $filter,
-                image: $field.val()
+                image: $field.val(),
+                opacity: 0.5
             };
 
             if ('crop' === $filter && !$.isEmptyObject($coords)) {
@@ -188,7 +189,7 @@
             }
 
             if (
-                $.inArray($filter, ['rotate', 'bw', 'negative', 'sepia']) !== -1 ||
+                $.inArray($filter, {{ filters|json_encode|raw }}) !== -1 ||
                 ( 'crop' === $filter && !$.isEmptyObject($coords) )
             ) {
                 $this.addClass('loading');

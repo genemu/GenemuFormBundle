@@ -27,11 +27,13 @@ class JQueryImageType extends AbstractType
 {
     protected $selected;
     protected $thumbnails;
+    protected $filters;
 
-    public function __construct($selected, array $thumbnails)
+    public function __construct($selected, array $thumbnails, array $filters)
     {
         $this->selected = $selected;
         $this->thumbnails = $thumbnails;
+        $this->filters = $filters;
     }
 
     /**
@@ -66,6 +68,8 @@ class JQueryImageType extends AbstractType
                 ->set('width', $data->getWidth())
                 ->set('height', $data->getHeight());
         }
+
+        $view->set('filters', $this->filters);
     }
 
     /**

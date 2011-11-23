@@ -172,6 +172,12 @@ class GenemuFormExtension extends Extension
             throw new \Exception('Selected thumbnails please.');
         }
 
+        $filters = array_intersect(
+            array('rotate', 'negate', 'bw', 'sepia', 'blur', 'crop'),
+            $configs['filters']
+        );
+
+        $container->setParameter('genemu.form.jqueryimage.filters', $configs['filters']);
         $container->setParameter('genemu.form.jqueryimage.selected', $configs['selected']);
         $container->setParameter('genemu.form.jqueryimage.thumbnails', $configs['thumbnails']);
     }

@@ -9,6 +9,7 @@
 
         <parameter key="genemu.form.jqueryimage.selected" />
         <parameter key="genemu.form.jqueryimage.thumbnails" />
+        <parameter key="genemu.form.jqueryimage.filters" />
     </parameters>
 
     <services>
@@ -16,6 +17,7 @@
             <tag name="form.type" alias="genemu_jqueryimage" />
             <argument>%genemu.form.jqueryimage.selected%</argument>
             <argument>%genemu.form.jqueryimage.thumbnails%</argument>
+            <argument>%genemu.form.jqueryimage.filters%</argument>
         </service>
     </services>
 

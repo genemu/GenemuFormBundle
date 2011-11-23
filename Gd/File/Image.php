@@ -20,6 +20,8 @@ use Genemu\Bundle\FormBundle\Gd\Filter\Rotate;
 use Genemu\Bundle\FormBundle\Gd\Filter\Negate;
 use Genemu\Bundle\FormBundle\Gd\Filter\Colorize;
 use Genemu\Bundle\FormBundle\Gd\Filter\GrayScale;
+use Genemu\Bundle\FormBundle\Gd\Filter\Blur;
+use Genemu\Bundle\FormBundle\Gd\Filter\Opacity;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
@@ -205,6 +207,22 @@ class Image extends File
     public function grayScale()
     {
         $this->gd->addFilter(new GrayScale());
+    }
+
+    /**
+     * Add filter blur to image
+     */
+    public function blur()
+    {
+        $this->gd->addFilter(new Blur());
+    }
+
+    /**
+     * Add filter opacity to image
+     */
+    public function opacity($opacity)
+    {
+        $this->gd->addFilter(new Opacity($opacity));
     }
 
     /**

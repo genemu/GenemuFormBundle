@@ -56,6 +56,14 @@ class ImageController extends Controller
                 $h = $request->get('h');
 
                 $handle->crop($x, $y, $w, $h);
+                break;
+            case 'blur':
+                $handle->blur();
+                break;
+            case 'opacity':
+                $opacity = $request->get('opacity');
+
+                $handle->opacity($opacity);
             default:
                 break;
         }

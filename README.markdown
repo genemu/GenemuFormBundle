@@ -316,6 +316,12 @@ Adds the following configuration to your `app/config/config.yml`:
     genemu_form:
         jqueryimage:
             selected: large
+            filters:
+                - rotate
+                - bw
+                - negative
+                - sepia
+                - crop
             thumbnails:
                 small:  [100, 100]
                 medium: [200, 200]
@@ -324,11 +330,12 @@ Adds the following configuration to your `app/config/config.yml`:
 
 Available filters are:
 
-    - Crop
-    - Rotate
-    - Sepia
-    - Negate
-    - Black and White
+    - crop
+    - rotate
+    - sepia
+    - negative
+    - bw (Black and White)
+    - blur
 
 Adds the following routing to your `app/config/routing.yml`:
 

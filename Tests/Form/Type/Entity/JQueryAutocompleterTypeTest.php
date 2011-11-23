@@ -266,7 +266,7 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
             json_encode(array(
                 array('value' => 2, 'label' => 'Bar')
             )),
-            array('Bar, ')
+            array('autocompleter' => 'Bar, ')
         ));
 
         $this->assertEquals('genemu_ajax', $view->get('route_name'));
