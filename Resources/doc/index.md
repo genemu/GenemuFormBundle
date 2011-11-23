@@ -2,12 +2,13 @@
 
 ## Installation
 
-Installation is quick and easy, 4 steps process
+Installation is quick and easy, 5 steps process
 
 1. Download GenemuFormBundle
 2. Configure the Autoloader
 3. Enable the bundle
 4. Minimal Configuration
+5. Initilize assets
 
 ### Step 1: Download GenemuFormBundle
 
@@ -77,6 +78,12 @@ public function registerBundles()
 # app/config/config.yml
 
 genemu_form: ~
+```
+
+### Step 5: Initilize assets
+
+``` bash
+$ php app/console assets:install web/
 ```
 
 ### Next Steps

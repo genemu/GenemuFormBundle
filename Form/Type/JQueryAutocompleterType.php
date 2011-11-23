@@ -122,6 +122,7 @@ class JQueryAutocompleterType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
+        $multiple = $form->getAttribute('multiple');
         $data = $form->getClientData();
 
         if (
@@ -134,7 +135,7 @@ class JQueryAutocompleterType extends AbstractType
 
         $value = '';
 
-        if ($form->getAttribute('multiple') && $data) {
+        if ($multiple && $data) {
             foreach ($data as $val) {
                 $value .= $val['label'].', ';
             }
@@ -164,6 +165,7 @@ class JQueryAutocompleterType extends AbstractType
         }
 
         $view
+            ->set('multiple', $multiple)
             ->set('autocompleter_value', $value)
             ->set('route_name', $form->getAttribute('route_name'));
     }
