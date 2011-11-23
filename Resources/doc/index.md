@@ -100,6 +100,6 @@ The following documents are available:
 4. [Tinymce (JQuery)](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/tinymce/index.md)
 5. [Datepicker (JQuery)](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/datepicker/index.md)
 6. [Slider (JQuery)](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/slider/index.md)
-7. [Aucotomplete (JQuery)](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/autocomplete/index.md)
+7. [Autocomplete (JQuery)](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/autocomplete/index.md)
 9. [File (JQuery)](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/file/index.md)
 3. [Image (JQuery)](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/image/index.md)
