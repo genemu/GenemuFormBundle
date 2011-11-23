@@ -16,23 +16,22 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
 
 /**
- * JsonToChoicesTransform
- *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 
 class ChoiceToJsonTransformer implements DataTransformerInterface
 {
     protected $choiceList;
+    protected $widget;
+    protected $multiple;
+    protected $ajax;
 
-    /**
-     * Construct
-     *
-     * @param ArrayChoiceList $choiceList
-     */
-    public function __construct(ArrayChoiceList $choiceList)
+    public function __construct(ArrayChoiceList $choiceList, $widget = 'choice', $multiple = false, $ajax = false)
     {
         $this->choiceList = $choiceList;
+        $this->widget = $widget;
+        $this->multiple = $multiple;
+        $this->ajax = $ajax;
     }
 
     /**
@@ -41,36 +40,104 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
     public function transform($choices)
     {
         if (null === $choices || !$choices) {
-            return null;
+            return;
         }
 
-        if (!is_array($choices)) {
-            throw new UnexpectedTypeException($choices, 'array');
+        if (!is_array($choices) && !is_scalar($choices)) {
+            throw new UnexpectedTypeException($choices, 'array or scalar');
         }
 
-        $array = array();
-        foreach ($choices as $value) {
-            foreach ($this->choiceList->getChoices() as $list) {
-                if ($value === $list['value']) {
-                    $array[] = array(
-                        'label' => $list['label'],
-                        'value' => $value
+        $json = array();
+        if ($this->multiple) {
+            if ($this->ajax) {
+                if ('entity' === $this->widget) {
+                    foreach ($choices as $id) {
+                        $entity = $this->choiceList->getEntity($id);
+
+                        $json[] = array(
+                            'label' => $entity->__toString(),
+                            'value' => $id
+                        );
+                    }
+                } elseif ('document' === $this->widget) {
+                    foreach ($choices as $id) {
+                        $document = $this->choiceList->getDocument($id);
+
+                        $json[] = array(
+                            'label' => $document->__toString(),
+                            'value' => $id
+                        );
+                    }
+                } else {
+                    foreach ($choices as $value => $label) {
+                        $json[] = array(
+                            'label' => $label,
+                            'value' => $value
+                        );
+                    }
+                }
+            } else {
+                foreach ($this->choiceList->getChoices() as $choice) {
+                    if (in_array($choice['value'], $choices)) {
+                        $json[] = $choice;
+                    }
+                }
+            }
+        } else {
+            if ($this->ajax) {
+                if ('entity' === $this->widget) {
+                    $entity = $this->choiceList->getEntity($choices);
+
+                    $json = array(
+                        'label' => $entity->__toString(),
+                        'value' => $choices
                     );
+                } elseif ('document' === $this->widget) {
+                    $document = $this->choiceList->getDocument($choices);
+
+                    $json = array(
+                        'label' => $document->__toString(),
+                        'value' => $choices
+                    );
+                } else {
+                    $json = array(
+                        'label' => $choices,
+                        'value' => $choices
+                    );
+                }
+            } else {
+                foreach ($this->choiceList->getChoices() as $choice) {
+                    if ($choices === $choice['value']) {
+                        $json = $choice;
+                        break;
+                    }
                 }
             }
         }
 
-        return json_encode($array);
+        return json_encode($json);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($values)
+    public function reverseTransform($json)
     {
-        $values = is_array($values) ? current($values) : $values;
-        $values = json_decode($values, true);
+        $jsons = json_decode($json[0], true);
 
-        return $values;
+        $choices = array();
+        if ($this->multiple) {
+            foreach ($jsons as $json) {
+                if ($this->ajax && !in_array($this->widget, array('entity', 'document'))) {
+                    $choices[$json['value']] = $json['label'];
+                } else {
+                    $choices[] = $json['value'];
+                }
+            }
+        } else {
+            $choices = $jsons['value'];
+        }
+
+        return $choices;
     }
 }

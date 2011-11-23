@@ -35,8 +35,8 @@ class TypeExtensionTest extends CoreExtension
     {
         return array_merge(parent::loadTypes(), array(
             new Type\TinymceType('advanced', '/js/tinymce/jquery.tinymce.js', array()),
-            new Type\JQueryDateType(array()),
-            new Type\JQuerySliderType(),
+            new Type\JQuery\DateType(array()),
+            new Type\JQuery\SliderType(),
             new Type\CaptchaType(new Session(new ArraySessionStorage()), 's$cr$t', array(
                 'script' => 'genemu_upload',
                 'uploader' => '/js/uploadify.swf',
@@ -66,7 +66,7 @@ class TypeExtensionTest extends CoreExtension
                 'background_color' => 'DDDDDD',
                 'border_color' => '000000'
             )),
-            new Type\JQueryFileType(array(
+            new Type\JQuery\FileType(array(
                 'script' => 'genemu_upload',
                 'uploader' => '/swf/uploadify.swf',
                 'cancel_img' => '/images/cancel.png',
@@ -78,7 +78,8 @@ class TypeExtensionTest extends CoreExtension
                 'server_url' => 'http://api.recaptcha.net',
                 'server_url_ssl' => 'https://api-secure.recaptcha.net',
             )),
-            new Type\JQueryImageType('medium', array(
+            new Type\JQuery\AutocompleterType(),
+            new Type\JQuery\ImageType('medium', array(
                 'small' => array(100, 100),
                 'medium' => array(200, 200),
                 'large' => array(500, 500),

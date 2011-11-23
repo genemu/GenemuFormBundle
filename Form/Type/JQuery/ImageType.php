@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Form\Type;
+namespace Genemu\Bundle\FormBundle\Form\Type\JQuery;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
@@ -19,11 +19,9 @@ use Symfony\Component\Form\FormInterface;
 use Genemu\Bundle\FormBundle\Gd\File\Image;
 
 /**
- * JQueryFileType
- *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class JQueryImageType extends AbstractType
+class ImageType extends AbstractType
 {
     protected $selected;
     protected $thumbnails;

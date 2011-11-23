@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="genemu.form.type.jqueryfile.class">Genemu\Bundle\FormBundle\Form\Type\JQueryFileType</parameter>
+        <parameter key="genemu.form.type.jqueryfile.class">Genemu\Bundle\FormBundle\Form\Type\JQuery\FileType</parameter>
 
         <parameter key="genemu.form.jqueryfile.root_dir">%kernel.root_dir%/../web</parameter>
         <parameter key="genemu.form.jqueryfile.options" />

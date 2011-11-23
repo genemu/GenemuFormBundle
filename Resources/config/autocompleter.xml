@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="genemu.form.type.jqueryautocompleter.class">Genemu\Bundle\FormBundle\Form\Type\JQuery\AutocompleterType</parameter>
+        <parameter key="genemu.form.type.jqueryautocompleter_entity.class">Genemu\Bundle\FormBundle\Form\Type\Entity\JQuery\AutocompleterType</parameter>
+        <parameter key="genemu.form.type.jqueryautocompleter_document.class">Genemu\Bundle\FormBundle\Form\Type\Document\JQuery\AutocompleterType</parameter>
+    </parameters>
+
+    <services>
+        <service id="genemu.form.type.jqueryautocompleter" class="%genemu.form.type.jqueryautocompleter.class%">
+            <tag name="form.type" alias="genemu_jqueryautocompleter" />
+        </service>
+        <service id="genemu.form.type.jqueryautocompleter_entity" class="%genemu.form.type.jqueryautocompleter_entity.class%">
+            <tag name="form.type" alias="genemu_jqueryautocompleter_entity" />
+            <argument type="service" id="doctrine" />
+        </service>
+        <service id="genemu.form.type.jqueryautocompleter_document" class="%genemu.form.type.jqueryautocompleter_document.class%">
+            <tag name="form.type" alias="genemu_jqueryautocompleter_document" />
+            <argument type="service" id="doctrine.odm.mongodb" />
+        </service>
+    </services>
+
+</container>

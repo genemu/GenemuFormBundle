@@ -9,12 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
+namespace Genemu\Bundle\FormBundle\Tests\Form\Type\JQuery;
+
+use Genemu\Bundle\FormBundle\Tests\Form\Type\TypeTestCase;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class JQueryDateTypeTest extends TypeTestCase
+class DateTypeTest extends TypeTestCase
 {
     public function testDefaultConfigs()
     {

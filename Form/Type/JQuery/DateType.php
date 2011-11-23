@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Form\Type;
+namespace Genemu\Bundle\FormBundle\Form\Type\JQuery;
 
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\AbstractType;
@@ -17,11 +17,9 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
 /**
- * JQueryDateType
- *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class JQueryDateType extends AbstractType
+class DateType extends AbstractType
 {
     protected $options;
 
@@ -42,16 +40,14 @@ class JQueryDateType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $configs = array();
-        if ($options['widget'] != 'single_text' || isset($options['configs']['buttonImage'])) {
-            $configs['showOn'] = 'button';
+        if ('single_text' !== $options['widget'] || isset($options['configs']['buttonImage'])) {
+            $options['configs']['showOn'] = 'button';
         }
-        $configs = array_replace($configs, $options['configs']);
 
         $builder
             ->setAttribute('min_year', min($options['years']))
             ->setAttribute('max_year', max($options['years']))
-            ->setAttribute('configs', $configs);
+            ->setAttribute('configs', $options['configs']);
     }
 
     /**

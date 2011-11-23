@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Form\Type;
+namespace Genemu\Bundle\FormBundle\Form\Type\JQuery;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
@@ -20,12 +20,10 @@ use Symfony\Component\HttpFoundation\File\File;
 use Genemu\Bundle\FormBundle\Form\EventListener\JQueryFileListener;
 
 /**
- * JQueryFileType
- *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  * @author Bernhard Schussek <bernhard.schussek@symfony-project.com>
  */
-class JQueryFileType extends AbstractType
+class FileType extends AbstractType
 {
     protected $options;
     protected $rootDir;

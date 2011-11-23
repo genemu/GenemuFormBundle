@@ -23,7 +23,7 @@ class DoctrineMongoExtensionTest extends DoctrineMongoDBExtension
     protected function loadTypes()
     {
         return array_merge(parent::loadTypes(), array(
-            new Type\JQueryAutocompleterType($this->registry)
+            new Type\Document\JQuery\AutocompleterType($this->registry)
         ));
     }
 }

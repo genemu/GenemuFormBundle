@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Tests\From\Type\Document;
+namespace Genemu\Bundle\FormBundle\Tests\From\Type\Document\JQuery;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -24,7 +24,7 @@ use Genemu\Bundle\FormBundle\Tests\Fixtures\Document\SingleIdentDocument;
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class JQueryAutocompleterTypeTest extends TypeTestCase
+class AutocompleterTypeTest extends TypeTestCase
 {
     const SINGLE_IDENT_CLASS = 'Genemu\Bundle\FormBundle\Tests\Fixtures\Document\SingleIdentDocument';
 
@@ -89,7 +89,10 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $this->assertEquals(array('azerty1' => 'Foo', 'azerty2' => 'Bar'), $form->getAttribute('choice_list')->getChoices());
+        $this->assertEquals(array(
+            array('value' => 'azerty1', 'label' => 'Foo'),
+            array('value' => 'azerty2', 'label' => 'Bar')
+        ), $form->getAttribute('choice_list')->getChoices());
 
         $this->assertNull($form->getData());
         $this->assertEquals('', $form->getClientData());
@@ -116,7 +119,10 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $this->assertEquals(array(1 => 'Foo', 2 => 'Bar'), $form->getAttribute('choice_list')->getChoices());
+        $this->assertEquals(array(
+            array('value' => 1, 'label' => 'Foo'),
+            array('value' => 2, 'label' => 'Bar')
+        ), $form->getAttribute('choice_list')->getChoices());
 
         $this->assertNull($form->getData());
         $this->assertEquals('', $form->getClientData());
@@ -148,11 +154,14 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
             array('autocompleter' => 'Foo')
         ));
 
-        $this->assertEquals(array('azerty1' => 'Foo', 2 => 'Bar'), $form->getAttribute('choice_list')->getChoices());
+        $this->assertEquals(array(
+            array('value' => 'azerty1', 'label' => 'Foo'),
+            array('value' => 2, 'label' => 'Bar'),
+        ), $form->getAttribute('choice_list')->getChoices());
 
         $this->assertEquals(json_encode(array(
-            'label' => 'Bar',
-            'value' => 2
+            'value' => 2,
+            'label' => 'Bar'
         )), $form->getClientData());
         $this->assertSame($document2, $form->getData());
 
@@ -187,11 +196,14 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
             array('autocompleter' => 'Foo, Bar, ')
         ));
 
-        $this->assertEquals(array(1 => 'Foo', 2 => 'Bar'), $form->getAttribute('choice_list')->getChoices());
+        $this->assertEquals(array(
+            array('value' => 1, 'label' => 'Foo'),
+            array('value' => 2, 'label' => 'Bar'),
+        ), $form->getAttribute('choice_list')->getChoices());
 
         $this->assertEquals(json_encode(array(
-            array('label' => 'Foo', 'value' => 1),
-            array('label' => 'Bar', 'value' => 2),
+            array('value' => 1, 'label' => 'Foo'),
+            array('value' => 2, 'label' => 'Bar'),
         )), $form->getClientData());
         $this->assertSame($existing, $form->getData());
 

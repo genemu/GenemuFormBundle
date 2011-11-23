@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="genemu.form.type.jquerydate.class">Genemu\Bundle\FormBundle\Form\Type\JQueryDateType</parameter>
+        <parameter key="genemu.form.type.jquerydate.class">Genemu\Bundle\FormBundle\Form\Type\JQuery\DateType</parameter>
 
         <parameter key="genemu.form.jquerydate.options" />
     </parameters>

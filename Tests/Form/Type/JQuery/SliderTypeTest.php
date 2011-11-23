@@ -13,10 +13,12 @@ namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
 
 use Symfony\Component\Form\Exception\FormException;
 
+use Genemu\Bundle\FormBundle\Tests\Form\Type\TypeTestCase;
+
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class JQuerySliderTypeTest extends TypeTestCase
+class SliderTypeTest extends TypeTestCase
 {
     public function testDefaultConfigs()
     {

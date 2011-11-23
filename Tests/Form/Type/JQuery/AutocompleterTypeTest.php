@@ -9,44 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
+namespace Genemu\Bundle\FormBundle\Tests\Form\Type\JQuery;
 
-use Genemu\Bundle\FormBundle\Tests\Form\Extension\DoctrineOrmExtensionTest;
-use Genemu\Bundle\FormBundle\Tests\DoctrineOrmTestCase;
+use Genemu\Bundle\FormBundle\Tests\Form\Type\TypeTestCase;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class JQueryAutocompleterTypeTest extends TypeTestCase
+class AutocompleterTypeTest extends TypeTestCase
 {
     const CHOICELIST_CLASS = 'Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList';
-
-    private $em;
-
-    public function setUp()
-    {
-        if (!class_exists('Doctrine\\Common\\Version')) {
-            $this->markTestSkipped('Doctrine is not available.');
-        }
-
-        $this->em = DoctrineOrmTestCase::createTestEntityManager();
-
-        parent::setUp();
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        $this->em = null;
-    }
-
-    protected function getExtensions()
-    {
-        return array_merge(parent::getExtensions(), array(
-            new DoctrineOrmExtensionTest($this->createRegistryMock('default', $this->em)),
-        ));
-    }
 
     public function testDefaultConfigs()
     {
@@ -70,17 +42,21 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
         $form->setData('foo');
         $view = $form->createView();
 
-        $this->assertTrue($form->hasAttribute('choice_list'));
         $this->assertEquals(array(
-            array('label' => 'Foo', 'value' => 'foo'),
-            array('label' => 'Bar', 'value' => 'bar')
+            array('value' => 'foo', 'label' => 'Foo'),
+            array('value' => 'bar', 'label' => 'Bar')
         ), $form->getAttribute('choice_list')->getChoices());
 
-        $this->assertTrue($form->hasAttribute('multiple'));
         $this->assertFalse($form->getAttribute('multiple'));
 
-        $this->assertEquals('foo', $form->getClientData());
-        $this->assertEquals('foo', $view->get('value'));
+        $this->assertEquals(json_encode(array(
+            'value' => 'foo',
+            'label' => 'Foo'
+        )), $form->getClientData());
+        $this->assertEquals(json_encode(array(
+            'value' => 'foo',
+            'label' => 'Foo'
+        )), $view->get('value'));
         $this->assertEquals('Foo', $view->get('autocompleter_value'));
     }
 
@@ -90,25 +66,29 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
             'route_name' => 'genemu_choice'
         ));
 
-        $form->setData(array('foo' => 'Foo'));
+        $form->setData('foo');
         $view = $form->createView();
         $form->bind(array(
-            json_encode(array('bar' => 'Bar')),
-            array('autocompleter' => 'Bar')
+            json_encode(array(
+                'label' => 'bar',
+                'value' => 'bar'
+            )),
+            array('autocompleter' => 'bar')
         ));
 
-        $this->assertFalse($form->hasAttribute('choice_list'));
+        $this->assertEquals(array(), $form->getAttribute('choice_list')->getChoices());
         $this->assertEquals(json_encode(array(
-            'label' => 'Foo', 'value' => 'foo'
+            'label' => 'foo',
+            'value' => 'foo'
         )), $view->get('value'));
 
-        $this->assertEquals('Foo', $view->get('autocompleter_value'));
+        $this->assertEquals('foo', $view->get('autocompleter_value'));
 
-        $this->assertEquals(array('bar' => 'Bar'), $form->getData());
+        $this->assertEquals('bar', $form->getData());
         $this->assertEquals(json_encode(array(
-            'label' => 'Bar', 'value' => 'bar'
+            'label' => 'bar',
+            'value' => 'bar'
         )), $form->getClientData());
-
     }
 
     public function testValueMultipleWithAjax()
@@ -121,7 +101,10 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
         $form->setData(array('foo' => 'Foo', 'bar' => 'Bar'));
         $view = $form->createView();
         $form->bind(array(
-            json_encode(array('foo' => 'Foo', 'ri' => 'Ri')),
+            json_encode(array(
+                array('label' => 'Foo', 'value' => 'foo'),
+                array('label' => 'Ri', 'value' => 'ri')
+            )),
             array('autocompleter' => 'Foo, Ri, ')
         ));
 
@@ -130,6 +113,7 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
             array('label' => 'Foo', 'value' => 'foo'),
             array('label' => 'Ri', 'value' => 'ri'),
         )), $form->getClientData());
+
         $this->assertEquals(array('foo' => 'Foo', 'ri' => 'Ri'), $form->getData());
 
         $this->assertEquals(json_encode(array(
@@ -149,12 +133,14 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
         $form->setData(array('foo', 'bar'));
         $view = $form->createView();
         $form->bind(array(
-            json_encode(array('foo')),
+            json_encode(array(
+                array('label' => 'Foo', 'value' => 'foo')
+            )),
             array('autocompleter' => 'Foo')
         ));
 
         $this->assertEquals(json_encode(array(
-            array('label' => 'Foo', 'value' => 'foo'),
+            array('value' => 'foo', 'label' => 'Foo'),
         )), $form->getClientData());
 
         $this->assertEquals(array('foo'), $form->getData());
@@ -166,21 +152,10 @@ class JQueryAutocompleterTypeTest extends TypeTestCase
         ), $form->getAttribute('choice_list')->getChoices());
 
         $this->assertEquals(json_encode(array(
-            array('label' => 'Foo', 'value' => 'foo'),
-            array('label' => 'Bar', 'value' => 'bar')
+            array('value' => 'foo', 'label' => 'Foo'),
+            array('value' => 'bar', 'label' => 'Bar')
         )), $view->get('value'));
 
         $this->assertEquals('Foo, Bar, ', $view->get('autocompleter_value'));
-    }
-
-    protected function createRegistryMock($name, $em)
-    {
-        if (isset($_SERVER['SYMFONY_VERSION']) && $_SERVER['SYMFONY_VERSION'] === 'origin/master') {
-            $registry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        } else {
-            $registry = $this->getMock('Symfony\Bridge\Doctrine\RegistryInterface');
-        }
-
-        return $registry;
     }
 }

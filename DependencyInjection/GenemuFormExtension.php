@@ -37,8 +37,8 @@ class GenemuFormExtension extends Extension
 
         $loader->load('twig.xml');
 
-        $loader->load('jqueryautocompleter.xml');
-        $loader->load('jqueryslider.xml');
+        $loader->load('autocompleter.xml');
+        $loader->load('slider.xml');
 
         if (isset($configs['captcha'])) {
             $loader->load('captcha.xml');
@@ -56,17 +56,17 @@ class GenemuFormExtension extends Extension
         }
 
         if (isset($configs['jquerydate'])) {
-            $loader->load('jquerydate.xml');
+            $loader->load('date.xml');
             $this->configureJQueryDate($configs['jquerydate'], $container);
         }
 
         if (isset($configs['jqueryfile'])) {
-            $loader->load('jqueryfile.xml');
+            $loader->load('file.xml');
             $this->configureJQueryFile($configs['jqueryfile'], $container);
         }
 
         if (isset($configs['jqueryimage'])) {
-            $loader->load('jqueryimage.xml');
+            $loader->load('image.xml');
             $this->configureJQueryImage($configs['jqueryimage'], $container);
         }
     }
