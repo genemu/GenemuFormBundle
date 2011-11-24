@@ -36,9 +36,12 @@ class GenemuFormExtension extends Extension
         $configs = $this->processConfiguration($configuration, $configs);
 
         $loader->load('twig.xml');
-
-        $loader->load('autocompleter.xml');
         $loader->load('slider.xml');
+        $loader->load('autocompleter.xml');
+
+        if ($configs['jqueryautocompleter']['mongodb']) {
+            $loader->load('autocompleter_mongodb.xml');
+        }
 
         if (isset($configs['captcha'])) {
             $loader->load('captcha.xml');

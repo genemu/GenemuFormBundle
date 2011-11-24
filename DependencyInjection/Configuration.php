@@ -39,6 +39,7 @@ class Configuration implements ConfigurationInterface
         $this->addJQueryDate($rootNode);
         $this->addJQueryFile($rootNode);
         $this->addJQueryImage($rootNode);
+        $this->addJQueryAutocomplete($rootNode);
 
         return $treeBuilder;
     }
@@ -151,7 +152,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('jqueryimage')
-                    ->canBeUnset('jqueryimage')
+                    ->canBeUnset()
                     ->children()
                         ->scalarNode('selected')->defaultValue('large')->end()
                         ->variableNode('filters')->defaultValue(array(
@@ -170,5 +171,21 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
+    }
+
+    protected function addJQueryautocomplete(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('jqueryautocompleter')
+                    ->addDefaultsIfNotSet()
+                    ->canBeUnset()
+                    ->children()
+                        ->booleanNode('mongodb')->defaultFalse()->end()
+                    ->end()
+                ->end()
+            ->end();
+
+        return $rootNode;
     }
 }

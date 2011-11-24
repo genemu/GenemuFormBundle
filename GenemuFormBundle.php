@@ -13,6 +13,7 @@ namespace Genemu\Bundle\FormBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 use Genemu\Bundle\FormBundle\DependencyInjection\Compiler\FormPass;
 
 /**

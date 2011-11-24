@@ -6,25 +6,20 @@
 
     <parameters>
         <parameter key="genemu.form.type.jqueryautocompleter.class">Genemu\Bundle\FormBundle\Form\Type\JQuery\AutocompleterType</parameter>
-        <parameter key="genemu.form.type.ajaxentity.class">Genemu\Bundle\FormBundle\Form\Type\Entity\AjaxEntityType</parameter>
-        <parameter key="genemu.form.type.ajaxdocument.class">Genemu\Bundle\FormBundle\Form\Type\Document\AjaxDocumentType</parameter>
         <parameter key="genemu.form.type.ajaxmodel.class">Genemu\Bundle\FormBundle\Form\Type\Model\AjaxModelType</parameter>
+        <parameter key="genemu.form.type.ajaxentity.class">Genemu\Bundle\FormBundle\Form\Type\Entity\AjaxEntityType</parameter>
     </parameters>
 
     <services>
         <service id="genemu.form.type.jqueryautocompleter" class="%genemu.form.type.jqueryautocompleter.class%">
             <tag name="form.type" alias="genemu_jqueryautocompleter" />
         </service>
+        <service id="genemu.form.type.ajaxmodel" class="%genemu.form.type.ajaxmodel.class%">
+            <tag name="form.type" alias="genemu_ajaxmodel" />
+        </service>
         <service id="genemu.form.type.ajaxentity" class="%genemu.form.type.ajaxentity.class%">
             <tag name="form.type" alias="genemu_ajaxentity" />
             <argument type="service" id="doctrine" />
-        </service>
-        <service id="genemu.form.type.ajaxdocument" class="%genemu.form.type.ajaxdocument.class%">
-            <tag name="form.type" alias="genemu_ajaxdocument" />
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
-        </service>
-        <service id="genemu.form.type.ajaxmodel" class="%genemu.form.type.ajaxmodel.class%">
-            <tag name="form.type" alias="genemu_ajaxmodel" />
         </service>
     </services>
 
