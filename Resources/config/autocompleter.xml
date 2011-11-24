@@ -6,7 +6,7 @@
 
     <parameters>
         <parameter key="genemu.form.type.jqueryautocompleter.class">Genemu\Bundle\FormBundle\Form\Type\JQuery\AutocompleterType</parameter>
-        <parameter key="genemu.form.type.ajaxentity.class">Genemu\Bundle\FormBundle\Form\Type\Entity\AjaxType</parameter>
+        <parameter key="genemu.form.type.ajaxentity.class">Genemu\Bundle\FormBundle\Form\Type\Entity\AjaxEntityType</parameter>
         <parameter key="genemu.form.type.ajaxdocument.class">Genemu\Bundle\FormBundle\Form\Type\Document\AjaxDocumentType</parameter>
         <parameter key="genemu.form.type.ajaxmodel.class">Genemu\Bundle\FormBundle\Form\Type\Model\AjaxModelType</parameter>
     </parameters>
