@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Form\Type\Entity\JQuery;
+namespace Genemu\Bundle\FormBundle\Form\Type\Entity;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
@@ -19,12 +19,12 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-use Genemu\Bundle\FormBundle\Form\ChoiceList\AutocompleteEntityChoiceList;
+use Genemu\Bundle\FormBundle\Form\ChoiceList\AjaxEntityChoiceList;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class AutocompleterType extends AbstractType
+class AjaxEntityType extends AbstractType
 {
     protected $registry;
     protected $method;
@@ -53,18 +53,13 @@ class AutocompleterType extends AbstractType
             'query_builder' => null,
             'choices'       => array(),
             'group_by'      => null,
-            'route_name'    => null,
             'ajax'          => false
         );
 
         $options = array_replace($defaultOptions, $options);
 
-        if ($options['route_name']) {
-            $options['ajax'] = true;
-        }
-
         $method = $this->method;
-        $options['choice_list'] = new AutocompleteEntityChoiceList(
+        $options['choice_list'] = new AjaxEntityChoiceList(
             $this->registry->$method($options['em']),
             $options['class'],
             $options['property'],
@@ -90,6 +85,6 @@ class AutocompleterType extends AbstractType
      */
     public function getName()
     {
-        return 'genemu_jqueryautocompleter_entity';
+        return 'genemu_ajaxentity';
     }
 }

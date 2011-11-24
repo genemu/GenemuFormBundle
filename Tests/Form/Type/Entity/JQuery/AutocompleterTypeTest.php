@@ -246,8 +246,8 @@ class AutocompleterTypeTest extends TypeTestCase
 
         $this->assertEquals(array(), $form->getAttribute('choice_list')->getChoices());
         $this->assertEquals(json_encode(array(
+            'value' => 2,
             'label' => 'Bar',
-            'value' => 2
         )), $form->getClientData());
         $this->assertSame($entity2, $form->getData());
 
@@ -286,7 +286,7 @@ class AutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(array(), $form->getAttribute('choice_list')->getChoices());
 
         $this->assertEquals(json_encode(array(
-            array('label' => 'Bar', 'value' => 2)
+            array('value' => 2, 'label' => 'Bar')
         )), $form->getClientData());
 
         $this->assertSame($existing, $form->getData());

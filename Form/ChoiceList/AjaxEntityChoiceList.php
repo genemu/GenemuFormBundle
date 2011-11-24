@@ -12,19 +12,25 @@
 namespace Genemu\Bundle\FormBundle\Form\ChoiceList;
 
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
+use Symfony\Component\Form\Util\PropertyPath;
 
 use Doctrine\ORM\EntityManager;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class AutocompleteEntityChoiceList extends EntityChoiceList
+class AjaxEntityChoiceList extends EntityChoiceList
 {
     private $ajax;
+    private $propertyPath;
 
     public function __construct(EntityManager $em, $class, $property = null, $queryBuilder = null, $choices = array(), $groupBy = null, $ajax = false)
     {
         $this->ajax = $ajax;
+
+        if ($property) {
+            $this->propertyPath = new PropertyPath($property);
+        }
 
         parent::__construct($em, $class, $property, $queryBuilder, $choices, $groupBy);
     }
@@ -55,5 +61,42 @@ class AutocompleteEntityChoiceList extends EntityChoiceList
         }
 
         return $array;
+    }
+
+    /**
+     * Get intersaction $choices to $ids
+     *
+     * @param array $ids
+     *
+     * @return array $intersect
+     */
+    public function getIntersect(array $ids)
+    {
+        $intersect = array();
+
+        if ($this->ajax) {
+            foreach ($ids as $id) {
+                $entity = $this->getEntity($id);
+
+                if ($this->propertyPath) {
+                    $label = $this->propertyPath->getValue($entity);
+                } else {
+                    $label = (string) $entity;
+                }
+
+                $intersect[] = array(
+                    'value' => $id,
+                    'label' => $label
+                );
+            }
+        } else {
+            foreach ($this->getChoices() as $choice) {
+                if (in_array($choice['value'], $ids)) {
+                    $intersect[] = $choice;
+                }
+            }
+        }
+
+        return $intersect;
     }
 }

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Form\Type\Document\JQuery;
+namespace Genemu\Bundle\FormBundle\Form\Type\Document;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
@@ -18,12 +18,12 @@ use Symfony\Component\Form\FormInterface;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-use Genemu\Bundle\FormBundle\Form\ChoiceList\AutocompleteDocumentChoiceList;
+use Genemu\Bundle\FormBundle\Form\ChoiceList\AjaxDocumentChoiceList;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class AutocompleterType extends AbstractType
+class AjaxDocumentType extends AbstractType
 {
     protected $registry;
 
@@ -47,17 +47,12 @@ class AutocompleterType extends AbstractType
             'property'          => null,
             'query_builder'     => null,
             'template'          => 'choice',
-            'route_name'        => null,
             'ajax'              => false
         );
 
         $options = array_replace($defaultOptions, $options);
 
-        if ($options['route_name']) {
-            $options['ajax'] = true;
-        }
-
-        $options['choice_list'] = new AutocompleteDocumentChoiceList(
+        $options['choice_list'] = new AjaxDocumentChoiceList(
             $this->registry->getManager($options['document_manager']),
             $options['class'],
             $options['property'],
@@ -82,6 +77,6 @@ class AutocompleterType extends AbstractType
      */
     public function getName()
     {
-        return 'genemu_jqueryautocompleter_document';
+        return 'genemu_ajaxdocument';
     }
 }

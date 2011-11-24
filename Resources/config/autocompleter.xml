@@ -6,21 +6,25 @@
 
     <parameters>
         <parameter key="genemu.form.type.jqueryautocompleter.class">Genemu\Bundle\FormBundle\Form\Type\JQuery\AutocompleterType</parameter>
-        <parameter key="genemu.form.type.jqueryautocompleter_entity.class">Genemu\Bundle\FormBundle\Form\Type\Entity\JQuery\AutocompleterType</parameter>
-        <parameter key="genemu.form.type.jqueryautocompleter_document.class">Genemu\Bundle\FormBundle\Form\Type\Document\JQuery\AutocompleterType</parameter>
+        <parameter key="genemu.form.type.ajaxentity.class">Genemu\Bundle\FormBundle\Form\Type\Entity\AjaxType</parameter>
+        <parameter key="genemu.form.type.ajaxdocument.class">Genemu\Bundle\FormBundle\Form\Type\Document\AjaxDocumentType</parameter>
+        <parameter key="genemu.form.type.ajaxpropel_model.class">Genemu\Bundle\FormBundle\Form\Type\Model\AjaxModelType</parameter>
     </parameters>
 
     <services>
         <service id="genemu.form.type.jqueryautocompleter" class="%genemu.form.type.jqueryautocompleter.class%">
             <tag name="form.type" alias="genemu_jqueryautocompleter" />
         </service>
-        <service id="genemu.form.type.jqueryautocompleter_entity" class="%genemu.form.type.jqueryautocompleter_entity.class%">
-            <tag name="form.type" alias="genemu_jqueryautocompleter_entity" />
+        <service id="genemu.form.type.ajaxentity" class="%genemu.form.type.ajaxentity.class%">
+            <tag name="form.type" alias="genemu_ajaxentity" />
             <argument type="service" id="doctrine" />
         </service>
-        <service id="genemu.form.type.jqueryautocompleter_document" class="%genemu.form.type.jqueryautocompleter_document.class%">
-            <tag name="form.type" alias="genemu_jqueryautocompleter_document" />
+        <service id="genemu.form.type.ajaxdocument" class="%genemu.form.type.ajaxdocument.class%">
+            <tag name="form.type" alias="genemu_ajaxdocument" />
             <argument type="service" id="doctrine.odm.mongodb" />
+        </service>
+        <service id="genemu.form.type.ajaxpropel_model" class="%genemu.form.type.ajaxpropel_model.class%">
+            <tag name="form.type" alias="genemu_ajaxpropel_model" />
         </service>
     </services>
 

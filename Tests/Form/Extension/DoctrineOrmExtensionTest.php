@@ -23,7 +23,7 @@ class DoctrineOrmExtensionTest extends DoctrineOrmExtension
     protected function loadTypes()
     {
         return array_merge(parent::loadTypes(), array(
-            new Type\Entity\JQuery\AutocompleterType($this->registry)
+            new Type\Entity\AjaxEntityType($this->registry)
         ));
     }
 }

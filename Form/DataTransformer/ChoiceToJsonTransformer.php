@@ -29,8 +29,8 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
     public function __construct(ArrayChoiceList $choiceList, $widget = 'choice', $multiple = false, $ajax = false)
     {
         $this->choiceList = $choiceList;
-        $this->widget = $widget;
         $this->multiple = $multiple;
+        $this->widget = $widget;
         $this->ajax = $ajax;
     }
 
@@ -43,76 +43,18 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
             return;
         }
 
-        if (!is_array($choices) && !is_scalar($choices)) {
-            throw new UnexpectedTypeException($choices, 'array or scalar');
+        if (is_scalar($choices)) {
+            $choices = array($choices);
         }
 
-        $json = array();
-        if ($this->multiple) {
-            if ($this->ajax) {
-                if ('entity' === $this->widget) {
-                    foreach ($choices as $id) {
-                        $entity = $this->choiceList->getEntity($id);
+        if (!is_array($choices)) {
+            throw new UnexpectedTypeException($choices, 'array');
+        }
 
-                        $json[] = array(
-                            'label' => $entity->__toString(),
-                            'value' => $id
-                        );
-                    }
-                } elseif ('document' === $this->widget) {
-                    foreach ($choices as $id) {
-                        $document = $this->choiceList->getDocument($id);
+        $json = $this->choiceList->getIntersect($choices);
 
-                        $json[] = array(
-                            'label' => $document->__toString(),
-                            'value' => $id
-                        );
-                    }
-                } else {
-                    foreach ($choices as $value => $label) {
-                        $json[] = array(
-                            'label' => $label,
-                            'value' => $value
-                        );
-                    }
-                }
-            } else {
-                foreach ($this->choiceList->getChoices() as $choice) {
-                    if (in_array($choice['value'], $choices)) {
-                        $json[] = $choice;
-                    }
-                }
-            }
-        } else {
-            if ($this->ajax) {
-                if ('entity' === $this->widget) {
-                    $entity = $this->choiceList->getEntity($choices);
-
-                    $json = array(
-                        'label' => $entity->__toString(),
-                        'value' => $choices
-                    );
-                } elseif ('document' === $this->widget) {
-                    $document = $this->choiceList->getDocument($choices);
-
-                    $json = array(
-                        'label' => $document->__toString(),
-                        'value' => $choices
-                    );
-                } else {
-                    $json = array(
-                        'label' => $choices,
-                        'value' => $choices
-                    );
-                }
-            } else {
-                foreach ($this->choiceList->getChoices() as $choice) {
-                    if ($choices === $choice['value']) {
-                        $json = $choice;
-                        break;
-                    }
-                }
-            }
+        if (!$this->multiple) {
+            $json = current($json);
         }
 
         return json_encode($json);

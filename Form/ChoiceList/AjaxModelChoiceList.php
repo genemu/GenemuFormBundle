@@ -11,22 +11,37 @@
 
 namespace Genemu\Bundle\FormBundle\Form\ChoiceList;
 
-use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
+use Symfony\Bridge\Propel1\Form\ChoiceList\ModelChoiceList;
+use Symfony\Component\Form\Util\PropertyPath;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class AutocompleteArrayChoiceList extends ArrayChoiceList
+class AjaxModelChoiceList extends ModelChoiceList
 {
     private $ajax;
+    private $propertyPath;
 
-    public function __construct($choices, $ajax = false)
+    public function __construct($class, $property = null, $choices = array(), $queryObject = null, $ajax = false)
     {
         $this->ajax = $ajax;
 
-        parent::__construct($choices);
+        if ($property) {
+            $this->propertyPath = new PropertyPath($property);
+        }
+
+        parent::__construct($class, $property, $choices, $queryObject);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function load()
+    {
+        if (!$this->ajax) {
+            parent::load();
+        }
+    }
 
     /**
      * {@inheritdoc}
@@ -47,26 +62,34 @@ class AutocompleteArrayChoiceList extends ArrayChoiceList
     }
 
     /**
-     * Get intersaction $choices to $values
+     * Get intersaction $choices to $ids
      *
-     * @param array $values
+     * @param array $ids
      *
      * @return array $intersect
      */
-    public function getIntersect(array $values)
+    public function getIntersect(array $ids)
     {
         $intersect = array();
 
         if ($this->ajax) {
-            foreach ($values as $value => $label) {
+            foreach ($ids as $id) {
+                $model = $this->getModel($id);
+
+                if ($this->propertyPath) {
+                    $label = $this->propertyPath->getValue($model);
+                } else {
+                    $label = (string) $model;
+                }
+
                 $intersect[] = array(
-                    'value' => $value,
+                    'value' => $id,
                     'label' => $label
                 );
             }
         } else {
             foreach ($this->getChoices() as $choice) {
-                if (in_array($choice['value'], $values)) {
+                if (in_array($choice['value'], $ids)) {
                     $intersect[] = $choice;
                 }
             }

@@ -30,7 +30,7 @@ class AutocompleterType extends AbstractType
     public function buildForm(FormBuilder $builder, array $options)
     {
         if (!$options['choice_list']) {
-            $options['choice_list'] = new AutocompleteArrayChoiceList($options['choices']);
+            $options['choice_list'] = new AutocompleteArrayChoiceList($options['choices'], $options['ajax']);
         }
 
         $builder
@@ -96,8 +96,8 @@ class AutocompleterType extends AbstractType
      */
     public function getParent(array $options)
     {
-        if (in_array($options['widget'], array('entity', 'document'))) {
-            return 'genemu_jqueryautocompleter_'.$options['widget'];
+        if (in_array($options['widget'], array('entity', 'document', 'propel_model'))) {
+            return 'genemu_ajax'.$options['widget'];
         }
 
         return 'choice';
