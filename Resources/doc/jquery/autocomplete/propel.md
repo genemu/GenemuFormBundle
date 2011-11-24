@@ -1,5 +1,14 @@
 # Use JQueryAutocomplete to Propel values
 
+## If not use doctrine:
+
+``` yml
+# app/config/config.yml
+genemu_form:
+    jqueryautocompleter:
+        doctrine: false
+```
+
 ## Usage:
 
 ``` php

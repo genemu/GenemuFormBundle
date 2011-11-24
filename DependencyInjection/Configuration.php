@@ -182,6 +182,7 @@ class Configuration implements ConfigurationInterface
                     ->canBeUnset()
                     ->children()
                         ->booleanNode('mongodb')->defaultFalse()->end()
+                        ->booleanNode('doctrine')->defaultTrue()->end()
                     ->end()
                 ->end()
             ->end();

@@ -43,6 +43,10 @@ class GenemuFormExtension extends Extension
             $loader->load('autocompleter_mongodb.xml');
         }
 
+        if ($configs['jqueryautocompleter']['doctrine']) {
+            $loader->load('autocompleter_doctrine.xml');
+        }
+
         if (isset($configs['captcha'])) {
             $loader->load('captcha.xml');
             $this->configureCaptcha($configs['captcha'], $container);
