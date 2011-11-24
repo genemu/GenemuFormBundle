@@ -65,7 +65,7 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
      */
     public function reverseTransform($json)
     {
-        $jsons = json_decode($json[0], true);
+        $jsons = json_decode($json, true);
 
         $choices = array();
         if ($this->multiple) {
