@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Genemu\Bundle\FormBundle\Form\ChoiceList\AjaxDocumentChoiceList;
 
@@ -27,7 +27,7 @@ class AjaxDocumentType extends AbstractType
 {
     protected $registry;
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(DocumentManager $registry)
     {
         $this->registry = $registry;
     }
@@ -40,7 +40,7 @@ class AjaxDocumentType extends AbstractType
         $defaultOptions = array(
             'choices'           => array(),
             'class'             => null,
-            'document_manager'  => null,
+            'document_manager'  => $this->registry,
             'expended'          => null,
             'multiple'          => false,
             'preferred_choices' => array(),
@@ -53,7 +53,7 @@ class AjaxDocumentType extends AbstractType
         $options = array_replace($defaultOptions, $options);
 
         $options['choice_list'] = new AjaxDocumentChoiceList(
-            $this->registry->getManager($options['document_manager']),
+            $registry,
             $options['class'],
             $options['property'],
             $options['query_builder'],
