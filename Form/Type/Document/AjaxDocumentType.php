@@ -53,7 +53,7 @@ class AjaxDocumentType extends AbstractType
         $options = array_replace($defaultOptions, $options);
 
         $options['choice_list'] = new AjaxDocumentChoiceList(
-            $$options['document_manager'],
+            $options['document_manager'],
             $options['class'],
             $options['property'],
             $options['query_builder'],
