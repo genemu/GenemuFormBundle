@@ -302,8 +302,10 @@
                 $field.val(JSON.stringify(terms));
             {% else %}
                 this.value = ui.item.label;
-                $field.val(ui.item.value);
+                terms = ui.item;
             {% endif %}
+                $field.val(JSON.stringify(terms));
+
                 return false;
             }
         };
