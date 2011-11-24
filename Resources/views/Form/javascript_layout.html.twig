@@ -299,7 +299,6 @@
                 terms = $field.val();
                 terms = !terms?[]:JSON.parse(terms);
                 terms.push(ui.item);
-                $field.val(JSON.stringify(terms));
             {% else %}
                 this.value = ui.item.label;
                 terms = ui.item;
