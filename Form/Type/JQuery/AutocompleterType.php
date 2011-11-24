@@ -96,7 +96,7 @@ class AutocompleterType extends AbstractType
      */
     public function getParent(array $options)
     {
-        if (in_array($options['widget'], array('entity', 'document', 'propel_model'))) {
+        if (in_array($options['widget'], array('entity', 'document', 'model'))) {
             return 'genemu_ajax'.$options['widget'];
         }
 

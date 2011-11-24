@@ -60,7 +60,7 @@ class AjaxModelType extends AbstractType
      */
     public function getParent(array $options)
     {
-        return 'propel_model';
+        return 'model';
     }
 
     /**
@@ -68,6 +68,6 @@ class AjaxModelType extends AbstractType
      */
     public function getName()
     {
-        return 'genemu_ajaxpropel_model';
+        return 'genemu_ajaxmodel';
     }
 }

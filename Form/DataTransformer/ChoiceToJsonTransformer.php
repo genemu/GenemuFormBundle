@@ -70,7 +70,7 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
         $choices = array();
         if ($this->multiple) {
             foreach ($jsons as $json) {
-                if ($this->ajax && !in_array($this->widget, array('entity', 'document'))) {
+                if ($this->ajax && !in_array($this->widget, array('entity', 'document', 'model'))) {
                     $choices[$json['value']] = $json['label'];
                 } else {
                     $choices[] = $json['value'];

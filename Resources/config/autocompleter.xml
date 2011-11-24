@@ -8,7 +8,7 @@
         <parameter key="genemu.form.type.jqueryautocompleter.class">Genemu\Bundle\FormBundle\Form\Type\JQuery\AutocompleterType</parameter>
         <parameter key="genemu.form.type.ajaxentity.class">Genemu\Bundle\FormBundle\Form\Type\Entity\AjaxType</parameter>
         <parameter key="genemu.form.type.ajaxdocument.class">Genemu\Bundle\FormBundle\Form\Type\Document\AjaxDocumentType</parameter>
-        <parameter key="genemu.form.type.ajaxpropel_model.class">Genemu\Bundle\FormBundle\Form\Type\Model\AjaxModelType</parameter>
+        <parameter key="genemu.form.type.ajaxmodel.class">Genemu\Bundle\FormBundle\Form\Type\Model\AjaxModelType</parameter>
     </parameters>
 
     <services>
@@ -23,8 +23,8 @@
             <tag name="form.type" alias="genemu_ajaxdocument" />
             <argument type="service" id="doctrine.odm.mongodb" />
         </service>
-        <service id="genemu.form.type.ajaxpropel_model" class="%genemu.form.type.ajaxpropel_model.class%">
-            <tag name="form.type" alias="genemu_ajaxpropel_model" />
+        <service id="genemu.form.type.ajaxmodel" class="%genemu.form.type.ajaxmodel.class%">
+            <tag name="form.type" alias="genemu_ajaxmodel" />
         </service>
     </services>
 
