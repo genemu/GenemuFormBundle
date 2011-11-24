@@ -32,9 +32,8 @@
             })|raw }}
 
             {% set attr = attr|merge({'size': 10}) %}
-            {% set id = id ~ '_datepicker' %}
+            {% set id = 'datepicker_' ~ id %}
             {{ block('hidden_widget') }}
-            {{ form_widget(form.datepicker) }}
         </div>
     {% endif %}
 {% endspaceless %}
