@@ -2,7 +2,7 @@
     "name": "genemu/form-bundle",
     "type": "form-bundle",
     "description": "Extra Form",
-    "keywords": ['form', 'extra form'],
+    "keywords": ["form", "extra form"],
     "version": "1.0",
     "license": "MIT",
     "authors": [
