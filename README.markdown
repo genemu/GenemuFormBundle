@@ -16,9 +16,9 @@ Installation is quick and easy, 5 steps process
 
 Check your Symfony2 version.
 
-[2.0.*](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/instalation/2.0.md)
+[Symfony2 branch v2.*](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/instalation/2.0.md)
 
-[master](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/instalation/master.md)
+[Symfony2 branch master](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/instalation/master.md)
 
 ### Step 2: Configure the Autoloader
 
@@ -72,30 +72,34 @@ $ php app/console assets:install web/
 
 ## FormType
 
-[Captcha GD usage](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/captcha_gd/index.md)
+### Cpatcha GD
 
-Using ReCaptcha from [Google librairie](http://www.google.com/recaptcha):
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/captcha_gd/index.md)
 
-[ReCaptcha usage](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/recaptcha/index.md)
+### ReCaptcha from [Google librairie](http://www.google.com/recaptcha):
 
-Using [Tinymce](http://www.tinymce.com/):
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/recaptcha/index.md)
 
-[Tinymce usage](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/tinymce/index.md)
+### [Tinymce](http://www.tinymce.com/):
 
-Using [JQueryUi librairie](http://jqueryui.com/):
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/tinymce/index.md)
+
+### [JQueryUi librairie](http://jqueryui.com/):
 
 - [Datepicker](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/datepicker/index.md)
 - [Slider](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/slider/index.md)
 - [Autocomplete](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/autocomplete/index.md)
 
-Using [uplodify librairie](http://www.uploadify.com):
+### File ([uplodify librairie](http://www.uploadify.com)):
 
-[File usage](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/file/index.md)
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/file/index.md)
 
 You can use [jcrop](http://deepliquid.com/content/Jcrop.html) to uploadify.
 You send the image and crop or apply filter.
 
-[Image usage](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/image/index.md)
+### Image:
+
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/image/index.md)
 
 ## Note
 
