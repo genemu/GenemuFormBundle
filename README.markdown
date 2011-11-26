@@ -76,11 +76,11 @@ $ php app/console assets:install web/
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/captcha_gd/index.md)
 
-### ReCaptcha from [Google librairie](http://www.google.com/recaptcha):
+### ReCaptcha ([Google librairie](http://www.google.com/recaptcha)):
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/recaptcha/index.md)
 
-### [Tinymce](http://www.tinymce.com/):
+### Tinymce ([download](http://www.tinymce.com/)):
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/tinymce/index.md)
 
@@ -92,10 +92,10 @@ $ php app/console assets:install web/
 
 ### File ([uplodify librairie](http://www.uploadify.com)):
 
-[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/file/index.md)
-
 You can use [jcrop](http://deepliquid.com/content/Jcrop.html) to uploadify.
 You send the image and crop or apply filter.
+
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/file/index.md)
 
 ### Image:
 
