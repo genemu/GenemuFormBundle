@@ -23,34 +23,34 @@ class ReCaptchaTypeTest extends TypeTestCase
 
         $this->assertEquals('publicKey', $view->get('public_key'));
         $this->assertEquals('http://api.recaptcha.net', $view->get('server'));
-        $this->assertEquals(array('theme' => 'clean', 'lang' => 'en'), $view->get('configs'));
+        $this->assertEquals(array('lang' => 'en'), $view->get('configs'));
 
         $this->assertEquals(array(
-            'server_host' => 'api-verify.recaptcha.net',
-            'server_port' => 80,
-            'server_path' => '/verify',
-            'server_timeout' => 10
+            'host' => 'api-verify.recaptcha.net',
+            'port' => 80,
+            'path' => '/verify',
+            'timeout' => 10,
         ), $form->getAttribute('option_validator'));
     }
 
     public function testConfigs()
     {
         $form = $this->factory->create('genemu_recaptcha', null, array(
-            'theme' => 'blackglass',
-            'server_timeout' => 30,
-            'use_ssl' => true
+            'configs' => array(
+                'theme' => 'blackglass',
+            ),
+            'validator' => array('timeout' => 30),
         ));
         $view = $form->createView();
 
         $this->assertEquals('publicKey', $view->get('public_key'));
-        $this->assertEquals('https://api-secure.recaptcha.net', $view->get('server'));
         $this->assertEquals(array('theme' => 'blackglass', 'lang' => 'en'), $view->get('configs'));
 
         $this->assertEquals(array(
-            'server_host' => 'api-verify.recaptcha.net',
-            'server_port' => 80,
-            'server_path' => '/verify',
-            'server_timeout' => 30
+            'host' => 'api-verify.recaptcha.net',
+            'port' => 80,
+            'path' => '/verify',
+            'timeout' => 30
         ), $form->getAttribute('option_validator'));
     }
 }

@@ -34,159 +34,244 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('genenu_form');
 
         $this->addCaptcha($rootNode);
+        $this->addRecaptcha($rootNode);
         $this->addTinymce($rootNode);
-        $this->addReCaptcha($rootNode);
-        $this->addJQueryDate($rootNode);
-        $this->addJQueryFile($rootNode);
-        $this->addJQueryImage($rootNode);
-        $this->addJQueryAutocomplete($rootNode);
+        $this->addDate($rootNode);
+        $this->addFile($rootNode);
+        $this->addImage($rootNode);
+        $this->addAutocompleter($rootNode);
 
         return $treeBuilder;
     }
 
-    protected function addCaptcha(ArrayNodeDefinition $rootNode)
+    /**
+     * Add Configuration Captcha
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addCaptcha(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()
                 ->arrayNode('captcha')
-                ->canBeUnset()
-                ->children()
-                    ->scalarNode('width')->defaultValue(100)->end()
-                    ->scalarNode('height')->defaultValue(30)->end()
-                    ->scalarNode('length')->defaultValue(4)->end()
-                    ->scalarNode('format')->defaultValue('png')->end()
-                    ->scalarNode('chars')->defaultValue('0123456789')->end()
-                    ->scalarNode('font_size')->defaultValue(18)->end()
-                    ->variableNode('font_color')
-                        ->defaultValue(array(
-                            '252525',
-                            '8B8787',
-                            '550707',
-                            '3526E6',
-                            '88531E'
-                        ))
-                    ->end()
-                    ->scalarNode('font_dir')
-                        ->defaultValue('%kernel.root_dir%/../web/bundles/genemuform/fonts')
-                    ->end()
-                    ->variableNode('fonts')
-                        ->defaultValue(array(
-                            'akbar.ttf',
-                            'brushcut.ttf',
-                            'molten.ttf',
-                            'planetbe.ttf',
-                            'whoobub.ttf'
-                        ))
-                    ->end()
-                    ->scalarNode('background_color')->defaultValue('DDDDDD')->end()
-                    ->scalarNode('border_color')->defaultValue('000000')->end()
-                ->end()
-            ->end();
-    }
-
-    protected function addTinymce(ArrayNodeDefinition $rootNode)
-    {
-        $rootNode
-            ->children()
-                ->arrayNode('tinymce')
                     ->canBeUnset()
+                    ->treatNullLike(array('enabled' => true))
+                    ->treatTrueLike(array('enabled' => true))
                     ->children()
-                        ->scalarNode('theme')->defaultValue('advanced')->end()
-                        ->scalarNode('script_url')->isRequired()->end()
-                        ->variableNode('configs')->end()
+                        ->booleanNode('enabled')->defaultTrue()->end()
+                        ->scalarNode('position')->defaultValue('left')->end()
+                        ->scalarNode('width')->defaultValue(100)->end()
+                        ->scalarNode('height')->defaultValue(30)->end()
+                        ->scalarNode('length')->defaultValue(4)->end()
+                        ->scalarNode('format')->defaultValue('png')->end()
+                        ->arrayNode('chars')
+                            ->defaultValue(range(0, 9))
+                            ->beforeNormalization()
+                                ->ifTrue(function($v) { return !is_array($v); })
+                                ->then(function($v) { return str_split($v); })
+                            ->end()
+                            ->beforeNormalization()
+                                ->always()
+                                ->then(function($v) {
+                                    return array_filter($v, function($v) {
+                                        return ' ' !== $v && $v;
+                                    });
+                                })
+                            ->end()
+                            ->prototype('scalar')->end()
+                        ->end()
+                        ->scalarNode('font_size')->defaultValue(18)->end()
+                        ->arrayNode('font_color')
+                            ->defaultValue(array('252525', '8B8787', '550707', '3526E6', '88531E'))
+                            ->beforeNormalization()
+                                ->always()
+                                ->then(function($v) {
+                                    return array_filter($v, function($v) {
+                                        $v = preg_replace('/[^0-9A-Fa-f]/', '', $v);
+
+                                        return in_array(strlen($v), array(3, 9));
+                                    });
+                                })
+                            ->end()
+                            ->prototype('array')->end()
+                        ->end()
+                        ->scalarNode('font_dir')
+                            ->defaultValue('%kernel.root_dir%/../web/bundles/genemuform/fonts')
+                        ->end()
+                        ->arrayNode('fonts')
+                            ->defaultValue(
+                                array('akbar.ttf', 'brushcut.ttf', 'molten.ttf', 'planetbe.ttf', 'whoobub.ttf')
+                            )
+                            ->prototype('array')->end()
+                        ->end()
+                        ->scalarNode('background_color')->defaultValue('DDDDDD')->end()
+                        ->scalarNode('border_color')->defaultValue('000000')->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
-    protected function addReCaptcha(ArrayNodeDefinition $rootNode)
+    /**
+     * Add configuration Recaptcha
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addRecaptcha(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()
                 ->arrayNode('recaptcha')
                     ->canBeUnset()
+                    ->treatNullLike(array('enabled' => true))
+                    ->treatTrueLike(array('enabled' => true))
                     ->children()
-                        ->scalarNode('theme')->defaultValue('clean')->end()
+                        ->booleanNode('enabled')->defaultTrue()->end()
+                        ->scalarNode('server_url')->defaultValue('http://api.recaptcha.net')->end()
                         ->scalarNode('public_key')->isRequired()->end()
                         ->scalarNode('private_key')->isRequired()->end()
-                        ->booleanNode('use_ssl')->defaultFalse()->end()
-                        ->scalarNode('server_url')->defaultValue('http://api.recaptcha.net')->end()
-                        ->scalarNode('server_url_ssl')->defaultValue('https://api-secure.recaptcha.net')->end()
-                        ->variableNode('options')->end()
+                        ->arrayNode('ssl')
+                            ->canBeUnset()
+                            ->treatNullLike(array('use' => true))
+                            ->treatTrueLike(array('use' => true))
+                            ->children()
+                                ->booleanNode('use')->defaultTrue()->end()
+                                ->scalarNode('server_url')
+                                    ->defaultValue('https://api-secure.recaptcha.net')
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->variableNode('configs')->defaultValue(array())->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
-    protected function addJQueryDate(ArrayNodeDefinition $rootNode)
+    /**
+     * Add configuration Tinymce
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addTinymce(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()
-                ->arrayNode('jquerydate')
+                ->arrayNode('tinymce')
                     ->canBeUnset()
+                    ->treatNullLike(array('enabled' => true))
+                    ->treatTrueLike(array('enabled' => true))
                     ->children()
-                        ->variableNode('configs')->end()
+                        ->booleanNode('enabled')->defaultTrue()->end()
+                        ->scalarNode('theme')->defaultValue('advanced')->end()
+                        ->scalarNode('script_url')->end()
+                        ->variableNode('configs')->defaultValue(array())->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
-    protected function addJQueryFile(ArrayNodeDefinition $rootNode)
+    /**
+     * Add configuration Date
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addDate(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()
-                ->arrayNode('jqueryfile')
+                ->arrayNode('date')
                     ->canBeUnset()
+                    ->treatNullLike(array('enabled' => true))
+                    ->treatTrueLike(array('enabled' => true))
                     ->children()
+                        ->booleanNode('enabled')->defaultTrue()->end()
+                        ->variableNode('configs')->defaultValue(array())->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * Add configuration File
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addFile(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('file')
+                    ->canBeUnset()
+                    ->treatNullLike(array('enabled' => true))
+                    ->treatTrueLike(array('enabled' => true))
+                    ->children()
+                        ->booleanNode('enabled')->defaultTrue()->end()
                         ->scalarNode('uploader')->isRequired()->end()
-                        ->scalarNode('cancel_img')->isRequired()->end()
-                        ->scalarNode('folder')->isRequired()->end()
-                        ->variableNode('configs')->end()
+                        ->scalarNode('cancel_img')->defaultValue('/bundles/genemuform/images/cancel.png')->end()
+                        ->scalarNode('folder')->defaultValue('/upload')->end()
+                        ->variableNode('configs')->defaultValue(array())->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
-    protected function addJQueryImage(ArrayNodeDefinition $rootNode)
+    /**
+     * Add configuration Image
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addImage(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()
-                ->arrayNode('jqueryimage')
+                ->arrayNode('image')
                     ->canBeUnset()
+                    ->treatNullLike(array('enabled' => true))
+                    ->treatTrueLike(array('enabled' => true))
                     ->children()
+                        ->booleanNode('enabled')->defaultTrue()->end()
                         ->scalarNode('selected')->defaultValue('large')->end()
-                        ->variableNode('filters')->defaultValue(array(
-                            'rotate',
-                            'bw',
-                            'negative',
-                            'sepia',
-                            'crop'
-                        ))->end()
-                        ->variableNode('thumbnails')->defaultValue(array(
-                            'small'  => array(100, 100),
-                            'medium' => array(200, 200),
-                            'large'  => array(500, 500),
-                            'extra'  => array(1024, 768)
-                        ))->end()
+                        ->arrayNode('filters')
+                            ->defaultValue(array('rotate', 'bw', 'negative', 'sepia', 'crop'))
+                            ->prototype('scalar')->end()
+                        ->end()
+                        ->arrayNode('thumbnails')
+                            ->defaultValue(array(
+                                'small' => array(100, 100),
+                                'medium' => array(200, 200),
+                                'large' => array(500, 500),
+                                'extra' => array(1024, 768)
+                            ))
+                            ->prototype('scalar')->end()
+                        ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
-    protected function addJQueryautocomplete(ArrayNodeDefinition $rootNode)
+    /**
+     * Add configuration Autocompleter
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addAutocompleter(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()
-                ->arrayNode('jqueryautocompleter')
-                    ->addDefaultsIfNotSet()
+                ->arrayNode('autocompleter')
                     ->canBeUnset()
+                    ->addDefaultsIfNotSet()
                     ->children()
-                        ->booleanNode('mongodb')->defaultFalse()->end()
                         ->booleanNode('doctrine')->defaultTrue()->end()
+                        ->booleanNode('mongodb')->defaultFalse()->end()
                     ->end()
                 ->end()
-            ->end();
-
-        return $rootNode;
+            ->end()
+        ;
     }
 }

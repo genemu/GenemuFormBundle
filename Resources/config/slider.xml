@@ -4,12 +4,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="genemu.form.type.jqueryslider.class">Genemu\Bundle\FormBundle\Form\Type\JQuery\SliderType</parameter>
-    </parameters>
-
     <services>
-        <service id="genemu.form.type.jqueryslider" class="%genemu.form.type.jqueryslider.class%">
+        <service id="genemu.form.type.slider" class="%genemu.form.namespace.type%\SliderType">
+            <tag name="form.type" alias="genemu_slider" />
+        </service>
+        <service id="genemu.form.type.jqueryslider" class="%genemu.form.namespace.jquery%\SliderType">
             <tag name="form.type" alias="genemu_jqueryslider" />
         </service>
     </services>

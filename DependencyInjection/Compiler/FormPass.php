@@ -13,6 +13,8 @@ namespace Genemu\Bundle\FormBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\Config\FileLocator;
 
 /**
  * Add a new twig.form.resources
@@ -26,7 +28,7 @@ class FormPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $templates = array('div', 'javascript', 'stylesheet');
+        $templates = array('div', 'jquery', 'stylesheet');
         $resources = $container->getParameter('twig.form.resources');
 
         foreach ($templates as $template) {

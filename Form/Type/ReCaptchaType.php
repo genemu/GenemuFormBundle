@@ -24,21 +24,24 @@ use Symfony\Component\Form\FormValidatorInterface;
  */
 class ReCaptchaType extends AbstractType
 {
-    protected $validator;
-    protected $publicKey;
-    protected $options;
+    private $validator;
+    private $publicKey;
+    private $serverUrl;
+    private $options;
 
     /**
      * Construct
      *
      * @param FormValidatoInterface $validator
      * @param string                $pulicKey
+     * @param string                $serverUrl
      * @param array                 $options
      */
-    public function __construct(FormValidatorInterface $validator, $publicKey, array $options)
+    public function __construct(FormValidatorInterface $validator, $publicKey, $serverUrl, array $options)
     {
         $this->validator = $validator;
         $this->publicKey = $publicKey;
+        $this->serverUrl = $serverUrl;
         $this->options = $options;
     }
 
@@ -47,23 +50,12 @@ class ReCaptchaType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $optionValidator = array(
-            'server_host' => $options['server_host'],
-            'server_port' => $options['server_port'],
-            'server_path' => $options['server_path'],
-            'server_timeout' => $options['server_timeout']
-        );
-
-        $configs = array(
-            'theme' => $options['theme'],
-            'lang' => \Locale::getDefault()
-        );
+        $options = $this->getDefaultOptions($options);
 
         $builder
             ->addValidator($this->validator)
-            ->setAttribute('option_validator', $optionValidator)
-            ->setAttribute('server', $this->getServerUrl($options))
-            ->setAttribute('configs', $configs);
+            ->setAttribute('option_validator', $options['validator'])
+            ->setAttribute('configs', $options['configs']);
     }
 
     /**
@@ -73,7 +65,7 @@ class ReCaptchaType extends AbstractType
     {
         $view
             ->set('public_key', $this->publicKey)
-            ->set('server', $form->getAttribute('server'))
+            ->set('server', $this->serverUrl)
             ->set('configs', $form->getAttribute('configs'));
     }
 
@@ -82,14 +74,20 @@ class ReCaptchaType extends AbstractType
      */
     public function getDefaultOptions(array $options)
     {
-        $defaultOptions = array_merge(array(
-            'server_host' => 'api-verify.recaptcha.net',
-            'server_port' => 80,
-            'server_path' => '/verify',
-            'server_timeout' => 10
-        ), $this->options);
+        $defaultOptions = array(
+            'configs' => array_merge($this->options, array(
+                'lang' => \Locale::getDefault(),
+            )),
+            'validator' => array(
+                'host' => 'api-verify.recaptcha.net',
+                'port' => 80,
+                'path' => '/verify',
+                'timeout' => 10,
+            ),
+            'error_bubbling' => false,
+        );
 
-        return array_replace($defaultOptions, $options);
+        return array_replace_recursive($defaultOptions, $options);
     }
 
     /**
@@ -98,17 +96,5 @@ class ReCaptchaType extends AbstractType
     public function getName()
     {
         return 'genemu_recaptcha';
-    }
-
-    /**
-     * Return a server url for option use_ssl
-     *
-     * @param array $options
-     *
-     * @return url server for option use_ssl
-     */
-    protected function getServerUrl(array $options)
-    {
-        return $options['use_ssl']?$options['server_url_ssl']:$options['server_url'];
     }
 }

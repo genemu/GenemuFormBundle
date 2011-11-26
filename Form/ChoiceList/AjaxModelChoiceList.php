@@ -15,6 +15,8 @@ use Symfony\Bridge\Propel1\Form\ChoiceList\ModelChoiceList;
 use Symfony\Component\Form\Util\PropertyPath;
 
 /**
+ * AjaxModelChoiceList
+ *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 class AjaxModelChoiceList extends ModelChoiceList
@@ -22,7 +24,16 @@ class AjaxModelChoiceList extends ModelChoiceList
     private $ajax;
     private $propertyPath;
 
-    public function __construct($class, $property = null, $choices = array(), $queryObject = null, $ajax = false)
+    /**
+     * Construct
+     *
+     * @param string         $class
+     * @param string         $property
+     * @param array|\Closure $choices
+     * @param QueryObject    $qo
+     * @param boolean        $ajax
+     */
+    public function __construct($class, $property = null, $choices = array(), $qo = null, $ajax = false)
     {
         $this->ajax = $ajax;
 
@@ -30,7 +41,7 @@ class AjaxModelChoiceList extends ModelChoiceList
             $this->propertyPath = new PropertyPath($property);
         }
 
-        parent::__construct($class, $property, $choices, $queryObject);
+        parent::__construct($class, $property, $choices, $qo);
     }
 
     /**

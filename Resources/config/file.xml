@@ -5,17 +5,20 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="genemu.form.type.jqueryfile.class">Genemu\Bundle\FormBundle\Form\Type\JQuery\FileType</parameter>
-
-        <parameter key="genemu.form.jqueryfile.root_dir">%kernel.root_dir%/../web</parameter>
-        <parameter key="genemu.form.jqueryfile.options" />
+        <parameter key="genemu.form.file.root_dir">%kernel.root_dir%/../web</parameter>
+        <parameter key="genemu.form.file.upload_dir" />
+        <parameter key="genemu.form.file.folder" />
+        <parameter key="genemu.form.file.options" />
     </parameters>
 
     <services>
-        <service id="genemu.form.type.jqueryfile" class="%genemu.form.type.jqueryfile.class%">
+        <service id="genemu.form.type.file" class="%genemu.form.namespace.type%\FileType">
+            <tag name="form.type" alias="genemu_file" />
+            <argument>%genemu.form.file.options%</argument>
+            <argument>%genemu.form.file.root_dir%</argument>
+        </service>
+        <service id="genemu.form.type.jqueryfile" class="%genemu.form.namespace.jquery%\FileType">
             <tag name="form.type" alias="genemu_jqueryfile" />
-            <argument>%genemu.form.jqueryfile.options%</argument>
-            <argument>%genemu.form.jqueryfile.root_dir%</argument>
         </service>
     </services>
 

@@ -31,26 +31,24 @@ class ImageController extends Controller
      */
     public function changeAction(Request $request)
     {
-        $targetPath = $this->container->getParameter('genemu.form.jqueryfile.root_dir');
-        $src = $request->get('image');
+        $rootDir = $this->container->getParameter('genemu.form.file.root_dir');
+        $folder = $this->container->getParameter('genemu.form.file.folder');
 
-        $options = $this->container->getParameter('genemu.form.jqueryfile.options');
-        $folder = $options['folder'];
-
-        $handle = new Image($targetPath . $this->stripQueryString($src));
+        $file = $request->get('image');
+        $handle = new Image($rootDir . $this->stripQueryString($file));
 
         switch ($request->get('filter')) {
             case 'rotate':
-                $handle->rotate(90);
+                $handle->addFilterRotate(90);
                 break;
             case 'negative':
-                $handle->negate();
+                $handle->addFilterNegative();
                 break;
             case 'bw':
-                $handle->grayScale();
+                $handle->addFilterBw();
                 break;
             case 'sepia':
-                $handle->sepia('#C68039');
+                $handle->addFilterSepia('#C68039');
                 break;
             case 'crop':
                 $x = $request->get('x');
@@ -58,15 +56,10 @@ class ImageController extends Controller
                 $w = $request->get('w');
                 $h = $request->get('h');
 
-                $handle->crop($x, $y, $w, $h);
+                $handle->addFilterCrop($x, $y, $w, $h);
                 break;
             case 'blur':
-                $handle->blur();
-                break;
-            case 'opacity':
-                $opacity = $request->get('opacity');
-
-                $handle->opacity($opacity);
+                $handle->addFilterBlur();
             default:
                 break;
         }
@@ -74,14 +67,18 @@ class ImageController extends Controller
         $handle->save();
         $thumbnail = $handle;
 
-        if ($this->container->hasParameter('genemu.form.jqueryimage.thumbnails')) {
-            $thumbnails = $this->container->getParameter('genemu.form.jqueryimage.thumbnails');
+        if ($this->container->hasParameter('genemu.form.image.thumbnails')) {
+            $thumbnails = $this->container->getParameter('genemu.form.image.thumbnails');
 
             foreach ($thumbnails as $name => $thumbnail) {
                 $handle->createThumbnail($name, $thumbnail[0], $thumbnail[1]);
             }
 
-            $selected = $this->container->getParameter('genemu.form.jqueryimage.selected');
+            $selected = key(reset($thumbnails));
+            if ($this->container->hasParameter('genemu.form.image.selected')) {
+                $selected = $this->container->getParameter('genemu.form.image.selected');
+            }
+
             $thumbnail = $handle->getThumbnail($selected);
         }
 
@@ -102,9 +99,16 @@ class ImageController extends Controller
         return new Response(json_encode($json));
     }
 
-    protected function stripQueryString($file)
+    /**
+     * Delete info after `?`
+     *
+     * @param string $file
+     *
+     * @return string
+     */
+    private function stripQueryString($file)
     {
-        if (($pos = strpos($file, '?')) !== false) {
+        if (false !== ($pos = strpos($file, '?'))) {
             $file = substr($file, 0, $pos);
         }
 

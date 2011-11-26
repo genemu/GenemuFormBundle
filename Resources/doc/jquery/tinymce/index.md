@@ -5,8 +5,7 @@
 ``` yml
 # app/config/config.yml
 genemu_form:
-    tinymce:
-        script_url:  /tinymce/tiny_mce.js
+    tinymce: ~
 ```
 
 ## Default Usage:
@@ -24,4 +23,5 @@ public function buildForm(FormBuilder $builder, array $options)
 
 ## Extra:
 
-[Default configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/tinymce/default_configuration.md)
+[Tinymce and JQuery](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/tinymce/jquery.md)
+[Configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/tinymce/default.md)

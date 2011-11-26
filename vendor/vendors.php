@@ -14,16 +14,15 @@
 set_time_limit(0);
 
 $vendorDir = __DIR__;
-$version = isset($_SERVER['SYMFONY_VERSION']) ? $_SERVER['SYMFONY_VERSION'] : 'origin/master';
 
 $deps = array(
-    array('symfony', 'git://github.com/symfony/symfony.git', $version),
+    array('symfony', 'git://github.com/symfony/symfony.git', 'v2.0.6'),
     array('doctrine', 'git://github.com/doctrine/doctrine2.git', 'origin/master'),
     array('doctrine-common', 'git://github.com/doctrine/common.git', 'origin/master'),
     array('doctrine-dbal', 'git://github.com/doctrine/dbal.git', 'origin/master'),
     array('doctrine-mongodb', 'git://github.com/doctrine/mongodb.git', 'origin/master'),
     array('doctrine-mongodb-odm', 'git://github.com/doctrine/mongodb-odm.git', 'origin/master'),
-    array('bundles/Symfony/Bundle/DoctrineMongoDBBundle', 'git://github.com/symfony/DoctrineMongoDBBundle.git', 'origin/master'),
+    array('bundles/Symfony/Bundle/DoctrineMongoDBBundle', 'git://github.com/symfony/DoctrineMongoDBBundle.git', 'origin/2.0'),
 );
 
 foreach ($deps as $dep) {

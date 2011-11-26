@@ -21,12 +21,19 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Genemu\Bundle\FormBundle\Form\ChoiceList\AjaxDocumentChoiceList;
 
 /**
+ * AjaxDocumentType
+ *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 class AjaxDocumentType extends AbstractType
 {
-    protected $registry;
+    private $registry;
 
+    /**
+     * Construct
+     *
+     * @param DocumentManager $registry
+     */
     public function __construct(DocumentManager $registry)
     {
         $this->registry = $registry;

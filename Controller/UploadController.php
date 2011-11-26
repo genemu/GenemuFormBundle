@@ -31,15 +31,14 @@ class UploadController extends Controller
      */
     public function uploadAction(Request $request)
     {
-        $targetPath = $this->container->getParameter('genemu.form.jqueryfile.root_dir');
         $handle = $request->files->get('Filedata');
+
+        $folder = $this->container->getParameter('genemu.form.file.folder');
+        $uploadDir = $this->container->getParameter('genemu.form.file.upload_dir');
         $name = uniqid() . '.' . $handle->guessExtension();
 
-        $options = $this->container->getParameter('genemu.form.jqueryfile.options');
-        $folder = $options['folder'];
-
         $json = array();
-        if ($handle = $handle->move($targetPath . '/' . $folder, $name)) {
+        if ($handle = $handle->move($uploadDir, $name)) {
             $json = array(
                 'result' => '1',
                 'thumbnail' => array(),
@@ -51,14 +50,18 @@ class UploadController extends Controller
                 $handle = new Image($handle->getPathname());
                 $thumbnail = $handle;
 
-                if ($this->container->hasParameter('genemu.form.jqueryimage.thumbnails')) {
-                    $thumbnails = $this->container->getParameter('genemu.form.jqueryimage.thumbnails');
+                if ($this->container->hasParameter('genemu.form.image.thumbnails')) {
+                    $thumbnails = $this->container->getParameter('genemu.form.image.thumbnails');
 
                     foreach ($thumbnails as $name => $thumbnail) {
                         $handle->createThumbnail($name, $thumbnail[0], $thumbnail[1]);
                     }
 
-                    $selected = $this->container->getParameter('genemu.form.jqueryimage.selected');
+                    $selected = key(reset($thumbnails));
+                    if ($this->container->hasParameter('genemu.form.image.selected')) {
+                        $selected = $this->container->getParameter('genemu.form.image.selected');
+                    }
+
                     $thumbnail = $handle->getThumbnail($selected);
                 }
 

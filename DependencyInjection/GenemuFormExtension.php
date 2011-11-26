@@ -32,160 +32,207 @@ class GenemuFormExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+
         $configuration = new Configuration();
         $configs = $this->processConfiguration($configuration, $configs);
 
+        $loader->load('services.xml');
         $loader->load('twig.xml');
+
         $loader->load('slider.xml');
         $loader->load('autocompleter.xml');
-
-        if ($configs['jqueryautocompleter']['mongodb']) {
-            $loader->load('autocompleter_mongodb.xml');
+        if (!empty($configs['autocompleter']['doctrine'])) {
+            $loader->load('entity.xml');
         }
 
-        if ($configs['jqueryautocompleter']['doctrine']) {
-            $loader->load('autocompleter_doctrine.xml');
+        if (!empty($configs['autocompleter']['mongodb'])) {
+            $loader->load('mongodb.xml');
         }
 
-        if (isset($configs['captcha'])) {
-            $loader->load('captcha.xml');
-            $this->configureCaptcha($configs['captcha'], $container);
+        if (isset($configs['captcha']) && !empty($configs['captcha']['enabled'])) {
+            $this->registerCaptchaConfiguration($configs['captcha'], $container, $loader);
         }
 
-        if (isset($configs['tinymce'])) {
-            $loader->load('tinymce.xml');
-            $this->configureTinymce($configs['tinymce'], $container);
+        if (isset($configs['recaptcha']) && !empty($configs['recaptcha']['enabled'])) {
+            $this->registerRecaptchaConfiguration($configs['recaptcha'], $container, $loader);
         }
 
-        if (isset($configs['recaptcha'])) {
-            $loader->load('recaptcha.xml');
-            $this->configureRecaptcha($configs['recaptcha'], $container);
+        if (isset($configs['tinymce']) && !empty($configs['tinymce']['enabled'])) {
+            $this->registerTinymceConfiguration($configs['tinymce'], $container, $loader);
         }
 
-        if (isset($configs['jquerydate'])) {
-            $loader->load('date.xml');
-            $this->configureJQueryDate($configs['jquerydate'], $container);
+        if (isset($configs['date']) && !empty($configs['date']['enabled'])) {
+            $this->registerDateConfiguration($configs['date'], $container, $loader);
         }
 
-        if (isset($configs['jqueryfile'])) {
-            $loader->load('file.xml');
-            $this->configureJQueryFile($configs['jqueryfile'], $container);
+        if (isset($configs['file']) && !empty($configs['file']['enabled'])) {
+            $this->registerFileConfiguration($configs['file'], $container, $loader);
         }
 
-        if (isset($configs['jqueryimage'])) {
-            $loader->load('image.xml');
-            $this->configureJQueryImage($configs['jqueryimage'], $container);
+        if (isset($configs['image']) && !empty($configs['image']['enabled'])) {
+            $this->registerImageConfiguration($configs['image'], $container, $loader);
         }
     }
 
     /**
-     * Configure Captcha
+     * Loads Captcha configuration
      *
-     * @param array            $configs
-     * @param ContainerBuilder $container
+     * @param array            $config    A configuration array
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param XmlFileLoader    $loader    An XmlFileLoader instance
      */
-    protected function configureCaptcha(array $configs, ContainerBuilder $container)
+    private function registerCaptchaConfiguration(array $configs, ContainerBuilder $container, XmlFileLoader $loader)
     {
-        if (!in_array($configs['format'], array('jpeg', 'png', 'gif'))) {
-            throw new \Exception('Format does not supprt. Choice (jpeg, png or gif)');
-        }
+        $loader->load('captcha.xml');
 
         if (!function_exists('image'.$configs['format'])) {
-            throw new \Exception('Format does not support.');
+            throw new \LogicException(sprintf('Format %s does not supported.', $configs['format']));
+        }
+
+        $fontDir = $container->getParameterBag()->resolveValue($configs['font_dir']);
+        foreach ($configs['fonts'] as $index => $font) {
+            if (is_file($fontDir . '/' . $font)) {
+                $configs['fonts'][$index] = $fontDir . '/' . $font;
+            }
+        }
+        unset($configs['font_dir']);
+
+        $backgroundColor = preg_replace('/^[0-9A-Fa-f]/', '', $configs['background_color']);
+        if (in_array(strlen($backgroundColor), array(3, 6), true)) {
+            $configs['background_color'] = 'DDDDDD';
+        }
+
+        $borderColor = preg_replace('/^[0-9A-Fa-f]/', '', $configs['border_color']);
+        if (in_array(strlen($borderColor), array(3, 6), true)) {
+            $configs['border_color'] = '000000';
         }
 
         $container->setParameter('genemu.form.captcha.options', $configs);
     }
 
     /**
-     * Configure Tinymce
+     * Loads Recaptcha configuration
      *
-     * @param array            $configs
-     * @param ContainerBuilder $container
+     * @param array            $config    A configuration array
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param XmlFileLoader    $loader    An XmlFileLoader instance
      */
-    protected function configureTinymce(array $configs, ContainerBuilder $container)
+    private function registerRecaptchaConfiguration(array $configs, ContainerBuilder $container, XmlFileLoader $loader)
     {
-        $options = isset($configs['configs'])?$configs['configs']:array();
+        $loader->load('recaptcha.xml');
 
-        $container->setParameter('genemu.form.tinymce.theme', $configs['theme']);
-        $container->setParameter('genemu.form.tinymce.script_url', $configs['script_url']);
-        $container->setParameter('genemu.form.tinymce.options', $options);
-    }
+        $serverUrl = $configs['server_url'];
+        if (isset($configs['ssl']) && !empty($configs['ssl']['use'])) {
+            $serverUrl = $configs['ssl']['server_url'];
+        }
 
-    /**
-     * Configure Recaptcha
-     *
-     * @param array            $configs
-     * @param ContainerBuilder $container
-     */
-    protected function configureRecaptcha(array $configs, ContainerBuilder $container)
-    {
-        $options = isset($configs['options'])?$configs['options']:array();
-
-        $options = array_merge($options, array(
-            'theme' => $configs['theme'],
-            'use_ssl' => $configs['use_ssl'],
-            'server_url' => $configs['server_url'],
-            'server_url_ssl' => $configs['server_url_ssl']
-        ));
-
+        $container->setParameter('genemu.form.recaptcha.server_url', $serverUrl);
         $container->setParameter('genemu.form.recaptcha.private_key', $configs['private_key']);
         $container->setParameter('genemu.form.recaptcha.public_key', $configs['public_key']);
-        $container->setParameter('genemu.form.recaptcha.options', $options);
+        $container->setParameter('genemu.form.recaptcha.options', $configs['configs']);
     }
 
     /**
-     * Configure JQueryDate
+     * Loads Tinymce configuration
      *
-     * @param array            $configs
-     * @param ContainerBuilder $container
+     * @param array            $config    A configuration array
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param XmlFileLoader    $loader    An XmlFileLoader instance
      */
-    protected function configureJQueryDate(array $configs, ContainerBuilder $container)
+    private function registerTinymceConfiguration(array $configs, ContainerBuilder $container, XmlFileLoader $loader)
     {
-        $options = isset($configs['configs'])?$configs['configs']:array();
+        $loader->load('tinymce.xml');
 
-        $container->setParameter('genemu.form.jquerydate.options', $options);
+        if (isset($configs['script_url']) && !empty($configs['script_url'])) {
+            $configs['configs'] = array_merge($configs['configs'], array(
+                'script_url' => $configs['script_url']
+            ));
+        }
+
+        if (!empty($configs['theme'])) {
+            $configs['configs'] = array_merge($configs['configs'], array(
+                'theme' => $configs['theme']
+            ));
+        }
+
+        $container->setParameter('genemu.form.tinymce.options', $configs['configs']);
     }
 
     /**
-     * Configure JQueryFile
+     * Loads Date configuration
      *
-     * @param array            $configs
-     * @param ContainerBuilder $container
+     * @param array            $config    A configuration array
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param XmlFileLoader    $loader    An XmlFileLoader instance
      */
-    protected function configureJQueryFile(array $configs, ContainerBuilder $container)
+    private function registerDateConfiguration(array $configs, ContainerBuilder $container, XmlFileLoader $loader)
     {
-        $options = isset($configs['configs'])?$configs['configs']:array();
+        $loader->load('date.xml');
 
-        $options = array_merge($options, array(
+        $container->setParameter('genemu.form.date.options', $configs['configs']);
+    }
+
+    /**
+     * Loads File configuration
+     *
+     * @param array            $config    A configuration array
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param XmlFileLoader    $loader    An XmlFileLoader instance
+     */
+    private function registerFileConfiguration(array $configs, ContainerBuilder $container, XmlFileLoader $loader)
+    {
+        $loader->load('file.xml');
+
+        $rootDir = $container->getParameter('genemu.form.file.root_dir');
+        $rootDir = $container->getParameterBag()->resolveValue($rootDir);
+
+        $uploadDir = $rootDir . '/' . $configs['folder'];
+        if (!is_dir($uploadDir) && false === @mkdir($uploadDir, 0777, true)) {
+            throw new \RuntimeException(sprintf('Could not create upload directory "%s".', $uploadDir));
+        }
+
+        $configs['configs'] = array_merge($configs['configs'], array(
             'script' => 'genemu_upload',
             'uploader' => $configs['uploader'],
             'cancelImg' => $configs['cancel_img'],
             'folder' => $configs['folder']
         ));
 
-        $container->setParameter('genemu.form.jqueryfile.options', $options);
+        $container->setParameter('genemu.form.file.folder', $configs['folder']);
+        $container->setParameter('genemu.form.file.upload_dir', $rootDir . '/' . $configs['folder']);
+        $container->setParameter('genemu.form.file.options', $configs['configs']);
     }
 
     /**
-     * Configure JQueryImage
+     * Loads Image configuration
      *
-     * @param array            $configs
-     * @param ContainerBuilder $container
+     * @param array            $config    A configuration array
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param XmlFileLoader    $loader    An XmlFileLoader instance
      */
-    protected function configureJQueryImage(array $configs, ContainerBuilder $container)
+    private function registerImageConfiguration(array $configs, ContainerBuilder $container, XmlFileLoader $loader)
     {
-        if (!isset($configs['thumbnails'][$configs['selected']])) {
-            throw new \Exception('Selected thumbnails please.');
+        $loader->load('image.xml');
+
+        if (empty($configs['selected'])) {
+            throw new \LogicException('Your selected thumbnail does not empty.');
         }
 
-        $filters = array_intersect(
-            array('rotate', 'negate', 'bw', 'sepia', 'blur', 'crop'),
-            $configs['filters']
-        );
+        if (!isset($configs['thumbnails'][$configs['selected']])) {
+            throw new \LogicException(sprintf('Your selected %s is not thumbnail.', $configs['selected']));
+        }
 
-        $container->setParameter('genemu.form.jqueryimage.filters', $configs['filters']);
-        $container->setParameter('genemu.form.jqueryimage.selected', $configs['selected']);
-        $container->setParameter('genemu.form.jqueryimage.thumbnails', $configs['thumbnails']);
+        $filters = array();
+        $reflection = new \ReflectionClass('Genemu\\Bundle\\FormBundle\\Gd\\File\\Image');
+
+        foreach ($configs['filters'] as $filter) {
+            if ($reflection->hasMethod('addFilter' . ucfirst($filter))) {
+                $filters[] = $filter;
+            }
+        }
+
+        $container->setParameter('genemu.form.image.filters', $filters);
+        $container->setParameter('genemu.form.image.selected', $configs['selected']);
+        $container->setParameter('genemu.form.image.thumbnails', $configs['thumbnails']);
     }
 }

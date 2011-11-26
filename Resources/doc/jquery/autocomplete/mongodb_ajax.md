@@ -5,7 +5,7 @@
 ``` yml
 # app/config/config.yml
 genemu_form:
-    jqueryautocompleter:
+    autocompleter:
         mongodb: true
 ```
 

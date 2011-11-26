@@ -1,15 +1,18 @@
 {% block genemu_captcha_widget %}
 {% spaceless %}
-    <img src="{{ src }}" width="{{ width }}" height="{{ height }}" title="{{ name|trans }}" />
-    {% set value = '' %}
-    {% set attr = attr|merge({'autocomplete': 'off'}) %}
-    {{ block('field_widget') }}
+    {% if position == "left" %}
+        <img src="{{ src }}" width="{{ width }}" height="{{ height }}" title="{{ name|trans }}" />
+        {{ block("field_widget") }}
+    {% else %}
+        {{ block("field_widget") }}
+        <img src="{{ src }}" width="{{ width }}" height="{{ height }}" title="{{ name|trans }}" />
+    {% endif %}
 {% endspaceless %}
 {% endblock genemu_captcha_widget %}
 
 {% block genemu_recaptcha_widget %}
 {% spaceless %}
-    <div id="{{ id }}_div"></div>
+    <div id="{{ id }}_div" style="display: none;"></div>
     <noscript>
         <iframe src="{{ server }}/noscript?k={{ public_key }}" width="500" height="300" frameborder="0"></iframe>
         <br />
@@ -21,62 +24,61 @@
 
 {% block genemu_jquerydate_widget %}
 {% spaceless %}
-    {% if widget == 'single_text' %}
-        {{ block('field_widget') }}
+    {% if widget == "single_text" %}
+        {{ block("field_widget") }}
     {% else %}
-        <div {{ block('widget_container_attributes') }}>
+        <div {{ block("widget_container_attributes") }}>
             {{ date_pattern|replace({
-                '{{ year }}':  form_widget(form.year),
-                '{{ month }}': form_widget(form.month),
-                '{{ day }}':   form_widget(form.day),
+                "{{ year }}":  form_widget(form.year),
+                "{{ month }}": form_widget(form.month),
+                "{{ day }}":   form_widget(form.day),
             })|raw }}
 
-            {% set attr = attr|merge({'size': 10}) %}
-            {% set id = 'datepicker_' ~ id %}
-            {% set full_name = 'datepicker_' ~ full_name %}
-            {{ block('hidden_widget') }}
+            {% set attr = attr|merge({"size": 10}) %}
+            {% set id = "datepicker_" ~ id %}
+            {% set full_name = "datepicker_" ~ full_name %}
+            {{ block("hidden_widget") }}
         </div>
     {% endif %}
 {% endspaceless %}
 {% endblock genemu_jquerydate_widget %}
 
-{% block genemu_jqueryautocompleter_widget %}
-{% spaceless %}
-    {{ block('hidden_widget') }}
-
-    {% set id = 'autocompleter_' ~ id %}
-    {% set full_name = 'autocompleter_' ~ full_name %}
-    {% set value = autocompleter_value %}
-    {{ block('field_widget') }}
-{% endspaceless %}
-{% endblock genemu_jqueryautocompleter_widget %}
-
 {% block genemu_jqueryslider_widget %}
 {% spaceless %}
-    {{ block('hidden_widget') }}
-    <div id="{{ id }}Slider"></div>
+    {{ block("hidden_widget") }}
+    <div id="{{ id }}_slider"></div>
 {% endspaceless %}
 {% endblock genemu_jqueryslider_widget %}
 
+{% block genemu_jqueryautocompleter_widget %}
+{% spaceless %}
+    {{ block("hidden_widget") }}
+
+    {% set id = "autocompleter_" ~ id %}
+    {% set full_name = "autocompleter_" ~ full_name %}
+    {% set value = autocompleter_value %}
+    {{ block("field_widget") }}
+{% endspaceless %}
+{% endblock genemu_jqueryautocompleter_widget %}
+
 {% block genemu_jqueryfile_widget %}
 {% spaceless %}
-    {% set type = 'hidden' %}
-    {{ block('hidden_widget') }}
+    {{ block("hidden_widget") }}
     <div class="queue">
-        <div id="{{ id }}Queue"></div>
+        <div id="{{ id }}_queue"></div>
     </div>
 {% endspaceless %}
 {% endblock genemu_jqueryfile_widget %}
 
 {% block genemu_jqueryimage_widget %}
 {% spaceless %}
-    <div id="{{ id }}Container">
+    <div id="{{ id }}_container">
         <div class="left">
-            <div id="{{ id }}Preview">
-                {% set type = 'hidden' %}
-                {{ block('hidden_widget') }}
+            <div id="{{ id }}_preview">
+                {% set type = "hidden" %}
+                {{ block("hidden_widget") }}
 
-                <a id="{{ id }}Overlay" href="#">&nbsp;</a>
+                <a id="{{ id }}_overlay" href="#">&nbsp;</a>
 
                 {% if value %}
                     {% set widthMax = thumbnail is defined ? thumbnail.width : 500 %}
@@ -85,20 +87,20 @@
                     {% set width = width / ratio %}
                     {% set height = height / ratio %}
                 {% else %}
-                    {% set asset = asset('bundles/genemuform/images/default.png') %}
+                    {% set asset = asset("bundles/genemuform/images/default.png") %}
                     {% set width = 96 %}
                     {% set height = 96 %}
                 {% endif %}
 
-                <img id="{{ id }}ImgPreview" src="{{ asset }}" width="{{ width }}" height="{{ height }}" />
+                <img id="{{ id }}_img_preview" src="{{ asset }}" width="{{ width }}" height="{{ height }}" />
             </div>
-            <ul id="{{ id }}Options" class="options">
+            <ul id="{{ id }}_options" class="options">
                 {% for filter in filters %}
-                    <li class="{{ filter }} _change"></li>
+                    <li class="{{ filter }} change"></li>
                 {% endfor %}
             </ul>
             <div class="queue">
-                <div id="{{ id }}Queue"></div>
+                <div id="{{ id }}_queue"></div>
             </div>
         </div>
     </div>

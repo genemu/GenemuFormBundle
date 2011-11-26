@@ -34,9 +34,9 @@ class TypeExtensionTest extends CoreExtension
     protected function loadTypes()
     {
         return array_merge(parent::loadTypes(), array(
-            new Type\TinymceType('advanced', '/js/tinymce/jquery.tinymce.js', array()),
-            new Type\JQuery\DateType(array()),
-            new Type\JQuery\SliderType(),
+            new Type\TinymceType(array()),
+            new Type\DateType(array()),
+            new Type\SliderType(),
             new Type\CaptchaType(new Session(new ArraySessionStorage()), 's$cr$t', array(
                 'script' => 'genemu_upload',
                 'uploader' => '/js/uploadify.swf',
@@ -45,8 +45,9 @@ class TypeExtensionTest extends CoreExtension
                 'width' => 100,
                 'height' => 30,
                 'length' => 4,
+                'position' => 'left',
                 'format' => 'png',
-                'chars' => '0123456789',
+                'chars' => range(0, 9),
                 'font_size' => 18,
                 'font_color' => array(
                     '252525',
@@ -55,31 +56,29 @@ class TypeExtensionTest extends CoreExtension
                     '3526E6',
                     '88531E'
                 ),
-                'font_dir' => __DIR__.'/../../Fixtures/fonts',
                 'fonts' => array(
-                    'akbar.ttf',
-                    'brushcut.ttf',
-                    'molten.ttf',
-                    'planetbe.ttf',
-                    'whoobub.ttf'
+                    __DIR__ . '/../../Fixtures/fonts/akbar.ttf',
+                    __DIR__ . '/../../Fixtures/fonts/brushcut.ttf',
+                    __DIR__ . '/../../Fixtures/fonts/molten.ttf',
+                    __DIR__ . '/../../Fixtures/fonts/planetbe.ttf',
+                    __DIR__ . '/../../Fixtures/fonts/whoobub.ttf',
                 ),
                 'background_color' => 'DDDDDD',
                 'border_color' => '000000'
             )),
-            new Type\JQuery\FileType(array(
+            new Type\FileType(array(
                 'script' => 'genemu_upload',
                 'uploader' => '/swf/uploadify.swf',
                 'cancel_img' => '/images/cancel.png',
                 'folder' => '/upload'
             ), __DIR__.'/../../Fixtures'),
-            new Type\ReCaptchaType(new ReCaptchaValidator($this->request, 'privateKey'), 'publicKey', array(
-                'theme' => 'clean',
-                'use_ssl' => false,
-                'server_url' => 'http://api.recaptcha.net',
-                'server_url_ssl' => 'https://api-secure.recaptcha.net',
-            )),
-            new Type\JQuery\AutocompleterType(),
-            new Type\JQuery\ImageType('medium', array(
+            new Type\ReCaptchaType(
+                new ReCaptchaValidator($this->request, 'privateKey'),
+                'publicKey',
+                'http://api.recaptcha.net',
+                array()),
+            new Type\AutocompleterType(),
+            new Type\ImageType('medium', array(
                 'small' => array(100, 100),
                 'medium' => array(200, 200),
                 'large' => array(500, 500),
@@ -90,7 +89,12 @@ class TypeExtensionTest extends CoreExtension
                 'negative',
                 'sepia',
                 'crop'
-            ))
+            )),
+            new Type\JQuery\AutocompleterType(),
+            new Type\JQuery\DateType(),
+            new Type\JQuery\FileType(),
+            new Type\JQuery\ImageType(),
+            new Type\JQuery\SliderType()
         ));
     }
 }

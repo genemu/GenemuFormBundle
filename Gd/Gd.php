@@ -290,7 +290,7 @@ class Gd implements GdInterface
     {
         $this->checkResource();
 
-        if ($x < 0 || $x > ($this->width-1) || $y < 0 || $y > ($this->height-1)) {
+        if ($x < 0 || $x > ($this->width - 1) || $y < 0 || $y > ($this->height - 1)) {
             return 0xFFFFFF;
         }
 
@@ -333,25 +333,21 @@ class Gd implements GdInterface
     public function hexColor($color, $asString = false, $separator = ',')
     {
         $color = preg_replace('/[^0-9A-Fa-f]/', '', $color);
-        $array = array();
 
-        if (6 === strlen($color)) {
-            $color = hexdec($color);
-
-            $array = array(
-                0xFF & ($color >> 0x10),
-                0xFF & ($color >> 0x8),
-                0xFF & $color
-            );
-        } elseif (3 === strlen($color)) {
-            $array = array(
-                hexdec(str_repeat(substr($color, 0, 1), 2)),
-                hexdec(str_repeat(substr($color, 1, 1), 2)),
-                hexdec(str_repeat(substr($color, 2, 1), 2))
-            );
-        } else {
-            throw new \Exception('Color #'.$color.' is not exactly.');
+        if (3 === strlen($color)) {
+            $color = preg_replace ('/(?(?=[^0-9a-f])[^.]|(.))/i', '$1$1', $color);
         }
+
+        if (6 !== strlen($color)) {
+            throw new \Exception(sprintf('Color #%s is not exactly.', $color));
+        }
+
+        $color = hexdec($color);
+        $array = array(
+            0xFF & ($color >> 0x10),
+            0xFF & ($color >> 0x8),
+            0xFF & $color
+        );
 
         return $asString ? implode($separator, $array) : $array;
     }

@@ -5,15 +5,16 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="genemu.form.type.jquerydate.class">Genemu\Bundle\FormBundle\Form\Type\JQuery\DateType</parameter>
-
-        <parameter key="genemu.form.jquerydate.options" />
+        <parameter key="genemu.form.date.options" />
     </parameters>
 
     <services>
-        <service id="genemu.form.type.jquerydate" class="%genemu.form.type.jquerydate.class%">
+        <service id="genemu.form.type.date" class="%genemu.form.namespace.type%\DateType">
+            <tag name="form.type" alias="genemu_date" />
+            <argument>%genemu.form.date.options%</argument>
+        </service>
+        <service id="genemu.form.type.jquerydate" class="%genemu.form.namespace.jquery%\DateType">
             <tag name="form.type" alias="genemu_jquerydate" />
-            <argument>%genemu.form.jquerydate.options%</argument>
         </service>
     </services>
 

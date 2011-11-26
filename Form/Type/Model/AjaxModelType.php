@@ -19,6 +19,8 @@ use Symfony\Component\Form\FormInterface;
 use Genemu\Bundle\FormBundle\Form\ChoiceList\AjaxModelChoiceList;
 
 /**
+ * AjaxModelType
+ *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 class AjaxModelType extends AbstractType

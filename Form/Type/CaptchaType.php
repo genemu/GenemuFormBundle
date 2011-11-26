@@ -27,11 +27,9 @@ use Genemu\Bundle\FormBundle\Form\Validator\CaptchaValidator;
  */
 class CaptchaType extends AbstractType
 {
-    protected $session;
-    protected $secret;
-    protected $options;
-
-    protected $captcha;
+    private $session;
+    private $secret;
+    private $options;
 
     /**
      * Construct
@@ -57,7 +55,8 @@ class CaptchaType extends AbstractType
         $builder
             ->addValidator(new CaptchaValidator($captcha))
             ->setAttribute('captcha', $captcha)
-            ->setAttribute('format', $options['format']);
+            ->setAttribute('format', $options['format'])
+            ->setAttribute('position', $options['position']);
     }
 
     /**
@@ -68,9 +67,11 @@ class CaptchaType extends AbstractType
         $captcha = $form->getAttribute('captcha');
 
         $view
+            ->set('position', $form->getAttribute('position'))
             ->set('src', $captcha->getBase64($form->getAttribute('format')))
             ->set('width', $captcha->getWidth())
-            ->set('height', $captcha->getHeight());
+            ->set('height', $captcha->getHeight())
+            ->set('value', '');
     }
 
     /**
@@ -78,7 +79,13 @@ class CaptchaType extends AbstractType
      */
     public function getDefaultOptions(array $options)
     {
-        return array_replace($this->options, $options);
+        $defaultOptions = array_merge(array(
+            'attr' => array(
+                'autocomplete' => 'off'
+            )
+        ), $this->options);
+
+        return array_replace_recursive($defaultOptions, $options);
     }
 
     /**

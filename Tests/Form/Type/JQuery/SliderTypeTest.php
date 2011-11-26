@@ -57,8 +57,6 @@ class SliderTypeTest extends TypeTestCase
         try {
             $form = $this->factory->create('genemu_jqueryslider', null, array('orientation' => 'verical'));
         } catch(FormException $expected) {
-            $this->assertEquals('The option "orientation" is not vaild.', $expected->getMessage());
-
             return;
         }
 

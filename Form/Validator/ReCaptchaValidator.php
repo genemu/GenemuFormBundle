@@ -23,8 +23,9 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ReCaptchaValidator implements FormValidatorInterface
 {
-    protected $request;
-    protected $privateKey;
+    private $httpRequest;
+    private $request;
+    private $privateKey;
 
     /**
      * Construct
@@ -36,6 +37,15 @@ class ReCaptchaValidator implements FormValidatorInterface
     {
         $this->request = $request;
         $this->privateKey = $privateKey;
+
+        $this->httpRequest = array(
+            'POST %s HTTP/1.0',
+            'Host: %s',
+            'Content-Type: application/x-www-form-urlencoded',
+            'Content-Length: %d',
+            'User-Agent: reCAPTCHA/PHP'
+        );
+        $this->httpRequest = implode("\r\n", $this->httpRequest)."\r\n\r\n%s";
     }
 
     /**
@@ -43,51 +53,54 @@ class ReCaptchaValidator implements FormValidatorInterface
      */
     public function validate(FormInterface $form)
     {
+        $error = '';
         $request = $this->request->request;
         $server = $this->request->server;
 
-        $parameters = array(
+        $datas = array(
             'privatekey' => $this->privateKey,
             'challenge' => $request->get('recaptcha_challenge_field'),
             'response' => $request->get('recaptcha_response_field'),
             'remoteip' => $server->get('REMOTE_ADDR')
         );
 
-        if (empty($parameters['challenge']) || empty($parameters['response'])) {
-            $form->addError(new FormError('The captcha is not valid.'));
+        if (empty($datas['challenge']) || empty($datas['response'])) {
+            $error = 'The captcha is not valid.';
         }
 
-        if (true !== ($answer = $this->check($parameters, $form->getAttribute('option_validator')))) {
-            $form->addError(new FormError(sprintf('Unable to check the captcha from the server. (%s)', $answer)));
+        if (true !== ($answer = $this->check($datas, $form->getAttribute('option_validator')))) {
+            $error = sprintf('Unable to check the captcha from the server. (%s)', $answer);
+        }
+
+        if (!empty($error)) {
+            $form->addError(new FormError($error));
         }
     }
 
     /**
      * Checks if the passed value is valid.
      *
-     * @param mixed $parameters The value that should be validated
-     * @param mixed $options    The option server
+     * @param array $datas   The value that should be validated
+     * @param array $options The option server
      *
      * @return Boolean Whether or not the value is valid
      */
-    protected function check(array $parameters, array $options)
+    private function check(array $datas, array $options)
     {
-        if (false === ($fs = @fsockopen($options['server_host'], $options['server_port'], $errno, $errstr, $options['server_timeout']))) {
+        $response = '';
+        $datas = http_build_query($datas, null, '&');
+        $httpRequest = sprintf($this->httpRequest, $options['path'], $options['host'], strlen($datas), $datas);
+
+        if (false === ($fs = @fsockopen(
+            $options['host'],
+            $options['port'],
+            $errno, $errstr,
+            $options['timeout']
+        ))) {
             return $errstr;
         }
 
-        $query = http_build_query($parameters, null, '&');
-
-        fwrite($fs, sprintf(
-            "POST %s HTTP/1.0\r\n".
-            "Host: %s\r\n".
-            "Content-Type: application/x-www-form-urlencoded\r\n".
-            "Content-Length: %d\r\n".
-            "User-Agent: reCAPTCHA/PHP/symfony\r\n".
-            "\r\n%s", $options['server_path'], $options['server_host'], strlen($query), $query)
-        );
-
-        $response = '';
+        fwrite($fs, $httpRequest);
         while (!feof($fs)) {
             $response .= fgets($fs, 1160);
         }
@@ -96,6 +109,6 @@ class ReCaptchaValidator implements FormValidatorInterface
         $response = explode("\r\n\r\n", $response, 2);
         $answers = explode("\n", $response[1]);
 
-        return 'true' == trim($answers[0])?true:$answers[1];
+        return 'true' === trim($answers[0]) ? true : $answers[1];
     }
 }

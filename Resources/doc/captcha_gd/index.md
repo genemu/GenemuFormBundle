@@ -1,5 +1,7 @@
 # Captcha GD Field
 
+![Default captcha](https://github.com/genemu/GenemuFormBundle/tree/master/Resources/doc/captcha_gd/images/default.png)
+
 ## Minimal configuration:
 
 ``` yml

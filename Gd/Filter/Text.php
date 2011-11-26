@@ -35,10 +35,14 @@ class Text extends Gd implements Filter
     public function __construct($text, $fontSize = 12, array $fonts, array $colors)
     {
         $this->text = $text;
+        $this->colors = $colors;
         $this->fontSize = $fontSize;
 
-        $this->fonts = $fonts;
-        $this->colors = $colors;
+        foreach ($fonts as $index => $font) {
+            if (is_file($font)) {
+                $this->fonts[] = $font;
+            }
+        }
     }
 
     /**
@@ -63,7 +67,7 @@ class Text extends Gd implements Filter
             $rotate = mt_rand(-25, 25);
             $size = $fs + $fs * (mt_rand(0, 3) / 10);
 
-            $font = $this->fonts[mt_rand(0, $nbF)]->getPathname();
+            $font = $this->fonts[mt_rand(0, $nbF)];
             $color = $colors[mt_rand(0, $nbC)];
 
             $box = imagettfbbox($size, $rotate, $font, $this->text[$i]);

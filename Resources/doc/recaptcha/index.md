@@ -25,4 +25,4 @@ public function buildForm(FormBuilder $builder, array $options)
 
 ## Extra:
 
-[Default configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/recaptcha/default_configuration.md)
+[Configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/recaptcha/default.md)

@@ -21,12 +21,19 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Genemu\Bundle\FormBundle\Form\ChoiceList\AjaxEntityChoiceList;
 
 /**
+ * AjaxEntityType
+ *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 class AjaxEntityType extends AbstractType
 {
-    protected $registry;
+    private $registry;
 
+    /**
+     * Construct
+     *
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         $this->registry = $registry;

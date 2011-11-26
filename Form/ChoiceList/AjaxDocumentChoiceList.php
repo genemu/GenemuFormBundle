@@ -16,6 +16,8 @@ use Symfony\Component\Form\Util\PropertyPath;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
+ * AjaxDocumentChoiceList
+ *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 class AjaxDocumentChoiceList extends DocumentChoiceList
@@ -23,7 +25,17 @@ class AjaxDocumentChoiceList extends DocumentChoiceList
     private $ajax;
     private $propertyPath;
 
-    public function __construct(DocumentManager $dm, $class, $property = null, $queryBuilder = null, $choices = array(), $ajax = false)
+    /**
+     * Construct
+     *
+     * @param DocumentManager $dm
+     * @param string          $class
+     * @param string          $property
+     * @param QueryBuilder    $qb
+     * @param array|\Closure  $choices
+     * @param boolean         $ajax
+     */
+    public function __construct(DocumentManager $dm, $class, $property = null, $qb = null, $choices = array(), $ajax = false)
     {
         $this->ajax = $ajax;
 
@@ -31,7 +43,7 @@ class AjaxDocumentChoiceList extends DocumentChoiceList
             $this->propertyPath = new PropertyPath($property);
         }
 
-        parent::__construct($dm, $class, $property, $queryBuilder, $choices);
+        parent::__construct($dm, $class, $property, $qb, $choices);
     }
 
     /**
@@ -90,7 +102,7 @@ class AjaxDocumentChoiceList extends DocumentChoiceList
             }
         } else {
             foreach ($this->getChoices() as $choice) {
-                if (in_array($choice['value'], $ids)) {
+                if (in_array($choice['value'], $ids, true)) {
                     $intersect[] = $choice;
                 }
             }
