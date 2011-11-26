@@ -78,9 +78,9 @@ class DateType extends AbstractType
         $defaultOptions = array(
             'culture' => \Locale::getDefault(),
             'widget' => 'choice',
-            'configs' => array(
+            'configs' => array_merge(array(
                 'dateFormat' => null,
-            ),
+            ), $this->options),
         );
 
         $options = array_replace_recursive($defaultOptions, $options);
