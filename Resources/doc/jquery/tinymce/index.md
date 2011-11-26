@@ -23,5 +23,5 @@ public function buildForm(FormBuilder $builder, array $options)
 
 ## Extra:
 
-[Tinymce and JQuery](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/tinymce/jquery.md)
-[Configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/tinymce/default.md)
+[Tinymce and JQuery](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/tinymce/jquery.md)
+[Configuration](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/tinymce/default.md)
