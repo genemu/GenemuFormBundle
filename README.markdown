@@ -68,7 +68,13 @@ $ php app/console assets:install web/
 
 ## Template
 
-[Create template form view](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/template.md)
+You use GenemuFormBundle and you seen that it does not work!
+Maybe you have forgotten form_javascript or form_stylesheet.
+
+The principle is to separate the javascript, stylesheet and html.
+This allows better integration of web pages.
+
+[View a template example form view](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/template.md)
 
 ## FormType
 
@@ -84,7 +90,7 @@ $ php app/console assets:install web/
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/tinymce/index.md)
 
-### [JQueryUi librairie](http://jqueryui.com/):
+### JQueryUi ([download](http://jqueryui.com/)):
 
 - [Datepicker](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/datepicker/index.md)
 - [Slider](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/slider/index.md)
