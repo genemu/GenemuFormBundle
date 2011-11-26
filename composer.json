@@ -30,7 +30,7 @@
     "suggset": {
         "symfony/mongodb-odm-bundle": "2.*",
         "propel/propel-bundle": "2.*"
-    }
+    },
     "autoload": {
         "psr-0": {
             "Genemu\\Bundle\\FormBundle": ""
