@@ -1,14 +1,14 @@
 # JQueryFile Field ([download uploadify](http://www.uploadify.com))
 
+![Multi files](https://github.com/genemu/GenemuFormBundle/raw/2.0/Resources/doc/jquery/file/images/multiple.png)
+
 ## Minimal configuration:
 
 ``` yml
 # app/config/config.yml
 genemu_form:
-    jqueryfile:
-        uploader:   /uploadify/uploadify.swf
-        cancel_img: /uploadify/cancel.png
-        folder:     /uploads
+    file:
+        uploader: /uploadify/uploadify.swf
 ```
 
 ## Default Usage:
@@ -40,4 +40,5 @@ public function buildForm(FormBuilder $builder, array $options)
 
 ## Extra
 
+[Configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/file/default.md)
 [Save Entity File](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/file/entity.md)

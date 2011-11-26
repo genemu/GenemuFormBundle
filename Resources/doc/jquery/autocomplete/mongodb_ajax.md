@@ -1,5 +1,14 @@
 # Use JQueryAutocomplete to MongoDB Ajax values
 
+## Minimal configuration:
+
+``` yml
+# app/config/config.yml
+genemu_form:
+    autocompleter:
+        mongodb: true
+```
+
 ## Usage:
 
 ``` php

@@ -14,10 +14,9 @@
 set_time_limit(0);
 
 $vendorDir = __DIR__;
-$version = isset($_SERVER['SYMFONY_VERSION']) ? $_SERVER['SYMFONY_VERSION'] : 'origin/master';
 
 $deps = array(
-    array('symfony', 'git://github.com/symfony/symfony.git', $version),
+    array('symfony', 'git://github.com/symfony/symfony.git', 'origin/master'),
     array('doctrine', 'git://github.com/doctrine/doctrine2.git', 'origin/master'),
     array('doctrine-common', 'git://github.com/doctrine/common.git', 'origin/master'),
     array('doctrine-dbal', 'git://github.com/doctrine/dbal.git', 'origin/master'),

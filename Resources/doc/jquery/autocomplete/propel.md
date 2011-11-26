@@ -1,5 +1,14 @@
 # Use JQueryAutocomplete to Propel values
 
+## If not use doctrine:
+
+``` yml
+# app/config/config.yml
+genemu_form:
+    autocompleter:
+        doctrine: false
+```
+
 ## Usage:
 
 ``` php
@@ -22,4 +31,4 @@ public function buildForm(FormBuilder $builder, array $options)
 
 ## Extra
 
-[Ajax Propel](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/autocomplete/propel_ajax.md)
+[Ajax Propel](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/autocomplete/propel_ajax.md)

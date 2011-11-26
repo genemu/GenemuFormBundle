@@ -155,13 +155,10 @@ class AutocompleterTypeTest extends TypeTestCase
         ));
         $form->setData($entity1);
         $view = $form->createView();
-        $form->bind(array(
-            json_encode(array(
-                'label' => 'Bar',
-                'value' => 2
-            )),
-            array('autocompleter' => 'Foo')
-        ));
+        $form->bind(json_encode(array(
+            'label' => 'Bar',
+            'value' => 2
+        )));
 
         $this->assertEquals(array(
             array('value' => 1, 'label' => 'Foo'),
@@ -197,13 +194,10 @@ class AutocompleterTypeTest extends TypeTestCase
         $form->setData($existing);
         $view = $form->createView();
 
-        $form->bind(array(
-            json_encode(array(
-                array('value' => 1, 'label' => 'Foo'),
-                array('value' => 2, 'label' => 'Bar'),
-            )),
-            array('autocompleter' => 'Foo, Bar, ')
-        ));
+        $form->bind(json_encode(array(
+            array('value' => 1, 'label' => 'Foo'),
+            array('value' => 2, 'label' => 'Bar'),
+        )));
 
         $this->assertEquals(array(
             array('value' => 1, 'label' => 'Foo'),
@@ -237,10 +231,7 @@ class AutocompleterTypeTest extends TypeTestCase
         $form->setData($entity1);
         $view = $form->createView();
 
-        $form->bind(array(
-            json_encode(array('value' => 2, 'label' => 'Bar')),
-            array('autocompleter' => 'Bar')
-        ));
+        $form->bind(json_encode(array('value' => 2, 'label' => 'Bar')));
 
         $this->assertEquals('genemu_ajax', $view->get('route_name'));
 
@@ -274,12 +265,9 @@ class AutocompleterTypeTest extends TypeTestCase
         $form->setData($existing);
         $view = $form->createView();
 
-        $form->bind(array(
-            json_encode(array(
-                array('value' => 2, 'label' => 'Bar')
-            )),
-            array('autocompleter' => 'Bar, ')
-        ));
+        $form->bind(json_encode(array(
+            array('value' => 2, 'label' => 'Bar')
+        )));
 
         $this->assertEquals('genemu_ajax', $view->get('route_name'));
 
@@ -295,19 +283,11 @@ class AutocompleterTypeTest extends TypeTestCase
 
     protected function createRegistryMock($name, $em)
     {
-        if (isset($_SERVER['SYMFONY_VERSION']) && $_SERVER['SYMFONY_VERSION'] === 'origin/master') {
-            $registry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-            $registry->expects($this->any())
-                ->method('getManager')
-                ->with($this->equalTo($name))
-                ->will($this->returnValue($em));
-        } else {
-            $registry = $this->getMock('Symfony\Bridge\Doctrine\RegistryInterface');
-            $registry->expects($this->any())
-                ->method('getEntityManager')
-                ->with($this->equalTo($name))
-                ->will($this->returnValue($em));
-        }
+        $registry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $registry->expects($this->any())
+            ->method('getManager')
+            ->with($this->equalTo($name))
+            ->will($this->returnValue($em));
 
         return $registry;
     }

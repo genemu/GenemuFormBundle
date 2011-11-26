@@ -23,22 +23,16 @@ use Symfony\Component\Form\FormView;
  */
 class TinymceType extends AbstractType
 {
-    protected $options;
+    private $options;
 
     /**
      * Construct
      *
-     * @param string $theme
-     * @param string $scriptUrl
-     * @param array $configs
+     * @param array $options
      */
-    public function __construct($theme, $scriptUrl, array $options)
+    public function __construct(array $options)
     {
-        $this->options = array(
-            'theme' => $theme,
-            'script_url' => $scriptUrl,
-            'options' => $options
-        );
+        $this->options = $options;
     }
 
     /**
@@ -46,16 +40,9 @@ class TinymceType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $options = array_merge(array(
-            'theme' => $options['theme'],
-            'script_url' => $options['script_url']
-        ), $options['options']);
+        $options = $this->getDefaultOptions($options);
 
-        if (empty($options['language'])) {
-            $options['language'] = \Locale::getDefault();
-        }
-
-        $builder->setAttribute('options', $options);
+        $builder->setAttribute('configs', $options['configs']);
     }
 
     /**
@@ -63,7 +50,7 @@ class TinymceType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form)
     {
-        $view->set('options', $form->getAttribute('options'));
+        $view->set('configs', $form->getAttribute('configs'));
     }
 
     /**
@@ -71,11 +58,14 @@ class TinymceType extends AbstractType
      */
     public function getDefaultOptions(array $options)
     {
-        $defaultOptions = array_merge(array(
-            'required' => false
-        ), $this->options);
+        $defaultOptions = array(
+            'configs' => array_merge($this->options, array(
+                'language' => \Locale::getDefault(),
+            )),
+            'required' => false,
+        );
 
-        return array_replace($defaultOptions, $options);
+        return array_replace_recursive($defaultOptions, $options);
     }
 
     /**

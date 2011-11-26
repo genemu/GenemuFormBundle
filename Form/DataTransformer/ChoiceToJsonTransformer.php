@@ -16,9 +16,10 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
 
 /**
+ * ChoiceToJsonTransformer
+ *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-
 class ChoiceToJsonTransformer implements DataTransformerInterface
 {
     protected $choiceList;
@@ -26,6 +27,14 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
     protected $multiple;
     protected $ajax;
 
+    /**
+     * Construct
+     *
+     * @param ArrayChoiceList $choiceList
+     * @param string          $widget
+     * @param boolean         $multiple
+     * @param boolean         $ajax
+     */
     public function __construct(ArrayChoiceList $choiceList, $widget = 'choice', $multiple = false, $ajax = false)
     {
         $this->choiceList = $choiceList;
@@ -39,7 +48,7 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
      */
     public function transform($choices)
     {
-        if (null === $choices || !$choices) {
+        if (empty($choices)) {
             return;
         }
 
@@ -65,19 +74,23 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
      */
     public function reverseTransform($json)
     {
-        $jsons = json_decode(is_array($json) ? current($json) : $json, true);
+        $values = json_decode($json, true);
 
-        $choices = array();
         if ($this->multiple) {
-            foreach ($jsons as $json) {
-                if ($this->ajax && !in_array($this->widget, array('entity', 'document', 'model'))) {
-                    $choices[$json['value']] = $json['label'];
+            $choices = array();
+
+            foreach ($values as $value) {
+                if (
+                    $this->ajax &&
+                    !in_array($this->widget, array('entity', 'document', 'model'), true)
+                ) {
+                    $choices[$value['value']] = $value['label'];
                 } else {
-                    $choices[] = $json['value'];
+                    $choices[] = $value['value'];
                 }
             }
         } else {
-            $choices = $jsons['value'];
+            $choices = $values['value'];
         }
 
         return $choices;

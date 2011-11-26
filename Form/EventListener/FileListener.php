@@ -24,7 +24,7 @@ use Genemu\Bundle\FormBundle\Gd\File\Image;
  * @author Bernhard Schussek <bernhard.schussek@symfony-project.com>
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class JQueryFileListener implements EventSubscriberInterface
+class FileListener implements EventSubscriberInterface
 {
     protected $rootDir;
     protected $multiple;
@@ -53,37 +53,57 @@ class JQueryFileListener implements EventSubscriberInterface
         }
 
         if ($this->multiple) {
-            $files = explode(',', $data);
+            $paths = explode(',', $data);
+            $return = array();
 
-            $data = array();
-            foreach ($files as $file) {
-                $file = new File($this->rootDir . $this->stripQueryString($file));
-
-                if (preg_match('/image/', $file->getMimeType())) {
-                    $file = new Image($file->getPathname());
+            foreach ($paths as $path) {
+                if ($handle = $this->getHandleToPath($path)) {
+                    $return[] = $handle;
                 }
-
-                $data[] = $file;
             }
-
-            $event->setData($data);
         } else {
-            $file = new File($this->rootDir . $this->stripQueryString($data));
+            if ($handle = $this->getHandleToPath($data)) {
+                $return = $handle;
+            }
+        }
 
-            if (preg_match('/image/', $file->getMimeType())) {
-                $file = new Image($file->getPathname());
+        $event->setData($return);
+    }
+
+    /**
+     * Get Handle to Path
+     *
+     * @param string $path
+     *
+     * @return File
+     */
+    private function getHandleToPath($path)
+    {
+        $path = $this->rootDir . '/' . $this->stripQueryString($path);
+
+        if (is_file($path)) {
+            $handle = new File($path);
+
+            if (preg_match('/image/', $handle->getMimeType())) {
+                $handle = new Image($handle->getPathname());
             }
 
-            $event->setData($file);
+            return $handle;
         }
+
+        return null;
     }
 
     /**
      * Delete info after `?`
+     *
+     * @param string $file
+     *
+     * @return string
      */
-    protected function stripQueryString($file)
+    private function stripQueryString($file)
     {
-        if (($pos = strpos($file, '?')) !== false) {
+        if (false !== ($pos = strpos($file, '?'))) {
             $file = substr($file, 0, $pos);
         }
 

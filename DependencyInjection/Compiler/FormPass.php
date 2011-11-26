@@ -11,8 +11,10 @@
 
 namespace Genemu\Bundle\FormBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\Config\FileLocator;
 
 /**
  * Add a new twig.form.resources
@@ -26,10 +28,12 @@ class FormPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        $templates = array('div', 'jquery', 'stylesheet');
         $resources = $container->getParameter('twig.form.resources');
-        $resources[] = 'GenemuFormBundle:Form:div_layout.html.twig';
-        $resources[] = 'GenemuFormBundle:Form:javascript_layout.html.twig';
-        $resources[] = 'GenemuFormBundle:Form:stylesheet_layout.html.twig';
+
+        foreach ($templates as $template) {
+            $resources[] = 'GenemuFormBundle:Form:'.$template.'_layout.html.twig';
+        }
 
         $container->setParameter('twig.form.resources', $resources);
     }

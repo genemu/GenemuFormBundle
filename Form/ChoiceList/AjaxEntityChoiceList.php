@@ -17,6 +17,8 @@ use Symfony\Component\Form\Util\PropertyPath;
 use Doctrine\ORM\EntityManager;
 
 /**
+ * AjaxEntityChoiceList
+ *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 class AjaxEntityChoiceList extends EntityChoiceList
@@ -24,7 +26,18 @@ class AjaxEntityChoiceList extends EntityChoiceList
     private $ajax;
     private $propertyPath;
 
-    public function __construct(EntityManager $em, $class, $property = null, $queryBuilder = null, $choices = array(), $groupBy = null, $ajax = false)
+    /**
+     * Construct
+     *
+     * @param EntityManager  $em
+     * @param string         $class
+     * @param string         $property
+     * @param QueryBuilder   $qb
+     * @param array|\Closure $choices
+     * @param string         $groupBy
+     * @param boolean        $ajax
+     */
+    public function __construct(EntityManager $em, $class, $property = null, $qb = null, $choices = array(), $groupBy = null, $ajax = false)
     {
         $this->ajax = $ajax;
 
@@ -32,7 +45,7 @@ class AjaxEntityChoiceList extends EntityChoiceList
             $this->propertyPath = new PropertyPath($property);
         }
 
-        parent::__construct($em, $class, $property, $queryBuilder, $choices, $groupBy);
+        parent::__construct($em, $class, $property, $qb, $choices, $groupBy);
     }
 
     /**

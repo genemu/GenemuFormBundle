@@ -62,7 +62,7 @@ class ImageTest extends \PHPUnit_Framework_TestCase
     public function testCropImage()
     {
         $image = new Image(__DIR__ . '/../../Fixtures/upload/black.png');
-        $image->crop(0, 0, 5, 5);
+        $image->addFilterCrop(0, 0, 5, 5);
 
         $base64 = $image->getBase64();
 

@@ -1,7 +1,7 @@
 # Add form_javascript and form_stylesheet
 
 You use GenemuFormBundle and you seen that it does not work!
-Maybe you have forgotten form_javascript and form_stylesheet.
+Maybe you have forgotten form_javascript or form_stylesheet.
 
 The principle is to separate the javascript, stylesheet and html.
 This allows better integration of web pages.
@@ -20,7 +20,7 @@ This allows better integration of web pages.
 {% block javascripts %}
     <script src="{{ asset('js/jquery-1.7.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui-1.8.16.custom.min.js') }}"></script>
-    <script src="{{ asset('tinymce/jquery.tinymce.js') }}"></script>
+    <script src="{{ asset('tinymce/tiny_mce.js') }}"></script>
     <script src="{{ asset('js/i18n/jquery-ui-i18n.js') }}"></script>
 
     <script src="{{ asset('js/uploadify/jquery.uploadify.v2.1.4.min.js') }}"></script>

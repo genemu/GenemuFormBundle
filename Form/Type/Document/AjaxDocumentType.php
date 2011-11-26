@@ -21,12 +21,19 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Genemu\Bundle\FormBundle\Form\ChoiceList\AjaxDocumentChoiceList;
 
 /**
+ * AjaxDocumentType
+ *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 class AjaxDocumentType extends AbstractType
 {
-    protected $registry;
+    private $registry;
 
+    /**
+     * Construct
+     *
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;

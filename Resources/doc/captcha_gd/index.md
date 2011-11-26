@@ -1,5 +1,7 @@
 # Captcha GD Field
 
+![Default captcha](https://github.com/genemu/GenemuFormBundle/raw/2.0/Resources/doc/captcha_gd/images/default.png)
+
 ## Minimal configuration:
 
 ``` yml
@@ -23,4 +25,4 @@ public function buildForm(FormBuilder $builder, array $options)
 
 ## Extra:
 
-[Default configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/captcha_gd/default_configuration.md)
+[Default configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/captcha_gd/default.md)

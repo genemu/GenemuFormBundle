@@ -5,7 +5,7 @@
 ``` yml
 # app/config/config.yml
 genemu_form:
-    jquerydate: ~
+    date: ~
 ```
 
 ## Default Usage:

@@ -14,12 +14,20 @@ namespace Genemu\Bundle\FormBundle\Form\ChoiceList;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
 
 /**
+ * AjaxArrayChoiceList
+ *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class AutocompleteArrayChoiceList extends ArrayChoiceList
+class AjaxArrayChoiceList extends ArrayChoiceList
 {
     private $ajax;
 
+    /**
+     * Construct
+     *
+     * @param array|\Closure $choices
+     * @param boolean        $ajax
+     */
     public function __construct($choices, $ajax = false)
     {
         $this->ajax = $ajax;
@@ -66,7 +74,7 @@ class AutocompleteArrayChoiceList extends ArrayChoiceList
             }
         } else {
             foreach ($this->getChoices() as $choice) {
-                if (in_array($choice['value'], $values)) {
+                if (in_array($choice['value'], $values, true)) {
                     $intersect[] = $choice;
                 }
             }

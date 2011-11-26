@@ -23,16 +23,16 @@ class TinymceTypeTest extends TypeTestCase
 
         $options = $view->get('options');
 
-        $this->assertEquals('en', $options['language']);
-        $this->assertEquals('advanced', $options['theme']);
-        $this->assertEquals('/js/tinymce/jquery.tinymce.js', $options['script_url']);
+        $this->assertEquals(array(
+            'language' => 'en'
+        ), $view->get('configs'));
     }
 
     public function testConfigs()
     {
         $form = $this->factory->create('genemu_tinymce', null, array(
             'theme' => 'simple',
-            'options' => array(
+            'configs' => array(
                 'theme_advanced_toolbar_location' => 'top',
                 'theme_advanced_toolbar_align' => 'left'
             )
@@ -40,12 +40,13 @@ class TinymceTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $options = $view->get('options');
+        $configs = $view->get('configs');
 
-        $this->assertEquals('en', $options['language']);
-        $this->assertEquals('simple', $options['theme']);
-        $this->assertEquals('/js/tinymce/jquery.tinymce.js', $options['script_url']);
-        $this->assertEquals('top', $options['theme_advanced_toolbar_location']);
-        $this->assertEquals('left', $options['theme_advanced_toolbar_align']);
+        $this->assertEquals(array(
+            'language' => 'en',
+            'theme_advanced_toolbar_location' => 'top',
+            'theme_advanced_toolbar_align' => 'left'
+
+        ), $view->get('configs'));
     }
 }

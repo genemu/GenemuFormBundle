@@ -12,7 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Gd\Type;
 
 use Symfony\Component\HttpFoundation\Session;
-use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 use Genemu\Bundle\FormBundle\Gd\Gd;
 use Genemu\Bundle\FormBundle\Gd\Filter\Text;
@@ -28,13 +28,17 @@ class Captcha extends Gd
     protected $session;
     protected $secret;
 
-    protected $background;
-    protected $border;
+    protected $width;
+    protected $height;
+    protected $format;
 
-    protected $fonts;
+    protected $backgroundColor;
+    protected $borderColor;
+
     protected $chars;
     protected $length;
 
+    protected $fonts;
     protected $fontSize;
     protected $fontColor;
 
@@ -49,24 +53,52 @@ class Captcha extends Gd
      */
     public function __construct(Session $session, $secret, array $options)
     {
-        $this->create($options['width'], $options['height']);
+        $this->setOptions($options);
+
+        $this->create($this->width, $this->height);
 
         $this->session = $session;
         $this->secret = $secret;
         $this->key = 'genemu_captcha';
+    }
 
-        $this->background = $options['background_color'];
-        $this->border = $options['border_color'];
+    protected function setOptions(array $options)
+    {
+        $defaultOptions = array(
+            'width' => 100,
+            'height' => 30,
+            'format' => 'png',
+            'background_color' => 'DDDDDD',
+            'border_color' => '000000',
+            'chars' => range(0, 9),
+            'length' => 4,
+            'fonts' => array(
+                realpath(__DIR__ . '/../../Resources/public/fonts/akbar.ttf'),
+                realpath(__DIR__ . '/../../Resources/public/fonts/brushcut.ttf'),
+                realpath(__DIR__ . '/../../Resources/public/fonts/molten.ttf'),
+                realpath(__DIR__ . '/../../Resources/public/fonts/planetbe.ttf'),
+                realpath(__DIR__ . '/../../Resources/public/fonts/whoobub.ttf'),
+            ),
+            'font_size' => 16,
+            'font_color' => array('252525', '8B8787', '550707', '3526E6', '88531E')
+        );
 
-        $this->fonts = array();
-        foreach ($options['fonts'] as $font) {
-            $this->fonts[] = new File($options['font_dir'].'/'.$font);
+        $options = array_replace($defaultOptions, $options);
+        $options = array_intersect_key($options, $defaultOptions);
+
+        foreach ($options as $key => $values) {
+            $key = preg_replace_callback('/_([a-z])/', function($v) { return strtoupper($v[1]); }, $key);
+
+            if ('fonts' === $key) {
+                foreach ($values as $value) {
+                    if (!is_file($value)) {
+                        throw new FileNotFoundException($value);
+                    }
+                }
+            }
+
+            $this->$key = $values;
         }
-
-        $this->chars = $options['chars'];
-        $this->length = $options['length'];
-        $this->fontSize = $options['font_size'];
-        $this->fontColor = $options['font_color'];
     }
 
     /**
@@ -74,11 +106,11 @@ class Captcha extends Gd
      */
     public function getBase64($format = 'png')
     {
-        $code = $this->newCode(str_split($this->chars), $this->length);
+        $code = $this->newCode($this->chars, $this->length);
 
         $this->addFilters(array(
-            new Background($this->background),
-            new Border($this->border),
+            new Background($this->backgroundColor),
+            new Border($this->borderColor),
             new Strip($this->fontColor),
             new Text($code, $this->fontSize, $this->fonts, $this->fontColor),
         ));

@@ -10,84 +10,87 @@
 
 {% block genemu_jqueryimage_stylesheet %}
 {% spaceless %}
-<style type="text/css" media="screen">
-    #{{ id }}Container {
-        overflow: hidden;
-    }
+    <style type="text/css" media="screen">
+        #{{ id }}_container {
+            overflow: hidden;
+        }
 
-    #{{ id }}Preview {
-        overflow: hidden;
-        position: relative;
-    }
+        #{{ id }}_preview {
+            overflow: hidden;
+            position: relative;
+        }
 
-    #{{ id }}Preview object, #{{ id }}Overlay {
-        position: absolute;
-        top: 0;
-        right: 0;
-        text-decoration: none;
-        display: block;
-        z-index: 9998;
-        width: 19px;
-        height: 19px;
+        #{{ id }}_preview object, #{{ id }}_overlay {
+            position: absolute;
+            top: 0;
+            right: 0;
+            text-decoration: none;
+            display: block;
+            z-index: 361;
+            width: 19px;
+            height: 19px;
 
-        background: url({{ asset('bundles/genemuform/images/edit.gif') }});
-    }
+            background: url({{ asset('bundles/genemuform/images/edit.gif') }});
+        }
 
-    #{{ id }}Preview object {
-        opacity: 0;
-        z-index: 9999;
-    }
+        #{{ id }}_preview object {
+            opacity: 0;
+            z-index: 362;
+        }
 
-    #{{ id }}Container .left {
-        float: left;
-        position: relative;
-    }
+        #{{ id }}_container .left {
+            float: left;
+            position: relative;
+        }
 
-    #{{ id }}Options {
-        padding: 0px;
-        margin: 0px;
-        list-style-type: none;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        z-index: 9999;
-    }
+        #{{ id }}_options {
+            padding: 0px;
+            margin: 0px;
+            list-style-type: none;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            z-index: 361;
+        }
 
-    #{{ id }}Options li {
-        background: transparent url({{ asset('bundles/genemuform/images/icons.png') }});
+        #{{ id }}_options li {
+            background: transparent url({{ asset('bundles/genemuform/images/icons.png') }});
 
-        display: inline;
-        float: left;
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-    }
+            display: inline;
+            float: left;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
 
-    #{{ id }}Options .rotate {
-        background-position: 0 0;
-    }
+        #{{ id }}_options .rotate {
+            background-position: 0 0;
+        }
 
-    #{{ id }}Options .bw {
-        background-position: 0 -24px;
-    }
+        #{{ id }}_options .bw {
+            background-position: 0 -24px;
+        }
 
-    #{{ id }}Options .negative {
-        background-position: -24px 0;
-    }
+        #{{ id }}_options .negative {
+            background-position: -24px 0;
+        }
 
-    #{{ id }}Options .sepia {
-        background-position: -24px -24px;
-    }
+        #{{ id }}_options .sepia {
+            background-position: -24px -24px;
+        }
 
-    #{{ id }}Options .crop {
-        background-position: -48px 0;
-    }
+        #{{ id }}_options .crop {
+            background-position: -48px 0;
+        }
 
-    #{{ id }}Options .loading {
-        background: #FFF url({{ asset('bundles/genemuform/images/ajax-loader.gif') }});
-        padding: 6px 0;
-        height: 11px;
-    }
-</style>
+        #{{ id }}_options .blur {
+            background-position: -48px -24px;
+        }
+        #{{ id }}_options .loading {
+            background: #FFF url({{ asset('bundles/genemuform/images/ajax-loader.gif') }});
+            padding: 6px 0;
+            height: 11px;
+        }
+    </style>
 {% endspaceless %}
 {% endblock genemu_jqueryimage_stylesheet %}

@@ -1,5 +1,14 @@
 # Use JQueryAutocomplete to MongoDB values
 
+## Minimal configuration:
+
+``` yml
+# app/config/config.yml
+genemu_form:
+    autocompleter:
+        mongodb: true
+```
+
 ## Usage:
 
 ``` php
@@ -22,4 +31,4 @@ public function buildForm(FormBuilder $builder, array $options)
 
 ## Extra
 
-[Ajax MongoDB](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/autocomplete/mongodb_ajax.md)
+[Ajax MongoDB](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/autocomplete/mongodb_ajax.md)

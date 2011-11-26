@@ -5,19 +5,13 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="genemu.form.type.tinymce.class">Genemu\Bundle\FormBundle\Form\Type\TinymceType</parameter>
-
-        <parameter key="genemu.form.tinymce.theme" />
-        <parameter key="genemu.form.tinymce.script_url" />
-        <parameter key="genemu.form.tinymce.options" />
+        <parameter key="genemu.form.tinymce.configs" />
     </parameters>
 
     <services>
-        <service id="genemu.form.type.tinymce" class="%genemu.form.type.tinymce.class%">
+        <service id="genemu.form.type.tinymce" class="%genemu.form.namespace.type%\TinymceType">
             <tag name="form.type" alias="genemu_tinymce" />
-            <argument>%genemu.form.tinymce.theme%</argument>
-            <argument>%genemu.form.tinymce.script_url%</argument>
-            <argument>%genemu.form.tinymce.options%</argument>
+            <argument>%genemu.form.tinymce.configs%</argument>
         </service>
     </services>
 

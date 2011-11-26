@@ -68,13 +68,10 @@ class AutocompleterTypeTest extends TypeTestCase
 
         $form->setData('foo');
         $view = $form->createView();
-        $form->bind(array(
-            json_encode(array(
-                'label' => 'bar',
-                'value' => 'bar'
-            )),
-            array('autocompleter' => 'bar')
-        ));
+        $form->bind(json_encode(array(
+            'label' => 'bar',
+            'value' => 'bar'
+        )));
 
         $this->assertEquals(array(), $form->getAttribute('choice_list')->getChoices());
         $this->assertEquals(json_encode(array(
@@ -100,13 +97,10 @@ class AutocompleterTypeTest extends TypeTestCase
 
         $form->setData(array('foo' => 'Foo', 'bar' => 'Bar'));
         $view = $form->createView();
-        $form->bind(array(
-            json_encode(array(
-                array('label' => 'Foo', 'value' => 'foo'),
-                array('label' => 'Ri', 'value' => 'ri')
-            )),
-            array('autocompleter' => 'Foo, Ri, ')
-        ));
+        $form->bind(json_encode(array(
+            array('label' => 'Foo', 'value' => 'foo'),
+            array('label' => 'Ri', 'value' => 'ri')
+        )));
 
         $this->assertEquals(array(), $form->getAttribute('choice_list')->getChoices());
         $this->assertEquals(json_encode(array(
@@ -132,12 +126,9 @@ class AutocompleterTypeTest extends TypeTestCase
 
         $form->setData(array('foo', 'bar'));
         $view = $form->createView();
-        $form->bind(array(
-            json_encode(array(
-                array('label' => 'Foo', 'value' => 'foo')
-            )),
-            array('autocompleter' => 'Foo')
-        ));
+        $form->bind(json_encode(array(
+            array('label' => 'Foo', 'value' => 'foo')
+        )));
 
         $this->assertEquals(json_encode(array(
             array('value' => 'foo', 'label' => 'Foo'),

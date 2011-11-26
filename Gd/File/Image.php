@@ -165,7 +165,7 @@ class Image extends File
      * @param int $w
      * @param int $h
      */
-    public function crop($x, $y, $w, $h)
+    public function addFilterCrop($x, $y, $w, $h)
     {
         $this->gd->addFilter(new Crop($x, $y, $w, $h));
     }
@@ -175,15 +175,15 @@ class Image extends File
      *
      * @param int $rotate
      */
-    public function rotate($rotate = 90)
+    public function addFilterRotate($rotate = 90)
     {
         $this->gd->addFilter(new Rotate($rotate));
     }
 
     /**
-     * Add filter negate to image
+     * Add filter negative to image
      */
-    public function negate()
+    public function addFilterNegative()
     {
         $this->gd->addFilter(new Negate());
     }
@@ -193,7 +193,7 @@ class Image extends File
      *
      * @param string $color
      */
-    public function sepia($color)
+    public function addFilterSepia($color)
     {
         $this->gd->addFilters(array(
             new GrayScale(),
@@ -204,7 +204,7 @@ class Image extends File
     /**
      * Add filter gray scale to image
      */
-    public function grayScale()
+    public function addFilterBw()
     {
         $this->gd->addFilter(new GrayScale());
     }
@@ -212,7 +212,7 @@ class Image extends File
     /**
      * Add filter blur to image
      */
-    public function blur()
+    public function addFilterBlur()
     {
         $this->gd->addFilter(new Blur());
     }
@@ -220,7 +220,7 @@ class Image extends File
     /**
      * Add filter opacity to image
      */
-    public function opacity($opacity)
+    public function addFilterOpacity($opacity)
     {
         $this->gd->addFilter(new Opacity($opacity));
     }

@@ -24,12 +24,12 @@ use Genemu\Bundle\FormBundle\Gd\GdInterface;
  */
 class CaptchaValidator implements FormValidatorInterface
 {
-    protected $captcha;
+    private $captcha;
 
     /**
      * Construct
      *
-     * @param Captcha $captcha
+     * @param CaptchaInterface $captcha
      */
     public function __construct(GdInterface $captcha)
     {
@@ -41,18 +41,13 @@ class CaptchaValidator implements FormValidatorInterface
      */
     public function validate(FormInterface $form)
     {
-        $code = $form->getData();
-        $encoded = $this->captcha->encode($code);
-        $length = $this->captcha->getLength();
+        $data = $form->getData();
 
-        $generate = $this->captcha->getCode();
-
-        if ($length < strlen($code)) {
-            $form->addError(new FormError('"'.$code.'" must be '.$length.' characters long.'));
-        }
-
-        if ($generate != $encoded) {
-            $form->addError(new FormError('The numbers you typed in are invalid.'));
+        if (
+            $this->captcha->getLength() !== strlen($data) ||
+            $this->captcha->getCode() !== $this->captcha->encode($data)
+        ) {
+            $form->addError(new FormError('The captcha is invalid'));
         }
 
         $this->captcha->removeCode();
