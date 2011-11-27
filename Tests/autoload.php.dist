@@ -22,6 +22,7 @@ $loader->registerNamespaces(array(
         $vendorDir.'/symfony/tests',
         $vendorDir.'/bundles'
     ),
+    'Propel'                 => array($vendorDir.'/propel'),
     'Doctrine'               => array($vendorDir.'/doctrine/lib'),
     'Doctrine\\Common'       => array($vendorDir.'/doctrine-common/lib'),
     'Doctrine\\DBAL'         => array($vendorDir.'/doctrine-dbal/lib'),
