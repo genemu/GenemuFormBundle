@@ -17,6 +17,7 @@ $vendorDir = __DIR__;
 
 $deps = array(
     array('symfony', 'git://github.com/symfony/symfony.git', 'v2.0.6'),
+    array('propel', 'git://github.com/propelorm/PropelBundle.git', 'origin/2.0'),
     array('doctrine', 'git://github.com/doctrine/doctrine2.git', 'origin/master'),
     array('doctrine-common', 'git://github.com/doctrine/common.git', 'origin/master'),
     array('doctrine-dbal', 'git://github.com/doctrine/dbal.git', 'origin/master'),
