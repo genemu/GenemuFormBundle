@@ -12,9 +12,11 @@
 {% spaceless %}
     <script type="text/javascript" src="{{ server }}/js/recaptcha_ajax.js"></script>
     <script type="text/javascript">
-        window.onload = function() {
-            Recaptcha.create('{{ public_key }}', '{{ id }}_div', {{ configs|json_encode|raw }});
-        };
+        window.addEventListener(
+            'load',
+            Recaptcha.create('{{ public_key }}', '{{ id }}_div', {{ configs|json_encode|raw }}),
+            false
+        );
     </script>
 {% endspaceless %}
 {% endblock genemu_recaptcha_javascript %}
