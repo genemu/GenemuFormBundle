@@ -39,6 +39,8 @@ class GenemuFormExtension extends Extension
         $loader->load('services.xml');
         $loader->load('twig.xml');
 
+        $loader->load('color.xml');
+        $loader->load('rating.xml');
         $loader->load('slider.xml');
         $loader->load('autocompleter.xml');
         if (!empty($configs['autocompleter']['doctrine'])) {

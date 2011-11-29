@@ -8,7 +8,7 @@
         <parameter key="genemu.form.file.root_dir">%kernel.root_dir%/../web</parameter>
         <parameter key="genemu.form.file.upload_dir" />
         <parameter key="genemu.form.file.folder" />
-        <parameter key="genemu.form.file.options" />
+        <parameter key="genemu.form.file.options" type="collection" />
     </parameters>
 
     <services>

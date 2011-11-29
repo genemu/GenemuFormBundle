@@ -108,6 +108,42 @@
 {% endspaceless %}
 {% endblock genemu_jqueryslider_javascript %}
 
+{% block genemu_jquerycolor_javascript %}
+{% spaceless %}
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $field = $('#{{ id }}');
+
+            $field.css({
+                background: '#' + $field.val()
+            });
+
+            $field.ColorPicker($.extend({
+                color: '#' + $field.val(),
+                onBeforeShow: function() {
+                    $(this).ColorPickerSetColor($field.val());
+                },
+                onChange: function(hsb, hex, rgb) {
+                    $field.val(hex).css({
+                        background: '#' + hex
+                    });
+                }
+            }, {{ configs|json_encode|raw }}));
+        });
+    </script>
+{% endspaceless %}
+{% endblock genemu_jquerycolor_javascript %}
+
+{% block genemu_jqueryrating_javascript %}
+{% spaceless %}
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $('#{{ id }}').parent().stars({{ configs|json_encode|raw }});
+        });
+    </script>
+{% endspaceless %}
+{% endblock genemu_jqueryrating_javascript %}
+
 {% block genemu_jqueryautocompleter_javascript %}
 {% spaceless %}
     <script type="text/javascript">
