@@ -11,7 +11,9 @@ public function buildForm(FormBuilder $builder, array $options)
         // ...
         ->add('rating', 'genemu_jqueryrating')
         ->add('single_rating', 'genemu_jqueryrating', array(
-            'oneVoteOnly' => true
+            'configs' => array(
+                'oneVoteOnly' => true
+            )
         ))
 }
 ```
