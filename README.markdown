@@ -16,9 +16,9 @@ Installation is quick and easy, 5 steps process
 
 Check your Symfony2 version.
 
-[2.0.*](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/instalation/2.0.md)
+[Symfony2 branch v2.*](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/instalation/2.0.md)
 
-[master](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/instalation/master.md)
+[Symfony2 branch master](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/instalation/master.md)
 
 ### Step 2: Configure the Autoloader
 
@@ -68,34 +68,52 @@ $ php app/console assets:install web/
 
 ## Template
 
-[Create template form view](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/template.md)
+You use GenemuFormBundle and you seen that it does not work!
+Maybe you have forgotten form_javascript or form_stylesheet.
+
+The principle is to separate the javascript, stylesheet and html.
+This allows better integration of web pages.
+
+[View a template example form view](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/template.md)
 
 ## FormType
 
-[Captcha GD usage](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/captcha_gd/index.md)
+### Cpatcha GD
 
-Using ReCaptcha from [Google librairie](http://www.google.com/recaptcha):
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/captcha_gd/index.md)
 
-[ReCaptcha usage](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/recaptcha/index.md)
+### ReCaptcha ([Google librairie](http://www.google.com/recaptcha)):
 
-Using [Tinymce](http://www.tinymce.com/):
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/recaptcha/index.md)
 
-[Tinymce usage](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/tinymce/index.md)
+### Tinymce ([download](http://www.tinymce.com/)):
 
-Using [JQueryUi librairie](http://jqueryui.com/):
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/tinymce/index.md)
+
+### JQueryUi ([download](http://jqueryui.com/)):
 
 - [Datepicker](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/datepicker/index.md)
 - [Slider](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/slider/index.md)
 - [Autocomplete](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/autocomplete/index.md)
 
-Using [uplodify librairie](http://www.uploadify.com):
-
-[File usage](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/file/index.md)
+### File ([uplodify librairie](http://www.uploadify.com)):
 
 You can use [jcrop](http://deepliquid.com/content/Jcrop.html) to uploadify.
 You send the image and crop or apply filter.
 
-[Image usage](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/image/index.md)
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/file/index.md)
+
+### Image:
+
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/image/index.md)
+
+### Color:
+
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/color/index.md)
+
+### Rating
+
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/rating/index.md)
 
 ## Note
 
