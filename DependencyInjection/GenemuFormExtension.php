@@ -39,6 +39,8 @@ class GenemuFormExtension extends Extension
         $loader->load('services.xml');
         $loader->load('twig.xml');
 
+        $loader->load('color.xml');
+        $loader->load('rating.xml');
         $loader->load('slider.xml');
         $loader->load('autocompleter.xml');
         if (!empty($configs['autocompleter']['doctrine'])) {
@@ -71,6 +73,14 @@ class GenemuFormExtension extends Extension
 
         if (isset($configs['image']) && !empty($configs['image']['enabled'])) {
             $this->registerImageConfiguration($configs['image'], $container, $loader);
+        }
+
+        if (isset($configs['color']) && !empty($configs['color']['enabled'])) {
+            $this->registerColorConfiguration($configs['color'], $container, $loader);
+        }
+
+        if (isset($configs['rating']) && !empty($configs['rating']['enabled'])) {
+            $this->registerRatingConfiguration($configs['rating'], $container, $loader);
         }
     }
 

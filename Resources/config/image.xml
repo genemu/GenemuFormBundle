@@ -6,8 +6,8 @@
 
     <parameters>
         <parameter key="genemu.form.image.selected" />
-        <parameter key="genemu.form.image.thumbnails" />
-        <parameter key="genemu.form.image.filters" />
+        <parameter key="genemu.form.image.thumbnails" type="collection" />
+        <parameter key="genemu.form.image.filters" type="collection" />
     </parameters>
 
     <services>

@@ -107,6 +107,14 @@ You send the image and crop or apply filter.
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/image/index.md)
 
+### Color:
+
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/color/index.md)
+
+### Rating
+
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/rating/index.md)
+
 ## Note
 
 There is maybe bugs in this implementations, this package is just an idea of a form

@@ -8,7 +8,7 @@
         <parameter key="genemu.form.recaptcha.public_key" />
         <parameter key="genemu.form.recaptcha.private_key" />
         <parameter key="genemu.form.recaptcha.server_url" />
-        <parameter key="genemu.form.recaptcha.options" />
+        <parameter key="genemu.form.recaptcha.options" type="collection" />
     </parameters>
 
     <services>
