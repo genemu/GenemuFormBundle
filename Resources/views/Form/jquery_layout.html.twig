@@ -113,22 +113,34 @@
     <script type="text/javascript">
         jQuery(document).ready(function($) {
             $field = $('#{{ id }}');
-
-            $field.css({
-                background: '#' + $field.val()
-            });
-
-            $field.ColorPicker($.extend({
+            $configs = $.extend({
                 color: '#' + $field.val(),
                 onBeforeShow: function() {
                     $(this).ColorPickerSetColor($field.val());
-                },
+                }
+            }, {{ configs|json_encode|raw }});
+
+        {% if widget == "image" %}
+            $picker = $('#{{ id }}_color');
+
+            $picker.ColorPicker($.extend({
                 onChange: function(hsb, hex, rgb) {
-                    $field.val(hex).css({
-                        background: '#' + hex
+                    $field.val(hex);
+
+                    $('div', $picker).css({
+                        backgroundColor: '#' + hex
                     });
                 }
-            }, {{ configs|json_encode|raw }}));
+            }, $configs));
+        {% else %}
+            $field.ColorPicker($.extend({
+                onChange: function(hsb, hex, rgb) {
+                    $field.val(hex).css({
+                        backgroundColor: '#' + hex
+                    });
+                }
+            }, $configs));
+        {% endif %}
         });
     </script>
 {% endspaceless %}

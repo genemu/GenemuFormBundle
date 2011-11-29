@@ -98,7 +98,7 @@ class AutocompleterType extends AbstractType
                 'choice',
                 'entity',
                 'document',
-                'model'
+                'model',
             )
         );
     }
