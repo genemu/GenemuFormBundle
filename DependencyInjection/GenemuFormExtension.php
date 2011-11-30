@@ -154,8 +154,8 @@ class GenemuFormExtension extends Extension
                 'theme' => $configs['theme']
             ));
         }
-
-        $container->setParameter('genemu.form.tinymce.options', $configs['configs']);
+        
+        $container->setParameter('genemu.form.tinymce.configs', $configs['configs']);
     }
 
     /**
