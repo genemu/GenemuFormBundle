@@ -8,6 +8,31 @@
 
 {% block field_stylesheet "" %}
 
+{% block genemu_jquerycolor_stylesheet %}
+{% spaceless %}
+{% if widget == "image" %}
+    <style type="text/css" media="screen">
+        #{{ id }}_color {
+            background: url({{ asset('bundles/genemuform/images/select.png') }});
+            width: 36px;
+            height: 36px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #{{ id }}_color div {
+            background: url({{ asset('bundles/genemuform/images/select.png') }}) center center;
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+{% endif %}
+{% endspaceless %}
+{% endblock genemu_jquerycolor_stylesheet %}
+
 {% block genemu_jqueryimage_stylesheet %}
 {% spaceless %}
     <style type="text/css" media="screen">

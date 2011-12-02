@@ -61,6 +61,16 @@
 {% endspaceless %}
 {% endblock genemu_jqueryautocompleter_widget %}
 
+{% block genemu_jquerychosen_widget %}
+{% spaceless %}
+    {% set attr = attr|merge({
+        "data-placeholder": empty_value,
+        "class": "chzn-select"
+    }) %}
+    {{ block("choice_widget") }}
+{% endspaceless %}
+{% endblock genemu_jquerychosen_widget %}
+
 {% block genemu_jqueryfile_widget %}
 {% spaceless %}
     {{ block("hidden_widget") }}
@@ -70,10 +80,23 @@
 {% endspaceless %}
 {% endblock genemu_jqueryfile_widget %}
 
+{% block genemu_jquerycolor_widget %}
+{% spaceless %}
+    {% if widget == "image" %}
+        <div id="{{ id }}_color" {{ block("widget_container_attributes") }}>
+            <div{% if value %} style="background-color: #{{ value }};"{% endif %}>&nbsp;</div>
+            {{ block("hidden_widget") }}
+        </div>
+    {% else %}
+        {{ block("field_widget") }}
+    {% endif %}
+{% endspaceless %}
+{% endblock genemu_jquerycolor_widget %}
+
 {% block genemu_jqueryrating_widget %}
 {% spaceless %}
     {% if expanded %}
-        <div {{ block('widget_container_attributes') }}>
+        <div {{ block("widget_container_attributes") }}>
         {% for child in form %}
             {{ form_widget(child) }}
         {% endfor %}

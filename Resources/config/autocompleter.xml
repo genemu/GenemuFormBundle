@@ -11,6 +11,9 @@
         <service id="genemu.form.type.jqueryautocompleter" class="%genemu.form.namespace.jquery%\AutocompleterType">
             <tag name="form.type" alias="genemu_jqueryautocompleter" />
         </service>
+        <service id="genemu.form.type.jquerychosen" class="%genemu.form.namespace.jquery%\ChosenType">
+            <tag name="form.type" alias="genemu_jquerychosen" />
+        </service>
 
         <service id="genemu.form.type.ajaxmodel" class="%genemu.form.namespace.model%\AjaxModelType">
             <tag name="form.type" alias="genemu_ajaxmodel" />
