@@ -61,6 +61,16 @@
 {% endspaceless %}
 {% endblock genemu_jqueryautocompleter_widget %}
 
+{% block genemu_jquerychosen_widget %}
+{% spaceless %}
+    {% set attr = attr|merge({
+        "data-placeholder": empty_value,
+        "class": "chzn-select"
+    }) %}
+    {{ block("choice_widget") }}
+{% endspaceless %}
+{% endblock genemu_jquerychosen_widget %}
+
 {% block genemu_jqueryfile_widget %}
 {% spaceless %}
     {{ block("hidden_widget") }}

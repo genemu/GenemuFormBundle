@@ -96,6 +96,9 @@ class AutocompleterType extends AbstractType
         return array(
             'widget' => array(
                 'choice',
+                'language',
+                'country',
+                'locale',
                 'entity',
                 'document',
                 'model',
