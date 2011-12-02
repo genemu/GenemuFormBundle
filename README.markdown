@@ -103,17 +103,21 @@ You send the image and crop or apply filter.
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/file/index.md)
 
-### Image:
+### Image ([view demo](http://tympanus.net/codrops/2009/11/04/jquery-image-cropper-with-uploader-v1-1/)):
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/image/index.md)
 
-### Color:
+### Colorpicker ([view demo](http://www.eyecon.ro/colorpicker/)):
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/color/index.md)
 
-### Rating
+### Rating ([view demo](http://orkans-tmp.22web.net/star_rating/)):
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/rating/index.md)
+
+### Chosen ([view demo](http://harvesthq.github.com/chosen/)):
+
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/chosen/index.md)
 
 ## Note
 
