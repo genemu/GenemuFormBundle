@@ -14,8 +14,6 @@ namespace Genemu\Bundle\FormBundle\Twig\Extension;
 use Symfony\Bridge\Twig\Extension\FormExtension as BaseFormExtension;
 use Symfony\Component\Form\FormView;
 
-use Assetic\Asset\StringAsset;
-
 /**
  * FormExtension extends Twig with form capabilities.
  *
