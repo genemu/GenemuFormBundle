@@ -1,6 +1,6 @@
 # JQueryImage Field
 
-![Crop image](https://github.com/genemu/GenemuFormBundle/raw/2.0/Resources/doc/jquery/image/images/crop.png)
+![Crop image](https://github.com/genemu/GenemuFormBundle/raw/master/Resources/doc/jquery/image/images/crop.png)
 
 ## Minimal configuration:
 
@@ -8,6 +8,14 @@
 # app/config/config.yml
 genemu_form:
     image: ~
+```
+
+## Add in your routing.yml
+
+``` yml
+genemu_image:
+    resource: "@GenemuFormBundle/Controller/ImageController.php"
+    type:     annotation
 ```
 
 ## Default Usage:

@@ -49,20 +49,15 @@ class Captcha extends Gd
      *
      * @param Session $session
      * @param string  $secret
-     * @param array   $options
      */
-    public function __construct(Session $session, $secret, array $options)
+    public function __construct(Session $session, $secret)
     {
-        $this->setOptions($options);
-
-        $this->create($this->width, $this->height);
-
         $this->session = $session;
         $this->secret = $secret;
         $this->key = 'genemu_captcha';
     }
 
-    protected function setOptions(array $options)
+    public function setOptions(array $options)
     {
         $defaultOptions = array(
             'width' => 100,
@@ -106,6 +101,8 @@ class Captcha extends Gd
      */
     public function getBase64($format = 'png')
     {
+        $this->create($this->width, $this->height);
+        
         $code = $this->newCode($this->chars, $this->length);
 
         $this->addFilters(array(

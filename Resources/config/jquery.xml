@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="genemu.form.color.options" type="collection" />
+        <parameter key="genemu.form.date.options" type="collection" />
+        <parameter key="genemu.form.rating.options" type="collection" />
+
+        <parameter key="genemu.form.file.root_dir">%kernel.root_dir%/../web</parameter>
+        <parameter key="genemu.form.file.folder">/upload</parameter>
+        <parameter key="genemu.form.file.upload_dir">%genemu.from.file.root_dir%/upload</parameter>
+        <parameter key="genemu.form.file.options" type="collection" />
+
+        <parameter key="genemu.form.image.selected" />
+        <parameter key="genemu.form.image.thumbnails" type="collection" />
+        <parameter key="genemu.form.image.filters" type="collection" />
+    </parameters>
+
+    <services>
+        <service id="genemu.form.jquery.type.autocompleter" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\AutocompleterType">
+            <tag name="form.type" alias="genemu_jqueryautocompleter" />
+        </service>
+        <service id="genemu.form.jquery.type.chosen" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\ChosenType">
+            <tag name="form.type" alias="genemu_jquerychosen" />
+        </service>
+        <service id="genemu.form.jquery.type.color" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\ColorType">
+            <tag name="form.type" alias="genemu_jquerycolor" />
+            <argument>%genemu.form.color.options%</argument>
+        </service>
+        <service id="genemu.form.jquery.type.date" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\DateType">
+            <tag name="form.type" alias="genemu_jquerydate" />
+            <argument>%genemu.form.date.options%</argument>
+        </service>
+        <service id="genemu.form.jquery.type.file" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\FileType">
+            <tag name="form.type" alias="genemu_jqueryfile" />
+            <argument>%genemu.form.file.options%</argument>
+            <argument>%genemu.form.file.root_dir%</argument>
+        </service>
+        <service id="genemu.form.jquery.type.geolocation" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\GeolocationType">
+            <tag name="form.type" alias="genemu_jquerygeolocation" />
+        </service>
+        <service id="genemu.form.jquery.type.image" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\ImageType">
+            <tag name="form.type" alias="genemu_jqueryimage" />
+            <argument>%genemu.form.image.selected%</argument>
+            <argument>%genemu.form.image.thumbnails%</argument>
+            <argument>%genemu.form.image.filters%</argument>
+        </service>
+        <service id="genemu.form.jquery.type.rating" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\RatingType">
+            <tag name="form.type" alias="genemu_jqueryrating" />
+            <argument>%genemu.form.rating.options%</argument>
+        </service>
+        <service id="genemu.form.jquery.type.slider" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\SliderType">
+            <tag name="form.type" alias="genemu_jqueryslider" />
+        </service>
+    </services>
+
+</container>

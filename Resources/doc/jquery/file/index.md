@@ -1,6 +1,6 @@
 # JQueryFile Field ([download uploadify](http://www.uploadify.com))
 
-![Multi files](https://github.com/genemu/GenemuFormBundle/raw/2.0/Resources/doc/jquery/file/images/multiple.png)
+![Multi files](https://github.com/genemu/GenemuFormBundle/raw/master/Resources/doc/jquery/file/images/multiple.png)
 
 ## Minimal configuration:
 
@@ -9,6 +9,14 @@
 genemu_form:
     file:
         uploader: /uploadify/uploadify.swf
+```
+
+## Add in your routing.yml
+
+``` yml
+genemu_upload:
+    resource: "@GenemuFormBundle/Controller/UploadController.php"
+    type:     annotation
 ```
 
 ## Default Usage:

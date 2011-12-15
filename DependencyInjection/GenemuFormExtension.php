@@ -32,17 +32,14 @@ class GenemuFormExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $configs = $this->processConfiguration(new Configuration(), $configs);
 
-        $configuration = new Configuration();
-        $configs = $this->processConfiguration($configuration, $configs);
-
-        $loader->load('services.xml');
         $loader->load('twig.xml');
+        $loader->load('imagine.xml');
+        $loader->load('form.xml');
+        $loader->load('model.xml');
+        $loader->load('jquery.xml');
 
-        $loader->load('color.xml');
-        $loader->load('rating.xml');
-        $loader->load('slider.xml');
-        $loader->load('autocompleter.xml');
         if (!empty($configs['autocompleter']['doctrine'])) {
             $loader->load('entity.xml');
         }
@@ -51,28 +48,12 @@ class GenemuFormExtension extends Extension
             $loader->load('mongodb.xml');
         }
 
-        if (isset($configs['captcha']) && !empty($configs['captcha']['enabled'])) {
-            $this->registerCaptchaConfiguration($configs['captcha'], $container, $loader);
-        }
+        foreach (array('captcha', 'recaptcha', 'tinymce', 'date', 'file', 'image') as $type) {
+            if (isset($configs[$type]) && !empty($configs[$type]['enabled'])) {
+                $method = 'register' . ucfirst($type) . 'Configuration';
 
-        if (isset($configs['recaptcha']) && !empty($configs['recaptcha']['enabled'])) {
-            $this->registerRecaptchaConfiguration($configs['recaptcha'], $container, $loader);
-        }
-
-        if (isset($configs['tinymce']) && !empty($configs['tinymce']['enabled'])) {
-            $this->registerTinymceConfiguration($configs['tinymce'], $container, $loader);
-        }
-
-        if (isset($configs['date']) && !empty($configs['date']['enabled'])) {
-            $this->registerDateConfiguration($configs['date'], $container, $loader);
-        }
-
-        if (isset($configs['file']) && !empty($configs['file']['enabled'])) {
-            $this->registerFileConfiguration($configs['file'], $container, $loader);
-        }
-
-        if (isset($configs['image']) && !empty($configs['image']['enabled'])) {
-            $this->registerImageConfiguration($configs['image'], $container, $loader);
+                $this->$method($configs[$type], $container);
+            }
         }
     }
 
@@ -81,13 +62,10 @@ class GenemuFormExtension extends Extension
      *
      * @param array            $config    A configuration array
      * @param ContainerBuilder $container A ContainerBuilder instance
-     * @param XmlFileLoader    $loader    An XmlFileLoader instance
      */
-    private function registerCaptchaConfiguration(array $configs, ContainerBuilder $container, XmlFileLoader $loader)
+    private function registerCaptchaConfiguration(array $configs, ContainerBuilder $container)
     {
-        $loader->load('captcha.xml');
-
-        if (!function_exists('image'.$configs['format'])) {
+        if (!function_exists('image' . $configs['format'])) {
             throw new \LogicException(sprintf('Format %s does not supported.', $configs['format']));
         }
 
@@ -100,12 +78,12 @@ class GenemuFormExtension extends Extension
         unset($configs['font_dir']);
 
         $backgroundColor = preg_replace('/^[0-9A-Fa-f]/', '', $configs['background_color']);
-        if (in_array(strlen($backgroundColor), array(3, 6), true)) {
+        if (!in_array(strlen($backgroundColor), array(3, 6), true)) {
             $configs['background_color'] = 'DDDDDD';
         }
 
         $borderColor = preg_replace('/^[0-9A-Fa-f]/', '', $configs['border_color']);
-        if (in_array(strlen($borderColor), array(3, 6), true)) {
+        if (!in_array(strlen($borderColor), array(3, 6), true)) {
             $configs['border_color'] = '000000';
         }
 
@@ -117,15 +95,20 @@ class GenemuFormExtension extends Extension
      *
      * @param array            $config    A configuration array
      * @param ContainerBuilder $container A ContainerBuilder instance
-     * @param XmlFileLoader    $loader    An XmlFileLoader instance
      */
-    private function registerRecaptchaConfiguration(array $configs, ContainerBuilder $container, XmlFileLoader $loader)
+    private function registerRecaptchaConfiguration(array $configs, ContainerBuilder $container)
     {
-        $loader->load('recaptcha.xml');
-
         $serverUrl = $configs['server_url'];
-        if (isset($configs['ssl']) && !empty($configs['ssl']['use'])) {
+        if (isset($configs['ssl']['use']) && !empty($configs['ssl']['use'])) {
             $serverUrl = $configs['ssl']['server_url'];
+        }
+        
+        if (empty($configs['private_key'])) {
+            throw new \LogicException('Option recaptcha.private_key does not empty.');
+        }
+        
+        if (empty($configs['public_key'])) {
+            throw new \LogicException('Option recaptcha.public_key does not empty.');
         }
 
         $container->setParameter('genemu.form.recaptcha.server_url', $serverUrl);
@@ -139,19 +122,16 @@ class GenemuFormExtension extends Extension
      *
      * @param array            $config    A configuration array
      * @param ContainerBuilder $container A ContainerBuilder instance
-     * @param XmlFileLoader    $loader    An XmlFileLoader instance
      */
-    private function registerTinymceConfiguration(array $configs, ContainerBuilder $container, XmlFileLoader $loader)
+    private function registerTinymceConfiguration(array $configs, ContainerBuilder $container)
     {
-        $loader->load('tinymce.xml');
-
         if (isset($configs['script_url']) && !empty($configs['script_url'])) {
             $configs['configs'] = array_merge($configs['configs'], array(
                 'script_url' => $configs['script_url']
             ));
         }
 
-        if (!empty($configs['theme'])) {
+        if (isset($configs['theme']) && !empty($configs['theme'])) {
             $configs['configs'] = array_merge($configs['configs'], array(
                 'theme' => $configs['theme']
             ));
@@ -165,12 +145,9 @@ class GenemuFormExtension extends Extension
      *
      * @param array            $config    A configuration array
      * @param ContainerBuilder $container A ContainerBuilder instance
-     * @param XmlFileLoader    $loader    An XmlFileLoader instance
      */
-    private function registerDateConfiguration(array $configs, ContainerBuilder $container, XmlFileLoader $loader)
+    private function registerDateConfiguration(array $configs, ContainerBuilder $container)
     {
-        $loader->load('date.xml');
-
         $container->setParameter('genemu.form.date.options', $configs['configs']);
     }
 
@@ -179,12 +156,9 @@ class GenemuFormExtension extends Extension
      *
      * @param array            $config    A configuration array
      * @param ContainerBuilder $container A ContainerBuilder instance
-     * @param XmlFileLoader    $loader    An XmlFileLoader instance
      */
-    private function registerFileConfiguration(array $configs, ContainerBuilder $container, XmlFileLoader $loader)
+    private function registerFileConfiguration(array $configs, ContainerBuilder $container)
     {
-        $loader->load('file.xml');
-
         $rootDir = $container->getParameter('genemu.form.file.root_dir');
         $rootDir = $container->getParameterBag()->resolveValue($rootDir);
 
@@ -210,12 +184,9 @@ class GenemuFormExtension extends Extension
      *
      * @param array            $config    A configuration array
      * @param ContainerBuilder $container A ContainerBuilder instance
-     * @param XmlFileLoader    $loader    An XmlFileLoader instance
      */
-    private function registerImageConfiguration(array $configs, ContainerBuilder $container, XmlFileLoader $loader)
+    private function registerImageConfiguration(array $configs, ContainerBuilder $container)
     {
-        $loader->load('image.xml');
-
         if (empty($configs['selected'])) {
             throw new \LogicException('Your selected thumbnail does not empty.');
         }

@@ -12,13 +12,16 @@
 namespace Genemu\Bundle\FormBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Genemu\Bundle\FormBundle\Gd\File\Image;
 
 /**
+ * Upload Controller
+ *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
 class UploadController extends Controller

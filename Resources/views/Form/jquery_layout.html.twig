@@ -8,9 +8,36 @@
 
 {% block field_javascript "" %}
 
+{% block genemu_captcha_javascript %}
+{% spaceless %}
+    <!--[if lte IE 7]>
+    <script type="text/javascript">
+        window.addEventListener(
+            'load',
+            function () {
+                var $pathBase64 = '{{ path("genemu_base64") }}';
+                var $base64 = /^data:.*;base64/i;
+                var $images = document.images;
+                var $nbImages = $images.length;
+
+                for (i = 0; i < $nbImages; ++i) {
+                    $src = $images[i].src;
+                    
+                    if ($base64.test($src)) {
+                        document.images[i].src = $pathBase64 + '?' + $src.slice(5);
+                    }
+                }
+            },
+            false
+        );        
+    </script>
+    <![endif]-->
+{% endspaceless %}
+{% endblock genemu_captcha_javascript %}
+
 {% block genemu_recaptcha_javascript %}
 {% spaceless %}
-    <script type="text/javascript" src="{{ server }}/js/recaptcha_ajax.js"></script>
+    <script type="text/javascript" src="{{ asset(server ~ "/js/recaptcha_ajax.js") }}"></script>
     <script type="text/javascript">
         window.addEventListener(
             'load',
@@ -227,6 +254,65 @@
     </script>
 {% endspaceless %}
 {% endblock genemu_jquerychosen_javascript %}
+
+{% block genemu_jquerygeolocation_javascript %}
+{% spaceless %}
+    {% if map is sameas(true) %}
+        {% set configs = configs|merge({
+            "elements": configs.elements|merge({
+                "map": "#" ~ id ~ "_map"
+            })
+        }) %}
+    {% endif %}
+
+    {% if form.latitude is defined %}
+        {% set configs = configs|merge({
+            "elements": configs.elements|merge({
+                "lat": "#" ~ form.latitude.get("id")
+            })
+        }) %}
+    {% endif %}
+
+    {% if form.longitude is defined %}
+        {% set configs = configs|merge({
+            "elements": configs.elements|merge({
+                "lng": "#" ~ form.longitude.get("id")
+            })
+        }) %}
+    {% endif %}
+
+    {% if form.locality is defined %}
+        {% set configs = configs|merge({
+            "elements": configs.elements|merge({
+                "locality": "#" ~ form.locality.get("id")
+            })
+        }) %}
+    {% endif %}
+
+    {% if form.country is defined %}
+        {% set configs = configs|merge({
+            "elements": configs.elements|merge({
+                "country": "#" ~ form.country.get("id")
+            })
+        }) %}
+    {% endif %}
+
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $field = $('#{{ form.address.get("id") }}');
+
+            $field.addresspicker({{ configs|json_encode|raw }});
+
+            {% if map is sameas(true) %}
+                var gmarker = $field.addresspicker('marker');
+                gmarker.setVisible(true);
+
+                $field.addresspicker('updatePosition');
+            {% endif %}
+        });
+    </script>
+{% endspaceless %}
+{% endblock genemu_jquerygeolocation_javascript %}
 
 {% block genemu_jqueryfile_javascript %}
 {% spaceless %}
