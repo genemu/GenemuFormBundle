@@ -91,7 +91,7 @@ class Configuration implements ConfigurationInterface
                                     return array_filter($v, function($v) {
                                         $v = preg_replace('/[^0-9A-Fa-f]/', '', $v);
 
-                                        return in_array(strlen($v), array(3, 9));
+                                        return in_array(strlen($v), array(3, 6));
                                     });
                                 })
                             ->end()
