@@ -11,6 +11,14 @@ genemu_form:
         uploader: /uploadify/uploadify.swf
 ```
 
+## Add in your routing.yml
+
+``` yml
+genemu_upload:
+    resource: "@GenemuFormBundle/Controller/UploadController.php"
+    type:     annotation
+```
+
 ## Default Usage:
 
 ``` php

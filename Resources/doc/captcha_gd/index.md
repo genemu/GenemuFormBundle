@@ -10,6 +10,15 @@ genemu_form:
     captcha: ~
 ```
 
+## Fix Bug to IE6 and IE7, add in your routing.yml
+
+``` yml
+# app/config/routing.yml
+genemu_base64:
+    resource: "@GenemuFormBundle/Controller/Base64Controller.php"
+    type:     annotation
+```
+
 ## Default Usage:
 
 ``` php

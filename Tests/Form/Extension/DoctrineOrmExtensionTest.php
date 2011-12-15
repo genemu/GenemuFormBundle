@@ -13,7 +13,7 @@ namespace Genemu\Bundle\FormBundle\Tests\Form\Extension;
 
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
 
-use Genemu\Bundle\FormBundle\Form\Type;
+use Genemu\Bundle\FormBundle\Form\Doctrine\Type;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
@@ -23,7 +23,7 @@ class DoctrineOrmExtensionTest extends DoctrineOrmExtension
     protected function loadTypes()
     {
         return array_merge(parent::loadTypes(), array(
-            new Type\Entity\AjaxEntityType($this->registry)
+            new Type\AjaxEntityType($this->registry)
         ));
     }
 }

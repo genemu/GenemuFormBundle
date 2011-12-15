@@ -10,6 +10,14 @@ genemu_form:
     image: ~
 ```
 
+## Add in your routing.yml
+
+``` yml
+genemu_image:
+    resource: "@GenemuFormBundle/Controller/ImageController.php"
+    type:     annotation
+```
+
 ## Default Usage:
 
 ``` php

@@ -71,6 +71,16 @@
 {% endspaceless %}
 {% endblock genemu_jquerychosen_widget %}
 
+{% block genemu_jquerygeolocation_widget %}
+{% spaceless %}
+    {{ form_rest(form) }}
+
+    {% if map is sameas(true) %}
+        <div id="{{ id }}_map">&nbsp;</div>
+    {% endif %}
+{% endspaceless %}
+{% endblock genemu_jquerygeolocation_widget %}
+
 {% block genemu_jqueryfile_widget %}
 {% spaceless %}
     {{ block("hidden_widget") }}

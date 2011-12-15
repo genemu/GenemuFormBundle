@@ -13,7 +13,7 @@ namespace Genemu\Bundle\FormBundle\Tests\Form\Extension;
 
 use Symfony\Bundle\DoctrineMongoDBBundle\Form\DoctrineMongoDBExtension;
 
-use Genemu\Bundle\FormBundle\Form\Type;
+use Genemu\Bundle\FormBundle\Form\Document\Type;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
@@ -23,7 +23,7 @@ class DoctrineMongoExtensionTest extends DoctrineMongoDBExtension
     protected function loadTypes()
     {
         return array_merge(parent::loadTypes(), array(
-            new Type\Document\AjaxDocumentType($this->documentManager)
+            new Type\AjaxDocumentType($this->documentManager)
         ));
     }
 }

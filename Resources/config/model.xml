@@ -5,9 +5,8 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="genemu.twig.extension.form" class="Genemu\Bundle\FormBundle\Twig\Extension\FormExtension">
-            <tag name="twig.extension" />
-            <argument>%twig.form.resources%</argument>
+        <service id="genemu.form.model.type.ajaxmodel" class="Genemu\Bundle\FormBundle\Form\Model\Type\AjaxModelType">
+            <tag name="form.type" alias="genemu_ajaxmodel" />
         </service>
     </services>
 

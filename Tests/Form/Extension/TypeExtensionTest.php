@@ -16,8 +16,9 @@ use Symfony\Component\HttpFoundation\Session;
 use Symfony\Component\HttpFoundation\SessionStorage\ArraySessionStorage;
 use Symfony\Component\HttpFoundation\Request;
 
-use Genemu\Bundle\FormBundle\Form\Validator\ReCaptchaValidator;
-use Genemu\Bundle\FormBundle\Form\Type;
+use Genemu\Bundle\FormBundle\Gd\Type\Captcha;
+use Genemu\Bundle\FormBundle\Form\Core\Validator\ReCaptchaValidator;
+use Genemu\Bundle\FormBundle\Form;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
@@ -34,10 +35,10 @@ class TypeExtensionTest extends CoreExtension
     protected function loadTypes()
     {
         return array_merge(parent::loadTypes(), array(
-            new Type\TinymceType(array()),
-            new Type\DateType(array()),
-            new Type\SliderType(),
-            new Type\CaptchaType(new Session(new ArraySessionStorage()), 's$cr$t', array(
+            new Form\Core\Type\TinymceType(array()),
+            new Form\JQuery\Type\DateType(array()),
+            new Form\JQuery\Type\SliderType(),
+            new Form\Core\Type\CaptchaType(new Captcha(new Session(new ArraySessionStorage()), 's$cr$t'), array(
                 'script' => 'genemu_upload',
                 'uploader' => '/js/uploadify.swf',
                 'cancelImg' => '/images/cancel.png',
@@ -66,19 +67,19 @@ class TypeExtensionTest extends CoreExtension
                 'background_color' => 'DDDDDD',
                 'border_color' => '000000'
             )),
-            new Type\FileType(array(
+            new Form\JQuery\Type\FileType(array(
                 'script' => 'genemu_upload',
                 'uploader' => '/swf/uploadify.swf',
                 'cancel_img' => '/images/cancel.png',
                 'folder' => '/upload'
             ), __DIR__.'/../../Fixtures'),
-            new Type\ReCaptchaType(
+            new Form\Core\Type\ReCaptchaType(
                 new ReCaptchaValidator($this->request, 'privateKey'),
                 'publicKey',
                 'http://api.recaptcha.net',
                 array()),
-            new Type\AutocompleterType(),
-            new Type\ImageType('medium', array(
+            new Form\JQuery\Type\AutocompleterType(),
+            new Form\JQuery\Type\ImageType('medium', array(
                 'small' => array(100, 100),
                 'medium' => array(200, 200),
                 'large' => array(500, 500),
@@ -90,11 +91,6 @@ class TypeExtensionTest extends CoreExtension
                 'sepia',
                 'crop'
             )),
-            new Type\JQuery\AutocompleterType(),
-            new Type\JQuery\DateType(),
-            new Type\JQuery\FileType(),
-            new Type\JQuery\ImageType(),
-            new Type\JQuery\SliderType()
         ));
     }
 }

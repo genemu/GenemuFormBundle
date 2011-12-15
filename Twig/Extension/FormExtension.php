@@ -14,6 +14,8 @@ namespace Genemu\Bundle\FormBundle\Twig\Extension;
 use Symfony\Bridge\Twig\Extension\FormExtension as BaseFormExtension;
 use Symfony\Component\Form\FormView;
 
+use Assetic\Asset\StringAsset;
+
 /**
  * FormExtension extends Twig with form capabilities.
  *
@@ -28,7 +30,7 @@ class FormExtension extends BaseFormExtension
     {
         return array(
             'form_javascript' => new \Twig_Function_Method($this, 'renderJavascript', array('is_safe' => array('html'))),
-            'form_stylesheet' => new \Twig_Function_Method($this, 'renderStylesheet', array('is_safe' => array('html')))
+            'form_stylesheet' => new \Twig_Function_Method($this, 'renderStylesheet', array('is_safe' => array('html'))),
         );
     }
 
