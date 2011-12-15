@@ -28,15 +28,6 @@ class GenemuFormBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        /*
-        $driver = new \Genemu\Component\Image\Driver\GDDriver();
-
-        $image = new \Genemu\Component\Image\Image('/home/olivier/blur_before.png', true, $driver);
-
-        var_dump($image->show('jpeg'));
-        exit();
-        */
-
         parent::build($container);
         $container->addCompilerPass(new FormPass());
     }
