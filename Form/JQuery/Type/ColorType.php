@@ -28,7 +28,9 @@ class ColorType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder->setAttribute('configs', $options['configs']);
+        $builder
+            ->setAttribute('widget', $options['widget'])
+            ->setAttribute('configs', $options['configs']);
     }
 
     /**
@@ -37,7 +39,9 @@ class ColorType extends AbstractType
     public function buildView(FormView $view, FormInterface $form)
     {
 
-        $view->set('configs', $form->getAttribute('configs'));
+        $view
+            ->set('widget', $form->getAttribute('widget'))
+            ->set('configs', $form->getAttribute('configs'));
     }
 
     /**
@@ -46,10 +50,24 @@ class ColorType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
+            'widget'  => 'field',
             'configs' => array(),
         );
 
         return array_replace($defaultOptions, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllowedOptionValues(array $options)
+    {
+        return array(
+            'widget' => array(
+                'field',
+                'image',
+            )
+        );
     }
 
     /**
