@@ -11,7 +11,7 @@
 
         <parameter key="genemu.form.file.root_dir">%kernel.root_dir%/../web</parameter>
         <parameter key="genemu.form.file.folder">/upload</parameter>
-        <parameter key="genemu.form.file.upload_dir">%genemu.from.file.root_dir%/upload</parameter>
+        <parameter key="genemu.form.file.upload_dir">%genemu.form.file.root_dir%/upload</parameter>
         <parameter key="genemu.form.file.options" type="collection" />
 
         <parameter key="genemu.form.image.selected" />
