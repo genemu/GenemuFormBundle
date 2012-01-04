@@ -56,11 +56,13 @@ class DateType extends AbstractType
         $configs = $form->getAttribute('configs');
         $year = $form->getAttribute('years');
 
-        $configs['dateFormat'] = 'yy-mm-dd';
-        if ('single_text' === $form->getAttribute('widget')) {
-            $formatter = $form->getAttribute('formatter');
+        if (false === isset($configs['dateFormat']) && true === empty($configs['dateFormat'])) {
+            $configs['dateFormat'] = 'yy-mm-dd';
+            if ('single_text' === $form->getAttribute('widget')) {
+                $formatter = $form->getAttribute('formatter');
 
-            $configs['dateFormat'] = $this->getJavascriptPattern($formatter);
+                $configs['dateFormat'] = $this->getJavascriptPattern($formatter);
+            }
         }
 
         $view
