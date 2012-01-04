@@ -35,9 +35,9 @@ class GeolocationType extends AbstractType
         foreach (array('latitude', 'longitude', 'locality', 'country') as $field) {
             $option = $options[$field];
 
-            if (isset($option['enabled']) && !empty($option['enabled'])) {
+            if (true === isset($option['enabled']) && false === empty($option['enabled'])) {
                 $type = 'field';
-                if (isset($option['hidden']) && !empty($option['hidden'])) {
+                if (true === isset($option['hidden']) && false === empty($option['hidden'])) {
                     $type = 'hidden';
                 }
 

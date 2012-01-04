@@ -39,7 +39,7 @@ class AjaxDocumentChoiceList extends DocumentChoiceList
     {
         $this->ajax = $ajax;
 
-        if ($property) {
+        if (null !== $property) {
             $this->propertyPath = new PropertyPath($property);
         }
 
@@ -51,7 +51,7 @@ class AjaxDocumentChoiceList extends DocumentChoiceList
      */
     protected function load()
     {
-        if (!$this->ajax) {
+        if (false === $this->ajax) {
             parent::load();
         }
     }
@@ -85,11 +85,11 @@ class AjaxDocumentChoiceList extends DocumentChoiceList
     {
         $intersect = array();
 
-        if ($this->ajax) {
+        if (true === $this->ajax) {
             foreach ($ids as $id) {
                 $document = $this->getDocument($id);
 
-                if ($this->propertyPath) {
+                if (null !== $this->propertyPath) {
                     $label = $this->propertyPath->getValue($document);
                 } else {
                     $label = (string) $document;
@@ -102,7 +102,7 @@ class AjaxDocumentChoiceList extends DocumentChoiceList
             }
         } else {
             foreach ($this->getChoices() as $choice) {
-                if (in_array($choice['value'], $ids, true)) {
+                if (true === in_array($choice['value'], $ids, true)) {
                     $intersect[] = $choice;
                 }
             }

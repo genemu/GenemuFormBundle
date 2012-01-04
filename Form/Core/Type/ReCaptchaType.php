@@ -40,7 +40,7 @@ class ReCaptchaType extends AbstractType
      */
     public function __construct(FormValidatorInterface $validator, $publicKey, $serverUrl, array $options)
     {
-        if (empty($publicKey)) {
+        if (true === empty($publicKey)) {
             throw new FormException('The child node "public_key" at path "genenu_form.recaptcha" must be configured.');
         }
 

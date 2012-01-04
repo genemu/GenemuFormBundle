@@ -65,7 +65,7 @@ class AjaxArrayChoiceList extends ArrayChoiceList
     {
         $intersect = array();
 
-        if ($this->ajax) {
+        if (true === $this->ajax) {
             foreach ($values as $value => $label) {
                 $intersect[] = array(
                     'value' => $value,
@@ -74,7 +74,7 @@ class AjaxArrayChoiceList extends ArrayChoiceList
             }
         } else {
             foreach ($this->getChoices() as $choice) {
-                if (in_array($choice['value'], $values, true)) {
+                if (true === in_array($choice['value'], $values, true)) {
                     $intersect[] = $choice;
                 }
             }

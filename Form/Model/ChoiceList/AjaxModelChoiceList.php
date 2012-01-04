@@ -37,7 +37,7 @@ class AjaxModelChoiceList extends ModelChoiceList
     {
         $this->ajax = $ajax;
 
-        if ($property) {
+        if (null !== $property) {
             $this->propertyPath = new PropertyPath($property);
         }
 
@@ -49,7 +49,7 @@ class AjaxModelChoiceList extends ModelChoiceList
      */
     protected function load()
     {
-        if (!$this->ajax) {
+        if (false === $this->ajax) {
             parent::load();
         }
     }
@@ -83,11 +83,11 @@ class AjaxModelChoiceList extends ModelChoiceList
     {
         $intersect = array();
 
-        if ($this->ajax) {
+        if (true === $this->ajax) {
             foreach ($ids as $id) {
                 $model = $this->getModel($id);
 
-                if ($this->propertyPath) {
+                if (null !== $this->propertyPath) {
                     $label = $this->propertyPath->getValue($model);
                 } else {
                     $label = (string) $model;
@@ -100,7 +100,7 @@ class AjaxModelChoiceList extends ModelChoiceList
             }
         } else {
             foreach ($this->getChoices() as $choice) {
-                if (in_array($choice['value'], $ids)) {
+                if (true === in_array($choice['value'], $ids, true)) {
                     $intersect[] = $choice;
                 }
             }

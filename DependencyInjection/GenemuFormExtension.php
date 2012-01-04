@@ -40,16 +40,16 @@ class GenemuFormExtension extends Extension
         $loader->load('model.xml');
         $loader->load('jquery.xml');
 
-        if (!empty($configs['autocompleter']['doctrine'])) {
+        if (false === empty($configs['autocompleter']['doctrine'])) {
             $loader->load('entity.xml');
         }
 
-        if (!empty($configs['autocompleter']['mongodb'])) {
+        if (false === empty($configs['autocompleter']['mongodb'])) {
             $loader->load('mongodb.xml');
         }
 
         foreach (array('captcha', 'recaptcha', 'tinymce', 'date', 'file', 'image') as $type) {
-            if (isset($configs[$type]) && !empty($configs[$type]['enabled'])) {
+            if (true === isset($configs[$type]) && false === empty($configs[$type]['enabled'])) {
                 $method = 'register' . ucfirst($type) . 'Configuration';
 
                 $this->$method($configs[$type], $container);
@@ -65,25 +65,25 @@ class GenemuFormExtension extends Extension
      */
     private function registerCaptchaConfiguration(array $configs, ContainerBuilder $container)
     {
-        if (!function_exists('image' . $configs['format'])) {
+        if (false === function_exists('image' . $configs['format'])) {
             throw new \LogicException(sprintf('Format %s does not supported.', $configs['format']));
         }
 
         $fontDir = $container->getParameterBag()->resolveValue($configs['font_dir']);
         foreach ($configs['fonts'] as $index => $font) {
-            if (is_file($fontDir . '/' . $font)) {
+            if (true === is_file($fontDir . '/' . $font)) {
                 $configs['fonts'][$index] = $fontDir . '/' . $font;
             }
         }
         unset($configs['font_dir']);
 
         $backgroundColor = preg_replace('/^[0-9A-Fa-f]/', '', $configs['background_color']);
-        if (!in_array(strlen($backgroundColor), array(3, 6), true)) {
+        if (false === in_array(strlen($backgroundColor), array(3, 6), true)) {
             $configs['background_color'] = 'DDDDDD';
         }
 
         $borderColor = preg_replace('/^[0-9A-Fa-f]/', '', $configs['border_color']);
-        if (!in_array(strlen($borderColor), array(3, 6), true)) {
+        if (false === in_array(strlen($borderColor), array(3, 6), true)) {
             $configs['border_color'] = '000000';
         }
 
@@ -99,15 +99,15 @@ class GenemuFormExtension extends Extension
     private function registerRecaptchaConfiguration(array $configs, ContainerBuilder $container)
     {
         $serverUrl = $configs['server_url'];
-        if (isset($configs['ssl']['use']) && !empty($configs['ssl']['use'])) {
+        if (true === isset($configs['ssl']['use']) && false === empty($configs['ssl']['use'])) {
             $serverUrl = $configs['ssl']['server_url'];
         }
         
-        if (empty($configs['private_key'])) {
+        if (true === empty($configs['private_key'])) {
             throw new \LogicException('Option recaptcha.private_key does not empty.');
         }
         
-        if (empty($configs['public_key'])) {
+        if (true === empty($configs['public_key'])) {
             throw new \LogicException('Option recaptcha.public_key does not empty.');
         }
 
@@ -125,13 +125,13 @@ class GenemuFormExtension extends Extension
      */
     private function registerTinymceConfiguration(array $configs, ContainerBuilder $container)
     {
-        if (isset($configs['script_url']) && !empty($configs['script_url'])) {
+        if (true === isset($configs['script_url']) && false === empty($configs['script_url'])) {
             $configs['configs'] = array_merge($configs['configs'], array(
                 'script_url' => $configs['script_url']
             ));
         }
 
-        if (isset($configs['theme']) && !empty($configs['theme'])) {
+        if (true === isset($configs['theme']) && false === empty($configs['theme'])) {
             $configs['configs'] = array_merge($configs['configs'], array(
                 'theme' => $configs['theme']
             ));
@@ -163,7 +163,7 @@ class GenemuFormExtension extends Extension
         $rootDir = $container->getParameterBag()->resolveValue($rootDir);
 
         $uploadDir = $rootDir . '/' . $configs['folder'];
-        if (!is_dir($uploadDir) && false === @mkdir($uploadDir, 0777, true)) {
+        if (false === is_dir($uploadDir) && false === @mkdir($uploadDir, 0777, true)) {
             throw new \RuntimeException(sprintf('Could not create upload directory "%s".', $uploadDir));
         }
 
@@ -187,11 +187,11 @@ class GenemuFormExtension extends Extension
      */
     private function registerImageConfiguration(array $configs, ContainerBuilder $container)
     {
-        if (empty($configs['selected'])) {
+        if (true === empty($configs['selected'])) {
             throw new \LogicException('Your selected thumbnail does not empty.');
         }
 
-        if (!isset($configs['thumbnails'][$configs['selected']])) {
+        if (false === isset($configs['thumbnails'][$configs['selected']])) {
             throw new \LogicException(sprintf('Your selected %s is not thumbnail.', $configs['selected']));
         }
 
@@ -199,7 +199,7 @@ class GenemuFormExtension extends Extension
         $reflection = new \ReflectionClass('Genemu\\Bundle\\FormBundle\\Gd\\File\\Image');
 
         foreach ($configs['filters'] as $filter) {
-            if ($reflection->hasMethod('addFilter' . ucfirst($filter))) {
+            if (true === $reflection->hasMethod('addFilter' . ucfirst($filter))) {
                 $filters[] = $filter;
             }
         }

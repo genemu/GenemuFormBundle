@@ -51,12 +51,12 @@ class ImageType extends AbstractType
         $configs = $form->getAttribute('configs');
         $data = $form->getClientData();
 
-        if (!empty($data)) {
-            if (!$data instanceof Image) {
+        if (false === empty($data)) {
+            if (false === ($data instanceof Image)) {
                 $data = new Image($form->getAttribute('rootDir') . '/' . $data);
             }
 
-            if ($data->hasThumbnail($this->selected)) {
+            if (true === $data->hasThumbnail($this->selected)) {
                 $thumbnail = $data->getTumbnail($this->selected);
 
                 $view

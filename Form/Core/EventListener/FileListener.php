@@ -48,21 +48,21 @@ class FileListener implements EventSubscriberInterface
     {
         $data = $event->getData();
 
-        if (empty($data)) {
+        if (true === empty($data)) {
             return;
         }
 
-        if ($this->multiple) {
+        if (true === $this->multiple) {
             $paths = explode(',', $data);
             $return = array();
 
             foreach ($paths as $path) {
-                if ($handle = $this->getHandleToPath($path)) {
+                if (null !== ($handle = $this->getHandleToPath($path))) {
                     $return[] = $handle;
                 }
             }
         } else {
-            if ($handle = $this->getHandleToPath($data)) {
+            if (null !== ($handle = $this->getHandleToPath($data))) {
                 $return = $handle;
             }
         }
@@ -81,10 +81,10 @@ class FileListener implements EventSubscriberInterface
     {
         $path = $this->rootDir . '/' . $this->stripQueryString($path);
 
-        if (is_file($path)) {
+        if (true === is_file($path)) {
             $handle = new File($path);
 
-            if (preg_match('/image/', $handle->getMimeType())) {
+            if (true === preg_match('/image/', $handle->getMimeType())) {
                 $handle = new Image($handle->getPathname());
             }
 

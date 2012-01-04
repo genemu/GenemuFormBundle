@@ -29,7 +29,7 @@ class AutocompleterType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        if (!$options['choice_list']) {
+        if (true === empty($options['choice_list'])) {
             $options['choice_list'] = new AjaxArrayChoiceList($options['choices'], $options['ajax']);
         }
 
@@ -53,8 +53,8 @@ class AutocompleterType extends AbstractType
         $datas = json_decode($form->getClientData(), true);
         $value = '';
 
-        if (!empty($datas)) {
-            if ($form->getAttribute('multiple')) {
+        if (false === empty($datas)) {
+            if (true === $form->getAttribute('multiple')) {
                 foreach ($datas as $data) {
                     $value .= $data['label'] . ', ';
                 }
@@ -81,7 +81,7 @@ class AutocompleterType extends AbstractType
 
         $options = array_replace($defaultOptions, $options);
 
-        if (!empty($options['route_name'])) {
+        if (false === empty($options['route_name'])) {
             $options['ajax'] = true;
         }
 
@@ -111,7 +111,7 @@ class AutocompleterType extends AbstractType
      */
     public function getParent(array $options)
     {
-        if (in_array($options['widget'], array('entity', 'document', 'model'), true)) {
+        if (true === in_array($options['widget'], array('entity', 'document', 'model'), true)) {
             return 'genemu_ajax' . $options['widget'];
         }
 

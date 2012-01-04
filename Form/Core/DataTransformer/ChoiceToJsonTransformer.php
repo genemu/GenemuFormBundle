@@ -48,21 +48,21 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
      */
     public function transform($choices)
     {
-        if (empty($choices)) {
+        if (true === empty($choices)) {
             return;
         }
 
-        if (is_scalar($choices)) {
+        if (true === is_scalar($choices)) {
             $choices = array($choices);
         }
 
-        if (!is_array($choices)) {
+        if (false === is_array($choices)) {
             throw new UnexpectedTypeException($choices, 'array');
         }
 
         $json = $this->choiceList->getIntersect($choices);
 
-        if (!$this->multiple) {
+        if (false === $this->multiple) {
             $json = current($json);
         }
 
@@ -76,13 +76,13 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
     {
         $values = json_decode(is_array($json) ? current($json) : $json, true);
 
-        if ($this->multiple) {
+        if (true === $this->multiple) {
             $choices = array();
 
             foreach ($values as $value) {
                 if (
-                    $this->ajax &&
-                    !in_array($this->widget, array('entity', 'document', 'model'), true)
+                    true === $this->ajax &&
+                    false === in_array($this->widget, array('entity', 'document', 'model'), true)
                 ) {
                     $choices[$value['value']] = $value['label'];
                 } else {

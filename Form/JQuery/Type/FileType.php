@@ -48,11 +48,11 @@ class FileType extends AbstractType
     public function buildForm(FormBuilder $builder, array $options)
     {
         $configs = array_replace($this->options, $options['configs']);
-        if (isset($configs['multi']) && $configs['multi']) {
+        if (true === isset($configs['multi']) && $configs['multi']) {
             $options['multiple'] = true;
         }
 
-        if ($options['multiple']) {
+        if (true === $options['multiple']) {
             $configs['multi'] = true;
         }
 
@@ -71,13 +71,15 @@ class FileType extends AbstractType
         $configs = $form->getAttribute('configs');
         $datas = $form->getClientData();
 
-        if (!empty($datas)) {
+        if (false === empty($datas)) {
             if ($form->getAttribute('multiple')) {
-                $datas = is_scalar($datas) ? explode(',', $datas) : $datas;
+                if (true === is_scalar($datas)) {
+                    $datas = explode(',', $datas);
+                }
                 $value = array();
 
                 foreach ($datas as $data) {
-                    if (!$data instanceof File) {
+                    if (false === ($data instanceof File)) {
                         $data = new File($form->getAttribute('rootDir') . '/' . $data);
                     }
 
@@ -86,7 +88,7 @@ class FileType extends AbstractType
 
                 $value = implode(',', $value);
             } else {
-                if (!$datas instanceof File) {
+                if (false === ($datas instanceof File)) {
                     $datas = new File($form->getAttribute('rootDir') . '/' . $datas);
                 }
 

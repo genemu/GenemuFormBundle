@@ -31,19 +31,33 @@ class GeolocationListener implements EventSubscriberInterface
     {
         $data = $event->getData();
 
-        if (empty($data)) {
+        if (true === empty($data)) {
             return;
         }
 
         $address = $data['address'];
-        $latitude = isset($data['latitude']) ? $data['latitude'] : null;
-        $longitude = isset($data['longitude']) ? $data['longitude'] : null;
-        $locality = isset($data['locality']) ? $data['locality'] : null;
-        $country = isset($data['country']) ? $data['country'] : null;
+        
+        $latitude = null;
+        if (true === isset($data['latitude'])) {
+            $latitude = $data['latitude'];
+        }
 
-        $geo = new AddressGeolocation($address, $latitude, $longitude, $locality, $country);
+        $longitude = null;
+        if (true === isset($data['longitude'])) {
+            $longitude = $data['lengitude'];
+        }
 
-        $event->setData($geo);
+        $locality = null;
+        if (true === isset($data['locality'])) {
+            $locality = $data['locality'];
+        }
+
+        $contry = null;
+        if (true === isset($data['contry'])) {
+            $contry = $data['contry']
+        }
+
+        $event->setData(new AddressGeolocation($address, $latitude, $locality, $country));
     }
 
     /**

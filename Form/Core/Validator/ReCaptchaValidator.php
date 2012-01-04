@@ -36,7 +36,7 @@ class ReCaptchaValidator implements FormValidatorInterface
      */
     public function __construct(Request $request, $privateKey)
     {
-        if (empty($privateKey)) {
+        if (true === empty($privateKey)) {
             throw new FormException('The child node "private_key" at path "genenu_form.recaptcha" must be configured.');
         }
         
@@ -64,12 +64,12 @@ class ReCaptchaValidator implements FormValidatorInterface
 
         $datas = array(
             'privatekey' => $this->privateKey,
-            'challenge' => $request->get('recaptcha_challenge_field'),
-            'response' => $request->get('recaptcha_response_field'),
-            'remoteip' => $server->get('REMOTE_ADDR')
+            'challenge'  => $request->get('recaptcha_challenge_field'),
+            'response'   => $request->get('recaptcha_response_field'),
+            'remoteip'   => $server->get('REMOTE_ADDR')
         );
 
-        if (empty($datas['challenge']) || empty($datas['response'])) {
+        if (true === empty($datas['challenge']) || true === empty($datas['response'])) {
             $error = 'The captcha is not valid.';
         }
 
@@ -77,7 +77,7 @@ class ReCaptchaValidator implements FormValidatorInterface
             $error = sprintf('Unable to check the captcha from the server. (%s)', $answer);
         }
 
-        if (!empty($error)) {
+        if (false === empty($error)) {
             $form->addError(new FormError($error));
         }
     }
@@ -106,7 +106,7 @@ class ReCaptchaValidator implements FormValidatorInterface
         }
 
         fwrite($fs, $httpRequest);
-        while (!feof($fs)) {
+        while (false === feof($fs)) {
             $response .= fgets($fs, 1160);
         }
         fclose($fs);
@@ -114,6 +114,10 @@ class ReCaptchaValidator implements FormValidatorInterface
         $response = explode("\r\n\r\n", $response, 2);
         $answers = explode("\n", $response[1]);
 
-        return 'true' === trim($answers[0]) ? true : $answers[1];
+        if ('true' === trim($answers[0])) {
+            return true;
+        }
+
+        return $answers[1];
     }
 }

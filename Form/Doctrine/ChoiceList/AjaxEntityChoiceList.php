@@ -41,7 +41,7 @@ class AjaxEntityChoiceList extends EntityChoiceList
     {
         $this->ajax = $ajax;
 
-        if ($property) {
+        if (null !== $property) {
             $this->propertyPath = new PropertyPath($property);
         }
 
@@ -53,7 +53,7 @@ class AjaxEntityChoiceList extends EntityChoiceList
      */
     protected function load()
     {
-        if (!$this->ajax) {
+        if (false === $this->ajax) {
             parent::load();
         }
     }
@@ -87,11 +87,11 @@ class AjaxEntityChoiceList extends EntityChoiceList
     {
         $intersect = array();
 
-        if ($this->ajax) {
+        if (true === $this->ajax) {
             foreach ($ids as $id) {
                 $entity = $this->getEntity($id);
 
-                if ($this->propertyPath) {
+                if (null !== $this->propertyPath) {
                     $label = $this->propertyPath->getValue($entity);
                 } else {
                     $label = (string) $entity;
@@ -104,7 +104,7 @@ class AjaxEntityChoiceList extends EntityChoiceList
             }
         } else {
             foreach ($this->getChoices() as $choice) {
-                if (in_array($choice['value'], $ids)) {
+                if (true === in_array($choice['value'], $ids, true)) {
                     $intersect[] = $choice;
                 }
             }

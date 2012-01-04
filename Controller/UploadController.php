@@ -38,7 +38,7 @@ class UploadController extends Controller
         $name = uniqid() . '.' . $handle->guessExtension();
 
         $json = array();
-        if ($handle = $handle->move($uploadDir, $name)) {
+        if (false !== ($handle = $handle->move($uploadDir, $name))) {
             $json = array(
                 'result' => '1',
                 'thumbnail' => array(),
@@ -46,11 +46,11 @@ class UploadController extends Controller
                 'file' => ''
             );
 
-            if (preg_match('/image/', $handle->getMimeType())) {
+            if (true === preg_match('/image/', $handle->getMimeType())) {
                 $handle = new Image($handle->getPathname());
                 $thumbnail = $handle;
 
-                if ($this->container->hasParameter('genemu.form.image.thumbnails')) {
+                if (true === $this->container->hasParameter('genemu.form.image.thumbnails')) {
                     $thumbnails = $this->container->getParameter('genemu.form.image.thumbnails');
 
                     foreach ($thumbnails as $name => $thumbnail) {
@@ -58,7 +58,7 @@ class UploadController extends Controller
                     }
 
                     $selected = key(reset($thumbnails));
-                    if ($this->container->hasParameter('genemu.form.image.selected')) {
+                    if (true === $this->container->hasParameter('genemu.form.image.selected')) {
                         $selected = $this->container->getParameter('genemu.form.image.selected');
                     }
 

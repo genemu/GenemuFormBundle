@@ -67,7 +67,7 @@ class ImageController extends Controller
         $handle->save();
         $thumbnail = $handle;
 
-        if ($this->container->hasParameter('genemu.form.image.thumbnails')) {
+        if (true === $this->container->hasParameter('genemu.form.image.thumbnails')) {
             $thumbnails = $this->container->getParameter('genemu.form.image.thumbnails');
 
             foreach ($thumbnails as $name => $thumbnail) {

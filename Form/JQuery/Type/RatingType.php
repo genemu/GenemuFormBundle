@@ -51,7 +51,7 @@ class RatingType extends AbstractType
 
         $options = array_replace($defaultOptions, $options);
 
-        if (!isset($options['expanded']) || (isset($options['examded']) && !$options['expanded'])) {
+        if (false === isset($options['expanded']) || (true === isset($options['examded']) && false === empty($options['expanded']))) {
             $options['configs']['inputType'] = 'select';
         }
 

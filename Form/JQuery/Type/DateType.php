@@ -85,7 +85,7 @@ class DateType extends AbstractType
 
         $options = array_replace_recursive($defaultOptions, $options);
 
-        if ('single_text' !== $options['widget'] || isset($options['configs']['buttonImage'])) {
+        if ('single_text' !== $options['widget'] || true === isset($options['configs']['buttonImage'])) {
             $options['configs']['showOn'] = 'button';
         }
 
