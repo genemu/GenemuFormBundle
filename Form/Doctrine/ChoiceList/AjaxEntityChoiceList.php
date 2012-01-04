@@ -29,15 +29,14 @@ class AjaxEntityChoiceList extends EntityChoiceList
     /**
      * Constructs
      *
-     * @param EntityManager  $em
-     * @param string         $class
-     * @param string         $property
-     * @param QueryBuilder   $qb
-     * @param array|\Closure $choices
-     * @param string         $groupBy
-     * @param boolean        $ajax
+     * @param EntityManager       $em
+     * @param string              $class
+     * @param string              $property
+     * @param QueryBuilder        $qb
+     * @param null|array|\Closure $choices
+     * @param boolean             $ajax
      */
-    public function __construct(EntityManager $em, $class, $property = null, $qb = null, $choices = array(), $groupBy = null, $ajax = false)
+    public function __construct(EntityManager $em, $class, $property = null, $qb = null, $choices = null, $ajax = false)
     {
         $this->ajax = $ajax;
 
@@ -45,7 +44,7 @@ class AjaxEntityChoiceList extends EntityChoiceList
             $this->propertyPath = new PropertyPath($property);
         }
 
-        parent::__construct($em, $class, $property, $qb, $choices, $groupBy);
+        parent::__construct($em, $class, $property, $qb, $choices);
     }
 
     /**
@@ -64,6 +63,10 @@ class AjaxEntityChoiceList extends EntityChoiceList
     public function getChoices()
     {
         $choices = parent::getChoices();
+
+        if (null === $choices) {
+            return array();
+        }
 
         $array = array();
         foreach ($choices as $value => $label) {

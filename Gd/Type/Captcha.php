@@ -86,7 +86,7 @@ class Captcha extends Gd
 
             if ('fonts' === $key) {
                 foreach ($values as $value) {
-                    if (!is_file($value)) {
+                    if (false === is_file($value)) {
                         throw new FileNotFoundException($value);
                     }
                 }
@@ -185,6 +185,6 @@ class Captcha extends Gd
      */
     public function encode($code)
     {
-        return md5($code.$this->secret);
+        return md5($code . $this->secret);
     }
 }

@@ -16,7 +16,7 @@ set_time_limit(0);
 $vendorDir = __DIR__;
 
 $deps = array(
-    array('symfony', 'git://github.com/symfony/symfony.git', 'v2.0.6'),
+    array('symfony', 'git://github.com/symfony/symfony.git', 'v2.0.8'),
     array('propel', 'git://github.com/propelorm/PropelBundle.git', 'origin/2.0'),
     array('doctrine', 'git://github.com/doctrine/doctrine2.git', 'origin/master'),
     array('doctrine-common', 'git://github.com/doctrine/common.git', 'origin/master'),
@@ -32,7 +32,7 @@ foreach ($deps as $dep) {
     echo "> Installing/Updating $name\n";
 
     $installDir = $vendorDir.'/'.$name;
-    if (!is_dir($installDir)) {
+    if (false === is_dir($installDir)) {
         system(sprintf('git clone -q %s %s', escapeshellarg($url), escapeshellarg($installDir)));
     }
 

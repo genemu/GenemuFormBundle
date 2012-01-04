@@ -35,7 +35,7 @@ class Gd implements GdInterface
     {
         $function = 'image'.$format;
 
-        if (!function_exists($function)) {
+        if (false === function_exists($function)) {
             return $this->checkFormat('jpeg');
         }
 
@@ -47,7 +47,7 @@ class Gd implements GdInterface
      */
     public function checkResource()
     {
-        if (!is_resource($this->resource)) {
+        if (false === is_resource($this->resource)) {
             throw new \Exception('Resource does not exists.');
         }
     }
@@ -64,11 +64,14 @@ class Gd implements GdInterface
      */
     public function createThumbnail($name, $path, $width, $height, $format = 'png', $quality = 90)
     {
-        $ratio = ($this->width > $width || $this->height > $height)
-            ?($width > $height
-                ?$width / $height
-                :$height / $width
-            ):1;
+        $ratio = 1;
+        if ($this->width > $width || $this->height > $height) {
+            if ($width > $height) {
+                $ratio = $width / $height;
+            } else {
+                $ratio = $height / $width;
+            }
+        }
 
         $width_tmp = $this->width * $ratio;
         $height_tmp = $this->height * $ratio;
@@ -133,7 +136,7 @@ class Gd implements GdInterface
      */
     public function getThumbnail($name)
     {
-        if ($this->hasThumbnail($name)) {
+        if (true === $this->hasThumbnail($name)) {
             return $this->thumbnails[$name];
         }
 
@@ -268,7 +271,7 @@ class Gd implements GdInterface
      */
     public function setResource($resource)
     {
-        if (!is_resource($resource)) {
+        if (false === is_resource($resource)) {
             throw new \Exception('Resource does not exists.');
         }
 
@@ -319,7 +322,7 @@ class Gd implements GdInterface
 
         list($red, $green, $blue) = $this->hexColor($color);
 
-        if ($alpha) {
+        if (null !== $alpha) {
             return imagecolorallocatealpha($this->resource, $red, $green, $blue, 255 * $alpha);
         } else {
             return imagecolorallocate($this->resource, $red, $green, $blue);
@@ -349,7 +352,11 @@ class Gd implements GdInterface
             0xFF & $color
         );
 
-        return $asString ? implode($separator, $array) : $array;
+        if (false !== $asString) {
+            return implode($separator, $array);
+        }
+
+        return $array;
     }
 
     public function intColor($int)

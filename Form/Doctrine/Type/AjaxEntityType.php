@@ -49,8 +49,7 @@ class AjaxEntityType extends AbstractType
             'class'         => null,
             'property'      => null,
             'query_builder' => null,
-            'choices'       => array(),
-            'group_by'      => null,
+            'choices'       => null,
             'ajax'          => false
         );
 
@@ -62,7 +61,6 @@ class AjaxEntityType extends AbstractType
             $options['property'],
             $options['query_builder'],
             $options['choices'],
-            $options['group_by'],
             $options['ajax']
         );
 

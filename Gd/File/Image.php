@@ -57,7 +57,7 @@ class Image extends File
     {
         $function = 'imagecreatefrom'.$format;
 
-        if (!function_exists($function)) {
+        if (false === function_exists($function)) {
             return $this->checkFormat('jpeg');
         }
 
@@ -120,7 +120,7 @@ class Image extends File
      */
     public function getThumbnail($name)
     {
-        if (!$this->hasThumbnail($name)) {
+        if (false === $this->hasThumbnail($name)) {
             $this->searchThumbnails();
         }
 
@@ -134,7 +134,7 @@ class Image extends File
      */
     public function getThumbnails()
     {
-        if (!$this->gd->getThumbnails()) {
+        if (null === $this->gd->getThumbnails()) {
             $this->searchThumbnails();
         }
 
@@ -150,7 +150,7 @@ class Image extends File
      */
     public function hasThumbnail($name)
     {
-        if (!$this->gd->getThumbnails()) {
+        if (null === $this->gd->getThumbnails()) {
             $this->searchThumbnails();
         }
 
@@ -197,7 +197,7 @@ class Image extends File
     {
         $this->gd->addFilters(array(
             new GrayScale(),
-            new Colorize($color)
+            new Colorize($color),
         ));
     }
 

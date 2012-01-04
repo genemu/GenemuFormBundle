@@ -39,7 +39,7 @@ class Text extends Gd implements Filter
         $this->fontSize = $fontSize;
 
         foreach ($fonts as $index => $font) {
-            if (is_file($font)) {
+            if (true === is_file($font)) {
                 $this->fonts[] = $font;
             }
         }

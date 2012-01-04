@@ -22,6 +22,15 @@ class AddressGeolocation
     private $locality;
     private $country;
 
+    /**
+     * Constructs
+     *
+     * @param string      $address
+     * @param null|string $latitude
+     * @param null|string $longitude
+     * @param null|string $locality
+     * @param null|string $country
+     */
     public function __construct($address, $latitude = null, $longitude = null, $locality = null, $country = null)
     {
         $this->address = $address;
@@ -31,26 +40,51 @@ class AddressGeolocation
         $this->country = $country;
     }
 
+    /**
+     * Gets address
+     *
+     * @return string
+     */
     public function getAddress()
     {
         return $this->address;
     }
 
+    /**
+     * Gets latitude
+     *
+     * @return null|string
+     */
     public function getLatitude()
     {
         return $this->latitude;
     }
 
+    /**
+     * Gets longitude
+     *
+     * @return null|string
+     */
     public function getLongitude()
     {
         return $this->longitude;
     }
 
+    /**
+     * Gets locality
+     *
+     * @return null|string
+     */
     public function getLocality()
     {
         return $this->locality;
     }
 
+    /**
+     * Gets country
+     *
+     * @return null|string
+     */
     public function getCountry()
     {
         return $this->country;
