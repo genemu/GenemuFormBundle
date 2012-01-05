@@ -340,8 +340,8 @@
 
                     $nbQueue--;
 
-                    if (typeof addCallback === 'function') {
-            		    addCallback($field, $queue, $nbQueue, $response);
+                    if (typeof genemu_file_addCallback === 'function') {
+            		    genemu_file_addCallback($field, $queue, $nbQueue, $response);
         			}
                 } else {
                     alert('Error');
