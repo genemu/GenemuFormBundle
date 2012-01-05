@@ -339,6 +339,10 @@
                     $field.data('files', $current);
 
                     $nbQueue--;
+                
+                    if (typeof genemu_file_addCallback === 'function') {
+                        genemu_file_addCallback($field, $queue, $nbQueue, $response);
+                    }
                 } else {
                     alert('Error');
                 }
@@ -347,7 +351,7 @@
                 $nbQueue++;
             },
             onError: function() {
-                alert('error');
+                //alert('error');
             }
         });
 
