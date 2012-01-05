@@ -339,6 +339,10 @@
                     $field.data('files', $current);
 
                     $nbQueue--;
+
+                    if (typeof addCallback === 'function') {
+            		    addCallback($field, $queue, $nbQueue, $response);
+        			}
                 } else {
                     alert('Error');
                 }
