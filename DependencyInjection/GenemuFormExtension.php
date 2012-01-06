@@ -191,6 +191,10 @@ class GenemuFormExtension extends Extension
             throw new \LogicException('Your selected thumbnail does not empty.');
         }
 
+        if (false === isset($configs['thumbnails']) && false === is_array($configs['thumbnails'])) {
+            throw new \LogicException('Option image.thumbnails does not array.');
+        }
+
         if (false === isset($configs['thumbnails'][$configs['selected']])) {
             throw new \LogicException(sprintf('Your selected %s is not thumbnail.', $configs['selected']));
         }

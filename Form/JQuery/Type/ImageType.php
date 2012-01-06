@@ -86,8 +86,9 @@ class ImageType extends AbstractType
     {
         $defaultOptions = array(
             'configs' => array(
-                'fileExt' => '*.jpg;*.gif;*.png;*.jpeg',
+                'fileExt'  => '*.jpg;*.gif;*.png;*.jpeg',
                 'fileDesc' => 'Web Image Files (.jpg, .gif, .png, .jpeg)',
+                'auto'     => true,
             )
         );
 

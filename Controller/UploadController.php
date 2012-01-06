@@ -46,7 +46,7 @@ class UploadController extends Controller
                 'file' => ''
             );
 
-            if (true === preg_match('/image/', $handle->getMimeType())) {
+            if (0 === strpos($handle->getMimeType(), 'image')) {
                 $handle = new Image($handle->getPathname());
                 $thumbnail = $handle;
 
