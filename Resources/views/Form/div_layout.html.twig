@@ -65,7 +65,7 @@
 {% spaceless %}
     {% set attr = attr|merge({
         "data-placeholder": empty_value,
-        "class": "chzn-select"
+        "class": (attr.class | default('') ~ " chzn-select")
     }) %}
     {{ block("choice_widget") }}
 {% endspaceless %}
