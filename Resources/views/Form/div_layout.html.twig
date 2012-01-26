@@ -64,8 +64,8 @@
 {% block genemu_jquerychosen_widget %}
 {% spaceless %}
     {% set attr = attr|merge({
-        "data-placeholder": empty_value,
-        "class": "chzn-select"
+        "data-placeholder": (attr.placeholder | default(empty_value)),
+        "class": (attr.class | default('') ~ " chzn-select")
     }) %}
     {{ block("choice_widget") }}
 {% endspaceless %}
