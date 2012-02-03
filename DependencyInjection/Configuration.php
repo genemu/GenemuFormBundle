@@ -213,6 +213,7 @@ class Configuration implements ConfigurationInterface
                     ->treatTrueLike(array('enabled' => true))
                     ->children()
                         ->booleanNode('enabled')->defaultTrue()->end()
+                        ->booleanNode('disable_guess_extension')->defaultFalse()->end()
                         ->scalarNode('uploader')->isRequired()->end()
                         ->scalarNode('cancel_img')->defaultValue('/bundles/genemuform/images/cancel.png')->end()
                         ->scalarNode('folder')->defaultValue('/upload')->end()
