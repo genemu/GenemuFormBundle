@@ -35,7 +35,11 @@ class UploadController extends Controller
 
         $folder = $this->container->getParameter('genemu.form.file.folder');
         $uploadDir = $this->container->getParameter('genemu.form.file.upload_dir');
-        $name = uniqid() . '.' . $handle->guessExtension();
+        if($this->container->hasParameter('genemu.form.file.disable_guess_extension')) {
+            $name = uniqid() . '.' . substr($handle->getClientOriginalName(),strrpos($handle->getClientOriginalName(),".")+1);
+        } else {
+            $name = uniqid() . '.' . $handle->guessExtension();
+        }
 
         $json = array();
         if (false !== ($handle = $handle->move($uploadDir, $name))) {
