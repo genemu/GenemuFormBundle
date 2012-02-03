@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Genemu\Bundle\FormBundle\Gd\File\Image;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Upload Controller
@@ -32,6 +33,9 @@ class UploadController extends Controller
     public function uploadAction(Request $request)
     {
         $handle = $request->files->get('Filedata');
+        if(substr($handle->getClientOriginalName(),strrpos($handle->getClientOriginalName(),".")+1) == "php") {
+            throw new AccessDeniedException();
+        }
 
         $folder = $this->container->getParameter('genemu.form.file.folder');
         $uploadDir = $this->container->getParameter('genemu.form.file.upload_dir');
