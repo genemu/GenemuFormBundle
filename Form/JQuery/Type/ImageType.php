@@ -67,7 +67,11 @@ class ImageType extends AbstractType
                     ));
             }
 
-            $value = $configs['folder'] . '/' . $data->getFilename();
+            if ($configs['custom_storage_folder']){
+                $value = $form->getClientData();
+            }else{
+                $value = $configs['folder'] . '/' . $data->getFilename();
+            }
 
             $view
                 ->set('value', $value)
