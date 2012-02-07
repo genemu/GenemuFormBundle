@@ -83,7 +83,12 @@ class FileType extends AbstractType
                         $data = new File($form->getAttribute('rootDir') . '/' . $data);
                     }
 
-                    $value[] = $configs['folder'] . '/' . $data->getFilename();
+                    if ($configs['custom_storage_folder']){
+                        $value[] = $form->getClientData();
+                    }else{
+                        $value[] = $configs['folder'] . '/' . $data->getFilename();
+                    }
+
                 }
 
                 $value = implode(',', $value);
@@ -92,7 +97,12 @@ class FileType extends AbstractType
                     $datas = new File($form->getAttribute('rootDir') . '/' . $datas);
                 }
 
-                $value = $configs['folder'] . '/' . $datas->getFilename();
+                if ($configs['custom_storage_folder']){
+                   $value[] = $form->getClientData();
+                }else{
+                   $value[] = $configs['folder'] . '/' . $datas->getFilename();
+                }
+
             }
 
             $view->set('value', $value);
