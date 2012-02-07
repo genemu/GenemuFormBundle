@@ -67,7 +67,7 @@ class ImageType extends AbstractType
                     ));
             }
 
-            $value = $configs['folder'] . '/' . $data->getFilename();
+	    $value = $form->getClientData();
 
             $view
                 ->set('value', $value)
