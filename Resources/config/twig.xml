@@ -7,6 +7,7 @@
     <services>
         <service id="genemu.twig.extension.form" class="Genemu\Bundle\FormBundle\Twig\Extension\FormExtension">
             <tag name="twig.extension" />
+            <argument type="service" id="form.csrf_provider" on-invalid="null" />
             <argument>%twig.form.resources%</argument>
         </service>
     </services>
