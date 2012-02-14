@@ -82,11 +82,17 @@ class ImageController extends Controller
             $thumbnail = $handle->getThumbnail($selected);
         }
 
+        if($this->container->getParameter('genemu.form.file.custom_storage_folder')){
+            $filePath = $this->stripQueryString($file);
+        }else{
+            $filePath = $folder . '/' . $handle->getFilename();
+        }
+
         $json = array(
             'result' => '1',
-            'file' => $folder . '/' . $handle->getFilename() . '?' . time(),
+            'file' => $filePath . '?' . time(),
             'thumbnail' => array(
-                'file' => $folder . '/' . $thumbnail->getFilename() . '?' . time(),
+                'file' => $filePath . '?' . time(),
                 'width' => $thumbnail->getWidth(),
                 'height' => $thumbnail->getHeight()
             ),
