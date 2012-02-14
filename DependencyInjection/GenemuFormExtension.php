@@ -179,6 +179,7 @@ class GenemuFormExtension extends Extension
         $container->setParameter('genemu.form.file.upload_dir', $rootDir . '/' . $configs['folder']);
         $container->setParameter('genemu.form.file.options', $configs['configs']);
         $container->setParameter('genemu.form.file.disable_guess_extension', $configs['disable_guess_extension']);
+        $container->setParameter('genemu.form.file.custom_storage_folder', $configs['custom_storage_folder']);
     }
 
     /**
