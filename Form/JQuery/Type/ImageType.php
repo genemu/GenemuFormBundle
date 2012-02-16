@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 use Genemu\Bundle\FormBundle\Gd\File\Image;
 
@@ -53,7 +54,11 @@ class ImageType extends AbstractType
 
         if (false === empty($data)) {
             if (false === ($data instanceof Image)) {
-                $data = new Image($form->getAttribute('rootDir') . '/' . $data);
+                if($data instanceof File) {
+                    $data = new Image($form->getAttribute('rootDir') . '/' . $configs['folder']  . '/' . $data->getFilename());
+                } else {
+                    $data = new Image($form->getAttribute('rootDir') . '/' . $data);
+                }
             }
 
             if (true === $data->hasThumbnail($this->selected)) {
@@ -67,8 +72,9 @@ class ImageType extends AbstractType
                     ));
             }
 
-            if ($configs['custom_storage_folder']){
-                $value = $form->getClientData();
+            if (($configs['custom_storage_folder']) && (false === ($value = $form->getClientData())instanceof File)){
+                // This if will be executed only when we load entity with existing file pointed to the folder different
+                // from $configs['folder']
             }else{
                 $value = $configs['folder'] . '/' . $data->getFilename();
             }
