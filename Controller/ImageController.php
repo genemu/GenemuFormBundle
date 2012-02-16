@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Symfony package.
  *
  * (c) Olivier Chauvel <olivier@generation-multiple.com>
@@ -20,7 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Genemu\Bundle\FormBundle\Gd\File\Image;
 
 /**
- * class ImageController
+ * Class ImageController
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
