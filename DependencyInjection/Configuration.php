@@ -108,6 +108,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->scalarNode('background_color')->defaultValue('DDDDDD')->end()
                         ->scalarNode('border_color')->defaultValue('000000')->end()
+                        ->scalarNode('code')->defaultNull()->end()
                     ->end()
                 ->end()
             ->end()
