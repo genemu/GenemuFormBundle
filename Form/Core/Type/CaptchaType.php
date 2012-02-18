@@ -65,7 +65,7 @@ class CaptchaType extends AbstractType
         $view
             ->set('value', '')
             ->set('position', $form->getAttribute('position'))
-            ->set('src', $captcha->getBase64($form->getAttribute('format')))
+            ->set('src', $captcha->getBase64($this->options['code'], $form->getAttribute('format')))
             ->set('width', $captcha->getWidth())
             ->set('height', $captcha->getHeight());
     }

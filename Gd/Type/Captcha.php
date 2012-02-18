@@ -99,17 +99,21 @@ class Captcha extends Gd
     /**
      * {@inheritdoc}
      */
-    public function getBase64($format = 'png')
+    public function getBase64($code, $format = 'png')
     {
         $this->create($this->width, $this->height);
-        
-        $code = $this->newCode($this->chars, $this->length);
+
+        if (!$code) {
+            $code = $this->newCode($this->chars, $this->length);
+        } else {
+            $this->setCode($code);
+        }
 
         $this->addFilters(array(
             new Background($this->backgroundColor),
             new Border($this->borderColor),
             new Strip($this->fontColor),
-            new Text($code, $this->fontSize, $this->fonts, $this->fontColor),
+            new Text((string) $code, $this->fontSize, $this->fonts, $this->fontColor),
         ));
 
         return parent::getBase64($format);
