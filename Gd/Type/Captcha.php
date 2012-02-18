@@ -27,6 +27,7 @@ class Captcha extends Gd
 {
     protected $session;
     protected $secret;
+    protected $code;
 
     protected $width;
     protected $height;
@@ -75,7 +76,8 @@ class Captcha extends Gd
                 realpath(__DIR__ . '/../../Resources/public/fonts/whoobub.ttf'),
             ),
             'font_size' => 16,
-            'font_color' => array('252525', '8B8787', '550707', '3526E6', '88531E')
+            'font_color' => array('252525', '8B8787', '550707', '3526E6', '88531E'),
+            'code' => null
         );
 
         $options = array_replace($defaultOptions, $options);
@@ -99,21 +101,17 @@ class Captcha extends Gd
     /**
      * {@inheritdoc}
      */
-    public function getBase64($code, $format = 'png')
+    public function getBase64($format = 'png')
     {
         $this->create($this->width, $this->height);
 
-        if (!$code) {
-            $code = $this->newCode($this->chars, $this->length);
-        } else {
-            $this->setCode($code);
-        }
+        $code = $this->newCode($this->chars, $this->length);
 
         $this->addFilters(array(
             new Background($this->backgroundColor),
             new Border($this->borderColor),
             new Strip($this->fontColor),
-            new Text((string) $code, $this->fontSize, $this->fonts, $this->fontColor),
+            new Text($code, $this->fontSize, $this->fonts, $this->fontColor),
         ));
 
         return parent::getBase64($format);
@@ -141,11 +139,15 @@ class Captcha extends Gd
     {
         $value = '';
 
-        for ($i = 0; $i < $nb; ++$i) {
-            $value.= $chars[array_rand($chars)];
+        if (!$this->code) {
+            for ($i = 0; $i < $nb; ++$i) {
+                $value.= $chars[array_rand($chars)];
+            }
+    
+            $value = trim($value);
+        } else {
+            $value .= $this->code;
         }
-
-        $value = trim($value);
 
         $this->setCode($value);
 
