@@ -244,14 +244,13 @@ class Configuration implements ConfigurationInterface
                             ->defaultValue(array('rotate', 'bw', 'negative', 'sepia', 'crop'))
                             ->prototype('scalar')->end()
                         ->end()
-                        ->arrayNode('thumbnails')
+                        ->variableNode('thumbnails')
                             ->defaultValue(array(
                                 'small' => array(100, 100),
                                 'medium' => array(200, 200),
                                 'large' => array(500, 500),
                                 'extra' => array(1024, 768)
                             ))
-                            ->prototype('scalar')->end()
                         ->end()
                     ->end()
                 ->end()
