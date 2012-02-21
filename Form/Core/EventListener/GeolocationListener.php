@@ -54,7 +54,7 @@ class GeolocationListener implements EventSubscriberInterface
 
         $contry = null;
         if (true === isset($data['contry'])) {
-            $contry = $data['contry']
+            $contry = $data['contry'] ;
         }
 
         $event->setData(new AddressGeolocation($address, $latitude, $locality, $country));
