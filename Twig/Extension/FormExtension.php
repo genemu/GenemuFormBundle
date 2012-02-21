@@ -29,7 +29,15 @@ class FormExtension extends BaseFormExtension
         return array(
             'form_javascript' => new \Twig_Function_Method($this, 'renderJavascript', array('is_safe' => array('html'))),
             'form_stylesheet' => new \Twig_Function_Method($this, 'renderStylesheet', array('is_safe' => array('html'))),
+            'genemu_get_value' => new \Twig_Function_Method($this, 'getStringValue', array('is_safe' => array('html'))),
         );
+    }
+    
+    public function getStringValue($value){
+    	if( is_object($value) ) {
+    		return $value->__toString() ;
+    	}
+    	return $value ;
     }
 
     /**

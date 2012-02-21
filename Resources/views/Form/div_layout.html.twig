@@ -126,11 +126,11 @@
                 {{ block("hidden_widget") }}
 
                 <a id="{{ id }}_overlay" href="#">&nbsp;</a>
-
+		
                 {% if value %}
                     {% set widthMax = thumbnail is defined ? thumbnail.width : 500 %}
                     {% set ratio = width > widthMax ? width / widthMax : 1 %}
-                    {% set asset = asset(thumbnail is defined ? thumbnail.file : value) %}
+                    {% set asset = asset(thumbnail is defined ? thumbnail.file : genemu_get_value(value) ) %}
                     {% set width = width / ratio %}
                     {% set height = height / ratio %}
                 {% else %}

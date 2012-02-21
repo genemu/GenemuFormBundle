@@ -70,7 +70,10 @@ class FileType extends AbstractType
     {
         $configs = $form->getAttribute('configs');
         $datas = $form->getClientData();
-
+        if( is_object($datas) ) {
+        	$datas	= $datas->__toString() ;
+        }
+        
         if (false === empty($datas)) {
             if ($form->getAttribute('multiple')) {
                 if (true === is_scalar($datas)) {
@@ -103,9 +106,10 @@ class FileType extends AbstractType
                 }else{
                    $value = $configs['folder'] . '/' . $datas->getFilename();
                 }
-
+                
             }
-
+            
+            
             $view->set('value', $value);
         }
 
