@@ -121,7 +121,7 @@
 {% spaceless %}
     <div id="{{ id }}_container">
         <div class="left">
-            <div id="{{ id }}_preview">
+            <div id="{{ id }}_preview" class="genemu_image_preview">
                 {% set type = "hidden" %}
                 {{ block("hidden_widget") }}
 
@@ -143,7 +143,7 @@
             </div>
             <ul id="{{ id }}_options" class="options">
                 {% for filter in filters %}
-                    <li class="{{ filter }} change"></li>
+                    <li class="{{ filter }} change">{{ filter }}</li>
                 {% endfor %}
             </ul>
             <div class="queue">

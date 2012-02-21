@@ -522,9 +522,7 @@
             'uploader':  asset(configs.uploader),
             'cancelImg': asset(configs.cancelImg),
             'script':    path(configs.script),
-            'queueID':   id ~ '_queue',
-            'width':     19,
-            'height':    19
+            'queueID':   id ~ '_queue'
         })|json_encode|raw }}, {
             onComplete: function(event, queueID, fileObj, response, data) {
                 var $response = eval('(' + response + ')');
