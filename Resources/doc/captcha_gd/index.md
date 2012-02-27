@@ -12,7 +12,7 @@ genemu_form:
 
 ## Fix Bug to IE6 and IE7
 
-1. add in your routing.yml
+* add in your routing.yml
 
 ``` yml
 # app/config/routing.yml
@@ -21,7 +21,7 @@ genemu_base64:
     type:     annotation
 ```
 
-2. Your captcha should be small, because IE supports only 2083 characters in requests (otherwise they are just skipped).
+* also your captcha should be small, because IE supports only 2083 characters in requests (otherwise they are just skipped).
 Working example: 100x30, grayscale, gif
 
 ## Default Usage:
