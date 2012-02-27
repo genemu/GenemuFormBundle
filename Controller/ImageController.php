@@ -31,8 +31,8 @@ class ImageController extends Controller
      */
     public function changeAction(Request $request)
     {
-        $rootDir = $this->container->getParameter('genemu.form.file.root_dir');
-        $folder = $this->container->getParameter('genemu.form.file.folder');
+        $rootDir = rtrim($this->container->getParameter('genemu.form.file.root_dir'), '/\\') . DIRECTORY_SEPARATOR;
+        $folder = rtrim($this->container->getParameter('genemu.form.file.folder'), '/\\') . DIRECTORY_SEPARATOR;
 
         $file = $request->get('image');
         $handle = new Image($rootDir . $this->stripQueryString($file));

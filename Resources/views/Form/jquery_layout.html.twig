@@ -392,6 +392,9 @@
         var $form = $field.closest('form');
         var $preview = $('#{{ id }}_img_preview');
         var $options = $('#{{ id }}_options');
+        // Base path for apps not on DocumentRoot
+        var $basePath = '{{ asset(configs.folder) }}';
+        $basePath = $basePath.substr(0, $basePath.length - '{{ configs.folder }}'.length);
 
         var $coords = {};
         var $crop = null;
@@ -408,8 +411,11 @@
             onComplete: function(event, queueID, fileObj, response, data) {
                 var $response = eval('(' + response + ')');
 
+                // add if and only if path is relative
+                if ($response.thumbnail.file.search(/^[/\\]/) < 0) {
+                    $response.thumbnail.file = $basePath + $response.thumbnail.file;
+                }
                 $field.val($response.file);
-
                 if ($response.result == '1') {
                     createCrop({
                         image: $response.image,
@@ -429,6 +435,10 @@
                 $crop.destroy();
             }
 
+            // add if and only if path is relative
+            if (data.thumbnail.file.search(/^[/\\]/) < 0) {
+                data.thumbnail.file = $basePath + data.thumbnail.file;
+            }
             var $img = new Image();
 
             $($img).load(function() {
