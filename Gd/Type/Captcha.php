@@ -11,7 +11,7 @@
 
 namespace Genemu\Bundle\FormBundle\Gd\Type;
 
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 use Genemu\Bundle\FormBundle\Gd\Gd;
