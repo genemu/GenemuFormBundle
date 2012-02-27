@@ -17,4 +17,5 @@ genemu_form:
         fonts:            ['akbar.ttf', 'brushcut.ttf', 'molten.ttf', 'planetbe.ttf', 'whoobub.ttf']
         background_color: 'DDDDDD'
         border_color:     '000000'
+        grayscale:        false
 ```

@@ -32,6 +32,6 @@ class Base64Controller extends Controller
         $query = $request->server->get('QUERY_STRING');
         $datas = preg_split('([;,]{1})', $query);
 
-        return new Response(base64_decode($datas[2]), 200, array('Content-Type' => $datas[1]));
+        return new Response(base64_decode($datas[2]), 200, array('Content-Type' => $datas[0]));
     }
 }

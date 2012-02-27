@@ -12,8 +12,8 @@
 namespace Genemu\Bundle\FormBundle\Tests\Form\Extension;
 
 use Symfony\Component\Form\Extension\Core\CoreExtension;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionStorage\ArraySessionStorage;
+use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\HttpFoundation\SessionStorage\ArraySessionStorage;
 use Symfony\Component\HttpFoundation\Request;
 
 use Genemu\Bundle\FormBundle\Gd\Type\Captcha;
