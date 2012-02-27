@@ -83,6 +83,7 @@ class Configuration implements ConfigurationInterface
                             ->prototype('scalar')->end()
                         ->end()
                         ->scalarNode('font_size')->defaultValue(18)->end()
+                        ->booleanNode('grayscale')->defaultFalse()->end()
                         ->arrayNode('font_color')
                             ->defaultValue(array('252525', '8B8787', '550707', '3526E6', '88531E'))
                             ->beforeNormalization()

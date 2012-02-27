@@ -19,6 +19,7 @@ use Genemu\Bundle\FormBundle\Gd\Filter\Text;
 use Genemu\Bundle\FormBundle\Gd\Filter\Strip;
 use Genemu\Bundle\FormBundle\Gd\Filter\Background;
 use Genemu\Bundle\FormBundle\Gd\Filter\Border;
+use Genemu\Bundle\FormBundle\Gd\Filter\GrayScale;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
@@ -34,6 +35,7 @@ class Captcha extends Gd
 
     protected $backgroundColor;
     protected $borderColor;
+    protected $grayscale;
 
     protected $chars;
     protected $length;
@@ -75,7 +77,8 @@ class Captcha extends Gd
                 realpath(__DIR__ . '/../../Resources/public/fonts/whoobub.ttf'),
             ),
             'font_size' => 16,
-            'font_color' => array('252525', '8B8787', '550707', '3526E6', '88531E')
+            'font_color' => array('252525', '8B8787', '550707', '3526E6', '88531E'),
+            'grayscale' => false
         );
 
         $options = array_replace($defaultOptions, $options);
@@ -111,6 +114,9 @@ class Captcha extends Gd
             new Strip($this->fontColor),
             new Text($code, $this->fontSize, $this->fonts, $this->fontColor),
         ));
+        if ($this->grayscale) {
+            $this->addFilter(new GrayScale());
+        }
 
         return parent::getBase64($format);
     }

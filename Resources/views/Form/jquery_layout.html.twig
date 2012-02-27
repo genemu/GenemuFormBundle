@@ -12,24 +12,17 @@
 {% spaceless %}
     <!--[if lte IE 7]>
     <script type="text/javascript">
-        window.addEventListener(
-            'load',
-            function () {
-                var $pathBase64 = '{{ path("genemu_base64") }}';
-                var $base64 = /^data:.*;base64/i;
-                var $images = document.images;
-                var $nbImages = $images.length;
+        $(function () {
+            var pathBase64 = "{{ path('genemu_base64')}}";
 
-                for (i = 0; i < $nbImages; ++i) {
-                    $src = $images[i].src;
-                    
-                    if ($base64.test($src)) {
-                        document.images[i].src = $pathBase64 + '?' + $src.slice(5);
-                    }
+            $(document.images).each(function(){
+                var src = $(this).attr("src");
+                if (/^data:.*;base64/i.test(src)) {
+                    src = src.slice(5);
+                    $(this).attr("src",pathBase64+"?"+src);
                 }
-            },
-            false
-        );        
+            });
+        });
     </script>
     <![endif]-->
 {% endspaceless %}
