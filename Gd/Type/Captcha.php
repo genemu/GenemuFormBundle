@@ -11,7 +11,7 @@
 
 namespace Genemu\Bundle\FormBundle\Gd\Type;
 
-use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 use Genemu\Bundle\FormBundle\Gd\Gd;
@@ -28,6 +28,7 @@ class Captcha extends Gd
 {
     protected $session;
     protected $secret;
+    protected $code;
 
     protected $width;
     protected $height;
@@ -78,7 +79,8 @@ class Captcha extends Gd
             ),
             'font_size' => 16,
             'font_color' => array('252525', '8B8787', '550707', '3526E6', '88531E'),
-            'grayscale' => false
+            'grayscale' => false,
+            'code' => null,
         );
 
         $options = array_replace($defaultOptions, $options);
@@ -105,7 +107,7 @@ class Captcha extends Gd
     public function getBase64($format = 'png')
     {
         $this->create($this->width, $this->height);
-        
+
         $code = $this->newCode($this->chars, $this->length);
 
         $this->addFilters(array(
@@ -143,11 +145,15 @@ class Captcha extends Gd
     {
         $value = '';
 
-        for ($i = 0; $i < $nb; ++$i) {
-            $value.= $chars[array_rand($chars)];
+        if (!$this->code) {
+            for ($i = 0; $i < $nb; ++$i) {
+                $value.= $chars[array_rand($chars)];
+            }
+    
+            $value = trim($value);
+        } else {
+            $value .= $this->code;
         }
-
-        $value = trim($value);
 
         $this->setCode($value);
 
