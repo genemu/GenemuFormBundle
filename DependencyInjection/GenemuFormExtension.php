@@ -167,13 +167,13 @@ class GenemuFormExtension extends Extension
             throw new \RuntimeException(sprintf('Could not create upload directory "%s".', $uploadDir));
         }
 
-        $configs['configs'] = array_merge($configs['configs'], array(
+        $configs['configs'] = array_merge(array(
             'script' => 'genemu_upload',
             'uploader' => $configs['uploader'],
             'cancelImg' => $configs['cancel_img'],
             'folder' => $configs['folder'],
             'custom_storage_folder'=> $configs['custom_storage_folder']
-        ));
+        ), $configs['configs']);
 
         $container->setParameter('genemu.form.file.folder', $configs['folder']);
         $container->setParameter('genemu.form.file.upload_dir', $rootDir . '/' . $configs['folder']);

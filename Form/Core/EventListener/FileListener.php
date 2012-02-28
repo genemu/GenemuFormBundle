@@ -52,6 +52,7 @@ class FileListener implements EventSubscriberInterface
             return;
         }
 
+        $return = null;
         if (true === $this->multiple) {
             $paths = explode(',', $data);
             $return = array();
