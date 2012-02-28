@@ -10,7 +10,9 @@ genemu_form:
     captcha: ~
 ```
 
-## Fix Bug to IE6 and IE7, add in your routing.yml
+## Fix Bug to IE6 and IE7
+
+* add in your routing.yml
 
 ``` yml
 # app/config/routing.yml
@@ -18,6 +20,9 @@ genemu_base64:
     resource: "@GenemuFormBundle/Controller/Base64Controller.php"
     type:     annotation
 ```
+
+* also your captcha should be small, because IE supports only 2083 characters in requests (otherwise they are just skipped).
+Working example: 100x30, grayscale, gif
 
 ## Default Usage:
 
