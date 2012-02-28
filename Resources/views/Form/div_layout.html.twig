@@ -153,3 +153,9 @@
     </div>
 {% endspaceless %}
 {% endblock genemu_jqueryimage_widget %}
+
+{% block genemu_plain_widget %}
+    <div {{ block('container_attributes') }}>
+        <p {{ block('widget_attributes') }}>{{ value|escape }}</p>
+    </div>
+{% endblock %}
