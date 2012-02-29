@@ -153,3 +153,20 @@
     </div>
 {% endspaceless %}
 {% endblock genemu_jqueryimage_widget %}
+
+{% block genemu_jquerytokeninput_widget %}
+{% spaceless %}
+{{ block("hidden_widget") }}
+
+{% set id = "tokeninput_" ~ id %}
+{% set full_name = "tokeninput_" ~ full_name %}
+{% set value = tokeninput_value %}
+{{ block("field_widget") }}
+{% endspaceless %}
+{% endblock genemu_jquerytokeninput_widget %}
+
+{% block genemu_plain_widget %}
+    <div {{ block('container_attributes') }}>
+        <p {{ block('widget_attributes') }}>{{ value|escape }}</p>
+    </div>
+{% endblock %}
