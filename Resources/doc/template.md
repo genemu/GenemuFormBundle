@@ -13,7 +13,7 @@ This allows better integration of web pages.
     <link href="{{ asset('css/ui-lightness/jquery-ui-1.8.16.custom.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/uploadify/uploadify.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/jcrop/jquery.Jcrop.css') }}" rel="stylesheet" />
-
+    <link href="{{ asset('css/tokeninput/token-input-facebook.css') }}" rel="stylesheet" />
     {{ form_stylesheet(form) }}
 {% endblock %}
 
@@ -27,6 +27,8 @@ This allows better integration of web pages.
     <script src="{{ asset('js/uploadify/swfobject.js') }}"></script>
 
     <script src="{{ asset('js/jquery.Jcrop.min.js') }}"></script>
+
+    <script src="{{ asset('js/jquery/jquery.tokeninput.js') }}"></script> <!-- You have to apply the fix https://github.com/loopj/jquery-tokeninput/pull/172/files for tokeninput to get it work!! -->
 
     {{ form_javascript(form) }}
 {% endblock %}
