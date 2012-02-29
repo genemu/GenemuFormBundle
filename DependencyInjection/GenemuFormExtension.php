@@ -40,11 +40,15 @@ class GenemuFormExtension extends Extension
         $loader->load('model.xml');
         $loader->load('jquery.xml');
 
-        if (false === empty($configs['autocompleter']['doctrine'])) {
+        if (!empty($configs['autocompleter']['doctrine']) ||
+            !empty($configs['tokeninput']['doctrine'])
+        ) {
             $loader->load('entity.xml');
         }
 
-        if (false === empty($configs['autocompleter']['mongodb'])) {
+        if (!empty($configs['autocompleter']['mongodb']) ||
+            !empty($configs['tokeninput']['mongodb'])
+        ) {
             $loader->load('mongodb.xml');
         }
 
