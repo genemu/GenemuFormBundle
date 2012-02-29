@@ -29,7 +29,7 @@ class TokeninputType extends AbstractType
      *
      * @var array
      */
-    protected $_availableOptions = array(
+    protected $_availableTokeninputOptions = array(
         'method',
         'queryParam',
         'searchDelay',
@@ -57,9 +57,22 @@ class TokeninputType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder->setAttribute('route_name', $options['route_name']);
+        if (true === empty($options['choice_list'])) {
+            $options['choice_list'] = new AjaxArrayChoiceList($options['choices'], $options['ajax']);
+        }
 
-        foreach ($this->_availableOptions as $option) {
+        $builder
+            ->appendClientTransformer(new ChoiceToJsonTransformer(
+                $options['choice_list'],
+                $options['widget'],
+                $options['multiple'],
+                $options['ajax']
+            ))
+            ->setAttribute('choice_list', $options['choice_list'])
+            ->setAttribute('widget', $options['widget'])
+            ->setAttribute('route_name', $options['route_name']);
+
+        foreach ($this->_availableTokeninputOptions as $option) {
             if (isset($options[$option])) {
                 $builder->setAttribute($option, $options[$option]);
             }
@@ -75,8 +88,12 @@ class TokeninputType extends AbstractType
         $value = '';
 
         if (false === empty($datas)) {
-            foreach ($datas as $data) {
-                $value .= $data['label'] . ', ';
+            if (true === $form->getAttribute('multiple')) {
+                foreach ($datas as $data) {
+                    $value .= $data['label'] . ', ';
+                }
+            } else {
+                $value = $datas['label'];
             }
         }
 
@@ -84,7 +101,7 @@ class TokeninputType extends AbstractType
             ->set('tokeninput_value', $value)
             ->set('route_name', $form->getAttribute('route_name'));
 
-        foreach ($this->_availableOptions as $option) {
+        foreach ($this->_availableTokeninputOptions as $option) {
             if ($form->hasAttribute($option)) {
                 $view->set($option, $form->getAttribute($option));
             }
@@ -97,12 +114,20 @@ class TokeninputType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
+            'widget' => 'choice',
+            'route_name' => null,
+            'ajax' => false,
+            'multiple' => true,
             'queryParam' => 'term',
             'preventDuplicates' => true,
             'tokenValue' => 'value',
             'propertyToSearch' => 'label',
             'theme' => 'facebook'
         );
+
+        if (false === empty($options['route_name'])) {
+            $options['ajax'] = true;
+        }
 
         $options = array_replace($defaultOptions, $options);
 
@@ -112,9 +137,31 @@ class TokeninputType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function getAllowedOptionValues(array $options)
+    {
+        return array(
+            'widget' => array(
+                'choice',
+                'language',
+                'country',
+                'locale',
+                'entity',
+                'document',
+                'model',
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getParent(array $options)
     {
-        return 'field';
+        if (true === in_array($options['widget'], array('entity', 'document', 'model'), true)) {
+            return 'genemu_ajax' . $options['widget'];
+        }
+
+        return $options['widget'];
     }
 
     /**
