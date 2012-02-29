@@ -40,11 +40,15 @@ class GenemuFormExtension extends Extension
         $loader->load('model.xml');
         $loader->load('jquery.xml');
 
-        if (!empty($configs['autocompleter']['doctrine'])) {
+        if (!empty($configs['autocompleter']['doctrine']) ||
+            !empty($configs['tokeninput']['doctrine'])
+        ) {
             $loader->load('entity.xml');
         }
 
-        if (!empty($configs['autocompleter']['mongodb'])) {
+        if (!empty($configs['autocompleter']['mongodb']) ||
+            !empty($configs['tokeninput']['mongodb'])
+        ) {
             $loader->load('mongodb.xml');
         }
 
@@ -102,11 +106,11 @@ class GenemuFormExtension extends Extension
         if (isset($configs['ssl']['use']) && !empty($configs['ssl']['use'])) {
             $serverUrl = $configs['ssl']['server_url'];
         }
-        
+
         if (empty($configs['private_key'])) {
             throw new \LogicException('Option recaptcha.private_key does not empty.');
         }
-        
+
         if (empty($configs['public_key'])) {
             throw new \LogicException('Option recaptcha.public_key does not empty.');
         }

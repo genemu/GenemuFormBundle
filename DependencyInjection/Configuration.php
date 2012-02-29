@@ -40,6 +40,7 @@ class Configuration implements ConfigurationInterface
         $this->addFile($rootNode);
         $this->addImage($rootNode);
         $this->addAutocompleter($rootNode);
+        $this->addTokeninput($rootNode);
 
         return $treeBuilder;
     }
@@ -253,6 +254,27 @@ class Configuration implements ConfigurationInterface
                                 'extra' => array(1024, 768)
                             ))
                         ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * Add configuration Tokeninput
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addTokeninput(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('tokeninput')
+                    ->canBeUnset()
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('doctrine')->defaultTrue()->end()
+                        ->booleanNode('mongodb')->defaultFalse()->end()
                     ->end()
                 ->end()
             ->end()
