@@ -28,7 +28,7 @@ This allows better integration of web pages.
 
     <script src="{{ asset('js/jquery.Jcrop.min.js') }}"></script>
 
-    <script src="{{ asset('js/jquery/jquery.tokeninput.js') }}"></script>
+    <script src="{{ asset('js/jquery/jquery.tokeninput.js') }}"></script> <!-- You have to apply the fix https://github.com/loopj/jquery-tokeninput/pull/172/files for tokeninput to get it work!! -->
 
     {{ form_javascript(form) }}
 {% endblock %}
