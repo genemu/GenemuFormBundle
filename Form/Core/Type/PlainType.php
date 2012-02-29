@@ -36,6 +36,35 @@ class PlainType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function buildView(FormView $view, FormInterface $form)
+    {
+        $value = $form->getClientData();
+
+        // set string representation
+        if (true === $value) {
+            $value = 'true';
+        } else if (false === $value) {
+            $value = 'false';
+        } else if (null === $value) {
+            $value = 'null';
+        } else if (is_array($value)) {
+            $value = implode(', ', $value);
+        } else if ($value instanceof \DateTime) {
+            $value = $value->format('Y-m-d H:i:s');
+        } else if (is_object($value)) {
+            if (method_exists($value, '__toString')) {
+                $value = $value->__toString();
+            } else {
+                $value = get_class($value);
+            }
+        }
+
+        $view->set('value', (string) $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getParent(array $options)
     {
         return 'field';
