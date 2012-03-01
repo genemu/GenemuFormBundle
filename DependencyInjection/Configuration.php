@@ -97,7 +97,7 @@ class Configuration implements ConfigurationInterface
                                     });
                                 })
                             ->end()
-                            ->prototype('array')->end()
+                            ->prototype('scalar')->end()
                         ->end()
                         ->scalarNode('font_dir')
                             ->defaultValue('%kernel.root_dir%/../web/bundles/genemuform/fonts')
@@ -106,7 +106,7 @@ class Configuration implements ConfigurationInterface
                             ->defaultValue(
                                 array('akbar.ttf', 'brushcut.ttf', 'molten.ttf', 'planetbe.ttf', 'whoobub.ttf')
                             )
-                            ->prototype('array')->end()
+                            ->prototype('scalar')->end()
                         ->end()
                         ->scalarNode('background_color')->defaultValue('DDDDDD')->end()
                         ->scalarNode('border_color')->defaultValue('000000')->end()
