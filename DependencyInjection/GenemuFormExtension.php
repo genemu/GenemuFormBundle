@@ -81,12 +81,12 @@ class GenemuFormExtension extends Extension
         }
         unset($configs['font_dir']);
 
-        $backgroundColor = preg_replace('/^[0-9A-Fa-f]/', '', $configs['background_color']);
+        $backgroundColor = preg_replace('/[^0-9A-Fa-f]/', '', $configs['background_color']);
         if (!in_array(strlen($backgroundColor), array(3, 6), true)) {
             $configs['background_color'] = 'DDDDDD';
         }
 
-        $borderColor = preg_replace('/^[0-9A-Fa-f]/', '', $configs['border_color']);
+        $borderColor = preg_replace('/[^0-9A-Fa-f]/', '', $configs['border_color']);
         if (!in_array(strlen($borderColor), array(3, 6), true)) {
             $configs['border_color'] = '000000';
         }
