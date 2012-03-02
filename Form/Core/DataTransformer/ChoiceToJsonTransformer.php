@@ -78,6 +78,9 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
 
         if ($this->multiple) {
             $choices = array();
+            if (empty($values)) {
+                $values = array();
+            }
 
             foreach ($values as $value) {
                 if (
