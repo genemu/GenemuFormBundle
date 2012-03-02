@@ -117,7 +117,6 @@ class TokeninputType extends AbstractType
             'widget' => 'choice',
             'route_name' => null,
             'ajax' => false,
-            'multiple' => true,
             'queryParam' => 'term',
             'preventDuplicates' => true,
             'tokenValue' => 'value',

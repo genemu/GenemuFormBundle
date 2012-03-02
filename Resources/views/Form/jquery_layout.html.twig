@@ -182,6 +182,7 @@
         jQuery(document).ready(function($) {
             var $field = $('#{{ id }}');
             var $tokeninput = $('#tokeninput_{{ id }}');
+{% if value is not empty %}{% set prePopulate = value %}{% endif %}
             var $configs = {
 {% if method is defined %}                // The HTTP method (eg. GET, POST) to use for the server request. default: “GET”.
                 method: '{{ method }}',
@@ -215,7 +216,7 @@
 {% endif %}
 {% if prePopulate is defined %}                // Prepopulate the tokeninput with existing data. Set to an array of JSON objects,
                 // eg: [{id: 3, name: "test"}, {id: 5, name: "awesome"}] to pre-fill the input. default: null.
-                prePopulate: {{ prePopulate|json_encode() }},
+                prePopulate: {{ prePopulate|raw }},
 {% endif %}
 {% if hintText is defined %}                // The text to show in the dropdown label which appears when you first click in the search field.
                 // default: “Type in a search term”
@@ -264,9 +265,12 @@
 {% if preventDuplicates is defined %}                // Prevent user from selecting duplicate values by setting this to true. default: false.
                 preventDuplicates: {{ preventDuplicates }},
 {% endif %}
-                // A function to call whenever we receive results back from the server.
-                // You can use this function to pre-process results from the server before they are displayed to the user.
-                onResult: null
+                onAdd: function(item) {
+                    $field.val(JSON.stringify($tokeninput.tokenInput('get')));
+                },
+                onDelete: function(item) {
+                    $field.val(JSON.stringify($tokeninput.tokenInput('get')));
+                }
             };
             $tokeninput.tokenInput({% if route_name %}'{{ path(route_name) }}'{% else %}{{ choices|json_encode|raw }}{% endif %}, $configs);
         });
