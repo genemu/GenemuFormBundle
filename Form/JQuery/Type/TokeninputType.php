@@ -113,20 +113,15 @@ class TokeninputType extends AbstractType
      */
     public function getDefaultOptions(array $options)
     {
-        $multiple = isset($options['multiple']) && $options['multiple'];
-
         $defaultOptions = array(
             'widget' => 'choice',
             'route_name' => null,
             'ajax' => false,
-            'multiple' => false,
             'queryParam' => 'term',
             'preventDuplicates' => true,
             'tokenValue' => 'value',
             'propertyToSearch' => 'label',
-            'theme' => 'facebook',
-            'empty_data'        => $multiple ? array() : '',
-            'error_bubbling'    => false
+            'theme' => 'facebook'
         );
 
         if (false === empty($options['route_name'])) {
