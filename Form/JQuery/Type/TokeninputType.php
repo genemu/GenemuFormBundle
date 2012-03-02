@@ -61,6 +61,14 @@ class TokeninputType extends AbstractType
             $options['choice_list'] = new AjaxArrayChoiceList($options['choices'], $options['ajax']);
         }
 
+        if (isset($options['tokenLimit']) && is_numeric($options['tokenLimit']) && $options['tokenLimit'] > 0) {
+            $options['multiple'] = (1 != $options['tokenLimit']);
+        }
+
+        if (!$options['multiple']) {
+            $options['tokenLimit'] = 1;
+        }
+
         $builder
             ->appendClientTransformer(new ChoiceToJsonTransformer(
                 $options['choice_list'],
@@ -77,6 +85,7 @@ class TokeninputType extends AbstractType
                 $builder->setAttribute($option, $options[$option]);
             }
         }
+
     }
 
     /**
