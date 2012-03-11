@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * class Base64Controller
+ * Class Base64Controller
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
