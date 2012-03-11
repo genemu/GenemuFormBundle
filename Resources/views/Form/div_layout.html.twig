@@ -87,6 +87,16 @@
     <div class="queue">
         <div id="{{ id }}_queue"></div>
     </div>
+    <script type="text/javascript">          	
+		jQuery(document).ready(function($) {
+			genemu_enableJQueryFile('{{ id }}', {{ configs|merge({
+	            'uploader':  asset(configs.uploader),
+	            'cancelImg': asset(configs.cancelImg),
+	            'script':    path(configs.script),
+	            'queueID':   id ~ '_queue'
+	        })|json_encode|raw }}, {% if configs.auto is not defined or configs.auto is sameas(false) %}false{% else %}true{% endif %});
+		});
+    </script>
 {% endspaceless %}
 {% endblock genemu_jqueryfile_widget %}
 
