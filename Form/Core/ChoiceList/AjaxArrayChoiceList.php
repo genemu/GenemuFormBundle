@@ -91,8 +91,9 @@ class AjaxArrayChoiceList extends ArrayChoiceList
      * @return array $intersect
      */
 
-	public function getIntersectFreeValues(array $values)
+    public function getIntersectFreeValues(array $values)
     {
+        $intersect = array();
 
         foreach ($values as $value) {
             $intersect[] = array(
