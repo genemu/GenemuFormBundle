@@ -26,6 +26,7 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
     protected $widget;
     protected $multiple;
     protected $ajax;
+    protected $freeValues;
 
     /**
      * Constructs
@@ -34,13 +35,15 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
      * @param string          $widget
      * @param boolean         $multiple
      * @param boolean         $ajax
+     * @param boolean         $freeValues
      */
-    public function __construct(ArrayChoiceList $choiceList, $widget = 'choice', $multiple = false, $ajax = false)
+    public function __construct(ArrayChoiceList $choiceList, $widget = 'choice', $multiple = false, $ajax = false, $freeValues = false)
     {
         $this->choiceList = $choiceList;
         $this->multiple = $multiple;
         $this->widget = $widget;
         $this->ajax = $ajax;
+        $this->freeValues = $freeValues;
     }
 
     /**
@@ -60,7 +63,11 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
             throw new UnexpectedTypeException($choices, 'array');
         }
 
-        $json = $this->choiceList->getIntersect($choices);
+        if (!$this->freeValues) {
+            $json = $this->choiceList->getIntersect($choices);
+        } else {
+            $json = $this->choiceList->getIntersectFreeValues($choices);
+        }
 
         if (!$this->multiple) {
             $json = current($json);

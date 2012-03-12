@@ -38,11 +38,13 @@ class AutocompleterType extends AbstractType
                 $options['choice_list'],
                 $options['widget'],
                 $options['multiple'],
-                $options['ajax']
+                $options['ajax'],
+                $options['freeValues']
             ))
             ->setAttribute('choice_list', $options['choice_list'])
             ->setAttribute('widget', $options['widget'])
-            ->setAttribute('route_name', $options['route_name']);
+            ->setAttribute('route_name', $options['route_name'])
+            ->setAttribute('freeValues', $options['freeValues']);
     }
 
     /**
@@ -65,7 +67,8 @@ class AutocompleterType extends AbstractType
 
         $view
             ->set('autocompleter_value', $value)
-            ->set('route_name', $form->getAttribute('route_name'));
+            ->set('route_name', $form->getAttribute('route_name'))
+            ->set('freeValues', $form->getAttribute('freeValues'));
     }
 
     /**
@@ -77,6 +80,7 @@ class AutocompleterType extends AbstractType
             'widget' => 'choice',
             'route_name' => null,
             'ajax' => false,
+            'freeValues' => false,
         );
 
         $options = array_replace($defaultOptions, $options);
