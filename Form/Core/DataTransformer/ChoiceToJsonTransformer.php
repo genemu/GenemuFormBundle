@@ -66,7 +66,7 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
         if (!$this->freeValues) {
             $json = $this->choiceList->getIntersect($choices);
         } else {
-                $json = $this->choiceList->getIntersectFreeValues($choices);
+            $json = $this->choiceList->getIntersectFreeValues($choices);
         }
 
         if (!$this->multiple) {
