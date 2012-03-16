@@ -332,9 +332,11 @@
 
             {% if route_name %}
                 $configs.source = function(request, response) {
-                    $.getJSON('{{ path(route_name) }}', {
-                        term: request.term
-                    }, response);
+                    var $data = {term: request.term};
+                {% for id in ids %}
+                    $data['{{ id }}'] = $('#{{ form_name ~ '_' ~ id }}').val();
+                {% endfor %}
+                    $.getJSON('{{ path(route_name) }}', $data, response);
                 };
             {% else %}
                 $configs.source = {{ choices|json_encode|raw }};
