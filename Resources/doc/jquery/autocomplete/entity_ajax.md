@@ -17,7 +17,8 @@ public function buildForm(FormBuilder $builder, array $options)
             'route_name' => 'ajax_city',
             'class' => 'Genemu\Bundle\EntityBundle\Entity\City',
             'widget' => 'entity',
-            'multiple' => true
+            'multiple' => true,
+            'ids' => array('member'),
         ));
 }
 ```
@@ -64,6 +65,7 @@ class MyClassAjaxController extends Controller
     public function ajaxCityAction(Request $request)
     {
         $value = $request->get('term');
+        $member = $request->get('member'); // The value of member will be passed in the ajax request
 
         $em = $this->getDoctrine()->getEntityManager();
         $cities = $em->getRepository('GenemuEntityBundle:City')->findAjaxValue($value);
@@ -71,8 +73,8 @@ class MyClassAjaxController extends Controller
         $json = array();
         foreach ($cities as $city) {
             $json[] = array(
-                'label' => $member->getName(),
-                'value' => $member->getId()
+                'label' => $city->getName(),
+                'value' => $city->getId()
             );
         }
 
