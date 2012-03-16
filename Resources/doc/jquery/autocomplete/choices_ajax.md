@@ -10,10 +10,12 @@ public function buildForm(FormBuilder $builder, array $options)
     $builder
         ->add('ajax_simple', 'genemu_jqueryautocompleter', array(
             'route_name' => 'ajax'
+            'ids' => array('id_1', 'id_2'),
         ))
         ->add('ajax_multiple', 'genemu_jqueryautocompleter', array(
             'route_name' => 'ajax',
-            'multiple' => true
+            'multiple' => true,
+            'ids' => array('id_text', 'id_select'),
         ));
 }
 ```
@@ -36,6 +38,8 @@ class MyClassAjaxController extends Controller
     public function ajaxAction(Request $request)
     {
         $value = $request->get('term');
+        $id_text = $request->get('id_text'); // The value of text will be passed in the ajax request
+        $id_select = $request->get('id_select'); // The value of select will be passed in the ajax request
 
         // .... (Search values)
         $search = array(
