@@ -87,6 +87,16 @@
     <div class="queue">
         <div id="{{ id }}_queue"></div>
     </div>
+    <script type="text/javascript">
+	    var config = {{ configs|merge({
+	        'uploader':  asset(configs.uploader),
+	        'cancelImg': asset(configs.cancelImg),
+	        'script':    path(configs.script),
+	        'queueID':   id ~ '_queue'
+	    })|json_encode|raw }};
+
+		genemuFormBundleFileConfigs_{{ id }}=new Array(config, {% if configs.auto is not defined or configs.auto is sameas(false) %}true{% else %}false{% endif %});
+    </script>
 {% endspaceless %}
 {% endblock genemu_jqueryfile_widget %}
 
