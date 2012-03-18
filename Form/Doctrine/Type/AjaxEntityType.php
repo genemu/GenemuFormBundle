@@ -49,7 +49,7 @@ class AjaxEntityType extends AbstractType
             'class'         => null,
             'property'      => null,
             'query_builder' => null,
-            'choices'       => array(),
+            'choices'       => null,
             'ajax'          => false
         );
 
