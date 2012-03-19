@@ -33,10 +33,10 @@ class AjaxEntityChoiceList extends EntityChoiceList
      * @param string              $class
      * @param string              $property
      * @param QueryBuilder        $qb
-     * @param array|\Closure $choices
+     * @param null|array|\Closure $choices
      * @param boolean             $ajax
      */
-    public function __construct(EntityManager $em, $class, $property = null, $qb = null, $choices = array(), $ajax = false)
+    public function __construct(EntityManager $em, $class, $property = null, $qb = null, $choices = null, $ajax = false)
     {
         $this->ajax = $ajax;
 
