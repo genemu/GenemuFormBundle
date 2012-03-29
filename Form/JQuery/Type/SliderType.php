@@ -34,6 +34,19 @@ class SliderType extends AbstractType
             'step' => $options['step'],
             'orientation' => $options['orientation']
         );
+        
+        if (array_key_exists('range', $options))
+        {
+          $configs = array_merge($configs, array(
+              'range' => $options['range'], 
+              'values' => array($options['min'], $options['max'])
+          ));
+          
+          if (array_key_exists('values', $options))
+          {
+            $configs = array_merge($configs, array('values' => $options['values']));
+          }
+        }
 
         $builder->setAttribute('configs', $configs);
     }
