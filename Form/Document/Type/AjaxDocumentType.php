@@ -48,7 +48,7 @@ class AjaxDocumentType extends AbstractType
             'choices'           => array(),
             'class'             => null,
             'document_manager'  => null,
-            'expended'          => null,
+            'expanded'          => null,
             'multiple'          => false,
             'preferred_choices' => array(),
             'property'          => null,
