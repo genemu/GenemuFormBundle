@@ -73,14 +73,14 @@ class DateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
         $defaultOptions = array(
             'culture' => \Locale::getDefault(),
             'widget' => 'choice',
             'configs' => array_merge(array(
                 'dateFormat' => null,
-            ), $this->options),
+            ), $options),
         );
 
         $options = array_replace_recursive($defaultOptions, $options);

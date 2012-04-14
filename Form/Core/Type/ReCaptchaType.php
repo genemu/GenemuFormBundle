@@ -77,10 +77,10 @@ class ReCaptchaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
         $defaultOptions = array(
-            'configs' => array_merge($this->options, array(
+            'configs' => array_merge($options, array(
                 'lang' => \Locale::getDefault(),
             )),
             'validator' => array(
