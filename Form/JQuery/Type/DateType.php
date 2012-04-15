@@ -40,7 +40,7 @@ class DateType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $options = $this->getDefaultOptions($options);
+        $options = $this->getDefaultOptions();
 
         $builder
             ->setAttribute('years', $options['years'])
@@ -73,21 +73,26 @@ class DateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
-        $defaultOptions = array(
+        $options = array(
             'culture' => \Locale::getDefault(),
             'widget' => 'choice',
             'configs' => array_merge(array(
                 'dateFormat' => null,
+                'showOn' => function (Options $options, $previousValue) {
+                    if (null === $previousValue)
+                    {
+                        if ('single_text' !== $options['widget'] || isset($options['configs']['buttonImage']))
+                        {
+                            return 'button';
+                        }
+                    }
+
+                    return null;
+                }
             ), $this->options),
         );
-
-        $options = array_replace_recursive($defaultOptions, $options);
-
-        if ('single_text' !== $options['widget'] || isset($options['configs']['buttonImage'])) {
-            $options['configs']['showOn'] = 'button';
-        }
 
         return $options;
     }

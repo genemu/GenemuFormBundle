@@ -28,31 +28,36 @@ class AjaxModelType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
-        $defaultOptions = array(
-            'template' => 'choice',
-            'multiple' => false,
-            'expanded' => false,
-            'class' => null,
-            'property' => null,
-            'query' => null,
-            'choices' => array(),
+        $options = array(
+            'template'          => 'choice',
+            'multiple'          => false,
+            'expanded'          => false,
+            'class'             => null,
+            'property'          => null,
+            'query'             => null,
+            'choices'           => array(),
             'preferred_choices' => array(),
-            'ajax' => false,
+            'ajax'              => false,
+            'choice_list'       => function (Options $options, $previousValue) {
+                if (null === $previousValue)
+                {
+                    if (!isset($options['choice_list']))
+                    {
+                        return new AjaxModelChoiceList(
+                            $options['class'],
+                            $options['property'],
+                            $options['choices'],
+                            $options['query'],
+                            $options['ajax']
+                        );
+                    }
+                }
+
+                return null;
+            }
         );
-
-        $options = array_replace($defaultOptions, $options);
-
-        if (!isset($options['choice_list'])) {
-            $options['choice_list'] = new AjaxModelChoiceList(
-                $options['class'],
-                $options['property'],
-                $options['choices'],
-                $options['query'],
-                $options['ajax']
-            );
-        }
 
         return $options;
     }

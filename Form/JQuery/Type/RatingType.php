@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Options;
 
 /**
  * RatingType
@@ -43,17 +44,23 @@ class RatingType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
-        $defaultOptions = array(
-            'configs' => array(),
+        $options = array(
+            'configs' => function (Options $options, $previousValue) {
+                $configs = array();
+
+                if (null === $previousValue)
+                {
+                    if (!isset($options['expanded']) || (isset($options['examded']) && !$options['expanded']))
+                    {
+                        $configs['inputType'] = 'select';
+                    }
+                }
+
+                return $configs;
+            }
         );
-
-        $options = array_replace($defaultOptions, $options);
-
-        if (!isset($options['expanded']) || (isset($options['examded']) && !$options['expanded'])) {
-            $options['configs']['inputType'] = 'select';
-        }
 
         return $options;
     }
