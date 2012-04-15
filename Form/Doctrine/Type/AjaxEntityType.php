@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Options;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -44,26 +45,30 @@ class AjaxEntityType extends AbstractType
      */
     public function getDefaultOptions()
     {
-        $defaultOptions = array(
+        $options = array(
             'em'            => null,
             'class'         => null,
             'property'      => null,
             'query_builder' => null,
             'choices'       => null,
             'group_by'      => null,
-            'ajax'          => false
-        );
+            'ajax'          => false,
+            'choice_list'   => function (Options $options, $previousValue) {
+                if (null === $previousValue)
+                {
+                    return new AjaxEntityChoiceList(
+                        $this->registry->getManager($options['em']),
+                        $options['class'],
+                        $options['property'],
+                        $options['query_builder'],
+                        $options['choices'],
+                        $options['group_by'],
+                        $options['ajax']
+                    );
+                }
 
-        $options = array_replace($defaultOptions, $options);
-
-        $options['choice_list'] = new AjaxEntityChoiceList(
-            $this->registry->getManager($options['em']),
-            $options['class'],
-            $options['property'],
-            $options['query_builder'],
-            $options['choices'],
-            $options['group_by'],
-            $options['ajax']
+                return null;
+            }
         );
 
         return $options;

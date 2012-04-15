@@ -20,7 +20,7 @@ class PlainType extends AbstractType
      */
     public function getDefaultOptions()
     {
-        $defaultOptions = array(
+        return array(
             'widget'  => 'field',
             'configs' => array(),
             'read_only' => true,
@@ -29,8 +29,6 @@ class PlainType extends AbstractType
             )
             //'property_path' => false,
         );
-
-        return array_replace_recursive($defaultOptions, $options);
     }
 
     /**

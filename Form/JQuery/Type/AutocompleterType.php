@@ -76,18 +76,21 @@ class AutocompleterType extends AbstractType
      */
     public function getDefaultOptions()
     {
-        $defaultOptions = array(
+        $options = array(
             'widget' => 'choice',
             'route_name' => null,
-            'ajax' => false,
+            'ajax' => function (Options $options, $previousValue) {
+                if (null === $previousValue) {
+                    if (!empty($options['route_name']))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            },
             'freeValues' => false,
         );
-
-        $options = array_replace($defaultOptions, $options);
-
-        if (!empty($options['route_name'])) {
-            $options['ajax'] = true;
-        }
 
         return $options;
     }

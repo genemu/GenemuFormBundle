@@ -106,13 +106,11 @@ class FileType extends AbstractType
      */
     public function getDefaultOptions()
     {
-        $defaultOptions = array(
+        return array(
             'required' => false,
             'multiple' => false,
             'configs' => array(),
         );
-
-        return array_replace($defaultOptions, $options);
     }
 
     /**

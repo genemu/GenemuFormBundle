@@ -75,13 +75,11 @@ class CaptchaType extends AbstractType
      */
     public function getDefaultOptions()
     {
-        $defaultOptions = array_merge(array(
+        return array_merge(array(
             'attr' => array(
                 'autocomplete' => 'off'
             )
         ), $this->options);
-
-        return array_replace_recursive($defaultOptions, $options);
     }
 
     /**

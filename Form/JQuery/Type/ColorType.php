@@ -49,12 +49,10 @@ class ColorType extends AbstractType
      */
     public function getDefaultOptions()
     {
-        $defaultOptions = array(
+        return array(
             'widget'  => 'field',
             'configs' => array(),
         );
-
-        return array_replace($defaultOptions, $options);
     }
 
     /**

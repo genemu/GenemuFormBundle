@@ -44,12 +44,10 @@ class ChosenType extends AbstractType
      */
     public function getDefaultOptions()
     {
-        $defaultOptions = array(
+        return array(
             'widget' => 'choice',
             'allow_single_deselect' => true,
         );
-
-        return array_replace($defaultOptions, $options);
     }
 
     /**

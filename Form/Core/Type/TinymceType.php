@@ -40,7 +40,7 @@ class TinymceType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $options = $this->getDefaultOptions($options);
+        $options = $this->getDefaultOptions();
 
         $builder->setAttribute('configs', $options['configs']);
     }
@@ -58,14 +58,12 @@ class TinymceType extends AbstractType
      */
     public function getDefaultOptions()
     {
-        $defaultOptions = array(
+        return array(
             'configs' => array_merge($this->options, array(
                 'language' => \Locale::getDefault(),
             )),
             'required' => false,
         );
-
-        return array_replace_recursive($defaultOptions, $options);
     }
 
     /**
