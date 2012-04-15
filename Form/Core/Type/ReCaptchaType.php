@@ -55,7 +55,7 @@ class ReCaptchaType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $options = $this->getDefaultOptions($options);
+        $options = $this->getDefaultOptions();
 
         $builder
             ->addValidator($this->validator)
@@ -77,9 +77,9 @@ class ReCaptchaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
-        $defaultOptions = array(
+        return array(
             'configs' => array_merge($this->options, array(
                 'lang' => \Locale::getDefault(),
             )),
@@ -91,8 +91,6 @@ class ReCaptchaType extends AbstractType
             ),
             'error_bubbling' => false,
         );
-
-        return array_replace_recursive($defaultOptions, $options);
     }
 
     /**

@@ -49,22 +49,20 @@ class SliderType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
-        $defaultOptions = array(
+        return array(
             'min' => 0,
             'max' => 100,
             'step' => 1,
             'orientation' => 'horizontal'
         );
-
-        return array_replace($defaultOptions, $options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllowedOptionValues(array $options)
+    public function getAllowedOptionValues()
     {
         return array(
             'orientation' => array(
