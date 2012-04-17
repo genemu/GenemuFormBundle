@@ -78,6 +78,7 @@ class DateType extends AbstractType
         $options = array(
             'culture' => \Locale::getDefault(),
             'widget' => 'choice',
+            'years'  => range(date('Y') - 5, date('Y') + 5),
             'configs' => array_merge(array(
                 'dateFormat' => null,
                 'showOn' => function (Options $options, $previousValue) {
