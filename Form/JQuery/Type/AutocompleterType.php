@@ -105,6 +105,7 @@ class AutocompleterType extends AbstractType
                 'choice',
                 'language',
                 'country',
+                'timezone',
                 'locale',
                 'entity',
                 'document',
