@@ -152,6 +152,7 @@ class TokeninputType extends AbstractType
                 'choice',
                 'language',
                 'country',
+                'timezone',
                 'locale',
                 'entity',
                 'document',
