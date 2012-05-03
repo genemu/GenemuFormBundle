@@ -57,7 +57,7 @@ class ImageType extends AbstractType
             }
 
             if ($data->hasThumbnail($this->selected)) {
-                $thumbnail = $data->getTumbnail($this->selected);
+                $thumbnail = $data->getThumbnail($this->selected);
 
                 $view
                     ->set('thumbnail', array(
