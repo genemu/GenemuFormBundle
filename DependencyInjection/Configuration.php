@@ -216,7 +216,7 @@ class Configuration implements ConfigurationInterface
                     ->treatTrueLike(array('enabled' => true))
                     ->children()
                         ->booleanNode('enabled')->defaultTrue()->end()
-                        ->scalarNode('uploader')->isRequired()->end()
+                        ->scalarNode('swf')->isRequired()->end()
                         ->scalarNode('cancel_img')->defaultValue('/bundles/genemuform/images/cancel.png')->end()
                         ->scalarNode('folder')->defaultValue('/upload')->end()
                         ->variableNode('configs')->defaultValue(array())->end()
