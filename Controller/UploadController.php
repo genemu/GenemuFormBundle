@@ -57,12 +57,14 @@ class UploadController extends Controller
                         $handle->createThumbnail($name, $thumbnail[0], $thumbnail[1]);
                     }
 
-                    $selected = key(reset($thumbnails));
-                    if ($this->container->hasParameter('genemu.form.image.selected')) {
-                        $selected = $this->container->getParameter('genemu.form.image.selected');
-                    }
+                    if (0 < count($thumbnails)) {
+                        $selected = key(reset($thumbnails));
+                        if ($this->container->hasParameter('genemu.form.image.selected')) {
+                            $selected = $this->container->getParameter('genemu.form.image.selected');
+                        }
 
-                    $thumbnail = $handle->getThumbnail($selected);
+                        $thumbnail = $handle->getThumbnail($selected);
+                    }
                 }
 
                 $json = array_replace($json, array(
