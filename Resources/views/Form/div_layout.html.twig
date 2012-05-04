@@ -84,6 +84,7 @@
 {% block genemu_jqueryfile_widget %}
 {% spaceless %}
     {{ block("hidden_widget") }}
+    <div id="{{ id }}_upload"></div>
     <div class="queue">
         <div id="{{ id }}_queue"></div>
     </div>
@@ -146,6 +147,7 @@
                     <li class="{{ filter }} change"></li>
                 {% endfor %}
             </ul>
+            <div id="{{ id }}_upload"></div>
             <div class="queue">
                 <div id="{{ id }}_queue"></div>
             </div>
