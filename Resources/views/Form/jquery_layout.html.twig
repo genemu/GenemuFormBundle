@@ -344,6 +344,17 @@
 
                 $autocompleter.autocomplete($configs);
 
+            {% if freeValues %}
+            $autocompleter.keyup(function(){
+                var val ={}
+                var fieldval = $(this).val();
+                val['value'] = fieldval;
+                val['label'] = fieldval;
+
+                $field.val(JSON.stringify(val));
+            });
+            {% endif %}
+
             {% if multiple %}
                 var $source = $autocompleter.data('autocomplete').source;
 
