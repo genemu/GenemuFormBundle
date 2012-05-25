@@ -12,9 +12,6 @@
 namespace Genemu\Bundle\FormBundle\Form\Doctrine\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Options;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -77,7 +74,7 @@ class AjaxEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent(array $options)
+    public function getParent()
     {
         return 'entity';
     }

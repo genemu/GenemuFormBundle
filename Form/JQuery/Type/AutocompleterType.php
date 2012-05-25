@@ -11,9 +11,10 @@
 
 namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 
+
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\Form\FormInterface;
 
 use Genemu\Bundle\FormBundle\Form\Core\ChoiceList\AjaxArrayChoiceList;
@@ -27,7 +28,7 @@ class AutocompleterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if (!$options['choice_list']) {
             $options['choice_list'] = new AjaxArrayChoiceList($options['choices'], $options['ajax']);
@@ -50,7 +51,7 @@ class AutocompleterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form)
+    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
         $datas = json_decode($form->getClientData(), true);
         $value = '';
@@ -117,7 +118,7 @@ class AutocompleterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent(array $options)
+    public function getParent()
     {
         if (in_array($options['widget'], array('entity', 'document', 'model'), true)) {
             return 'genemu_ajax' . $options['widget'];
