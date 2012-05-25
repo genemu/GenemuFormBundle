@@ -12,12 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Form\Document\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
-
 use Doctrine\Common\Persistence\ManagerRegistry;
-
 use Genemu\Bundle\FormBundle\Form\Document\ChoiceList\AjaxDocumentChoiceList;
 
 /**
@@ -74,7 +69,7 @@ class AjaxDocumentType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent(array $options)
+    public function getParent()
     {
         return 'document';
     }

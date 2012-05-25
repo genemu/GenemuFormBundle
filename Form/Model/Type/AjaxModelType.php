@@ -12,8 +12,6 @@
 namespace Genemu\Bundle\FormBundle\Form\Model\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 
 use Genemu\Bundle\FormBundle\Form\Model\ChoiceList\AjaxModelChoiceList;
@@ -65,7 +63,7 @@ class AjaxModelType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent(array $options)
+    public function getParent()
     {
         return 'model';
     }

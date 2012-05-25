@@ -12,8 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\Form\FormInterface;
 
 use Genemu\Bundle\FormBundle\Gd\File\Image;
@@ -46,7 +45,7 @@ class ImageType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form)
+    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
         $configs = $form->getAttribute('configs');
         $data = $form->getClientData();
@@ -95,7 +94,7 @@ class ImageType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent(array $options)
+    public function getParent()
     {
         return 'genemu_jqueryfile';
     }
