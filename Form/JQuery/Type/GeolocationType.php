@@ -46,8 +46,7 @@ class GeolocationType extends AbstractType
         }
 
         $builder
-            ->addEventSubscriber(new GeolocationListener())
-            ->setAttribute('map', $options['map']);
+            ->addEventSubscriber(new GeolocationListener());
     }
 
     /**
@@ -56,8 +55,10 @@ class GeolocationType extends AbstractType
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
         $view
-            ->set('configs', array('elements' => array()))
-            ->set('map', $form->getAttribute('map'));
+            ->addVars(array(
+                'configs' => array('elements' => array()),
+                'map' => $options['map']
+            ));
     }
 
     /**
