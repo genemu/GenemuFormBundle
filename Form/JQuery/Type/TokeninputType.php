@@ -107,8 +107,8 @@ class TokeninputType extends AbstractType
         }
 
         $view
-            ->set('tokeninput_value', $value)
-            ->set('route_name', $form->getAttribute('route_name'));
+            ->setVar('tokeninput_value', $value)
+            ->setVar('route_name', $form->getAttribute('route_name'));
 
         foreach ($this->_availableTokeninputOptions as $option) {
             if ($form->hasAttribute($option)) {

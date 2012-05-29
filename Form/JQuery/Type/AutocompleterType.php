@@ -67,9 +67,9 @@ class AutocompleterType extends AbstractType
         }
 
         $view
-            ->set('autocompleter_value', $value)
-            ->set('route_name', $form->getAttribute('route_name'))
-            ->set('freeValues', $form->getAttribute('freeValues'));
+            ->setVar('autocompleter_value', $value)
+            ->setVar('route_name', $form->getAttribute('route_name'))
+            ->setVar('freeValues', $form->getAttribute('freeValues'));
     }
 
     /**

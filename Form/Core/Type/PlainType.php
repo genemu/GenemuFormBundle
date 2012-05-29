@@ -56,7 +56,7 @@ class PlainType extends AbstractType
             }
         }
 
-        $view->set('value', (string) $value);
+        $view->setVar('value', (string) $value);
     }
 
     /**

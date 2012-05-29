@@ -36,7 +36,7 @@ class ChosenType extends AbstractType
      */
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
-        $view->set('allow_single_deselect', $form->getAttribute('allow_single_deselect'));
+        $view->setVar('allow_single_deselect', $form->getAttribute('allow_single_deselect'));
     }
 
     /**

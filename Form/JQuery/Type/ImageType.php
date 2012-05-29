@@ -59,7 +59,7 @@ class ImageType extends AbstractType
                 $thumbnail = $data->getThumbnail($this->selected);
 
                 $view
-                    ->set('thumbnail', array(
+                    ->setVar('thumbnail', array(
                         'file' => $configs['folder'] . '/' . $thumbnail->getFilename(),
                         'width' => $thumbnail->getWidth(),
                         'height' => $thumbnail->getHeight(),
@@ -69,13 +69,13 @@ class ImageType extends AbstractType
             $value = $configs['folder'] . '/' . $data->getFilename();
 
             $view
-                ->set('value', $value)
-                ->set('file', $value)
-                ->set('width', $data->getWidth())
-                ->set('height', $data->getHeight());
+                ->setVar('value', $value)
+                ->setVar('file', $value)
+                ->setVar('width', $data->getWidth())
+                ->setVar('height', $data->getHeight());
         }
 
-        $view->set('filters', $this->filters);
+        $view->setVar('filters', $this->filters);
     }
 
     /**

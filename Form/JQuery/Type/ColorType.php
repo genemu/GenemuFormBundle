@@ -40,8 +40,8 @@ class ColorType extends AbstractType
     {
 
         $view
-            ->set('widget', $form->getAttribute('widget'))
-            ->set('configs', $form->getAttribute('configs'));
+            ->setVar('widget', $form->getAttribute('widget'))
+            ->setVar('configs', $form->getAttribute('configs'));
     }
 
     /**

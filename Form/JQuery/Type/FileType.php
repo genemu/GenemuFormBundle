@@ -93,12 +93,12 @@ class FileType extends AbstractType
                 $value = $configs['folder'] . '/' . $datas->getFilename();
             }
 
-            $view->set('value', $value);
+            $view->setVar('value', $value);
         }
 
         $view
-            ->set('type', 'hidden')
-            ->set('configs', $form->getAttribute('configs'));
+            ->setVar('type', 'hidden')
+            ->setVar('configs', $form->getAttribute('configs'));
     }
 
     /**

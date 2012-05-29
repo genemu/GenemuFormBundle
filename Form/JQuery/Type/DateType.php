@@ -64,10 +64,10 @@ class DateType extends AbstractType
         }
 
         $view
-            ->set('min_year', min($year))
-            ->set('max_year', max($year))
-            ->set('configs', $configs)
-            ->set('culture', $form->getAttribute('culture'));
+            ->setVar('min_year', min($year))
+            ->setVar('max_year', max($year))
+            ->setVar('configs', $configs)
+            ->setVar('culture', $form->getAttribute('culture'));
     }
 
     /**
