@@ -20,14 +20,12 @@
         "symfony/framework-bundle": "2.*",
         "symfony/form": "2.*"
     },
-    "recommend": {
+    "suggest": {
         "symfony/twig-bridge": "2.*",
         "symfony/doctrine-bridge": "2.*",
         "symfony/doctrine-bundle": "2.*",
         "symfony/http-kernel": "2.*",
-        "symfony/finder": "2.*"
-    },
-    "suggset": {
+        "symfony/finder": "2.*",
         "symfony/mongodb-odm-bundle": "2.*",
         "propel/propel-bundle": "2.*"
     },
