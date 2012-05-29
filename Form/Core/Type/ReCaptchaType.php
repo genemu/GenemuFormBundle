@@ -68,10 +68,11 @@ class ReCaptchaType extends AbstractType
      */
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
-        $view
-            ->set('public_key', $this->publicKey)
-            ->set('server', $this->serverUrl)
-            ->set('configs', $form->getAttribute('configs'));
+        $view->addVars(array(
+            'public_key' => $this->publicKey,
+            'server' => $this->serverUrl,
+            'configs' => $form->getAttribute('configs'),
+        ));
     }
 
     /**

@@ -50,7 +50,7 @@ class TinymceType extends AbstractType
      */
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
-        $view->set('configs', $form->getAttribute('configs'));
+        $view->setVar('configs', $form->getAttribute('configs'));
     }
 
     /**
