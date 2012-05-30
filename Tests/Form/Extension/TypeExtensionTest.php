@@ -13,7 +13,7 @@ namespace Genemu\Bundle\FormBundle\Tests\Form\Extension;
 
 use Symfony\Component\Form\Extension\Core\CoreExtension;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionStorage\ArraySessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\Request;
 
 use Genemu\Bundle\FormBundle\Gd\Type\Captcha;
@@ -38,7 +38,7 @@ class TypeExtensionTest extends CoreExtension
             new Form\Core\Type\TinymceType(array()),
             new Form\JQuery\Type\DateType(array()),
             new Form\JQuery\Type\SliderType(),
-            new Form\Core\Type\CaptchaType(new Captcha(new Session(new ArraySessionStorage()), 's$cr$t'), array(
+            new Form\Core\Type\CaptchaType(new Captcha(new Session(new MockArraySessionStorage()), 's$cr$t'), array(
                 'script' => 'genemu_upload',
                 'uploader' => '/js/uploadify.swf',
                 'cancelImg' => '/images/cancel.png',
@@ -65,7 +65,8 @@ class TypeExtensionTest extends CoreExtension
                     __DIR__ . '/../../Fixtures/fonts/whoobub.ttf',
                 ),
                 'background_color' => 'DDDDDD',
-                'border_color' => '000000'
+                'border_color' => '000000',
+                'code' => '0000',
             )),
             new Form\JQuery\Type\FileType(array(
                 'script' => 'genemu_upload',

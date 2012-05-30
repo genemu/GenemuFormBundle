@@ -33,9 +33,9 @@ class CaptchaTypeTest extends TypeTestCase
         $view = $form->createView();
         $captcha = $form->getAttribute('captcha');
 
-        $this->assertEquals(100, $view->get('width'));
-        $this->assertEquals(30, $view->get('height'));
-        $this->assertStringStartsWith('data:image/png;base64,', $view->get('src'));
+        $this->assertEquals(100, $view->getVar('width'));
+        $this->assertEquals(30, $view->getVar('height'));
+        $this->assertStringStartsWith('data:image/png;base64,', $view->getVar('src'));
 
         $this->assertEquals(4, $captcha->getLength());
     }
@@ -44,15 +44,17 @@ class CaptchaTypeTest extends TypeTestCase
     {
         $form = $this->factory->create('genemu_captcha', null, array(
             'width' => 200,
-            'colors' => array('000'),
-            'format' => 'gif'
+            'font_color' => array('000'),
+            'code' => '1234',
+            'format' => 'gif',
         ));
 
         $view = $form->createView();
         $captcha = $form->getAttribute('captcha');
 
-        $this->assertEquals(200, $view->get('width'));
-        $this->assertStringStartsWith('data:image/gif;base64,', $view->get('src'));
+        $this->assertEquals(200, $view->getVar('width'));
+        $this->assertEquals(md5('1234s$cr$t'), $captcha->getCode());
+        $this->assertStringStartsWith('data:image/gif;base64,', $view->getVar('src'));
         $this->assertEquals(4, $captcha->getLength());
     }
 
@@ -80,6 +82,6 @@ class CaptchaTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $this->assertStringStartsWith('data:image/jpeg;base64,', $view->get('src'));
+        $this->assertStringStartsWith('data:image/jpeg;base64,', $view->getVar('src'));
     }
 }
