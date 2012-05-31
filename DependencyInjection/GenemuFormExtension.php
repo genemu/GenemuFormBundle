@@ -11,6 +11,7 @@
 
 namespace Genemu\Bundle\FormBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -52,7 +53,7 @@ class GenemuFormExtension extends Extension
             $loader->load('mongodb.xml');
         }
 
-        foreach (array('captcha', 'recaptcha', 'tinymce', 'date', 'file', 'image') as $type) {
+        foreach (array('captcha', 'recaptcha', 'tinymce', 'date', 'file', 'image', 'jquerychosen') as $type) {
             if (isset($configs[$type]) && !empty($configs[$type]['enabled'])) {
                 $method = 'register' . ucfirst($type) . 'Configuration';
 
@@ -211,5 +212,20 @@ class GenemuFormExtension extends Extension
         $container->setParameter('genemu.form.image.filters', $filters);
         $container->setParameter('genemu.form.image.selected', $configs['selected']);
         $container->setParameter('genemu.form.image.thumbnails', $configs['thumbnails']);
+    }
+
+    /**
+     * Loads Jquery chosen types.
+     *
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     */
+    private function registerJquerychosenConfiguration($configs, ContainerBuilder $container)
+    {
+        foreach(array('choice', 'language', 'country', 'timezone', 'locale', 'entity', 'document', 'model') as $name) {
+            $typeDef = new DefinitionDecorator('genemu.form.jquery.type.chosen');
+            $typeDef->addArgument($name)->addTag('form.type', array('alias' => 'genemu_jquerychosen_'.$name));
+
+            $container->setDefinition('genemu.form.jquery.type.chosen.'.$name, $typeDef);
+        }
     }
 }

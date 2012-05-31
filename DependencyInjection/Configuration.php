@@ -41,6 +41,7 @@ class Configuration implements ConfigurationInterface
         $this->addImage($rootNode);
         $this->addAutocompleter($rootNode);
         $this->addTokeninput($rootNode);
+        $this->addJQueryChosen($rootNode);
 
         return $treeBuilder;
     }
@@ -296,6 +297,28 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->booleanNode('doctrine')->defaultTrue()->end()
                         ->booleanNode('mongodb')->defaultFalse()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * Add configuration JQuerychosen
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addJQueryChosen(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('jquerychosen')
+                    ->canBeUnset()
+                    ->addDefaultsIfNotSet()
+                    ->treatNullLike(array('enabled' => true))
+                    ->treatTrueLike(array('enabled' => true))
+                    ->children()
+                        ->booleanNode('enabled')->defaultTrue()->end()
                     ->end()
                 ->end()
             ->end()

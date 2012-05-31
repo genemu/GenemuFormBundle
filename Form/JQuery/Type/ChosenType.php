@@ -15,14 +15,23 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * ChosenType to JQueryLib
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
+ * @author Bilal Amarni <bilal.amarni@gmail.com>
  */
 class ChosenType extends AbstractType
 {
+    private $widget;
+
+    public function __construct($widget)
+    {
+        $this->widget = $widget;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -42,31 +51,11 @@ class ChosenType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
-            'widget' => 'choice',
+        $resolver->setDefaults(array(
             'allow_single_deselect' => true,
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllowedOptionValues()
-    {
-        return array(
-            'widget' => array(
-                'choice',
-                'language',
-                'country',
-                'timezone',
-                'locale',
-                'entity',
-                'document',
-                'model',
-            )
-        );
+        ));
     }
 
     /**
@@ -74,7 +63,7 @@ class ChosenType extends AbstractType
      */
     public function getParent()
     {
-        return $options['widget'];
+        return $this->widget;
     }
 
     /**
