@@ -53,13 +53,16 @@ class GenemuFormExtension extends Extension
             $loader->load('mongodb.xml');
         }
 
-        foreach (array('captcha', 'recaptcha', 'tinymce', 'date', 'file', 'image', 'jquerychosen') as $type) {
+        foreach (array('captcha', 'recaptcha', 'tinymce', 'date', 'file', 'image') as $type) {
             if (isset($configs[$type]) && !empty($configs[$type]['enabled'])) {
                 $method = 'register' . ucfirst($type) . 'Configuration';
 
                 $this->$method($configs[$type], $container);
             }
         }
+
+        $this->loadExtendedTypes('genemu.form.jquery.type.chosen', 'jquerychosen', $container);
+        $this->loadExtendedTypes('genemu.form.jquery.type.autocompleter', 'autocompleter', $container);
     }
 
     /**
@@ -215,17 +218,19 @@ class GenemuFormExtension extends Extension
     }
 
     /**
-     * Loads Jquery chosen types.
+     * Loads extended form types.
      *
+     * @param string           $serviceId Id of the abstract service
+     * @param string           $name      Name of the type
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    private function registerJquerychosenConfiguration($configs, ContainerBuilder $container)
+    private function loadExtendedTypes($serviceId, $name, ContainerBuilder $container)
     {
-        foreach(array('choice', 'language', 'country', 'timezone', 'locale', 'entity', 'document', 'model') as $name) {
-            $typeDef = new DefinitionDecorator('genemu.form.jquery.type.chosen');
-            $typeDef->addArgument($name)->addTag('form.type', array('alias' => 'genemu_jquerychosen_'.$name));
+        foreach(array('choice', 'language', 'country', 'timezone', 'locale', 'entity', 'document', 'model') as $type) {
+            $typeDef = new DefinitionDecorator($serviceId);
+            $typeDef->addArgument($type)->addTag('form.type', array('alias' => 'genemu_'.$name.'_'.$type));
 
-            $container->setDefinition('genemu.form.jquery.type.chosen.'.$name, $typeDef);
+            $container->setDefinition($serviceId.'.'.$type, $typeDef);
         }
     }
 }

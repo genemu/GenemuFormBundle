@@ -25,6 +25,13 @@ use Genemu\Bundle\FormBundle\Form\Core\DataTransformer\ChoiceToJsonTransformer;
  */
 class AutocompleterType extends AbstractType
 {
+    private $widget;
+
+    public function __construct($widget)
+    {
+        $this->widget = $widget;
+    }
+
     /**
      * {@inheritdoc}
      */

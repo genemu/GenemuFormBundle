@@ -20,9 +20,7 @@
     </parameters>
 
     <services>
-        <service id="genemu.form.jquery.type.autocompleter" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\AutocompleterType">
-            <tag name="form.type" alias="genemu_jqueryautocompleter" />
-        </service>
+        <service id="genemu.form.jquery.type.autocompleter" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\AutocompleterType" abstract="true" />
         <service id="genemu.form.jquery.type.chosen" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\ChosenType" abstract="true" />
         <service id="genemu.form.jquery.type.color" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\ColorType">
             <tag name="form.type" alias="genemu_jquerycolor" />
