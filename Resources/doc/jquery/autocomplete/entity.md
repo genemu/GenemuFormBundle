@@ -8,13 +8,11 @@
 public function buildForm(FormBuilder $builder, array $options)
 {
     $builder
-        ->add('member', 'genemu_jqueryautocompleter', array(
+        ->add('member', 'genemu_jqueryautocompleter_entity', array(
             'class' => 'Genemu\Bundle\EntityBundle\Entity\Member',
-            'widget' => 'entity'
-        ))
-        ->add('cities', 'genemu_jqueryautocompleter', array(
+        )
+        ->add('cities', 'genemu_jqueryautocompleter_entity', array(
             'class' => 'Genemu\Bundle\EntityBundle\Entity\City',
-            'widget' => 'entity',
             'multiple' => true
         ));
 }

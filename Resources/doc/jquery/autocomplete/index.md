@@ -9,15 +9,9 @@ public function buildForm(FormBuilder $builder, array $options)
 {
     $builder
         // ...
-        ->add('country', 'genemu_jqueryautocompleter', array(
-            'widget' => 'country'
-        ))
-        ->add('timezone', 'genemu_jqueryautocompleter', array(
-            'widget' => 'timezone'
-        ))
-        ->add('language', 'genemu_jqueryautocompleter', array(
-            'widget' => 'language'
-        ));
+        ->add('country', 'genemu_jqueryautocompleter_country')
+        ->add('timezone', 'genemu_jqueryautocompleter_timezone')
+        ->add('language', 'genemu_jqueryautocompleter_language');
 }
 ```
 
