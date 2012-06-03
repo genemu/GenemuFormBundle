@@ -11,14 +11,14 @@
 
 namespace Genemu\Bundle\FormBundle\Form\Core\ChoiceList;
 
-use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
+use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 
 /**
  * AjaxArrayChoiceList
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class AjaxArrayChoiceList extends ArrayChoiceList
+class AjaxSimpleChoiceList extends SimpleChoiceList
 {
     private $ajax;
 
@@ -41,13 +41,13 @@ class AjaxArrayChoiceList extends ArrayChoiceList
      */
     public function getChoices()
     {
-        $choices = parent::getChoices();
+        $choices = parent::getRemainingViews();
 
         $array = array();
-        foreach ($choices as $value => $label) {
+        foreach ($choices as $choice) {
             $array[] = array(
-                'value' => $value,
-                'label' => $label
+                'value' => $choice->getValue(),
+                'label' => $choice->getLabel()
             );
         }
 
@@ -69,13 +69,16 @@ class AjaxArrayChoiceList extends ArrayChoiceList
             foreach ($values as $value => $label) {
                 $intersect[] = array(
                     'value' => $value,
-                    'label' => $label
+                    'label' => $label,
                 );
             }
         } else {
-            foreach ($this->getChoices() as $choice) {
-                if (in_array($choice['value'], $values, true)) {
-                    $intersect[] = $choice;
+            foreach ($this->getRemainingViews() as $choice) {
+                if (in_array($choice->getValue(), $values, true)) {
+                    $intersect[] = array(
+                        'value' => $choice->getValue(),
+                        'label' => $choice->getLabel(),
+                    );
                 }
             }
         }
