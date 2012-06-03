@@ -79,7 +79,6 @@ class TypeExtensionTest extends CoreExtension
                 'publicKey',
                 'http://api.recaptcha.net',
                 array()),
-            new Form\JQuery\Type\AutocompleterType(),
             new Form\JQuery\Type\ImageType('medium', array(
                 'small' => array(100, 100),
                 'medium' => array(200, 200),
