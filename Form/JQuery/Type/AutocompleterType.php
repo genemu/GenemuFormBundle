@@ -16,8 +16,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Genemu\Bundle\FormBundle\Form\Core\ChoiceList\AjaxArrayChoiceList;
+use Genemu\Bundle\FormBundle\Form\Core\ChoiceList\AjaxSimpleChoiceList;
 use Genemu\Bundle\FormBundle\Form\Core\DataTransformer\ChoiceToJsonTransformer;
 
 /**
@@ -37,20 +39,16 @@ class AutocompleterType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (!$options['choice_list']) {
-            $options['choice_list'] = new AjaxArrayChoiceList($options['choices'], $options['ajax']);
-        }
-
         $builder
             ->addViewTransformer(new ChoiceToJsonTransformer(
                 $options['choice_list'],
-                $options['widget'],
+                $this->widget,
                 $options['multiple'],
                 $options['ajax'],
                 $options['freeValues']
             ))
             ->setAttribute('choice_list', $options['choice_list'])
-            ->setAttribute('widget', $options['widget'])
+            ->setAttribute('widget', $this->widget)
             ->setAttribute('route_name', $options['route_name'])
             ->setAttribute('freeValues', $options['freeValues']);
     }
@@ -73,7 +71,16 @@ class AutocompleterType extends AbstractType
             }
         }
 
+        $choices = array();
+        foreach($view->getVar('choices') as $choice) {
+            $choices[] = array(
+                'value' => $choice->getValue(),
+                'label' => $choice->getLabel()
+            );
+        }
+
         $view
+            ->setVar('choices', $choices)
             ->setVar('autocompleter_value', $value)
             ->setVar('route_name', $form->getAttribute('route_name'))
             ->setVar('freeValues', $form->getAttribute('freeValues'));
@@ -82,44 +89,30 @@ class AutocompleterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $options = array(
-            'widget' => 'choice',
+        $widget = $this->widget;
+
+        $resolver->setDefaults(array(
             'route_name' => null,
             'ajax' => function (Options $options, $previousValue) {
                 if (null === $previousValue) {
-                    if (!empty($options['route_name']))
-                    {
+                    if (!empty($options['route_name'])) {
                         return true;
                     }
                 }
 
                 return false;
             },
+            'choice_list' => function (Options $options, $previousValue) use ($widget) {
+                if (!in_array($widget, array('entity', 'document', 'model'))) {
+                    return new AjaxSimpleChoiceList($options['choices'], $options['ajax']);
+                }
+
+                return $previousValue;
+            },
             'freeValues' => false,
-        );
-
-        return $options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllowedOptionValues()
-    {
-        return array(
-            'widget' => array(
-                'choice',
-                'language',
-                'country',
-                'timezone',
-                'locale',
-                'entity',
-                'document',
-                'model',
-            )
-        );
+        ));
     }
 
     /**
@@ -127,11 +120,11 @@ class AutocompleterType extends AbstractType
      */
     public function getParent()
     {
-        if (in_array($options['widget'], array('entity', 'document', 'model'), true)) {
-            return 'genemu_ajax' . $options['widget'];
+        if (in_array($this->widget, array('entity', 'document', 'model'), true)) {
+            return 'genemu_ajax' . $this->widget;
         }
 
-        return $options['widget'];
+        return $this->widget;
     }
 
     /**
