@@ -12,7 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Form\Doctrine\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Options;
+use Symfony\Component\OptionsResolver\Options;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 

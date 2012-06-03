@@ -70,7 +70,7 @@ class TokeninputType extends AbstractType
         }
 
         $builder
-            ->appendClientTransformer(new ChoiceToJsonTransformer(
+            ->addViewTransformer(new ChoiceToJsonTransformer(
                 $options['choice_list'],
                 $options['widget'],
                 $options['multiple'],

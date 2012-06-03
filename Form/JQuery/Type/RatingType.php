@@ -15,7 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\Options;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * RatingType
