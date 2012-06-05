@@ -46,11 +46,7 @@ class AutocompleterType extends AbstractType
                 $options['multiple'],
                 $options['ajax'],
                 $options['freeValues']
-            ))
-            ->setAttribute('choice_list', $options['choice_list'])
-            ->setAttribute('widget', $this->widget)
-            ->setAttribute('route_name', $options['route_name'])
-            ->setAttribute('freeValues', $options['freeValues']);
+            ));
     }
 
     /**
@@ -58,11 +54,11 @@ class AutocompleterType extends AbstractType
      */
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
-        $datas = json_decode($form->getClientData(), true);
+        $datas = json_decode($form->getViewData(), true);
         $value = '';
 
         if (!empty($datas)) {
-            if ($form->getAttribute('multiple')) {
+            if ($options['multiple']) {
                 foreach ($datas as $data) {
                     $value .= $data['label'] . ', ';
                 }
@@ -82,8 +78,8 @@ class AutocompleterType extends AbstractType
         $view
             ->setVar('choices', $choices)
             ->setVar('autocompleter_value', $value)
-            ->setVar('route_name', $form->getAttribute('route_name'))
-            ->setVar('freeValues', $form->getAttribute('freeValues'));
+            ->setVar('route_name', $options['route_name'])
+            ->setVar('freeValues', $options['freeValues']);
     }
 
     /**

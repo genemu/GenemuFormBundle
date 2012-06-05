@@ -63,17 +63,17 @@ class AjaxEntityChoiceList extends EntityChoiceList
      */
     public function getChoices()
     {
-        $choices = parent::getChoices();
+        $choices = parent::getRemainingViews();
 
         if (empty($choices)) {
             $choices = array();
         }
 
         $array = array();
-        foreach ($choices as $value => $label) {
+        foreach ($choices as $choice) {
             $array[] = array(
-                'value' => $value,
-                'label' => $label
+                'value' => $choice->getValue(),
+                'label' => $choice->getLabel()
             );
         }
 
