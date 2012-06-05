@@ -8,7 +8,7 @@
 public function buildForm(FormBuilder $builder, array $options)
 {
     $builder
-        ->add('choices', 'genemu_jqueryautocompleter_choice', array(
+        ->add('choices', 'genemu_autocompleter_choice', array(
             'choices' => array(
                 'foo' => 'Foo',
                 'bar' => 'Bar'
