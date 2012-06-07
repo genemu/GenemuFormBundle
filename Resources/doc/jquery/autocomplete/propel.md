@@ -17,10 +17,10 @@ genemu_form:
 public function buildForm(FormBuilder $builder, array $options)
 {
     $builder
-        ->add('member', 'genemu_autocompleter_model', array(
+        ->add('member', 'genemu_jqueryautocompleter_model', array(
             'class' => 'Genemu\Bundle\ModelBundle\Model\Member',
         ))
-        ->add('cities', 'genemu_autocompleter_model', array(
+        ->add('cities', 'genemu_jqueryautocompleter_model', array(
             'class' => 'Genemu\Bundle\ModelBundle\Model\City',
             'multiple' => true
         ));

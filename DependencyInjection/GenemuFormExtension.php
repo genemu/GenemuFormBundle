@@ -62,7 +62,7 @@ class GenemuFormExtension extends Extension
         }
 
         $this->loadExtendedTypes('genemu.form.jquery.type.chosen', 'jquerychosen', $container);
-        $this->loadExtendedTypes('genemu.form.jquery.type.autocompleter', 'autocompleter', $container);
+        $this->loadExtendedTypes('genemu.form.jquery.type.autocompleter', 'jqueryautocompleter', $container);
     }
 
     /**
