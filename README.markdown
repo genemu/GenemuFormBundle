@@ -78,7 +78,7 @@ This allows better integration of web pages.
 
 ## FormType
 
-### Cpatcha GD
+### Captcha GD
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/captcha_gd/index.md)
 
@@ -96,7 +96,7 @@ This allows better integration of web pages.
 - [Slider](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/slider/index.md)
 - [Autocomplete](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/autocomplete/index.md)
 
-### File ([uplodify librairie](http://www.uploadify.com)):
+### File ([uploadify library](http://www.uploadify.com)):
 
 You can use [jcrop](http://deepliquid.com/content/Jcrop.html) to uploadify.
 You send the image and crop or apply filter.
