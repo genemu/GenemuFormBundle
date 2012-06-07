@@ -39,14 +39,12 @@ class AutocompleterType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->addViewTransformer(new ChoiceToJsonTransformer(
-                $options['choice_list'],
-                $this->widget,
-                $options['multiple'],
-                $options['ajax'],
-                $options['freeValues']
-            ));
+        $builder->addViewTransformer(new ChoiceToJsonTransformer(
+            $options['choice_list'],
+            $options['ajax'],
+            $this->widget,
+            $options['multiple']
+        ));
     }
 
     /**
@@ -68,6 +66,7 @@ class AutocompleterType extends AbstractType
         }
 
         $choices = array();
+        
         foreach($view->getVar('choices') as $choice) {
             $choices[] = array(
                 'value' => $choice->getValue(),
@@ -79,7 +78,8 @@ class AutocompleterType extends AbstractType
             ->setVar('choices', $choices)
             ->setVar('autocompleter_value', $value)
             ->setVar('route_name', $options['route_name'])
-            ->setVar('freeValues', $options['freeValues']);
+            ->setVar('free_values', $options['free_values'])
+        ;
     }
 
     /**
@@ -92,10 +92,8 @@ class AutocompleterType extends AbstractType
         $resolver->setDefaults(array(
             'route_name' => null,
             'ajax' => function (Options $options, $previousValue) {
-                if (null === $previousValue) {
-                    if (!empty($options['route_name'])) {
-                        return true;
-                    }
+                if (!empty($options['route_name']) || $options['free_values']) {
+                    return true;
                 }
 
                 return false;
@@ -108,6 +106,13 @@ class AutocompleterType extends AbstractType
                 return $previousValue;
             },
             'freeValues' => false,
+            'free_values' => function (Options $options, $previousValue) {
+                if ($options['multiple']) {
+                    return false;
+                }
+
+                return $options['freeValues'] ?: $previousValue;
+            }
         ));
     }
 

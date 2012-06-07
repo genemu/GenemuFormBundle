@@ -23,27 +23,22 @@ use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 class ChoiceToJsonTransformer implements DataTransformerInterface
 {
     protected $choiceList;
+    protected $ajax;
     protected $widget;
     protected $multiple;
-    protected $ajax;
-    protected $freeValues;
 
     /**
      * Constructs
      *
      * @param ArrayChoiceList $choiceList
-     * @param string          $widget
-     * @param boolean         $multiple
      * @param boolean         $ajax
-     * @param boolean         $freeValues
      */
-    public function __construct(ChoiceListInterface $choiceList, $widget = 'choice', $multiple = false, $ajax = false, $freeValues = false)
+    public function __construct(ChoiceListInterface $choiceList, $ajax = false, $widget = 'choice', $multiple = false)
     {
         $this->choiceList = $choiceList;
+        $this->ajax = $ajax;
         $this->multiple = $multiple;
         $this->widget = $widget;
-        $this->ajax = $ajax;
-        $this->freeValues = $freeValues;
     }
 
     /**
@@ -62,18 +57,14 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
         if (!is_array($choices)) {
             throw new UnexpectedTypeException($choices, 'array');
         }
-
-        if (!$this->freeValues) {
-            $json = $this->choiceList->getIntersect($choices);
-        } else {
-            $json = $this->choiceList->getIntersectFreeValues($choices);
-        }
-
+        
+        $choices = $this->choiceList->getIntersect($choices);
+        
         if (!$this->multiple) {
-            $json = current($json);
+            $choices = current($choices);
         }
-
-        return json_encode($json);
+        
+        return json_encode($choices);
     }
 
     /**
@@ -81,28 +72,28 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
      */
     public function reverseTransform($json)
     {
-        $values = json_decode(is_array($json) ? current($json) : $json, true);
-
-        if ($this->multiple) {
-            $choices = array();
-            if (empty($values)) {
-                $values = array();
+        $choices = json_decode(is_array($json) ? current($json) : $json, true);
+        
+        if (!$this->multiple) {
+            if ($this->ajax && !in_array($this->widget, array('entity', 'document', 'model'))) {
+                $this->choiceList->addAjaxChoice($choices);
             }
 
-            foreach ($values as $value) {
-                if (
-                    $this->ajax &&
-                    !in_array($this->widget, array('entity', 'document', 'model'), true)
-                ) {
-                    $choices[$value['value']] = $value['label'];
-                } else {
-                    $choices[] = $value['value'];
-                }
-            }
-        } else {
-            $choices = $values['value'];
+            return $choices['value'];
         }
+        
+        $choices = array_unique($choices, SORT_REGULAR);
 
-        return $choices;
+        $values = array();
+
+        foreach ($choices as $choice) {
+            if ($this->ajax && !in_array($this->widget, array('entity', 'document', 'model'))) {
+                $this->choiceList->addAjaxChoice($choice);
+            }
+
+            $values[] = $choice['value'];
+        }
+        
+        return $values;
     }
 }

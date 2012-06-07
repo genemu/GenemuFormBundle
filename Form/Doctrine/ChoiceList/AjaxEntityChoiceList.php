@@ -25,6 +25,7 @@ class AjaxEntityChoiceList extends EntityChoiceList
 {
     private $ajax;
     private $propertyPath;
+    private $classMetaData;
 
     /**
      * Constructs
@@ -40,7 +41,8 @@ class AjaxEntityChoiceList extends EntityChoiceList
     public function __construct(EntityManager $em, $class, $property = null, $qb = null, $choices = null, $groupBy = null, $ajax = false)
     {
         $this->ajax = $ajax;
-
+        $this->classMetadata = $em->getClassMetadata($class);
+        
         if ($property) {
             $this->propertyPath = new PropertyPath($property);
         }
@@ -92,8 +94,8 @@ class AjaxEntityChoiceList extends EntityChoiceList
         $intersect = array();
 
         if ($this->ajax) {
-            foreach ($ids as $id) {
-                $entity = $this->getEntity($id);
+            foreach ($this->getChoicesForValues($ids) as $entity) {
+                $id = current($this->classMetadata->getIdentifierValues($entity));
 
                 if ($this->propertyPath) {
                     $label = $this->propertyPath->getValue($entity);

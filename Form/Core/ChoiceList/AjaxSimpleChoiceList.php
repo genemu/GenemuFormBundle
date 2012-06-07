@@ -22,6 +22,8 @@ class AjaxSimpleChoiceList extends SimpleChoiceList
 {
     private $ajax;
 
+    private $ajaxChoices = array();
+    
     /**
      * Constructs
      *
@@ -31,7 +33,7 @@ class AjaxSimpleChoiceList extends SimpleChoiceList
     public function __construct($choices, $ajax = false)
     {
         $this->ajax = $ajax;
-
+        
         parent::__construct($choices);
     }
 
@@ -66,18 +68,21 @@ class AjaxSimpleChoiceList extends SimpleChoiceList
         $intersect = array();
 
         if ($this->ajax) {
-            foreach ($values as $value => $label) {
-                $intersect[] = array(
-                    'value' => $value,
-                    'label' => $label,
-                );
+            foreach ($values as $value) {
+                $key = array_search($value, $this->ajaxChoices);
+                if ($key) {
+                    $intersect[] = array(
+                        'value' => $key,
+                        'label' => $value,
+                    );
+                }
             }
         } else {
-            foreach ($this->getRemainingViews() as $choice) {
-                if (in_array($choice->getValue(), $values, true)) {
+            foreach ($this->getChoices() as $choice) {
+                if (in_array($choice['value'], $values, true)) {
                     $intersect[] = array(
-                        'value' => $choice->getValue(),
-                        'label' => $choice->getLabel(),
+                        'value' => $choice['value'],
+                        'label' => $choice['label'],
                     );
                 }
             }
@@ -86,25 +91,36 @@ class AjaxSimpleChoiceList extends SimpleChoiceList
         return $intersect;
     }
 
-    /**
-     * Get intersaction $choices to $values
-     * including all freeValues
-     * @param array $values
-     *
-     * @return array $intersect
-     */
-
-    public function getIntersectFreeValues(array $values)
+    public function getValuesForChoices(array $values)
     {
+        if (!$this->ajax) {
+            return parent::getValuesForChoices($values);
+        }
+        
         $intersect = array();
 
         foreach ($values as $value) {
-            $intersect[] = array(
-                'value' => $value,
-                'label' => $value
-            );
+            if (isset($this->ajaxChoices[$value])) {
+                $intersect[] = $this->ajaxChoices[$value];
+            } else {
+                $intersect[] = $value;
+            }
         }
 
         return $intersect;
+    }
+
+    public function getChoicesForValues(array $values)
+    {
+        if (!$this->ajax) {
+            return parent::getChoicesForValues($values);
+        }
+        
+        return $values;
+    }
+    
+    public function addAjaxChoice(array $choice)
+    {
+        $this->ajaxChoices[$choice['value']] = $choice['label'];
     }
 }
