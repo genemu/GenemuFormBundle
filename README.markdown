@@ -10,7 +10,7 @@ Installation is quick and easy, 5 steps process
 2. Configure the Autoloader
 3. Enable the bundle
 4. Minimal configuration
-5. Initilize assets
+5. Initialize assets
 
 ### Step 1: Download GenemuFormBundle
 
