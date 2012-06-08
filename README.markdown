@@ -119,12 +119,6 @@ You send the image and crop or apply filter.
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/chosen/index.md)
 
-### Tokeninput ([view demo](http://loopj.com/jquery-tokeninput/)):
-
-Note: you have to apply path to js script before: https://github.com/loopj/jquery-tokeninput/pull/172/files.
-
-Configuration is almost the same as [Autocomplete](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/autocomplete/index.md).
-
 ### Plain
 
 A Form type that just renders the field as a p tag. This is useful for forms where certain field need to be shown but not editable. 
