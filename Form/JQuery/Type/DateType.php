@@ -15,6 +15,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * DateType
@@ -38,64 +40,45 @@ class DateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $options = $this->getDefaultOptions();
-
-        $builder
-            ->setAttribute('years', $options['years'])
-            ->setAttribute('culture', $options['culture'])
-            ->setAttribute('configs', $options['configs']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
-        $configs = $form->getAttribute('configs');
-        $year = $form->getAttribute('years');
+        $configs = $options['configs'];
+        $years = $options['years'];
 
         $configs['dateFormat'] = 'yy-mm-dd';
-        if ('single_text' === $form->getAttribute('widget')) {
+        if ('single_text' === $options['widget']) {
             $formatter = $form->getAttribute('formatter');
 
             $configs['dateFormat'] = $this->getJavascriptPattern($formatter);
         }
 
         $view
-            ->setVar('min_year', min($year))
-            ->setVar('max_year', max($year))
+            ->setVar('min_year', min($years))
+            ->setVar('max_year', max($years))
             ->setVar('configs', $configs)
-            ->setVar('culture', $form->getAttribute('culture'));
+            ->setVar('culture', $options['culture']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $options = array(
+        $resolver->setDefaults(array(
             'culture' => \Locale::getDefault(),
             'widget' => 'choice',
             'years'  => range(date('Y') - 5, date('Y') + 5),
             'configs' => array_merge(array(
                 'dateFormat' => null,
-                'showOn' => function (Options $options, $previousValue) {
-                    if (null === $previousValue)
-                    {
-                        if ('single_text' !== $options['widget'] || isset($options['configs']['buttonImage']))
-                        {
-                            return 'button';
-                        }
+                'showOn' => function (Options $options) {
+                    if ('single_text' !== $options['widget'] || isset($options['configs']['buttonImage'])) {
+                        return 'button';
                     }
 
-                    return null;
+                    return 'focus';
                 }
-            ), $this->options),
-        );
-
-        return $options;
+            ), $this->options)
+        ));
     }
 
     /**
