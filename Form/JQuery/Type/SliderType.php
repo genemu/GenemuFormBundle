@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * SliderType
@@ -26,52 +27,28 @@ class SliderType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $configs = array(
-            'min' => $options['min'],
-            'max' => $options['max'],
-            'step' => $options['step'],
-            'orientation' => $options['orientation']
-        );
-
-        $builder->setAttribute('configs', $configs);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
-        $view->setVar('configs', $form->getAttribute('configs'));
+        $view->setVar('configs', $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'min' => 0,
             'max' => 100,
             'step' => 1,
             'orientation' => 'horizontal'
-        );
-    }
+        ));
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllowedOptionValues()
-    {
-        return array(
+        $resolver->setAllowedValues(array(
             'orientation' => array(
                 'horizontal',
                 'vertical'
             )
-        );
+        ));
     }
-
+    
     /**
      * {@inheritdoc}
      */

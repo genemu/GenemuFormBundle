@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
+namespace Genemu\Bundle\FormBundle\Tests\Form\JQuery\Type;
 
-use Symfony\Component\Form\Exception\FormException;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 use Genemu\Bundle\FormBundle\Tests\Form\Type\TypeTestCase;
 
@@ -25,7 +25,7 @@ class SliderTypeTest extends TypeTestCase
         $form = $this->factory->create('genemu_jqueryslider');
         $view = $form->createView();
 
-        $configs = $view->get('configs');
+        $configs = $view->getVar('configs');
 
         $this->assertEquals(0, $configs['min']);
         $this->assertEquals(100, $configs['max']);
@@ -44,7 +44,7 @@ class SliderTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $configs = $view->get('configs');
+        $configs = $view->getVar('configs');
 
         $this->assertEquals(10, $configs['min']);
         $this->assertEquals(1000, $configs['max']);
@@ -56,7 +56,7 @@ class SliderTypeTest extends TypeTestCase
     {
         try {
             $form = $this->factory->create('genemu_jqueryslider', null, array('orientation' => 'verical'));
-        } catch(FormException $expected) {
+        } catch (InvalidOptionsException $expected) {
             return;
         }
 
