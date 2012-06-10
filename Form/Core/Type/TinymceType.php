@@ -34,23 +34,13 @@ class TinymceType extends AbstractType
     {
         $this->options = $options;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $options = $this->getDefaultOptions();
-
-        $builder->setAttribute('configs', $options['configs']);
-    }
-
+    
     /**
      * {@inheritdoc}
      */
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
-        $view->setVar('configs', $form->getAttribute('configs'));
+        $view->setVar('configs', $options['configs']);
     }
 
     /**
@@ -63,6 +53,7 @@ class TinymceType extends AbstractType
                 'language' => \Locale::getDefault(),
             )),
             'required' => false,
+            'theme' => 'default',
         );
     }
 
