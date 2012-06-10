@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
+namespace Genemu\Bundle\FormBundle\Tests\Form\Core\Type;
+
+use Genemu\Bundle\FormBundle\Tests\Form\Type\TypeTestCase;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
@@ -21,9 +23,9 @@ class ReCaptchaTypeTest extends TypeTestCase
         $form = $this->factory->create('genemu_recaptcha');
         $view = $form->createView();
 
-        $this->assertEquals('publicKey', $view->get('public_key'));
-        $this->assertEquals('http://api.recaptcha.net', $view->get('server'));
-        $this->assertEquals(array('lang' => 'en'), $view->get('configs'));
+        $this->assertEquals('publicKey', $view->getVar('public_key'));
+        $this->assertEquals('http://api.recaptcha.net', $view->getVar('server'));
+        $this->assertEquals(array('lang' => 'en'), $view->getVar('configs'));
 
         $this->assertEquals(array(
             'host' => 'api-verify.recaptcha.net',
@@ -43,8 +45,8 @@ class ReCaptchaTypeTest extends TypeTestCase
         ));
         $view = $form->createView();
 
-        $this->assertEquals('publicKey', $view->get('public_key'));
-        $this->assertEquals(array('theme' => 'blackglass', 'lang' => 'en'), $view->get('configs'));
+        $this->assertEquals('publicKey', $view->getVar('public_key'));
+        $this->assertEquals(array('theme' => 'blackglass', 'lang' => 'en'), $view->getVar('configs'));
 
         $this->assertEquals(array(
             'host' => 'api-verify.recaptcha.net',

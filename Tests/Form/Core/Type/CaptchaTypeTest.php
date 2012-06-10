@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
+namespace Genemu\Bundle\FormBundle\Tests\Form\Core\Type;
 
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+use Genemu\Bundle\FormBundle\Tests\Form\Type\TypeTestCase;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
