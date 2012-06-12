@@ -11,7 +11,6 @@
 
 namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormViewInterface;
@@ -66,8 +65,8 @@ class AutocompleterType extends AbstractType
         }
 
         $choices = array();
-        
-        foreach($view->getVar('choices') as $choice) {
+
+        foreach ($view->getVar('choices') as $choice) {
             $choices[] = array(
                 'value' => $choice->getValue(),
                 'label' => $choice->getLabel()

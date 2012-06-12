@@ -49,7 +49,7 @@ class GeolocationListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    static public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return array(FormEvents::BIND_NORM_DATA => 'onBindNormData');
     }

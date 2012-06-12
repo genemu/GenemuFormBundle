@@ -12,7 +12,6 @@
 namespace Genemu\Bundle\FormBundle\Form\Model\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormInterface;
 
 use Genemu\Bundle\FormBundle\Form\Model\ChoiceList\AjaxModelChoiceList;
 
@@ -39,10 +38,8 @@ class AjaxModelType extends AbstractType
             'preferred_choices' => array(),
             'ajax'              => false,
             'choice_list'       => function (Options $options, $previousValue) {
-                if (null === $previousValue)
-                {
-                    if (!isset($options['choice_list']))
-                    {
+                if (null === $previousValue) {
+                    if (!isset($options['choice_list'])) {
                         return new AjaxModelChoiceList(
                             $options['class'],
                             $options['property'],

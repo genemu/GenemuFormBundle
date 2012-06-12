@@ -50,10 +50,8 @@ class RatingType extends AbstractType
             'configs' => function (Options $options, $previousValue) {
                 $configs = array();
 
-                if (null === $previousValue)
-                {
-                    if (!isset($options['expanded']) || (isset($options['examded']) && !$options['expanded']))
-                    {
+                if (null === $previousValue) {
+                    if (!isset($options['expanded']) || (isset($options['examded']) && !$options['expanded'])) {
                         $configs['inputType'] = 'select';
                     }
                 }

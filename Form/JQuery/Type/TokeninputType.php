@@ -126,10 +126,8 @@ class TokeninputType extends AbstractType
             'widget' => 'choice',
             'route_name' => null,
             'ajax' => function (Options $options, $previousValue) {
-                if (null === $previousValue)
-                {
-                    if (false === empty($options['route_name']))
-                    {
+                if (null === $previousValue) {
+                    if (false === empty($options['route_name'])) {
                         return true;
                     }
                 }

@@ -11,7 +11,6 @@
 
 namespace Genemu\Bundle\FormBundle\Tests\From\Type\Entity\JQuery;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -53,7 +52,7 @@ class AutocompleterTypeTest extends TypeTestCase
 
         try {
             $schemaTool->createSchema($classes);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
         }
     }
 

@@ -149,7 +149,7 @@ class Captcha extends Gd
             for ($i = 0; $i < $nb; ++$i) {
                 $value.= $chars[array_rand($chars)];
             }
-    
+
             $value = trim($value);
         } else {
             $value .= $this->code;

@@ -83,7 +83,7 @@ class ReCaptchaType extends AbstractType
         $configs = array_merge($this->options, array(
             'lang' => \Locale::getDefault(),
         ));
-        
+
         $resolver
             ->setDefaults(array(
                 'configs' => array(),

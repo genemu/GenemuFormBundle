@@ -11,8 +11,6 @@
 
 namespace Genemu\Bundle\FormBundle\Tests\From\Type\Document\JQuery;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Genemu\Bundle\FormBundle\Tests\Form\Type\TypeTestCase;

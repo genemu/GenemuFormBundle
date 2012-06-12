@@ -371,15 +371,15 @@ class Gd implements GdInterface
 
         $m0 = $cx * $r0 + $x * $r1;
         $m1 = $cx * $r2 + $x * $r3;
-        $r = (int)($cy * $m0 + $y * $m1);
+        $r = (int) ($cy * $m0 + $y * $m1);
 
         $m0 = $cx * $g0 + $x * $g1;
         $m1 = $cx * $g2 + $x * $g3;
-        $g = (int)($cy * $m0 + $y * $m1);
+        $g = (int) ($cy * $m0 + $y * $m1);
 
         $m0 = $cx * $b0 + $x * $b1;
         $m1 = $cx * $b2 + $x * $b3;
-        $b = (int)($cy * $m0 + $y * $m1);
+        $b = (int) ($cy * $m0 + $y * $m1);
 
         return ($r << 16) | ($g << 8) | $b;
     }

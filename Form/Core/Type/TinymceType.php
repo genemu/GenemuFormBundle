@@ -11,7 +11,6 @@
 
 namespace Genemu\Bundle\FormBundle\Form\Core\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormViewInterface;
@@ -36,7 +35,7 @@ class TinymceType extends AbstractType
     {
         $this->options = $options;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -44,7 +43,7 @@ class TinymceType extends AbstractType
     {
         $view->setVar('configs', $options['configs']);
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -53,7 +52,7 @@ class TinymceType extends AbstractType
         $configs = array_merge($this->options, array(
             'language' => \Locale::getDefault(),
         ));
-        
+
         $resolver
             ->setDefaults(array(
                 'configs' => array(),
@@ -71,7 +70,7 @@ class TinymceType extends AbstractType
             ))
         ;
     }
-    
+
     /**
      * {@inheritdoc}
      */

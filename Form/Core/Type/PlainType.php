@@ -40,15 +40,15 @@ class PlainType extends AbstractType
         // set string representation
         if (true === $value) {
             $value = 'true';
-        } else if (false === $value) {
+        } elseif (false === $value) {
             $value = 'false';
-        } else if (null === $value) {
+        } elseif (null === $value) {
             $value = 'null';
-        } else if (is_array($value)) {
+        } elseif (is_array($value)) {
             $value = implode(', ', $value);
-        } else if ($value instanceof \DateTime) {
+        } elseif ($value instanceof \DateTime) {
             $value = $value->format('Y-m-d H:i:s');
-        } else if (is_object($value)) {
+        } elseif (is_object($value)) {
             if (method_exists($value, '__toString')) {
                 $value = $value->__toString();
             } else {

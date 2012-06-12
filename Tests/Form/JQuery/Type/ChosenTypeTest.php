@@ -13,7 +13,6 @@ namespace Genemu\Bundle\FormBundle\Tests\Form\JQuery\Type;
 
 use Genemu\Bundle\FormBundle\Tests\Form\Type\TypeTestCase;
 use Genemu\Bundle\FormBundle\Form\JQuery\Type\ChosenType;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 /**
  * @author Bilal Amarni <bilal.amarni@gmail.com>
@@ -28,13 +27,13 @@ class ChosenTypeTest extends TypeTestCase
 
         $this->assertEquals(true, $view->getVar('allow_single_deselect'));
     }
-    
+
     public function testConstructorAffectsParentType()
     {
         $form = $this->factory->create(new ChosenType('country'));
 
         $typeNames = array();
-        foreach($form->getConfig()->getTypes() as $type) {
+        foreach ($form->getConfig()->getTypes() as $type) {
             $typeNames[] = $type->getName();
         }
 

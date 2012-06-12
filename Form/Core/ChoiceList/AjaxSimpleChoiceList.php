@@ -23,7 +23,7 @@ class AjaxSimpleChoiceList extends SimpleChoiceList
     private $ajax;
 
     private $ajaxChoices = array();
-    
+
     /**
      * Constructs
      *
@@ -33,10 +33,9 @@ class AjaxSimpleChoiceList extends SimpleChoiceList
     public function __construct($choices, $ajax = false)
     {
         $this->ajax = $ajax;
-        
+
         parent::__construct($choices);
     }
-
 
     /**
      * {@inheritdoc}
@@ -96,7 +95,7 @@ class AjaxSimpleChoiceList extends SimpleChoiceList
         if (!$this->ajax) {
             return parent::getValuesForChoices($values);
         }
-        
+
         $intersect = array();
 
         foreach ($values as $value) {
@@ -115,10 +114,10 @@ class AjaxSimpleChoiceList extends SimpleChoiceList
         if (!$this->ajax) {
             return parent::getChoicesForValues($values);
         }
-        
+
         return $values;
     }
-    
+
     public function addAjaxChoice(array $choice)
     {
         $this->ajaxChoices[$choice['value']] = $choice['label'];

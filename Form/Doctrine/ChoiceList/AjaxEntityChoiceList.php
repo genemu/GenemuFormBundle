@@ -42,7 +42,7 @@ class AjaxEntityChoiceList extends EntityChoiceList
     {
         $this->ajax = $ajax;
         $this->classMetadata = $em->getClassMetadata($class);
-        
+
         if ($property) {
             $this->propertyPath = new PropertyPath($property);
         }

@@ -226,7 +226,7 @@ class GenemuFormExtension extends Extension
      */
     private function loadExtendedTypes($serviceId, $name, ContainerBuilder $container)
     {
-        foreach(array('choice', 'language', 'country', 'timezone', 'locale', 'entity', 'document', 'model') as $type) {
+        foreach (array('choice', 'language', 'country', 'timezone', 'locale', 'entity', 'document', 'model') as $type) {
             $typeDef = new DefinitionDecorator($serviceId);
             $typeDef->addArgument($type)->addTag('form.type', array('alias' => 'genemu_'.$name.'_'.$type));
 

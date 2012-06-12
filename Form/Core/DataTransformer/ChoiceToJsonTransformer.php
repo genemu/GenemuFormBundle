@@ -57,13 +57,13 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
         if (!is_array($choices)) {
             throw new UnexpectedTypeException($choices, 'array');
         }
-        
+
         $choices = $this->choiceList->getIntersect($choices);
-        
+
         if (!$this->multiple) {
             $choices = current($choices);
         }
-        
+
         return json_encode($choices);
     }
 
@@ -73,7 +73,7 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
     public function reverseTransform($json)
     {
         $choices = json_decode(is_array($json) ? current($json) : $json, true);
-        
+
         if (!$this->multiple) {
             if ($this->ajax && !in_array($this->widget, array('entity', 'document', 'model'))) {
                 $this->choiceList->addAjaxChoice($choices);
@@ -81,7 +81,7 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
 
             return $choices['value'];
         }
-        
+
         $choices = array_unique($choices, SORT_REGULAR);
 
         $values = array();
@@ -93,7 +93,7 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
 
             $values[] = $choice['value'];
         }
-        
+
         return $values;
     }
 }
