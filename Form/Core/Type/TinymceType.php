@@ -15,6 +15,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * TinymceType
@@ -42,21 +44,34 @@ class TinymceType extends AbstractType
     {
         $view->setVar('configs', $options['configs']);
     }
-
+    
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
-            'configs' => array_merge($this->options, array(
-                'language' => \Locale::getDefault(),
-            )),
-            'required' => false,
-            'theme' => 'default',
-        );
+        $configs = array_merge($this->options, array(
+            'language' => \Locale::getDefault(),
+        ));
+        
+        $resolver
+            ->setDefaults(array(
+                'configs' => array(),
+                'required' => false,
+                'theme' => 'default',
+            ))
+            ->setAllowedTypes(array(
+                'configs' => 'array',
+                'theme' => 'string',
+            ))
+            ->setFilters(array(
+                'configs' => function (Options $options, $value) use ($configs) {
+                    return array_merge($configs, $value);
+                },
+            ))
+        ;
     }
-
+    
     /**
      * {@inheritdoc}
      */

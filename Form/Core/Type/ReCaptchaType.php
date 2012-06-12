@@ -17,6 +17,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormValidatorInterface;
 use Symfony\Component\Form\Exception\FormException;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * ReCaptchaType
@@ -55,12 +57,10 @@ class ReCaptchaType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $options = $this->getDefaultOptions();
-
         $builder
             ->addValidator($this->validator)
             ->setAttribute('option_validator', $options['validator'])
-            ->setAttribute('configs', $options['configs']);
+        ;
     }
 
     /**
@@ -71,27 +71,44 @@ class ReCaptchaType extends AbstractType
         $view->addVars(array(
             'public_key' => $this->publicKey,
             'server' => $this->serverUrl,
-            'configs' => $form->getAttribute('configs'),
+            'configs' => $options['configs'],
         ));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
-            'configs' => array_merge($this->options, array(
-                'lang' => \Locale::getDefault(),
-            )),
-            'validator' => array(
-                'host' => 'api-verify.recaptcha.net',
-                'port' => 80,
-                'path' => '/verify',
-                'timeout' => 10,
-            ),
-            'error_bubbling' => false,
-        );
+        $configs = array_merge($this->options, array(
+            'lang' => \Locale::getDefault(),
+        ));
+        
+        $resolver
+            ->setDefaults(array(
+                'configs' => array(),
+                'validator' => array(),
+                'error_bubbling' => false,
+            ))
+            ->setAllowedTypes(array(
+                'configs' => 'array',
+                'validator' => 'array',
+            ))
+            ->setFilters(array(
+                'configs' => function (Options $options, $value) use ($configs) {
+                    return array_merge($configs, $value);
+                },
+                'validator' => function (Options $options, $value) {
+                    return array_merge(array(
+                            'host' => 'api-verify.recaptcha.net',
+                            'port' => 80,
+                            'path' => '/verify',
+                            'timeout' => 10,
+                        ), $value
+                    );
+                },
+            ))
+        ;
     }
 
     /**

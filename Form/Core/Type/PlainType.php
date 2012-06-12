@@ -5,6 +5,8 @@ namespace Genemu\Bundle\FormBundle\Form\Core\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * A Form type that just renders the field as a p tag. This is useful for forms where certain field
@@ -17,16 +19,14 @@ class PlainType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         return array(
             'widget'  => 'field',
-            'configs' => array(),
             'read_only' => true,
             'attr' => array(
                 'class' => $this->getName()
             )
-            //'property_path' => false,
         );
     }
 
@@ -35,7 +35,7 @@ class PlainType extends AbstractType
      */
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
-        $value = $form->getClientData();
+        $value = $form->getViewData();
 
         // set string representation
         if (true === $value) {

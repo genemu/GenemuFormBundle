@@ -64,21 +64,27 @@ class DateType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'culture' => \Locale::getDefault(),
-            'widget' => 'choice',
-            'years'  => range(date('Y') - 5, date('Y') + 5),
-            'configs' => array_merge(array(
-                'dateFormat' => null,
-                'showOn' => function (Options $options) {
-                    if ('single_text' !== $options['widget'] || isset($options['configs']['buttonImage'])) {
-                        return 'button';
+        $configs = $this->options;
+        
+        $resolver
+            ->setDefaults(array(
+                'culture' => \Locale::getDefault(),
+                'widget' => 'choice',
+                'years'  => range(date('Y') - 5, date('Y') + 5),
+                'configs' => array(
+                    'dateFormat' => null,
+                ),
+            ))
+            ->setFilters(array(
+                'configs' => function (Options $options, $value) use ($configs) {
+                    $result = array_merge($configs, $value);
+                    if ('single_text' !== $options['widget'] || isset($result['buttonImage'])) {
+                        $result['showOn'] = 'button';
                     }
 
-                    return 'focus';
+                    return $result;
                 }
-            ), $this->options)
-        ));
+            ));
     }
 
     /**
