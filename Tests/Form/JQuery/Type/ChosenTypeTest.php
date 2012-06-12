@@ -20,6 +20,15 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
  */
 class ChosenTypeTest extends TypeTestCase
 {
+    public function testDefaultConfig()
+    {
+        $form = $this->factory->create(new ChosenType('country'));
+
+        $view = $form->createView();
+
+        $this->assertEquals(true, $view->getVar('allow_single_deselect'));
+    }
+    
     public function testConstructorAffectsParentType()
     {
         $form = $this->factory->create(new ChosenType('country'));
