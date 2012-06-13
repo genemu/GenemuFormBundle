@@ -44,7 +44,7 @@ class FileListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function onBindNormData(DataEvent $event)
+    public function onBind(DataEvent $event)
     {
         $data = $event->getData();
 
@@ -115,6 +115,6 @@ class FileListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::BIND_NORM_DATA => 'onBindNormData');
+        return array(FormEvents::BIND => 'onBind');
     }
 }

@@ -16,8 +16,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Genemu\Bundle\FormBundle\Form\Core\EventListener\FileListener;
+use Genemu\Bundle\FormBundle\Form\JQuery\DataTransformer\FileToValueTransformer;
 
 /**
  * FileType
@@ -47,20 +50,13 @@ class FileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $configs = array_replace($this->options, $options['configs']);
-        if (isset($configs['multi']) && $configs['multi']) {
-            $options['multiple'] = true;
-        }
-
-        if ($options['multiple']) {
-            $configs['multi'] = true;
-        }
+        $configs = $options['configs'];
 
         $builder
             ->addEventSubscriber(new FileListener($this->rootDir, $options['multiple']))
-            ->setAttribute('configs', $configs)
+            ->addViewTransformer(new FileToValueTransformer($this->rootDir, $configs['folder'], $options['multiple']))
             ->setAttribute('rootDir', $this->rootDir)
-            ->setAttribute('multiple', $options['multiple']);
+        ;
     }
 
     /**
@@ -68,49 +64,36 @@ class FileType extends AbstractType
      */
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
-        $configs = $form->getAttribute('configs');
-        $datas = $form->getClientData();
-
-        if (!empty($datas)) {
-            if ($form->getAttribute('multiple')) {
-                $datas = is_scalar($datas) ? explode(',', $datas) : $datas;
-                $value = array();
-
-                foreach ($datas as $data) {
-                    if (!$data instanceof File) {
-                        $data = new File($form->getAttribute('rootDir') . '/' . $data);
-                    }
-
-                    $value[] = $configs['folder'] . '/' . $data->getFilename();
-                }
-
-                $value = implode(',', $value);
-            } else {
-                if (!$datas instanceof File) {
-                    $datas = new File($form->getAttribute('rootDir') . '/' . $datas);
-                }
-
-                $value = $configs['folder'] . '/' . $datas->getFilename();
-            }
-
-            $view->setVar('value', $value);
-        }
-
         $view
             ->setVar('type', 'hidden')
-            ->setVar('configs', $form->getAttribute('configs'));
+            ->setVar('value', $form->getViewData())
+            ->setVar('multiple', $options['multiple'])
+            ->setVar('configs', $options['configs']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
-            'required' => false,
-            'multiple' => false,
-            'configs' => array(),
-        );
+        $configs = $this->options;
+
+        $resolver
+            ->setDefaults(array(
+                'required' => false,
+                'multiple' => false,
+                'configs' => array(),
+            ))
+            ->setFilters(array(
+                'configs' => function (Options $options, $value) use ($configs) {
+                    if (!$options['multiple']) {
+                        $value['multi'] = false;
+                    }
+
+                    return array_merge($configs, $value);
+                }
+            ))
+        ;
     }
 
     /**

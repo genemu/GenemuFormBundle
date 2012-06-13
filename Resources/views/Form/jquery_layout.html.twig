@@ -451,7 +451,17 @@
                 data = jQuery.parseJSON(data);
 
                 if (data.result == '1') {
-                    $('#{{ id }}').val(data.file);
+                    {% if multiple %}
+                        var value = $('#{{ id }}').val();
+                        if (value != '') {
+                            value += ",";
+                        }
+                        value += data.file;
+                    {% else %}
+                        var value = data.file;
+                    {% endif %}
+
+                    $('#{{ id }}').val(value);
                     $nbQueue--;
                 } else {
                     alert('Error');

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Tests\Form\Type;
+namespace Genemu\Bundle\FormBundle\Tests\Form\JQuery\Type;
 
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -38,10 +38,10 @@ class FileTypeTest extends TypeTestCase
         $form = $this->factory->create('genemu_jqueryfile');
         $view = $form->createView();
 
-        $configs = $view->get('configs');
+        $configs = $view->getVar('configs');
 
-        $this->assertEquals('', $view->get('value'));
-        $this->assertFalse($view->get('required'));
+        $this->assertEquals('', $view->getVar('value'));
+        $this->assertFalse($view->getVar('required'));
         $this->assertEquals(realpath(__DIR__.'/../../../Fixtures'), realpath($form->getAttribute('rootDir')));
 
         $this->assertEquals('/upload', $configs['folder']);
@@ -61,9 +61,9 @@ class FileTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $configs = $view->get('configs');
+        $configs = $view->getVar('configs');
 
-        $this->assertFalse($view->get('required'));
+        $this->assertFalse($view->getVar('required'));
         $this->assertEquals('/images', $configs['folder']);
         $this->assertEquals('/swf/uploadify.swf', $configs['uploader']);
         $this->assertEquals('/js/uploadify/cancel.png', $configs['cancel_img']);
@@ -77,8 +77,8 @@ class FileTypeTest extends TypeTestCase
         $form->setData('/upload/symfony.png');
         $view = $form->createView();
 
-        $this->assertEquals('/upload/symfony.png', $form->getClientData());
-        $this->assertEquals('/upload/symfony.png', $view->get('value'));
+        $this->assertEquals('/upload/symfony.png', $form->getViewData());
+        $this->assertEquals('/upload/symfony.png', $view->getVar('value'));
     }
 
     public function testFileValue()
@@ -86,12 +86,12 @@ class FileTypeTest extends TypeTestCase
         $form = $this->factory->create('genemu_jqueryfile');
 
         $form->setData(new File(__DIR__ . '/../../../Fixtures/upload/symfony.png'));
-        $view = $form->createView();
 
-        $data = $form->getClientData();
-
+        $data = $form->getNormData();
         $this->assertInstanceOf(self::FILE_CLASS, $data);
-        $this->assertEquals('/upload/symfony.png', $view->get('value'));
+
+        $view = $form->createView();
+        $this->assertEquals('/upload/symfony.png', $view->getVar('value'));
     }
 
     public function testImageValue()
@@ -99,14 +99,14 @@ class FileTypeTest extends TypeTestCase
         $form = $this->factory->create('genemu_jqueryfile');
 
         $form->setData(new Image(__DIR__ . '/../../../Fixtures/upload/symfony.png'));
-        $view = $form->createView();
 
-        $data = $form->getClientData();
-
+        $data = $form->getNormData();
         $this->assertInstanceOf(self::IMAGE_CLASS, $data);
         $this->assertEquals(160, $data->getWidth());
         $this->assertEquals(134, $data->getHeight());
-        $this->assertEquals('/upload/symfony.png', $view->get('value'));
+
+        $view = $form->createView();
+        $this->assertEquals('/upload/symfony.png', $view->getVar('value'));
     }
 
     public function testMultipleStringPathValue()
@@ -118,7 +118,7 @@ class FileTypeTest extends TypeTestCase
         $form->setData('/upload/symfony.png,/upload/symfony.png');
         $view = $form->createView();
 
-        $this->assertEquals('/upload/symfony.png,/upload/symfony.png', $view->get('value'));
+        $this->assertEquals('/upload/symfony.png,/upload/symfony.png', $view->getVar('value'));
     }
 
     public function testMultipleArrayPathValue()
@@ -130,6 +130,6 @@ class FileTypeTest extends TypeTestCase
         $form->setData(array('/upload/symfony.png', '/upload/symfony.png'));
         $view = $form->createView();
 
-        $this->assertEquals('/upload/symfony.png,/upload/symfony.png', $view->get('value'));
+        $this->assertEquals('/upload/symfony.png,/upload/symfony.png', $view->getVar('value'));
     }
 }
