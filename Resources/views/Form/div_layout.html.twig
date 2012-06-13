@@ -68,6 +68,20 @@
         "class": (attr.class | default('') ~ " chzn-select")
     }) %}
     {{ block("choice_widget") }}
+    <script type="text/javascript">
+    	genemuFormBundleChosenFunc_{{ id }} = {% spaceless %}{{ json_transform_func | raw }}{% endspaceless %}
+    	
+	    genemuFormBundleChosenConfigs_{{ id }}=new Array();
+
+	    genemuFormBundleChosenConfigs_{{ id }}['empty_value']='{{ empty_value }}';
+	    genemuFormBundleChosenConfigs_{{ id }}['allow_single_deselect']={{ allow_single_deselect ? 'true' : 'false' }};
+	    {% if route_name %}
+	    	genemuFormBundleChosenConfigs_{{ id }}['path_route_name']='{{ path(route_name) }}';
+	    {% endif %}
+	    genemuFormBundleChosenConfigs_{{ id }}['json_transform_func']=genemuFormBundleChosenFunc_{{ id }};
+	    genemuFormBundleChosenConfigs_{{ id }}['typing_timeout']='{{ typing_timeout }}';
+	    genemuFormBundleChosenConfigs_{{ id }}['query_param_name']='{{ query_param_name }}';
+    </script>
 {% endspaceless %}
 {% endblock genemu_jquerychosen_widget %}
 
@@ -87,6 +101,16 @@
     <div class="queue">
         <div id="{{ id }}_queue"></div>
     </div>
+    <script type="text/javascript">
+	    var config = {{ configs|merge({
+	        'uploader':  asset(configs.uploader),
+	        'cancelImg': asset(configs.cancelImg),
+	        'script':    path(configs.script),
+	        'queueID':   id ~ '_queue'
+	    })|json_encode|raw }};
+
+		genemuFormBundleFileConfigs_{{ id }}=new Array(config, {% if configs.auto is not defined or configs.auto is sameas(false) %}true{% else %}false{% endif %});
+    </script>
 {% endspaceless %}
 {% endblock genemu_jqueryfile_widget %}
 
