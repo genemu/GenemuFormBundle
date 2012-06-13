@@ -21,6 +21,20 @@ public function buildForm(FormBuilder $builder, array $options)
 }
 ```
 
+## Add in your view, after calling the jQuery library
+``` twig
+<script src="{{ asset('bundles/genemuform/js/genemuFormBundle.js') }}"></script>
+{{ form_javascript(form) }}
+```
+
+## Usage in Form Collection
+When the chosen field is created within a collection, only the configuration is setup in the data-prototype.
+In that case, you need to manually trigger the chosen function via a call to 
+
+``` javascript
+genemuFormBundleChosenEnable(chosenFieldId);
+```
+
 ## Extra
 
 1. [Choices](https://github.com/genemu/GenemuFormBundle/blob/2.0/Resources/doc/jquery/chosen/choices.md)

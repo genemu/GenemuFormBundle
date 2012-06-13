@@ -19,6 +19,12 @@ genemu_upload:
     type:     annotation
 ```
 
+## Add in your view, after calling the jQuery library
+``` twig
+<script src="{{ asset('bundles/genemuform/js/genemuFormBundle.js') }}"></script>
+{{ form_javascript(form) }}
+```
+
 ## Default Usage:
 
 ``` php
@@ -44,6 +50,14 @@ public function buildForm(FormBuilder $builder, array $options)
             )
         ));
 }
+```
+
+## Usage in Form Collection
+When the file upload element is called within a collection, only the configuration is setup in the data-prototype.
+In that case, you need to manually trigger the uploadify via a call to 
+
+``` javascript
+genemuFormBundleFileEnable(uploadFieldId);
 ```
 
 ## Extra
