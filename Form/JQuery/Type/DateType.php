@@ -64,12 +64,14 @@ class DateType extends AbstractType
                 $configs['dateFormat'] = $this->getJavascriptPattern($formatter);
             }
         }
+        
+        $culture = str_replace('_', '-', $form->getAttribute('culture'));
 
         $view
             ->set('min_year', min($year))
             ->set('max_year', max($year))
             ->set('configs', $configs)
-            ->set('culture', $form->getAttribute('culture'));
+            ->set('culture', $culture);
     }
 
     /**
