@@ -46,7 +46,7 @@ class CaptchaTypeTest extends TypeTestCase
         $form = $this->factory->create('genemu_captcha', null, array(
             'width' => 200,
             'font_color' => array('000'),
-            'code' => '1234',
+            'code' => '1111',
             'format' => 'gif',
         ));
 
@@ -54,7 +54,7 @@ class CaptchaTypeTest extends TypeTestCase
         $captcha = $form->getAttribute('captcha');
 
         $this->assertEquals(200, $view->getVar('width'));
-        $this->assertEquals(md5('1234s$cr$t'), $captcha->getCode());
+        $this->assertEquals(md5('1111s$cr$t'), $captcha->getCode());
         $this->assertStringStartsWith('data:image/gif;base64,', $view->getVar('src'));
         $this->assertEquals(4, $captcha->getLength());
     }
@@ -84,5 +84,25 @@ class CaptchaTypeTest extends TypeTestCase
         $view = $form->createView();
 
         $this->assertStringStartsWith('data:image/jpeg;base64,', $view->getVar('src'));
+    }
+
+    public function testCodePasses()
+    {
+        $form = $this->factory->create('genemu_captcha');
+        $form->createView();
+
+        $form->bind('1234');
+
+        $this->assertTrue($form->isValid());
+    }
+
+    public function testCodeFails()
+    {
+        $form = $this->factory->create('genemu_captcha');
+        $form->createView();
+
+        $form->bind('4321');
+
+        $this->assertFalse($form->isValid());
     }
 }

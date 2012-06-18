@@ -11,9 +11,9 @@
 
 namespace Genemu\Bundle\FormBundle\Tests\Form\Extension;
 
-use Symfony\Bundle\DoctrineMongoDBBundle\Form\DoctrineMongoDBExtension;
+use Doctrine\Bundle\MongoDBBundle\Form\DoctrineMongoDBExtension;
 
-use Genemu\Bundle\FormBundle\Form\Document\Type;
+use Genemu\Bundle\FormBundle\Form\Doctrine\Type;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>

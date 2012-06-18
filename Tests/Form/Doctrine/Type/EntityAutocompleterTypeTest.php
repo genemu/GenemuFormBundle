@@ -9,11 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\FormBundle\Tests\From\Type\Entity\JQuery;
+namespace Genemu\Bundle\FormBundle\Tests\Form\Type\Entity\JQuery;
 
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Genemu\Bundle\FormBundle\Form\JQuery\Type\AutocompleterType;
 use Genemu\Bundle\FormBundle\Tests\Form\Type\TypeTestCase;
 use Genemu\Bundle\FormBundle\Tests\Form\Extension\DoctrineOrmExtensionTest;
 use Genemu\Bundle\FormBundle\Tests\DoctrineOrmTestCase;
@@ -23,7 +24,7 @@ use Genemu\Bundle\FormBundle\Tests\Fixtures\Entity\SingleIdentEntity;
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class AutocompleterTypeTest extends TypeTestCase
+class EntityAutocompleterTypeTest extends TypeTestCase
 {
     const SINGLE_IDENT_CLASS = 'Genemu\Bundle\FormBundle\Tests\Fixtures\Entity\SingleIdentEntity';
 
@@ -87,11 +88,10 @@ class AutocompleterTypeTest extends TypeTestCase
 
         $this->persist(array($entity1, $entity2));
 
-        $form = $this->factory->createNamed('genemu_jqueryautocompleter', 'name', null, array(
+        $form = $this->factory->createNamed('name', new AutocompleterType('entity'), null, array(
             'em' => 'default',
             'class' => self::SINGLE_IDENT_CLASS,
             'property' => 'name',
-            'widget' => 'entity'
         ));
         $form->setData(null);
 
@@ -100,13 +100,13 @@ class AutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(array(
             array('value' => 1, 'label' => 'Foo'),
             array('value' => 2, 'label' => 'Bar'),
-        ), $form->getAttribute('choice_list')->getChoices());
+        ), $view->getVar('choices'));
 
         $this->assertNull($form->getData());
         $this->assertEquals('', $form->getClientData());
 
-        $this->assertNull($view->get('route_name'));
-        $this->assertEquals('', $view->get('autocompleter_value'));
+        $this->assertNull($view->getVar('route_name'));
+        $this->assertEquals('', $view->getVar('autocompleter_value'));
     }
 
     public function testMultipleValue()
@@ -116,11 +116,11 @@ class AutocompleterTypeTest extends TypeTestCase
 
         $this->persist(array($entity1, $entity2));
 
-        $form = $this->factory->createNamed('genemu_jqueryautocompleter', 'name', null, array(
+        $form = $this->factory->createNamed('name', new AutocompleterType('entity'), null, array(
             'em' => 'default',
             'class' => self::SINGLE_IDENT_CLASS,
             'property' => 'name',
-            'widget' => 'entity',
+
             'multiple' => true
         ));
         $form->setData(null);
@@ -130,13 +130,13 @@ class AutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(array(
             array('value' => 1, 'label' => 'Foo'),
             array('value' => 2, 'label' => 'Bar'),
-        ), $form->getAttribute('choice_list')->getChoices());
+        ), $view->getVar('choices'));
 
         $this->assertNull($form->getData());
         $this->assertEquals('', $form->getClientData());
 
-        $this->assertNull($view->get('route_name'));
-        $this->assertEquals('', $view->get('autocompleter_value'));
+        $this->assertNull($view->getVar('route_name'));
+        $this->assertEquals('', $view->getVar('autocompleter_value'));
     }
 
     public function testValueData()
@@ -146,11 +146,11 @@ class AutocompleterTypeTest extends TypeTestCase
 
         $this->persist(array($entity1, $entity2));
 
-        $form = $this->factory->createNamed('genemu_jqueryautocompleter', 'name', null, array(
+        $form = $this->factory->createNamed('name', new AutocompleterType('entity'), null, array(
             'em' => 'default',
             'class' => self::SINGLE_IDENT_CLASS,
             'property' => 'name',
-            'widget' => 'entity',
+
         ));
         $form->setData($entity1);
         $view = $form->createView();
@@ -162,16 +162,16 @@ class AutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(array(
             array('value' => 1, 'label' => 'Foo'),
             array('value' => 2, 'label' => 'Bar'),
-        ), $form->getAttribute('choice_list')->getChoices());
+        ), $view->getVar('choices'));
 
         $this->assertEquals(json_encode(array(
-            'value' => 2,
+            'value' => '2',
             'label' => 'Bar'
         )), $form->getClientData());
         $this->assertSame($entity2, $form->getData());
 
-        $this->assertNull($view->get('route_name'));
-        $this->assertEquals('Foo', $view->get('autocompleter_value'));
+        $this->assertNull($view->getVar('route_name'));
+        $this->assertEquals('Foo', $view->getVar('autocompleter_value'));
     }
 
     public function testValueMultipleData()
@@ -181,11 +181,11 @@ class AutocompleterTypeTest extends TypeTestCase
 
         $this->persist(array($entity1, $entity2));
 
-        $form = $this->factory->createNamed('genemu_jqueryautocompleter', 'name', null, array(
+        $form = $this->factory->createNamed('name', new AutocompleterType('entity'), null, array(
             'em' => 'default',
             'class' => self::SINGLE_IDENT_CLASS,
             'property' => 'name',
-            'widget' => 'entity',
+
             'multiple' => true
         ));
         $existing = new ArrayCollection(array($entity1));
@@ -201,15 +201,15 @@ class AutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(array(
             array('value' => 1, 'label' => 'Foo'),
             array('value' => 2, 'label' => 'Bar'),
-        ), $form->getAttribute('choice_list')->getChoices());
+        ), $view->getVar('choices'));
 
         $this->assertEquals(json_encode(array(
-            array('value' => 1, 'label' => 'Foo'),
-            array('value' => 2, 'label' => 'Bar'),
+            array('value' => '1', 'label' => 'Foo'),
+            array('value' => '2', 'label' => 'Bar'),
         )), $form->getClientData());
         $this->assertSame($existing, $form->getData());
 
-        $this->assertEquals('Foo, ', $view->get('autocompleter_value'));
+        $this->assertEquals('Foo, ', $view->getVar('autocompleter_value'));
     }
 
     public function testValueAjaxData()
@@ -219,11 +219,10 @@ class AutocompleterTypeTest extends TypeTestCase
 
         $this->persist(array($entity1, $entity2));
 
-        $form = $this->factory->createNamed('genemu_jqueryautocompleter', 'name', null, array(
+        $form = $this->factory->createNamed('name', new AutocompleterType('entity'), null, array(
             'em' => 'default',
             'class' => self::SINGLE_IDENT_CLASS,
             'property' => 'name',
-            'widget' => 'entity',
             'route_name' => 'genemu_ajax'
         ));
 
@@ -232,16 +231,16 @@ class AutocompleterTypeTest extends TypeTestCase
 
         $form->bind(json_encode(array('value' => 2, 'label' => 'Bar')));
 
-        $this->assertEquals('genemu_ajax', $view->get('route_name'));
+        $this->assertEquals('genemu_ajax', $view->getVar('route_name'));
 
-        $this->assertEquals(array(), $form->getAttribute('choice_list')->getChoices());
+        $this->assertEquals(array(), $view->getVar('choices'));
         $this->assertEquals(json_encode(array(
             'value' => 2,
             'label' => 'Bar',
         )), $form->getClientData());
         $this->assertSame($entity2, $form->getData());
 
-        $this->assertEquals('Foo', $view->get('autocompleter_value'));
+        $this->assertEquals('Foo', $view->getVar('autocompleter_value'));
     }
 
     public function testValueAjaxMultipleData()
@@ -251,11 +250,10 @@ class AutocompleterTypeTest extends TypeTestCase
 
         $this->persist(array($entity1, $entity2));
 
-        $form = $this->factory->createNamed('genemu_jqueryautocompleter', 'name', null, array(
+        $form = $this->factory->createNamed('name', new AutocompleterType('entity'), null, array(
             'em' => 'default',
             'class' => self::SINGLE_IDENT_CLASS,
             'property' => 'name',
-            'widget' => 'entity',
             'route_name' => 'genemu_ajax',
             'multiple' => true,
         ));
@@ -268,16 +266,16 @@ class AutocompleterTypeTest extends TypeTestCase
             array('value' => 2, 'label' => 'Bar')
         )));
 
-        $this->assertEquals('genemu_ajax', $view->get('route_name'));
+        $this->assertEquals('genemu_ajax', $view->getVar('route_name'));
 
-        $this->assertEquals(array(), $form->getAttribute('choice_list')->getChoices());
+        $this->assertEquals(array(), $view->getVar('choices'));
 
         $this->assertEquals(json_encode(array(
             array('value' => 2, 'label' => 'Bar')
         )), $form->getClientData());
 
         $this->assertSame($existing, $form->getData());
-        $this->assertEquals('Foo, Bar, ', $view->get('autocompleter_value'));
+        $this->assertEquals('Foo, Bar, ', $view->getVar('autocompleter_value'));
     }
 
     protected function createRegistryMock($name, $em)

@@ -66,7 +66,7 @@ class TypeExtensionTest extends CoreExtension
                 ),
                 'background_color' => 'DDDDDD',
                 'border_color' => '000000',
-                'code' => '0000',
+                'code' => '1234',
             )),
             new Form\JQuery\Type\FileType(array(
                 'script' => 'genemu_upload',

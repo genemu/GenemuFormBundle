@@ -47,7 +47,7 @@ class ImageType extends AbstractType
      */
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
-        $configs = $form->getAttribute('configs');
+        $configs = $options['configs'];
         $data = $form->getClientData();
 
         if (!empty($data)) {

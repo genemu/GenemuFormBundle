@@ -41,10 +41,6 @@ abstract class DoctrineMongoTestCase extends \PHPUnit_Framework_TestCase
      */
     public static function createTestDocumentManager($paths = array())
     {
-        if (!class_exists('PDO') || !in_array('pgsql', \PDO::getAvailableDrivers())) {
-            self::markTestSkipped('This test requires PgSQL support in your environment');
-        }
-
         $config = new Configuration();
         $config->setAutoGenerateProxyClasses(true);
         $config->setProxyDir(\sys_get_temp_dir());
