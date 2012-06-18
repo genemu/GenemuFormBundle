@@ -14,7 +14,7 @@ namespace Genemu\Bundle\FormBundle\Form\Doctrine\ChoiceList;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
 use Symfony\Component\Form\Util\PropertyPath;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * AjaxEntityChoiceList
@@ -25,7 +25,7 @@ class AjaxEntityChoiceList extends EntityChoiceList
 {
     private $ajax;
     private $propertyPath;
-    private $classMetaData;
+    private $classMetadata;
 
     /**
      * Constructs
@@ -38,7 +38,7 @@ class AjaxEntityChoiceList extends EntityChoiceList
      * @param string         $groupBy
      * @param boolean        $ajax
      */
-    public function __construct(EntityManager $em, $class, $property = null, $qb = null, $choices = null, $groupBy = null, $ajax = false)
+    public function __construct(ObjectManager $em, $class, $property = null, $qb = null, $choices = null, $groupBy = null, $ajax = false)
     {
         $this->ajax = $ajax;
         $this->classMetadata = $em->getClassMetadata($class);
@@ -65,7 +65,7 @@ class AjaxEntityChoiceList extends EntityChoiceList
      */
     public function getChoices()
     {
-        $choices = parent::getRemainingViews();
+        $choices = $this->getRemainingViews();
 
         if (empty($choices)) {
             $choices = array();
@@ -80,6 +80,18 @@ class AjaxEntityChoiceList extends EntityChoiceList
         }
 
         return $array;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRemainingViews()
+    {
+        if ($this->ajax) {
+            return array();
+        }
+
+        return parent::getRemainingViews();
     }
 
     /**

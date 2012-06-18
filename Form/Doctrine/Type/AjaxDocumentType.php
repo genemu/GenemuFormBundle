@@ -12,18 +12,16 @@
 namespace Genemu\Bundle\FormBundle\Form\Doctrine\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Genemu\Bundle\FormBundle\Form\Doctrine\ChoiceList\AjaxEntityChoiceList;
 use Symfony\Component\OptionsResolver\Options;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-
-use Genemu\Bundle\FormBundle\Form\Doctrine\ChoiceList\AjaxEntityChoiceList;
-
 /**
- * AjaxEntityType
+ * AjaxDocumentType
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class AjaxEntityType extends AbstractType
+class AjaxDocumentType extends AbstractType
 {
     private $registry;
 
@@ -37,7 +35,7 @@ class AjaxEntityType extends AbstractType
         $this->registry = $registry;
     }
 
-    /**
+        /**
      * {@inheritdoc}
      */
     public function getDefaultOptions()
@@ -45,14 +43,21 @@ class AjaxEntityType extends AbstractType
         $registry = $this->registry;
 
         $options = array(
-            'em'            => null,
-            'class'         => null,
-            'property'      => null,
+            'document_manager' => null,
+            'em' => function (Options $options, $previousValue) use ($registry) {
+                if (isset($options['document_manager'])) {
+                    return $options['document_manager'];
+                }
+
+                return $previousValue;
+            },
+            'class' => null,
+            'property' => null,
             'query_builder' => null,
-            'choices'       => null,
-            'group_by'      => null,
-            'ajax'          => false,
-            'choice_list'   => function (Options $options, $previousValue) use ($registry) {
+            'choices' => null,
+            'group_by' => null,
+            'ajax' => false,
+            'choice_list' => function (Options $options, $previousValue) use ($registry) {
                 return new AjaxEntityChoiceList(
                     $registry->getManager($options['em']),
                     $options['class'],
@@ -73,7 +78,7 @@ class AjaxEntityType extends AbstractType
      */
     public function getParent()
     {
-        return 'entity';
+        return 'document';
     }
 
     /**
@@ -81,6 +86,6 @@ class AjaxEntityType extends AbstractType
      */
     public function getName()
     {
-        return 'genemu_ajaxentity';
+        return 'genemu_ajaxdocument';
     }
 }

@@ -5,9 +5,9 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="genemu.form.document.type.ajaxdocument" class="Genemu\Bundle\FormBundle\Form\Document\Type\AjaxDocumentType">
+        <service id="genemu.form.document.type.ajaxdocument" class="Genemu\Bundle\FormBundle\Form\Doctrine\Type\AjaxDocumentType">
             <tag name="form.type" alias="genemu_ajaxdocument" />
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="doctrine.odm.mongodb" />
         </service>
     </services>
 
