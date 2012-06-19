@@ -10,7 +10,8 @@ env:
 before_script:
     - sh -c "psql -c 'create database test;' -U postgres;"
     - mongo test --eval 'db.addUser("travis", "test");'
-    - php vendor/vendors.php
+    - wget http://getcomposer.org/composer.phar
+    - php composer.phar install --dev
 
 script: rake test
 
