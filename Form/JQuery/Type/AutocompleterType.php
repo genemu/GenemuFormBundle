@@ -46,6 +46,7 @@ class AutocompleterType extends AbstractType
             ->setAttribute('route_name', $options['route_name'])
             ->setAttribute('freeValues', $options['freeValues'])
             ->setAttribute('ids', $options['ids'])
+            ->setAttribute('staticList', $options['staticList'])
         ;
     }
 
@@ -73,6 +74,7 @@ class AutocompleterType extends AbstractType
             ->set('freeValues', $form->getAttribute('freeValues'))
             ->set('ids', $form->getAttribute('ids'))
             ->set('form_name', $form->getRoot()->getName())
+            ->set('staticList', $form->getAttribute('staticList'))
         ;
     }
 
@@ -85,6 +87,7 @@ class AutocompleterType extends AbstractType
             'widget' => 'choice',
             'route_name' => null,
             'ajax' => false,
+            'staticList' => false,
             'ids' => array(),
         );
 

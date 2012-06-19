@@ -331,13 +331,26 @@
             };
 
             {% if route_name %}
-                $configs.source = function(request, response) {
-                    var $data = {term: request.term};
-                {% for id in ids %}
-                    $data['{{ id }}'] = $('#{{ form_name ~ '_' ~ id }}').val();
-                {% endfor %}
-                    $.getJSON('{{ path(route_name) }}', $data, response);
-                };
+                {% if staticList  %}
+                    var $data = {};
+                    $configs.source = {};
+                    $autocompleter.after('<img class="autocompleterLoader" src="{{ asset('bundles/genemuform/images/ajax-loader.gif') }}">');
+                    $autocompleter.attr('disabled', 'disabled');
+                    $.getJSON('{{ path(route_name) }}', $data, function(data){
+                        $configs.source = data;
+                        $autocompleter.autocomplete($configs);
+                        $autocompleter.siblings('img.autocompleterLoader').remove();
+                        $autocompleter.removeAttr('disabled');
+                    });
+                {% else %}
+                    $configs.source = function(request, response) {
+                        var $data = {term: request.term};
+                        {% for id in ids %}
+                        $data['{{ id }}'] = $('#{{ form_name ~ '_' ~ id }}').val();
+                        {% endfor %}
+                        $.getJSON('{{ path(route_name) }}', $data, response);
+                    };
+                {% endif %}
             {% else %}
                 $configs.source = {{ choices|json_encode|raw }};
             {% endif %}
