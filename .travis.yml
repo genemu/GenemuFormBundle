@@ -8,12 +8,7 @@ env:
     - SYMFONY_VERSION=origin/master
 
 before_script:
-    - sh -c "psql -c 'create database test;' -U postgres;"
-    - mongo test --eval 'db.addUser("travis", "test");'
-    - wget http://getcomposer.org/composer.phar
-    - php composer.phar install --dev
-
-script: rake test
+    - php -r "var_dump(gd_info());"
 
 notifications:
-  email: travis-ci@generation-multiple.com
+  email: bilal.amarni@gmail.com
