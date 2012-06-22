@@ -10,7 +10,6 @@ public function buildForm(FormBuilder $builder, array $options)
     $builder
         ->add('soccer_player', 'genemu_jqueryautocompleter_text', array(
             'suggestions' => array('Ozil', 'Van Persie'),
-            'multiple' => true
         ));
 }
 ```
