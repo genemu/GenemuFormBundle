@@ -15,7 +15,7 @@ Installation is quick and easy, 5 steps process
 
 Check your Symfony2 version.
 
-[Symfony2 branch v2.0.*(https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/instalation/2.0.md)
+[Symfony2 branch v2.0.*](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/instalation/2.0.md)
 
 [Symfony2 branch master](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/instalation/master.md)
 
