@@ -1,16 +1,9 @@
-# Download GenemuFormBundle form Symfony version origin/master
+# Installation
 
-Add the following entries to the deps in the root of your project file:
+Add the following dependency to your composer.json file:
 
-```
-[GenemuFormBundle]
-    git=git://github.com/genemu/GenemuFormBundle.git
-    target=bundles/Genemu/Bundle/FormBundle
-    version=origin/master
-```
-
-Now, run the vendors script to download the bundle:
-
-``` bash
-$ php bin/vendors install
-```
+    "require": {
+        # ..
+        "genemu/form-bundle": "dev-master"
+        # ..
+    }
