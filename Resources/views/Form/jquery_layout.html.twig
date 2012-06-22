@@ -358,6 +358,56 @@
 {% endspaceless %}
 {% endblock genemu_jqueryautocompleter_javascript %}
 
+{% block genemu_jqueryautocompleter_text_javascript %}
+{% spaceless %}
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            var $autocompleter = $('#{{ id }}');
+            var $configs = {
+                focus: function(event, ui) {
+                    return false;
+                },
+                select: function(event, ui) {
+                    {% if multiple %}
+                        terms = this.value.split(/,\s*/);
+                        terms.pop();
+                        terms.push(ui.item.value);
+                        terms.push('');
+                        this.value = terms.join(', ');
+                    {% else %}
+                        this.value = ui.item.value;
+                    {% endif %}
+
+                    return false;
+                }
+            };
+
+            {% if route_name %}
+                $configs.source = function(request, response) {
+                    $.getJSON('{{ path(route_name) }}', {
+                        term: request.term
+                    }, response);
+                };
+            {% else %}
+                $configs.source = {{ suggestions|json_encode|raw }};
+            {% endif %}
+
+            $autocompleter.autocomplete($configs);
+
+            {% if multiple %}
+                var $source = $autocompleter.data('autocomplete').source;
+
+                $autocompleter.autocomplete('option', 'source', function(request, response) {
+                    request.term = request.term.split(/,\s*/).pop();
+
+                    $source(request, response);
+                });
+            {% endif %}
+        });
+    </script>
+{% endspaceless %}
+{% endblock %}
+
 {% block genemu_jquerychosen_javascript %}
 {% spaceless %}
     <script type="text/javascript">
