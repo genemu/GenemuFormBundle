@@ -37,6 +37,7 @@ class ChosenType extends AbstractType
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
         $view->setVar('allow_single_deselect', $options['allow_single_deselect']);
+        $view->setVar('disable_search_threshold', $options['disable_search_threshold']);
     }
 
     /**
@@ -46,6 +47,7 @@ class ChosenType extends AbstractType
     {
         $resolver->setDefaults(array(
             'allow_single_deselect' => true,
+            'disable_search_threshold' => 0
         ));
     }
 

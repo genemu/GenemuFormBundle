@@ -416,7 +416,8 @@
 
             $field.chosen({
                 no_results_text: '{{ empty_value }}',
-                allow_single_deselect: {{ allow_single_deselect ? 'true' : 'false' }}
+                allow_single_deselect: {{ allow_single_deselect ? 'true' : 'false' }},
+                disable_search_threshold: {{ disable_search_threshold }}
             });
         });
     </script>
