@@ -8,14 +8,14 @@ UPGRADE 2.1
     Before:
 
     ```
-    $formBuilder
-        ->add('country', 'genemu_jquerychosen', array(
-            'widget' => 'country',
+        $formBuilder
+            ->add('country', 'genemu_jquerychosen', array(
+                'widget' => 'country',
         ));
     ```
 
     After:
 
     ```
-    $formBuilder->add('country', 'genemu_jquerychosen_country');
+        $formBuilder->add('country', 'genemu_jquerychosen_country');
     ```
