@@ -11,11 +11,8 @@
 
 namespace Genemu\Bundle\FormBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Response;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Genemu\Bundle\FormBundle\Gd\File\Image;
 
@@ -24,13 +21,11 @@ use Genemu\Bundle\FormBundle\Gd\File\Image;
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class ImageController extends Controller
+class ImageController extends ContainerAware
 {
-    /**
-     * @Route("/genemu_change_image", name="genemu_form_image")
-     */
-    public function changeAction(Request $request)
+    public function changeAction()
     {
+        $request = $this->container->get('request');
         $rootDir = rtrim($this->container->getParameter('genemu.form.file.root_dir'), '/\\') . DIRECTORY_SEPARATOR;
         $folder = rtrim($this->container->getParameter('genemu.form.file.folder'), '/\\') . DIRECTORY_SEPARATOR;
 

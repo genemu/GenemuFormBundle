@@ -15,8 +15,7 @@ genemu_form:
 
 ``` yml
 genemu_upload:
-    resource: "@GenemuFormBundle/Controller/UploadController.php"
-    type:     annotation
+    resource: "@GenemuFormBundle/Resources/config/routing/upload.xml"
 ```
 
 ## Default Usage:

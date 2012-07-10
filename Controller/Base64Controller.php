@@ -11,25 +11,19 @@
 
 namespace Genemu\Bundle\FormBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Response;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
  * Class Base64Controller
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class Base64Controller extends Controller
+class Base64Controller extends ContainerAware
 {
-    /**
-     * @Route("/genemu_base64", name="genemu_base64")
-     */
-    public function base64Action(Request $request)
+    public function base64Action()
     {
-        $query = $request->server->get('QUERY_STRING');
+        $query = $this->container->get('request')->server->get('QUERY_STRING');
         $datas = preg_split('([;,]{1})', $query);
 
         return new Response(base64_decode($datas[2]), 200, array('Content-Type' => $datas[0]));

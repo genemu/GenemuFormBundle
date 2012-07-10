@@ -11,11 +11,8 @@
 
 namespace Genemu\Bundle\FormBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Response;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Genemu\Bundle\FormBundle\Gd\File\Image;
 
@@ -24,14 +21,11 @@ use Genemu\Bundle\FormBundle\Gd\File\Image;
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class UploadController extends Controller
+class UploadController extends ContainerAware
 {
-    /**
-     * @Route("/genemu_upload", name="genemu_upload")
-     */
-    public function uploadAction(Request $request)
+    public function uploadAction()
     {
-        $handle = $request->files->get('Filedata');
+        $handle = $this->container->get('request')->files->get('Filedata');
 
         $folder = $this->container->getParameter('genemu.form.file.folder');
         $uploadDir = $this->container->getParameter('genemu.form.file.upload_dir');
