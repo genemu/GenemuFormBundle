@@ -7,14 +7,14 @@ UPGRADE to Symfony 2.1
 
 Before :
 ``` php
-    $formBuilder
-        ->add('country', 'genemu_jquerychosen', array(
-            'widget' => 'country',
-    ));
+$formBuilder
+    ->add('country', 'genemu_jquerychosen', array(
+        'widget' => 'country',
+));
 ```
 Now :
 ``` php
-    $formBuilder->add('country', 'genemu_jquerychosen_country');
+$formBuilder->add('country', 'genemu_jquerychosen_country');
 ```
 
 ### Routing
@@ -24,13 +24,13 @@ Now :
 Before :
  ``` yml
 # app/config/routing.yml
-    genemu_base64:
-        resource: "@GenemuFormBundle/Controller/Base64Controller.php"
-        type:     annotation
+genemu_base64:
+    resource: "@GenemuFormBundle/Controller/Base64Controller.php"
+    type:     annotation
  ```
 Now :
  ``` yml
 # app/config/routing.yml
-    genemu_base64:
-        resource: "@GenemuFormBundle/Resources/config/routing/base64.xml"
+genemu_base64:
+    resource: "@GenemuFormBundle/Resources/config/routing/base64.xml"
  ```
