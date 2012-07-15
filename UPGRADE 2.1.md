@@ -3,34 +3,34 @@ UPGRADE to Symfony 2.1
 
 ### JQuery Chosen
 
-    [BC BREAK] Widget option cannot specify the choice type anymore, you have to append the widget in the type name instead :
+[BC BREAK] Widget option cannot specify the choice type anymore, you have to append the widget in the type name instead :
 
-    Before :
+Before :
 ``` php
-    $formBuilder
-        ->add('country', 'genemu_jquerychosen', array(
-            'widget' => 'country',
-    ));
+$formBuilder
+    ->add('country', 'genemu_jquerychosen', array(
+        'widget' => 'country',
+));
 ```
-    Now :
+Now :
 ``` php
-    $formBuilder->add('country', 'genemu_jquerychosen_country');
+$formBuilder->add('country', 'genemu_jquerychosen_country');
 ```
 
 ### Routing
 
-    [BC BREAK] Routing is defined in xml files instead of annotations (to remove the depency with SensioFrameworkExtraBundle)
+[BC BREAK] Routing is defined in xml files instead of annotations (to remove the depency with SensioFrameworkExtraBundle)
 
-    Before :
+Before :
  ``` yml
 # app/config/routing.yml
-    genemu_base64:
-        resource: "@GenemuFormBundle/Controller/Base64Controller.php"
-        type:     annotation
+genemu_base64:
+    resource: "@GenemuFormBundle/Controller/Base64Controller.php"
+    type:     annotation
  ```
-    Now :
+Now :
  ``` yml
 # app/config/routing.yml
-    genemu_base64:
-        resource: "@GenemuFormBundle/Resources/config/routing/base64.xml"
+genemu_base64:
+    resource: "@GenemuFormBundle/Resources/config/routing/base64.xml"
  ```
