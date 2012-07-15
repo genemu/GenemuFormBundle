@@ -78,6 +78,7 @@ class AutocompleterType extends AbstractType
             ->setVar('autocompleter_value', $value)
             ->setVar('route_name', $options['route_name'])
             ->setVar('free_values', $options['free_values'])
+            ->setVar('full_block_name', 'genemu_jqueryautocompleter')
         ;
     }
 
@@ -132,6 +133,6 @@ class AutocompleterType extends AbstractType
      */
     public function getName()
     {
-        return 'genemu_jqueryautocompleter';
+        return 'genemu_jqueryautocompleter_' . $this->widget;
     }
 }

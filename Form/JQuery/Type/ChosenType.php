@@ -38,6 +38,7 @@ class ChosenType extends AbstractType
     {
         $view->setVar('allow_single_deselect', $options['allow_single_deselect']);
         $view->setVar('disable_search_threshold', $options['disable_search_threshold']);
+        $view->setVar('full_block_name', 'genemu_jquerychosen');
     }
 
     /**
@@ -64,6 +65,6 @@ class ChosenType extends AbstractType
      */
     public function getName()
     {
-        return 'genemu_jquerychosen';
+        return 'genemu_jquerychosen_' . $this->widget;
     }
 }
