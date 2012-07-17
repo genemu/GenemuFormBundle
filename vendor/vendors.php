@@ -23,7 +23,7 @@ $deps = array(
     array('doctrine-dbal', 'git://github.com/doctrine/dbal.git', 'origin/master'),
     array('doctrine-mongodb', 'git://github.com/doctrine/mongodb.git', 'origin/master'),
     array('doctrine-mongodb-odm', 'git://github.com/doctrine/mongodb-odm.git', 'origin/master'),
-    array('bundles/Symfony/Bundle/DoctrineMongoDBBundle', 'git://github.com/symfony/DoctrineMongoDBBundle.git', 'origin/2.0'),
+    array('bundles/Symfony/Bundle/DoctrineMongoDBBundle', 'git://github.com/doctrine/DoctrineMongoDBBundle.git', 'origin/2.0'),
 );
 
 foreach ($deps as $dep) {

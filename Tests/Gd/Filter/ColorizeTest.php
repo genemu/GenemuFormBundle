@@ -12,21 +12,13 @@
 namespace Genemu\Bundle\FormBundle\Tests\Gd\Filter;
 
 use Genemu\Bundle\FormBundle\Gd\Filter\Colorize;
+use Genemu\Bundle\FormBundle\Tests\Gd\TestCase;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class ColorizeTest extends \PHPUnit_Framework_TestCase
+class ColorizeTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        if (!function_exists('gd_info')) {
-            $this->markTestSkipped('Gd not installed');
-        }
-    }
-
     public function testDefault()
     {
         $filter = new Colorize('#000');

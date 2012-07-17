@@ -22,8 +22,8 @@ class CaptchaTypeTest extends TypeTestCase
     {
         parent::setUp();
 
-        if (!function_exists('gd_info')) {
-            $this->markTestSkipped('Gd not installed');
+        if (!function_exists('gd_info') || !function_exists('imagettfbbox')) {
+            $this->markTestSkipped('Gd with freetype not installed');
         }
     }
 

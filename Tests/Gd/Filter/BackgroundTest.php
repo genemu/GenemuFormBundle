@@ -12,21 +12,13 @@
 namespace Genemu\Bundle\FormBundle\Tests\Gd\Filter;
 
 use Genemu\Bundle\FormBundle\Gd\Filter\Background;
+use Genemu\Bundle\FormBundle\Tests\Gd\TestCase;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class BackgroundTest extends \PHPUnit_Framework_TestCase
+class BackgroundTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        if (!function_exists('gd_info')) {
-            $this->markTestSkipped('Gd not installed');
-        }
-    }
-
     public function testBackground()
     {
         $filter = new Background('#FFF');
