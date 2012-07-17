@@ -16,17 +16,8 @@ use Genemu\Bundle\FormBundle\Gd\Gd;
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class GdTest extends \PHPUnit_Framework_TestCase
+class GdTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        if (!function_exists('gd_info')) {
-            $this->markTestSkipped('Gd not installed');
-        }
-    }
-
     public function testHexToSimpleColor()
     {
         $gd = new Gd();

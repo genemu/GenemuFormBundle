@@ -72,10 +72,10 @@ class ImageType extends AbstractType
                     ));
             }
 
-            if (($configs['custom_storage_folder']) && (false === ($value = $form->getClientData())instanceof File)){
+            if (isset($configs['custom_storage_folder']) && $configs['custom_storage_folder'] && (false === ($value = $form->getClientData())instanceof File)){
                 // This if will be executed only when we load entity with existing file pointed to the folder different
                 // from $configs['folder']
-            }else{
+            } else {
                 $value = $configs['folder'] . '/' . $data->getFilename();
             }
 

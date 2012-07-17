@@ -14,21 +14,13 @@ namespace Genemu\Bundle\FormBundle\Tests\Gd\Filter;
 use Symfony\Component\HttpFoundation\File\File;
 
 use Genemu\Bundle\FormBundle\Gd\Filter\Text;
+use Genemu\Bundle\FormBundle\Tests\Gd\TestCase;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class TextTest extends \PHPUnit_Framework_TestCase
+class TextTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        if (!function_exists('gd_info')) {
-            $this->markTestSkipped('Gd not installed');
-        }
-    }
-
     public function testDefault()
     {
         $filter = new Text('Foo', 12, array(new File(__DIR__ . '/../../Fixtures/fonts/akbar.ttf')), array('000'));
