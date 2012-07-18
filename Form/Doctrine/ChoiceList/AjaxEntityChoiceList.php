@@ -95,6 +95,18 @@ class AjaxEntityChoiceList extends EntityChoiceList
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getPreferredViews()
+    {
+        if ($this->ajax) {
+            return array();
+        }
+
+        return parent::getPreferredViews();
+    }
+
+    /**
      * Get intersaction $choices to $ids
      *
      * @param array $ids
