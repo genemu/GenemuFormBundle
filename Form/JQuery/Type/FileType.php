@@ -83,7 +83,7 @@ class FileType extends AbstractType
                         $data = new File($form->getAttribute('rootDir') . '/' . $data);
                     }
 
-                    if ($configs['custom_storage_folder']){
+                    if (isset($configs['custom_storage_folder']) && $configs['custom_storage_folder']){
                         $value[] = $form->getClientData();
                     }else{
                         $value[] = $configs['folder'] . '/' . $data->getFilename();
@@ -97,7 +97,7 @@ class FileType extends AbstractType
                     $datas = new File($form->getAttribute('rootDir') . '/' . $datas);
                 }
 
-                if (($configs['custom_storage_folder']) && (false === ($value = $form->getClientData())instanceof File)){
+                if (isset($configs['custom_storage_folder']) && $configs['custom_storage_folder'] && (false === ($value = $form->getClientData())instanceof File)){
                     // This if will be executed only when we load entity with existing file pointed to the folder different
                     // from $configs['folder']
                 }else{

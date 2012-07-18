@@ -12,21 +12,13 @@
 namespace Genemu\Bundle\FormBundle\Tests\Gd\Filter;
 
 use Genemu\Bundle\FormBundle\Gd\Filter\Negate;
+use Genemu\Bundle\FormBundle\Tests\Gd\TestCase;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class NegateTest extends \PHPUnit_Framework_TestCase
+class NegateTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        if (!function_exists('gd_info')) {
-            $this->markTestSkipped('Gd not installed');
-        }
-    }
-
     public function testDefault()
     {
         $filter = new Negate();

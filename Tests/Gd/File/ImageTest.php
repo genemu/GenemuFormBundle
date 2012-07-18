@@ -14,20 +14,13 @@ namespace Genemu\Bundle\FormBundle\Tests\Gd\File;
 use Genemu\Bundle\FormBundle\Gd\File\Image;
 use Genemu\Bundle\FormBundle\Gd\Filter\Background;
 
+use Genemu\Bundle\FormBundle\Tests\Gd\TestCase;
+
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class ImageTest extends \PHPUnit_Framework_TestCase
+class ImageTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        if (!function_exists('gd_info')) {
-            $this->markTestSkipped('Gd not installed');
-        }
-    }
-
     public function testImage()
     {
         $image = new Image(__DIR__ . '/../../Fixtures/upload/symfony.png');

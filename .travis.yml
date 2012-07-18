@@ -5,14 +5,16 @@ php:
     - 5.4
 
 env:
-    - SYMFONY_VERSION=v2.0.6
+    - SYMFONY_VERSION=v2.0.8
 
 before_script:
     - sh -c "psql -c 'create database test;' -U postgres;"
     - mongo test --eval 'db.addUser("travis", "test");'
-    - php vendor/vendors.php
+    - php vendor/vendors.php install
+    - pecl install mongo
+    - echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
 
-script: rake test
+script: phpunit
 
 notifications:
   email: travis-ci@generation-multiple.com
