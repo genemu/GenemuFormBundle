@@ -415,7 +415,7 @@
             $field = $('#{{ id }}');
 
             $field.chosen({
-                no_results_text: '{{ empty_value }}',
+                no_results_text: "{{ no_results_text|trans({}, translation_domain) }}",
                 allow_single_deselect: {{ allow_single_deselect ? 'true' : 'false' }},
                 disable_search_threshold: {{ disable_search_threshold }}
             });

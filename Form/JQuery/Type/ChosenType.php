@@ -36,6 +36,7 @@ class ChosenType extends AbstractType
      */
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
+        $view->setVar('no_results_text', $options['no_results_text']);
         $view->setVar('allow_single_deselect', $options['allow_single_deselect']);
         $view->setVar('disable_search_threshold', $options['disable_search_threshold']);
         $view->setVar('full_block_name', 'genemu_jquerychosen');
@@ -47,6 +48,7 @@ class ChosenType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
+            'no_results_text' => '',
             'allow_single_deselect' => true,
             'disable_search_threshold' => 0
         ));
