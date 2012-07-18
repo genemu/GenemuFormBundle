@@ -54,7 +54,7 @@ class AjaxEntityType extends AbstractType
             'ajax'          => false,
             'choice_list'   => function (Options $options, $previousValue) use ($registry) {
                 return new AjaxEntityChoiceList(
-                    $registry->getManager($options['em']),
+                    $options['em'],
                     $options['class'],
                     $options['property'],
                     $options['query_builder'],
