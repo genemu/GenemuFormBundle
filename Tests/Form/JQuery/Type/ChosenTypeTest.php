@@ -32,11 +32,6 @@ class ChosenTypeTest extends TypeTestCase
     {
         $form = $this->factory->create(new ChosenType('country'));
 
-        $typeNames = array();
-        foreach ($form->getConfig()->getTypes() as $type) {
-            $typeNames[] = $type->getName();
-        }
-
-        $this->assertContains('country', $typeNames);
+        $this->assertContains('country', $form->getConfig()->getType()->getName());
     }
 }
