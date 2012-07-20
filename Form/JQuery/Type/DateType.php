@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\DateType as BaseDateType;
 
 /**
  * DateType
@@ -46,7 +47,20 @@ class DateType extends AbstractType
 
         $configs['dateFormat'] = 'yy-mm-dd';
         if ('single_text' === $options['widget']) {
-            $formatter = $form->getAttribute('formatter');
+            $dateFormat = is_int($options['format']) ? $options['format'] : BaseDateType::DEFAULT_FORMAT;
+            $timeFormat = \IntlDateFormatter::NONE;
+            $calendar   = \IntlDateFormatter::GREGORIAN;
+            $pattern    = is_string($options['format']) ? $options['format'] : null;
+
+            $formatter  = new \IntlDateFormatter(
+                \Locale::getDefault(),
+                $dateFormat,
+                $timeFormat,
+                'UTC',
+                $calendar,
+                $pattern
+            );
+            $formatter->setLenient(false);;
 
             $configs['dateFormat'] = $this->getJavascriptPattern($formatter);
         }
