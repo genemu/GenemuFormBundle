@@ -49,10 +49,10 @@ class DateType extends AbstractType
         if ('single_text' === $options['widget']) {
             $dateFormat = is_int($options['format']) ? $options['format'] : BaseDateType::DEFAULT_FORMAT;
             $timeFormat = \IntlDateFormatter::NONE;
-            $calendar = \IntlDateFormatter::GREGORIAN;
-            $pattern = is_string($options['format']) ? $options['format'] : null;
+            $calendar   = \IntlDateFormatter::GREGORIAN;
+            $pattern    = is_string($options['format']) ? $options['format'] : null;
 
-            $formatter = new \IntlDateFormatter(
+            $formatter  = new \IntlDateFormatter(
                 \Locale::getDefault(),
                 $dateFormat,
                 $timeFormat,
