@@ -38,7 +38,7 @@ class FileTypeTest extends TypeTestCase
         $form = $this->factory->create('genemu_jqueryfile');
         $view = $form->createView();
 
-        $configs = $view->getVar('configs');
+        $configs = $view->vars['configs'];
 
         $this->assertEquals('', $view->getVar('value'));
         $this->assertFalse($view->getVar('required'));
@@ -61,7 +61,7 @@ class FileTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $configs = $view->getVar('configs');
+        $configs = $view->vars['configs'];
 
         $this->assertFalse($view->getVar('required'));
         $this->assertEquals('/images', $configs['folder']);

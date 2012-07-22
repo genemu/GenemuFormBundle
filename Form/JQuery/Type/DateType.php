@@ -13,7 +13,7 @@ namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -39,7 +39,7 @@ class DateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $configs = $options['configs'];
         $years = $options['years'];
@@ -74,7 +74,7 @@ class DateType extends AbstractType
                     'dateFormat' => null,
                 ),
             ))
-            ->setFilters(array(
+            ->setNormalizers(array(
                 'configs' => function (Options $options, $value) use ($configs) {
                     $result = array_merge($configs, $value);
                     if ('single_text' !== $options['widget'] || isset($result['buttonImage'])) {

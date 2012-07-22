@@ -23,8 +23,6 @@ class TinymceTypeTest extends TypeTestCase
         $form = $this->factory->create('genemu_tinymce');
         $view = $form->createView();
 
-        $options = $view->getVar('options');
-
         $this->assertEquals(array(
             'language' => 'en'
         ), $view->getVar('configs'));
@@ -42,7 +40,7 @@ class TinymceTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $configs = $view->getVar('configs');
+        $configs = $view->vars['configs'];
 
         $this->assertEquals(array(
             'language' => 'en',

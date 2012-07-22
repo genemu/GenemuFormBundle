@@ -13,6 +13,7 @@ namespace Genemu\Bundle\FormBundle\Tests\Form\JQuery\Type;
 
 use Genemu\Bundle\FormBundle\Tests\Form\Type\TypeTestCase;
 use Genemu\Bundle\FormBundle\Form\JQuery\Type\AutocompleterType;
+use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
@@ -41,8 +42,8 @@ class AutocompleterTypeTest extends TypeTestCase
         $view = $form->createView();
 
         $this->assertEquals(array(
-            array('value' => 'foo', 'label' => 'Foo'),
-            array('value' => 'bar', 'label' => 'Bar')
+            new ChoiceView('foo', 'Foo'),
+            new ChoiceView('bar', 'Bar'),
         ), $view->getVar('choices'));
 
         $this->assertEquals(json_encode(array(
@@ -125,9 +126,9 @@ class AutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(array('foo'), $form->getData());
 
         $this->assertEquals(array(
-            array('label' => 'Foo', 'value' => 'foo'),
-            array('label' => 'Bar', 'value' => 'bar'),
-            array('label' => 'Ri', 'value' => 'ri'),
+            new ChoiceView('foo', 'Foo'),
+            new ChoiceView('bar', 'Bar'),
+            new ChoiceView('ri', 'Ri'),
         ), $view->getVar('choices'));
 
         $this->assertEquals(json_encode(array(

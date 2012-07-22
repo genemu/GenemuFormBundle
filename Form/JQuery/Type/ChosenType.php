@@ -12,7 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -34,12 +34,12 @@ class ChosenType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->setVar('no_results_text', $options['no_results_text']);
-        $view->setVar('allow_single_deselect', $options['allow_single_deselect']);
-        $view->setVar('disable_search_threshold', $options['disable_search_threshold']);
-        $view->setVar('full_block_name', 'genemu_jquerychosen');
+        $view->vars['no_results_text'] = $options['no_results_text'];
+        $view->vars['allow_single_deselect'] = $options['allow_single_deselect'];
+        $view->vars['disable_search_threshold'] = $options['disable_search_threshold'];
+        $view->vars['full_block_name'] = 'genemu_jquerychosen';
     }
 
     /**

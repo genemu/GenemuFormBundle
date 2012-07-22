@@ -18,8 +18,9 @@ use Genemu\Bundle\FormBundle\Form\JQuery\Type\AutocompleterType;
 use Genemu\Bundle\FormBundle\Tests\Form\Type\TypeTestCase;
 use Genemu\Bundle\FormBundle\Tests\Form\Extension\DoctrineOrmExtensionTest;
 use Genemu\Bundle\FormBundle\Tests\DoctrineOrmTestCase;
-
 use Genemu\Bundle\FormBundle\Tests\Fixtures\Entity\SingleIdentEntity;
+
+use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
@@ -82,7 +83,6 @@ class EntityAutocompleterTypeTest extends TypeTestCase
 
     public function testDefaultValue()
     {
-
         $entity1 = new SingleIdentEntity(1, 'Foo');
         $entity2 = new SingleIdentEntity(2, 'Bar');
 
@@ -98,8 +98,8 @@ class EntityAutocompleterTypeTest extends TypeTestCase
         $view = $form->createView();
 
         $this->assertEquals(array(
-            array('value' => 1, 'label' => 'Foo'),
-            array('value' => 2, 'label' => 'Bar'),
+            1 => new ChoiceView(1, 'Foo'),
+            2 => new ChoiceView(2, 'Bar'),
         ), $view->getVar('choices'));
 
         $this->assertNull($form->getData());
@@ -128,9 +128,9 @@ class EntityAutocompleterTypeTest extends TypeTestCase
         $view = $form->createView();
 
         $this->assertEquals(array(
-            array('value' => 1, 'label' => 'Foo'),
-            array('value' => 2, 'label' => 'Bar'),
-        ), $view->getVar('choices'));
+                1 => new ChoiceView(1, 'Foo'),
+                2 => new ChoiceView(2, 'Bar'),
+            ), $view->getVar('choices'));
 
         $this->assertNull($form->getData());
         $this->assertEquals('', $form->getClientData());
@@ -160,8 +160,8 @@ class EntityAutocompleterTypeTest extends TypeTestCase
         )));
 
         $this->assertEquals(array(
-            array('value' => 1, 'label' => 'Foo'),
-            array('value' => 2, 'label' => 'Bar'),
+            1 => new ChoiceView(1, 'Foo'),
+            2 => new ChoiceView(2, 'Bar'),
         ), $view->getVar('choices'));
 
         $this->assertEquals(json_encode(array(
@@ -199,8 +199,8 @@ class EntityAutocompleterTypeTest extends TypeTestCase
         )));
 
         $this->assertEquals(array(
-            array('value' => 1, 'label' => 'Foo'),
-            array('value' => 2, 'label' => 'Bar'),
+            1 => new ChoiceView(1, 'Foo'),
+            2 => new ChoiceView(2, 'Bar'),
         ), $view->getVar('choices'));
 
         $this->assertEquals(json_encode(array(
