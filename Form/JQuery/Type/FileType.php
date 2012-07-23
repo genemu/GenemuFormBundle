@@ -64,11 +64,12 @@ class FileType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view
-            ->setVar('type', 'hidden')
-            ->setVar('value', $form->getViewData())
-            ->setVar('multiple', $options['multiple'])
-            ->setVar('configs', $options['configs']);
+        $view->vars = array_replace($view->vars, array(
+            'type' => 'hidden',
+            'value' => $form->getViewData(),
+            'multiple' => $options['multiple'],
+            'configs' => $options['configs'],
+        ));
     }
 
     /**

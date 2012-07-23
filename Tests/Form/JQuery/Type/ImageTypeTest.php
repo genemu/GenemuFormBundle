@@ -40,8 +40,8 @@ class ImageTypeTest extends TypeTestCase
 
         $configs = $view->vars['configs'];
 
-        $this->assertEquals('', $view->getVar('value'));
-        $this->assertFalse($view->getVar('required'));
+        $this->assertEquals('', $view->vars['value']);
+        $this->assertFalse($view->vars['required']);
         $this->assertEquals(realpath(__DIR__.'/../../../Fixtures'), realpath($form->getAttribute('rootDir')));
 
         $this->assertEquals('/upload', $configs['folder']);
@@ -63,7 +63,7 @@ class ImageTypeTest extends TypeTestCase
 
         $configs = $view->vars['configs'];
 
-        $this->assertFalse($view->getVar('required'));
+        $this->assertFalse($view->vars['required']);
         $this->assertEquals('/images', $configs['folder']);
         $this->assertEquals('/swf/uploadify.swf', $configs['uploader']);
         $this->assertEquals('/js/uploadify/cancel.png', $configs['cancel_img']);
@@ -78,7 +78,7 @@ class ImageTypeTest extends TypeTestCase
         $view = $form->createView();
 
         $this->assertEquals('/upload/symfony.png', $form->getClientData());
-        $this->assertEquals('/upload/symfony.png', $view->getVar('value'));
+        $this->assertEquals('/upload/symfony.png', $view->vars['value']);
     }
 
     public function testImageValue()
@@ -93,6 +93,6 @@ class ImageTypeTest extends TypeTestCase
         $this->assertInstanceOf(self::IMAGE_CLASS, $data);
         $this->assertEquals(160, $data->getWidth());
         $this->assertEquals(134, $data->getHeight());
-        $this->assertEquals('/upload/symfony.png', $view->getVar('value'));
+        $this->assertEquals('/upload/symfony.png', $view->vars['value']);
     }
 }

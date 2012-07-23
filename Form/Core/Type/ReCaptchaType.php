@@ -68,7 +68,7 @@ class ReCaptchaType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->addVars(array(
+        $view->vars = array_replace($view->vars, array(
             'public_key' => $this->publicKey,
             'server' => $this->serverUrl,
             'configs' => $options['configs'],

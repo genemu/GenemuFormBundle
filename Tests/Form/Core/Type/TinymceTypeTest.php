@@ -25,7 +25,7 @@ class TinymceTypeTest extends TypeTestCase
 
         $this->assertEquals(array(
             'language' => 'en'
-        ), $view->getVar('configs'));
+        ), $view->vars['configs']);
     }
 
     public function testConfigs()
@@ -47,6 +47,6 @@ class TinymceTypeTest extends TypeTestCase
             'theme_advanced_toolbar_location' => 'top',
             'theme_advanced_toolbar_align' => 'left'
 
-        ), $view->getVar('configs'));
+        ), $view->vars['configs']);
     }
 }

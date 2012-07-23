@@ -62,7 +62,7 @@ class CaptchaType extends AbstractType
     {
         $captcha = $form->getAttribute('captcha');
 
-        $view->addVars(array(
+        $view->vars = array_replace($view->vars, array(
             'value' => '',
             'position' => $form->getAttribute('position'),
             'src' => $captcha->getBase64($form->getAttribute('format')),

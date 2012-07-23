@@ -42,7 +42,7 @@ class TextAutocompleterType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->addVars(array(
+        $view->vars = array_replace($view->vars, array(
             'suggestions' => $options['suggestions'],
             'multiple' => $options['multiple'],
             'route_name' => $options['route_name'],

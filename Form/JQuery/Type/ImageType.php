@@ -68,11 +68,12 @@ class ImageType extends AbstractType
 
             $value = $configs['folder'] . '/' . $data->getFilename();
 
-            $view
-                ->setVar('value', $value)
-                ->setVar('file', $value)
-                ->setVar('width', $data->getWidth())
-                ->setVar('height', $data->getHeight());
+            $view->vars = array_replace($view->vars, array(
+                'value' => $value,
+                'file' => $value,
+                'width' => $data->getWidth(),
+                'height' => $data->getHeight(),
+            ));
         }
 
         $view->vars['filters'] = $this->filters;
