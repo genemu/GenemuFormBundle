@@ -47,7 +47,7 @@ class ColorType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function getDefaultOptions(array $options)
     {
         return array(
             'widget'  => 'field',
@@ -58,7 +58,7 @@ class ColorType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getAllowedOptionValues()
+    public function getAllowedOptionValues(array $options)
     {
         return array(
             'widget' => array(

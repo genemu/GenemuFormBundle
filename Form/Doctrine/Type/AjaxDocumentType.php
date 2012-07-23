@@ -38,7 +38,7 @@ class AjaxDocumentType extends AbstractType
         /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function getDefaultOptions(array $options)
     {
         $registry = $this->registry;
 

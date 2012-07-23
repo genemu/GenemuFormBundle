@@ -44,7 +44,7 @@ class RatingType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function getDefaultOptions(array $options)
     {
         $options = array(
             'configs' => function (Options $options, $previousValue) {
