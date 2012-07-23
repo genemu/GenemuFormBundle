@@ -12,7 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Form;
 
 use Symfony\Bridge\Twig\Form\TwigRenderer;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormView;
 
 /**
  * Adds javascript and stylesheet sections support.
@@ -21,12 +21,12 @@ use Symfony\Component\Form\FormViewInterface;
  */
 class GenemuRenderer extends TwigRenderer
 {
-    public function renderJavascript(FormViewInterface $view)
+    public function renderJavascript(FormView $view)
     {
         return $this->renderSection($view, 'javascript');
     }
     
-    public function renderStylesheet(FormViewInterface $view)
+    public function renderStylesheet(FormView $view)
     {
         return $this->renderSection($view, 'stylesheet');
     }
