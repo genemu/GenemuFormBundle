@@ -16,11 +16,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * RatingType
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
+ * @author Tom Adam <tomadam@instantiate.co.uk>
  */
 class RatingType extends AbstractType
 {
@@ -37,30 +39,30 @@ class RatingType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-
         $view->vars['configs'] = $form->getAttribute('configs');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $options = array(
-            'configs' => function (Options $options, $previousValue) {
-                $configs = array();
-
-                if (null === $previousValue) {
-                    if (!isset($options['expanded']) || (isset($options['examded']) && !$options['expanded'])) {
-                        $configs['inputType'] = 'select';
-                    }
+        $resolver->setDefaults(array(
+            'number' => 5,
+            'configs' => array(),
+            'expanded' => true,
+            'choices' => function (Options $options) {
+                $choices = array();
+                for ($i=1; $i<=$options['number']; $i++) {
+                    $choices[$i] = null;
                 }
-
-                return $configs;
+                return $choices;
             }
-        );
+        ));
 
-        return $options;
+        $resolver->setAllowedValues(array(
+            'expanded' => array(true)
+        ));
     }
 
     /**
