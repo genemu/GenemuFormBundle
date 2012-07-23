@@ -13,6 +13,7 @@ namespace Genemu\Bundle\FormBundle\Tests\Form\JQuery\Type;
 
 use Genemu\Bundle\FormBundle\Tests\Form\Type\TypeTestCase;
 use Genemu\Bundle\FormBundle\Form\JQuery\Type\AutocompleterType;
+use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
@@ -24,11 +25,11 @@ class AutocompleterTypeTest extends TypeTestCase
         $form = $this->factory->create(new AutocompleterType('choice'));
         $view = $form->createView();
 
-        $this->assertEquals(array(), $view->getvar('choices'));
+        $this->assertEquals(array(), $view->vars['choices']);
         $this->assertEquals('', $form->getViewData());
-        $this->assertEquals('', $view->getVar('value'));
-        $this->assertEquals('', $view->getVar('autocompleter_value'));
-        $this->assertNull($view->getVar('route_name'));
+        $this->assertEquals('', $view->vars['value']);
+        $this->assertEquals('', $view->vars['autocompleter_value']);
+        $this->assertNull($view->vars['route_name']);
     }
 
     public function testValue()
@@ -41,9 +42,9 @@ class AutocompleterTypeTest extends TypeTestCase
         $view = $form->createView();
 
         $this->assertEquals(array(
-            array('value' => 'foo', 'label' => 'Foo'),
-            array('value' => 'bar', 'label' => 'Bar')
-        ), $view->getVar('choices'));
+            new ChoiceView('foo', 'Foo'),
+            new ChoiceView('bar', 'Bar'),
+        ), $view->vars['choices']);
 
         $this->assertEquals(json_encode(array(
             'value' => 'foo',
@@ -52,8 +53,8 @@ class AutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(json_encode(array(
             'value' => 'foo',
             'label' => 'Foo'
-        )), $view->getVar('value'));
-        $this->assertEquals('Foo', $view->getVar('autocompleter_value'));
+        )), $view->vars['value']);
+        $this->assertEquals('Foo', $view->vars['autocompleter_value']);
     }
 
     public function testValueWithAjax()
@@ -69,7 +70,7 @@ class AutocompleterTypeTest extends TypeTestCase
             'value' => 'bar'
         )));
 
-        $this->assertEquals(array(), $view->getVar('choices'));
+        $this->assertEquals(array(), $view->vars['choices']);
         $this->assertEquals(json_encode(array(
             'value' => 'bar',
             'label' => 'bar',
@@ -96,7 +97,7 @@ class AutocompleterTypeTest extends TypeTestCase
             array('label' => 'Ri', 'value' => 'ri')
         )));
 
-        $this->assertEquals(array(), $view->getVar('choices'));
+        $this->assertEquals(array(), $view->vars['choices']);
         $this->assertEquals(json_encode(array(
             array('value' => 'foo', 'label' => 'Foo'),
             array('value' => 'ri', 'label' => 'Ri'),
@@ -125,16 +126,16 @@ class AutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(array('foo'), $form->getData());
 
         $this->assertEquals(array(
-            array('label' => 'Foo', 'value' => 'foo'),
-            array('label' => 'Bar', 'value' => 'bar'),
-            array('label' => 'Ri', 'value' => 'ri'),
-        ), $view->getVar('choices'));
+            new ChoiceView('foo', 'Foo'),
+            new ChoiceView('bar', 'Bar'),
+            new ChoiceView('ri', 'Ri'),
+        ), $view->vars['choices']);
 
         $this->assertEquals(json_encode(array(
             array('value' => 'foo', 'label' => 'Foo'),
             array('value' => 'bar', 'label' => 'Bar')
-        )), $view->getVar('value'));
+        )), $view->vars['value']);
 
-        $this->assertEquals('Foo, Bar, ', $view->getVar('autocompleter_value'));
+        $this->assertEquals('Foo, Bar, ', $view->vars['autocompleter_value']);
     }
 }

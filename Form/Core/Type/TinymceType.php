@@ -13,7 +13,7 @@ namespace Genemu\Bundle\FormBundle\Form\Core\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -39,9 +39,9 @@ class TinymceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->setVar('configs', $options['configs']);
+        $view->vars['configs'] = $options['configs'];
     }
 
     /**
@@ -63,7 +63,7 @@ class TinymceType extends AbstractType
                 'configs' => 'array',
                 'theme' => 'string',
             ))
-            ->setFilters(array(
+            ->setNormalizers(array(
                 'configs' => function (Options $options, $value) use ($configs) {
                     return array_merge($configs, $value);
                 },
