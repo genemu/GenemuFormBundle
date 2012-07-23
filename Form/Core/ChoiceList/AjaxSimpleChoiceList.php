@@ -47,8 +47,8 @@ class AjaxSimpleChoiceList extends SimpleChoiceList
         $array = array();
         foreach ($choices as $choice) {
             $array[] = array(
-                'value' => $choice->getValue(),
-                'label' => $choice->getLabel()
+                'value' => $choice->value,
+                'label' => $choice->label
             );
         }
 

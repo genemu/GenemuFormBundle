@@ -24,10 +24,10 @@ class TextAutocompleterTypeTest extends TypeTestCase
         $form = $this->factory->create(new TextAutocompleterType());
         $view = $form->createView();
 
-        $this->assertEquals(array(), $view->getvar('suggestions'));
+        $this->assertEquals(array(), $view->vars['suggestions']);
         $this->assertEquals('', $form->getViewData());
-        $this->assertEquals('', $view->getVar('value'));
-        $this->assertNull($view->getVar('route_name'));
+        $this->assertEquals('', $view->vars['value']);
+        $this->assertNull($view->vars['route_name']);
     }
 
     public function testValue()
@@ -39,9 +39,9 @@ class TextAutocompleterTypeTest extends TypeTestCase
         $form->setData('Foo');
         $view = $form->createView();
 
-        $this->assertEquals(array('Foo', 'Bar'), $view->getVar('suggestions'));
+        $this->assertEquals(array('Foo', 'Bar'), $view->vars['suggestions']);
         $this->assertEquals('Foo', $form->getViewData());
-        $this->assertEquals('Foo', $view->getVar('value'));
+        $this->assertEquals('Foo', $view->vars['value']);
     }
 
     public function testValueWithAjax()
@@ -54,7 +54,7 @@ class TextAutocompleterTypeTest extends TypeTestCase
         $view = $form->createView();
         $form->bind('Bar');
 
-        $this->assertEquals(array(), $view->getVar('suggestions'));
+        $this->assertEquals(array(), $view->vars['suggestions']);
         $this->assertEquals('Bar', $form->getViewData());
 
         $this->assertEquals('Bar', $form->getData());
@@ -71,7 +71,7 @@ class TextAutocompleterTypeTest extends TypeTestCase
         $view = $form->createView();
         $form->bind(array('Foo', 'Ri'));
 
-        $this->assertEquals(array(), $view->getVar('suggestions'));
+        $this->assertEquals(array(), $view->vars['suggestions']);
         $this->assertEquals('Foo, Ri, ', $form->getViewData());
 
         $this->assertEquals(array('Foo', 'Ri'), $form->getData());
@@ -92,8 +92,8 @@ class TextAutocompleterTypeTest extends TypeTestCase
 
         $this->assertEquals(array('Foo'), $form->getData());
 
-        $this->assertEquals(array('Foo', 'Bar', 'Ri'), $view->getVar('suggestions'));
+        $this->assertEquals(array('Foo', 'Bar', 'Ri'), $view->vars['suggestions']);
 
-        $this->assertEquals('Foo, Bar, ', $view->getVar('value'));
+        $this->assertEquals('Foo, Bar, ', $view->vars['value']);
     }
 }

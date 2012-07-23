@@ -12,7 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Form\Core\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormValidatorInterface;
@@ -66,9 +66,9 @@ class ReCaptchaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->addVars(array(
+        $view->vars = array_replace($view->vars, array(
             'public_key' => $this->publicKey,
             'server' => $this->serverUrl,
             'configs' => $options['configs'],
@@ -94,7 +94,7 @@ class ReCaptchaType extends AbstractType
                 'configs' => 'array',
                 'validator' => 'array',
             ))
-            ->setFilters(array(
+            ->setNormalizers(array(
                 'configs' => function (Options $options, $value) use ($configs) {
                     return array_merge($configs, $value);
                 },

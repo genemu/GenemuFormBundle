@@ -13,7 +13,7 @@ namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\OptionsResolver\Options;
@@ -62,13 +62,14 @@ class FileType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view
-            ->setVar('type', 'hidden')
-            ->setVar('value', $form->getViewData())
-            ->setVar('multiple', $options['multiple'])
-            ->setVar('configs', $options['configs']);
+        $view->vars = array_replace($view->vars, array(
+            'type' => 'hidden',
+            'value' => $form->getViewData(),
+            'multiple' => $options['multiple'],
+            'configs' => $options['configs'],
+        ));
     }
 
     /**
@@ -84,7 +85,7 @@ class FileType extends AbstractType
                 'multiple' => false,
                 'configs' => array(),
             ))
-            ->setFilters(array(
+            ->setNormalizers(array(
                 'configs' => function (Options $options, $value) use ($configs) {
                     if (!$options['multiple']) {
                         $value['multi'] = false;

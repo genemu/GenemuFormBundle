@@ -25,7 +25,7 @@ class ChosenTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $this->assertEquals(true, $view->getVar('allow_single_deselect'));
+        $this->assertEquals(true, $view->vars['allow_single_deselect']);
     }
 
     public function testConstructorAffectsParentType()

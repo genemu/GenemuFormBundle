@@ -25,13 +25,13 @@ class DateTypeTest extends TypeTestCase
 
         $date = new \DateTime();
 
-        $this->assertEquals('en', $view->getVar('culture'));
+        $this->assertEquals('en', $view->vars['culture']);
         $this->assertEquals(array(
             'showOn' => 'button',
             'dateFormat' => 'yy-mm-dd'
-        ), $view->getVar('configs'));
-        $this->assertEquals($date->format('Y') - 5, $view->getVar('min_year'));
-        $this->assertEquals($date->format('Y') + 5, $view->getVar('max_year'));
+        ), $view->vars['configs']);
+        $this->assertEquals($date->format('Y') - 5, $view->vars['min_year']);
+        $this->assertEquals($date->format('Y') + 5, $view->vars['max_year']);
     }
 
     public function testSingleTextFormatShortConfigs()
@@ -49,15 +49,15 @@ class DateTypeTest extends TypeTestCase
 
         $date = new \DateTime();
 
-        $this->assertEquals('en', $view->getVar('culture'));
+        $this->assertEquals('en', $view->vars['culture']);
         $this->assertEquals(array(
             'buttonImage' => '/images/date_button.png',
             'buttonImageOnly' => true,
             'showOn' => 'button',
             'dateFormat' => 'm/d/y'
-        ), $view->getVar('configs'));
-        $this->assertEquals($date->format('Y') - 5, $view->getVar('min_year'));
-        $this->assertEquals($date->format('Y') + 5, $view->getVar('max_year'));
+        ), $view->vars['configs']);
+        $this->assertEquals($date->format('Y') - 5, $view->vars['min_year']);
+        $this->assertEquals($date->format('Y') + 5, $view->vars['max_year']);
     }
 
     public function testSingleTextFormatMediumConfigs()
@@ -69,7 +69,7 @@ class DateTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $this->assertEquals(array('dateFormat' => 'M d, yy'), $view->getVar('configs'));
+        $this->assertEquals(array('dateFormat' => 'M d, yy'), $view->vars['configs']);
     }
 
     public function testSingleTextFormatLongConfigs()
@@ -81,7 +81,7 @@ class DateTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $this->assertEquals(array('dateFormat' => 'MM d, yy'), $view->getVar('configs'));
+        $this->assertEquals(array('dateFormat' => 'MM d, yy'), $view->vars['configs']);
     }
 
     public function testSingleTextFormatFullConfigs()
@@ -93,7 +93,7 @@ class DateTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $this->assertEquals(array('dateFormat' => 'DD, MM d, yy'), $view->getVar('configs'));
+        $this->assertEquals(array('dateFormat' => 'DD, MM d, yy'), $view->vars['configs']);
     }
 
     public function testSingleTextRangeYearsConfigs()
@@ -107,7 +107,7 @@ class DateTypeTest extends TypeTestCase
 
         $date = new \DateTime();
 
-        $this->assertEquals($date->format('Y') - 10, $view->getVar('min_year'));
-        $this->assertEquals($date->format('Y') + 10, $view->getVar('max_year'));
+        $this->assertEquals($date->format('Y') - 10, $view->vars['min_year']);
+        $this->assertEquals($date->format('Y') + 10, $view->vars['max_year']);
     }
 }

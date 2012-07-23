@@ -34,9 +34,9 @@ class CaptchaTypeTest extends TypeTestCase
         $view = $form->createView();
         $captcha = $form->getAttribute('captcha');
 
-        $this->assertEquals(100, $view->getVar('width'));
-        $this->assertEquals(30, $view->getVar('height'));
-        $this->assertStringStartsWith('data:image/png;base64,', $view->getVar('src'));
+        $this->assertEquals(100, $view->vars['width']);
+        $this->assertEquals(30, $view->vars['height']);
+        $this->assertStringStartsWith('data:image/png;base64,', $view->vars['src']);
 
         $this->assertEquals(4, $captcha->getLength());
     }
@@ -53,9 +53,9 @@ class CaptchaTypeTest extends TypeTestCase
         $view = $form->createView();
         $captcha = $form->getAttribute('captcha');
 
-        $this->assertEquals(200, $view->getVar('width'));
+        $this->assertEquals(200, $view->vars['width']);
         $this->assertEquals(md5('1111s$cr$t'), $captcha->getCode());
-        $this->assertStringStartsWith('data:image/gif;base64,', $view->getVar('src'));
+        $this->assertStringStartsWith('data:image/gif;base64,', $view->vars['src']);
         $this->assertEquals(4, $captcha->getLength());
     }
 
@@ -83,7 +83,7 @@ class CaptchaTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $this->assertStringStartsWith('data:image/jpeg;base64,', $view->getVar('src'));
+        $this->assertStringStartsWith('data:image/jpeg;base64,', $view->vars['src']);
     }
 
     public function testCodePasses()
