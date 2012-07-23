@@ -60,8 +60,10 @@ class RatingType extends AbstractType
             }
         ));
 
-        $resolver->setAllowedValues(array(
-            'expanded' => array(true)
+        $resolver->setNormalizers(array(
+            'expanded' => function (Options $options, $value) {
+                return true;
+            }
         ));
     }
 
