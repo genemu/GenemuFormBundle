@@ -74,7 +74,7 @@ class CaptchaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function getDefaultOptions(array $options)
     {
         return array_merge(array(
             'attr' => array(

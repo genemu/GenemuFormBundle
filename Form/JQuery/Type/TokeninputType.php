@@ -120,7 +120,7 @@ class TokeninputType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function getDefaultOptions(array $options)
     {
         $options = array(
             'widget' => 'choice',
@@ -147,7 +147,7 @@ class TokeninputType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getAllowedOptionValues()
+    public function getAllowedOptionValues(array $options)
     {
         return array(
             'widget' => array(
