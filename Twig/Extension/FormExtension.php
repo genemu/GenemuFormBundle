@@ -26,8 +26,8 @@ class FormExtension extends BaseFormExtension
     public function getFunctions()
     {
         return array(
-            'form_javascript' => new \Twig_Function_Method($this, 'renderer->renderJavascript', array('is_safe' => array('html'))),
-            'form_stylesheet' => new \Twig_Function_Method($this, 'renderer->renderStylesheet', array('is_safe' => array('html'))),
+            'form_javascript' => new \Twig_Function_Node('Symfony\Bridge\Twig\Node\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
+            'form_stylesheet' => new \Twig_Function_Node('Symfony\Bridge\Twig\Node\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
         );
     }
 
