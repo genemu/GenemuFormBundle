@@ -13,6 +13,7 @@ namespace Genemu\Bundle\FormBundle\Form\Doctrine\ChoiceList;
 
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
 use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Bridge\Doctrine\Form\ChoiceList\ORMQueryBuilderLoader;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -47,7 +48,9 @@ class AjaxEntityChoiceList extends EntityChoiceList
             $this->propertyPath = new PropertyPath($property);
         }
 
-        parent::__construct($em, $class, $property, $qb, $choices, $groupBy);
+        $loader = new ORMQueryBuilderLoader($qb, $em, $class);
+
+        parent::__construct($em, $class, $property, $loader, $choices, $groupBy);
     }
 
     /**
