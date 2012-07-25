@@ -12,7 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -34,11 +34,11 @@ class Select2Type extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->setVar('placeholder', $options['placeholder']);
-        $view->setVar('allowClear', $options['allowClear']);
-        $view->setVar('minimumInputLength', $options['minimumInputLength']);
+        $view->vars['placeholder']        = $options['placeholder'];
+        $view->vars['allowClear']         = $options['allowClear'];
+        $view->vars['minimumInputLength'] = $options['minimumInputLength'];
     }
 
     /**
@@ -47,10 +47,10 @@ class Select2Type extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'placeholder' => '',
-            'allowClear'  => 'true',
+            'placeholder'        => '',
+            'allowClear'         => 'true',
             'minimumInputLength' => 0,
-    ));
+        ));
     }
 
     /**
@@ -66,6 +66,6 @@ class Select2Type extends AbstractType
      */
     public function getName()
     {
-        return 'genemu_jqueryselect2';
+        return 'genemu_jqueryselect2_' . $this->widget;
     }
 }
