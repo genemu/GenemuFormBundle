@@ -68,8 +68,12 @@ class AutocompleterType extends AbstractType
             'autocompleter_value' => $value,
             'route_name' => $options['route_name'],
             'free_values' => $options['free_values'],
-            'full_block_name' => 'genemu_jqueryautocompleter',
         ));
+        
+        // Adds a generic block prefix before the type and unique block prefix
+        // (used for javascripts and stylesheet blocks)
+        $genericBlockPrefix = 'genemu_jqueryautocompleter';
+        array_splice($view->vars['block_prefixes'], count($view->vars['block_prefixes']) - 2, 0, $genericBlockPrefix);
     }
 
     /**
