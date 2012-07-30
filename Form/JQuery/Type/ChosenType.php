@@ -39,11 +39,14 @@ class ChosenType extends AbstractType
         $view->vars['no_results_text'] = $options['no_results_text'];
         $view->vars['allow_single_deselect'] = $options['allow_single_deselect'];
         $view->vars['disable_search_threshold'] = $options['disable_search_threshold'];
-        
-        // Adds a generic block prefix before the type and unique block prefix
-        // (used for javascripts and stylesheet blocks)
-        $genericBlockPrefix = 'genemu_jquerychosen';
-        array_splice($view->vars['block_prefixes'], count($view->vars['block_prefixes']) - 2, 0, $genericBlockPrefix);
+
+        // Adds a custom block prefix
+        array_splice(
+            $view->vars['block_prefixes'],
+            array_search($this->getName(), $view->vars['block_prefixes']),
+            0,
+            'genemu_jquerychosen'
+        );
     }
 
     /**
