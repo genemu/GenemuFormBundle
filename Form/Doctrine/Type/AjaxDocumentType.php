@@ -38,7 +38,7 @@ class AjaxDocumentType extends AbstractType
         /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function getDefaultOptions(array $options)
     {
         $registry = $this->registry;
 
@@ -57,9 +57,9 @@ class AjaxDocumentType extends AbstractType
             'choices' => null,
             'group_by' => null,
             'ajax' => false,
-            'choice_list' => function (Options $options, $previousValue) use ($registry) {
+            'choice_list' => function (Options $options, $previousValue) {
                 return new AjaxEntityChoiceList(
-                    $registry->getManager($options['em']),
+                    $options['em'],
                     $options['class'],
                     $options['property'],
                     $options['query_builder'],

@@ -12,7 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 
 use Genemu\Bundle\FormBundle\Gd\File\Image;
@@ -45,7 +45,7 @@ class ImageType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $configs = $options['configs'];
         $data = $form->getClientData();
@@ -68,20 +68,21 @@ class ImageType extends AbstractType
 
             $value = $configs['folder'] . '/' . $data->getFilename();
 
-            $view
-                ->setVar('value', $value)
-                ->setVar('file', $value)
-                ->setVar('width', $data->getWidth())
-                ->setVar('height', $data->getHeight());
+            $view->vars = array_replace($view->vars, array(
+                'value' => $value,
+                'file' => $value,
+                'width' => $data->getWidth(),
+                'height' => $data->getHeight(),
+            ));
         }
 
-        $view->setVar('filters', $this->filters);
+        $view->vars['filters'] = $this->filters;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function getDefaultOptions(array $options)
     {
         return array(
             'configs' => array(

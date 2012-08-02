@@ -17,8 +17,7 @@ genemu_form:
 ``` yml
 # app/config/routing.yml
 genemu_base64:
-    resource: "@GenemuFormBundle/Controller/Base64Controller.php"
-    type:     annotation
+    resource: "@GenemuFormBundle/Resources/config/routing/base64.xml"
 ```
 
 * also your captcha should be small, because IE supports only 2083 characters in requests (otherwise they are just skipped).

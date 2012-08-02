@@ -13,6 +13,7 @@ namespace Genemu\Bundle\FormBundle\Form\Doctrine\ChoiceList;
 
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
 use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Bridge\Doctrine\Form\ChoiceList\ORMQueryBuilderLoader;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -47,7 +48,9 @@ class AjaxEntityChoiceList extends EntityChoiceList
             $this->propertyPath = new PropertyPath($property);
         }
 
-        parent::__construct($em, $class, $property, $qb, $choices, $groupBy);
+        $loader = new ORMQueryBuilderLoader($qb, $em, $class);
+
+        parent::__construct($em, $class, $property, $loader, $choices, $groupBy);
     }
 
     /**
@@ -74,8 +77,8 @@ class AjaxEntityChoiceList extends EntityChoiceList
         $array = array();
         foreach ($choices as $choice) {
             $array[] = array(
-                'value' => $choice->getValue(),
-                'label' => $choice->getLabel()
+                'value' => $choice->value,
+                'label' => $choice->label
             );
         }
 
@@ -92,6 +95,18 @@ class AjaxEntityChoiceList extends EntityChoiceList
         }
 
         return parent::getRemainingViews();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPreferredViews()
+    {
+        if ($this->ajax) {
+            return array();
+        }
+
+        return parent::getPreferredViews();
     }
 
     /**

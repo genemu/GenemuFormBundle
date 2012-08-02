@@ -23,9 +23,9 @@ class ReCaptchaTypeTest extends TypeTestCase
         $form = $this->factory->create('genemu_recaptcha');
         $view = $form->createView();
 
-        $this->assertEquals('publicKey', $view->getVar('public_key'));
-        $this->assertEquals('http://api.recaptcha.net', $view->getVar('server'));
-        $this->assertEquals(array('lang' => 'en'), $view->getVar('configs'));
+        $this->assertEquals('publicKey', $view->vars['public_key']);
+        $this->assertEquals('http://api.recaptcha.net', $view->vars['server']);
+        $this->assertEquals(array('lang' => 'en'), $view->vars['configs']);
 
         $this->assertEquals(array(
             'host' => 'api-verify.recaptcha.net',
@@ -45,8 +45,8 @@ class ReCaptchaTypeTest extends TypeTestCase
         ));
         $view = $form->createView();
 
-        $this->assertEquals('publicKey', $view->getVar('public_key'));
-        $this->assertEquals(array('theme' => 'blackglass', 'lang' => 'en'), $view->getVar('configs'));
+        $this->assertEquals('publicKey', $view->vars['public_key']);
+        $this->assertEquals(array('theme' => 'blackglass', 'lang' => 'en'), $view->vars['configs']);
 
         $this->assertEquals(array(
             'host' => 'api-verify.recaptcha.net',

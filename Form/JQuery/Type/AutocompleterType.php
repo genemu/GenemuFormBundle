@@ -13,7 +13,7 @@ namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -49,7 +49,7 @@ class AutocompleterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $datas = json_decode($form->getViewData(), true);
         $value = '';
@@ -64,21 +64,19 @@ class AutocompleterType extends AbstractType
             }
         }
 
-        $choices = array();
+        $view->vars = array_replace($view->vars, array(
+            'autocompleter_value' => $value,
+            'route_name' => $options['route_name'],
+            'free_values' => $options['free_values'],
+        ));
 
-        foreach ($view->getVar('choices') as $choice) {
-            $choices[] = array(
-                'value' => $choice->getValue(),
-                'label' => $choice->getLabel()
-            );
-        }
-
-        $view
-            ->setVar('choices', $choices)
-            ->setVar('autocompleter_value', $value)
-            ->setVar('route_name', $options['route_name'])
-            ->setVar('free_values', $options['free_values'])
-        ;
+        // Adds a custom block prefix
+        array_splice(
+            $view->vars['block_prefixes'],
+            array_search($this->getName(), $view->vars['block_prefixes']),
+            0,
+            'genemu_jqueryautocompleter'
+        );
     }
 
     /**
@@ -132,6 +130,6 @@ class AutocompleterType extends AbstractType
      */
     public function getName()
     {
-        return 'genemu_jqueryautocompleter';
+        return 'genemu_jqueryautocompleter_' . $this->widget;
     }
 }

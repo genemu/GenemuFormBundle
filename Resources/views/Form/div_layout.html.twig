@@ -106,15 +106,11 @@
 
 {% block genemu_jqueryrating_widget %}
 {% spaceless %}
-    {% if expanded %}
-        <div {{ block("widget_container_attributes") }}>
-        {% for child in form %}
-            {{ form_widget(child) }}
-        {% endfor %}
-        </div>
-    {% else %}
-        {{ block("choice_widget") }}
-    {% endif %}
+    <div {{ block("widget_container_attributes") }}>
+    {% for child in form %}
+        {{ form_widget(child) }}
+    {% endfor %}
+    </div>
 {% endspaceless %}
 {% endblock genemu_jqueryrating_widget %}
 

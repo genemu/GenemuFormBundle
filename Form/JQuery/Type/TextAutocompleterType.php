@@ -11,35 +11,42 @@
 
 namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 
+use Genemu\Bundle\FormBundle\Form\JQuery\DataTransformer\ArrayToStringTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * RatingType
- *
- * @author Olivier Chauvel <olivier@generation-multiple.com>
- * @author Tom Adam <tomadam@instantiate.co.uk>
+ * @author Bilal Amarni <bilal.amarni@gmail.com>
  */
-class RatingType extends AbstractType
+class TextAutocompleterType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->setAttribute('configs', $options['configs']);
+        if ($options['multiple']) {
+            $builder
+                ->resetViewTransformers()
+                ->addViewTransformer(new ArrayToStringTransformer())
+            ;
+        }
     }
-
+    
     /**
      * {@inheritdoc}
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['configs'] = $form->getAttribute('configs');
+        $view->vars = array_replace($view->vars, array(
+            'suggestions' => $options['suggestions'],
+            'multiple' => $options['multiple'],
+            'route_name' => $options['route_name'],
+        ));
     }
 
     /**
@@ -48,22 +55,9 @@ class RatingType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'number' => 5,
-            'configs' => array(),
-            'expanded' => true,
-            'choices' => function (Options $options) {
-                $choices = array();
-                for ($i=1; $i<=$options['number']; $i++) {
-                    $choices[$i] = null;
-                }
-                return $choices;
-            }
-        ));
-
-        $resolver->setNormalizers(array(
-            'expanded' => function (Options $options, $value) {
-                return true;
-            }
+            'suggestions' => array(),
+            'route_name' => null,
+            'multiple' => false,
         ));
     }
 
@@ -72,7 +66,7 @@ class RatingType extends AbstractType
      */
     public function getParent()
     {
-        return 'choice';
+        return 'text';
     }
 
     /**
@@ -80,6 +74,6 @@ class RatingType extends AbstractType
      */
     public function getName()
     {
-        return 'genemu_jqueryrating';
+        return 'genemu_jqueryautocompleter_text';
     }
 }

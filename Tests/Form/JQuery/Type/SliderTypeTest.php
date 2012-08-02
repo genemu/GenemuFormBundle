@@ -25,7 +25,7 @@ class SliderTypeTest extends TypeTestCase
         $form = $this->factory->create('genemu_jqueryslider');
         $view = $form->createView();
 
-        $configs = $view->getVar('configs');
+        $configs = $view->vars['configs'];
 
         $this->assertEquals(0, $configs['min']);
         $this->assertEquals(100, $configs['max']);
@@ -44,7 +44,7 @@ class SliderTypeTest extends TypeTestCase
 
         $view = $form->createView();
 
-        $configs = $view->getVar('configs');
+        $configs = $view->vars['configs'];
 
         $this->assertEquals(10, $configs['min']);
         $this->assertEquals(1000, $configs['max']);

@@ -100,7 +100,7 @@ class AjaxModelChoiceList extends ModelChoiceList
             }
         } else {
             foreach ($this->getChoices() as $choice) {
-                if (in_array($choice['value'], $ids)) {
+                if (in_array($choice->value, $ids)) {
                     $intersect[] = $choice;
                 }
             }

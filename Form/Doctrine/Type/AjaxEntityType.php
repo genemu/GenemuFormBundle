@@ -40,7 +40,7 @@ class AjaxEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function getDefaultOptions(array $options)
     {
         $registry = $this->registry;
 
@@ -54,7 +54,7 @@ class AjaxEntityType extends AbstractType
             'ajax'          => false,
             'choice_list'   => function (Options $options, $previousValue) use ($registry) {
                 return new AjaxEntityChoiceList(
-                    $registry->getManager($options['em']),
+                    $options['em'],
                     $options['class'],
                     $options['property'],
                     $options['query_builder'],

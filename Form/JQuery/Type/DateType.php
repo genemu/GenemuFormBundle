@@ -13,9 +13,10 @@ namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\DateType as BaseDateType;
 
 /**
  * DateType
@@ -35,27 +36,41 @@ class DateType extends AbstractType
     {
         $this->options = $options;
     }
-
+    
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $configs = $options['configs'];
         $years = $options['years'];
 
         $configs['dateFormat'] = 'yy-mm-dd';
         if ('single_text' === $options['widget']) {
-            $formatter = $form->getAttribute('formatter');
+            $dateFormat = is_int($options['format']) ? $options['format'] : BaseDateType::DEFAULT_FORMAT;
+            $timeFormat = \IntlDateFormatter::NONE;
+            $calendar   = \IntlDateFormatter::GREGORIAN;
+            $pattern    = is_string($options['format']) ? $options['format'] : null;
+
+            $formatter  = new \IntlDateFormatter(
+                \Locale::getDefault(),
+                $dateFormat,
+                $timeFormat,
+                'UTC',
+                $calendar,
+                $pattern
+            );
+            $formatter->setLenient(false);
 
             $configs['dateFormat'] = $this->getJavascriptPattern($formatter);
         }
 
-        $view
-            ->setVar('min_year', min($years))
-            ->setVar('max_year', max($years))
-            ->setVar('configs', $configs)
-            ->setVar('culture', $options['culture']);
+        $view->vars = array_replace($view->vars, array(
+            'min_year' => min($years),
+            'max_year' => max($years),
+            'configs' => $configs,
+            'culture' => $options['culture'],
+        ));
     }
 
     /**
@@ -74,7 +89,7 @@ class DateType extends AbstractType
                     'dateFormat' => null,
                 ),
             ))
-            ->setFilters(array(
+            ->setNormalizers(array(
                 'configs' => function (Options $options, $value) use ($configs) {
                     $result = array_merge($configs, $value);
                     if ('single_text' !== $options['widget'] || isset($result['buttonImage'])) {

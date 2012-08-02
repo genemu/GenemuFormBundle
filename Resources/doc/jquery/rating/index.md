@@ -1,6 +1,10 @@
-# JQueryRating Field ([view demo](http://orkans-tmp.22web.net/star_rating/))
+# JQueryRating Field ([view demo](http://www.fyneworks.com/jquery/star-rating/#tab-Testing))
 
 ![Star rating](https://github.com/genemu/GenemuFormBundle/raw/master/Resources/doc/jquery/rating/images/default.png)
+
+## Installation:
+You need to download the resources manually from [here](http://www.fyneworks.com/jquery/star-rating/#tab-Download). Add
+the CSS and JS in to your template, and make sure the image paths are correct.
 
 ## Default Usage:
 
@@ -12,9 +16,9 @@ public function buildForm(FormBuilder $builder, array $options)
     $builder
         // ...
         ->add('rating', 'genemu_jqueryrating')
-        ->add('single_rating', 'genemu_jqueryrating', array(
+        ->add('readonly_rating', 'genemu_jqueryrating', array(
             'configs' => array(
-                'oneVoteOnly' => true
+                'readOnly' => true
             )
         ))
 }

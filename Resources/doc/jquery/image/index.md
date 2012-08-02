@@ -14,8 +14,7 @@ genemu_form:
 
 ``` yml
 genemu_image:
-    resource: "@GenemuFormBundle/Controller/ImageController.php"
-    type:     annotation
+    resource: "@GenemuFormBundle/Resources/config/routing/image.xml"
 ```
 
 ## Default Usage:

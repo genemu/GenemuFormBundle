@@ -90,13 +90,13 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(array(
             array('value' => 'azerty1', 'label' => 'Foo'),
             array('value' => 'azerty2', 'label' => 'Bar')
-        ), $view->getVar('choices'));
+        ), $view->vars['choices']);
 
         $this->assertNull($form->getData());
         $this->assertEquals('', $form->getClientData());
 
-        $this->assertNull($view->getVar('route_name'));
-        $this->assertEquals('', $view->getVar('autocompleter_value'));
+        $this->assertNull($view->vars['route_name']);
+        $this->assertEquals('', $view->vars['autocompleter_value']);
     }
 
     public function testMultipleValue()
@@ -119,13 +119,13 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(array(
             array('value' => 1, 'label' => 'Foo'),
             array('value' => 2, 'label' => 'Bar')
-        ), $view->getVar('choices'));
+        ), $view->vars['choices']);
 
         $this->assertNull($form->getData());
         $this->assertEquals('', $form->getClientData());
 
-        $this->assertNull($view->getVar('route_name'));
-        $this->assertEquals('', $view->getVar('autocompleter_value'));
+        $this->assertNull($view->vars['route_name']);
+        $this->assertEquals('', $view->vars['autocompleter_value']);
     }
 
     public function testValueData()
@@ -150,7 +150,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(array(
             array('value' => 'azerty1', 'label' => 'Foo'),
             array('value' => 2, 'label' => 'Bar'),
-        ), $view->getVar('choices'));
+        ), $view->vars['choices']);
 
         $this->assertEquals(json_encode(array(
             'value' => '2',
@@ -158,8 +158,8 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         )), $form->getClientData());
         $this->assertSame($document2, $form->getData());
 
-        $this->assertNull($view->getVar('route_name'));
-        $this->assertEquals('Foo', $view->getVar('autocompleter_value'));
+        $this->assertNull($view->vars['route_name']);
+        $this->assertEquals('Foo', $view->vars['autocompleter_value']);
     }
 
     public function testValueMultipleData()
@@ -188,7 +188,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(array(
             array('value' => 1, 'label' => 'Foo'),
             array('value' => 2, 'label' => 'Bar'),
-        ), $view->getVar('choices'));
+        ), $view->vars['choices']);
 
         $this->assertEquals(json_encode(array(
             array('value' => '1', 'label' => 'Foo'),
@@ -196,7 +196,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         )), $form->getClientData());
         $this->assertSame($existing, $form->getData());
 
-        $this->assertEquals('Foo, ', $view->getVar('autocompleter_value'));
+        $this->assertEquals('Foo, ', $view->vars['autocompleter_value']);
     }
 
     public function testValueAjaxData()
@@ -218,16 +218,16 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
 
         $form->bind(json_encode(array('value' => 2, 'label' => 'Bar')));
 
-        $this->assertEquals('genemu_ajax', $view->getVar('route_name'));
+        $this->assertEquals('genemu_ajax', $view->vars['route_name']);
 
-        $this->assertEquals(array(), $view->getVar('choices'));
+        $this->assertEquals(array(), $view->vars['choices']);
         $this->assertEquals(json_encode(array(
             'value' => '2',
             'label' => 'Bar',
         )), $form->getClientData());
         $this->assertSame($document2, $form->getData());
 
-        $this->assertEquals('Foo', $view->getVar('autocompleter_value'));
+        $this->assertEquals('Foo', $view->vars['autocompleter_value']);
     }
 
     public function testValueAjaxMultipleData()
@@ -253,16 +253,16 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
             array('value' => 2, 'label' => 'Bar')
         )));
 
-        $this->assertEquals('genemu_ajax', $view->getVar('route_name'));
+        $this->assertEquals('genemu_ajax', $view->vars['route_name']);
 
-        $this->assertEquals(array(), $view->getVar('choices'));
+        $this->assertEquals(array(), $view->vars['choices']);
 
         $this->assertEquals(json_encode(array(
             array('value' => '2', 'label' => 'Bar')
         )), $form->getClientData());
 
         $this->assertSame($existing, $form->getData());
-        $this->assertEquals('Foo, Bar, ', $view->getVar('autocompleter_value'));
+        $this->assertEquals('Foo, Bar, ', $view->vars['autocompleter_value']);
     }
 
     protected function createRegistryMock($name, $dm)
