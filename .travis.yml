@@ -16,4 +16,4 @@ before_script:
     - php composer.phar install --dev
 
 notifications:
-  email: travis-ci@generation-multiple.com
+  email: bilal.amarni@gmail.com
