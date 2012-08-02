@@ -8,7 +8,12 @@ env:
     - SYMFONY_VERSION=origin/master
 
 before_script:
-    - php -r "var_dump(gd_info());"
+    - sh -c "psql -c 'create database test;' -U postgres;"
+    - mongo test --eval 'db.addUser("travis", "test");'
+    - pecl install mongo
+    - echo \"extension=mongo.so\" >> `php --ini | grep \"Loaded Configuration\" | sed -e \"s|.*:\s*||\"`
+    - wget http://getcomposer.org/composer.phar
+    - php composer.phar install --dev
 
 notifications:
   email: bilal.amarni@gmail.com
