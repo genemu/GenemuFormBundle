@@ -39,5 +39,6 @@
             "Genemu\\Bundle\\FormBundle": ""
         }
     },
-    "target-dir": "Genemu/Bundle/FormBundle"
+    "target-dir": "Genemu/Bundle/FormBundle",
+    "minimum-stability": "dev"
 }
