@@ -20,6 +20,8 @@ use Genemu\Bundle\FormBundle\Form\JQuery\Type\AutocompleterType;
 
 use Genemu\Bundle\FormBundle\Tests\Fixtures\Document\SingleIdentDocument;
 
+use Symfony\Component\Form\Extension\Core\View\ChoiceView;
+
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
@@ -79,7 +81,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         $this->persist(array($document1, $document2));
 
         $form = $this->factory->createNamed('name', new AutocompleterType('document'), null, array(
-            'em' => 'default',
+            'document_manager' => 'default',
             'class' => self::SINGLE_IDENT_CLASS,
             'property' => 'name',
         ));
@@ -88,8 +90,8 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         $view = $form->createView();
 
         $this->assertEquals(array(
-            array('value' => 'azerty1', 'label' => 'Foo'),
-            array('value' => 'azerty2', 'label' => 'Bar')
+            new ChoiceView($document1, 'azerty1', 'Foo'),
+            new ChoiceView($document2, 'azerty2', 'Bar'),
         ), $view->vars['choices']);
 
         $this->assertNull($form->getData());
@@ -117,8 +119,8 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         $view = $form->createView();
 
         $this->assertEquals(array(
-            array('value' => 1, 'label' => 'Foo'),
-            array('value' => 2, 'label' => 'Bar')
+            new ChoiceView($document1, 1, 'Foo'),
+            new ChoiceView($document2, 2, 'Bar'),
         ), $view->vars['choices']);
 
         $this->assertNull($form->getData());
@@ -148,8 +150,8 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         )));
 
         $this->assertEquals(array(
-            array('value' => 'azerty1', 'label' => 'Foo'),
-            array('value' => 2, 'label' => 'Bar'),
+            new ChoiceView($document1, 'azerty1', 'Foo'),
+            new ChoiceView($document2, 2, 'Bar'),
         ), $view->vars['choices']);
 
         $this->assertEquals(json_encode(array(
@@ -186,14 +188,14 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         )));
 
         $this->assertEquals(array(
-            array('value' => 1, 'label' => 'Foo'),
-            array('value' => 2, 'label' => 'Bar'),
+            new ChoiceView($document1, 1, 'Foo'),
+            new ChoiceView($document2, 2, 'Bar'),
         ), $view->vars['choices']);
 
         $this->assertEquals(json_encode(array(
             array('value' => '1', 'label' => 'Foo'),
             array('value' => '2', 'label' => 'Bar'),
-        )), $form->getClientData());
+        )), $form->getViewData());
         $this->assertSame($existing, $form->getData());
 
         $this->assertEquals('Foo, ', $view->vars['autocompleter_value']);

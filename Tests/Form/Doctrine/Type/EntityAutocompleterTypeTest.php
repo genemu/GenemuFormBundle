@@ -98,8 +98,8 @@ class EntityAutocompleterTypeTest extends TypeTestCase
         $view = $form->createView();
 
         $this->assertEquals(array(
-            1 => new ChoiceView(1, 'Foo'),
-            2 => new ChoiceView(2, 'Bar'),
+            1 => new ChoiceView($entity1, 1, 'Foo'),
+            2 => new ChoiceView($entity2, 2, 'Bar'),
         ), $view->vars['choices']);
 
         $this->assertNull($form->getData());
@@ -128,8 +128,8 @@ class EntityAutocompleterTypeTest extends TypeTestCase
         $view = $form->createView();
 
         $this->assertEquals(array(
-                1 => new ChoiceView(1, 'Foo'),
-                2 => new ChoiceView(2, 'Bar'),
+                1 => new ChoiceView($entity1, 1, 'Foo'),
+                2 => new ChoiceView($entity2, 2, 'Bar'),
             ), $view->vars['choices']);
 
         $this->assertNull($form->getData());
@@ -160,8 +160,8 @@ class EntityAutocompleterTypeTest extends TypeTestCase
         )));
 
         $this->assertEquals(array(
-            1 => new ChoiceView(1, 'Foo'),
-            2 => new ChoiceView(2, 'Bar'),
+            1 => new ChoiceView($entity1, 1, 'Foo'),
+            2 => new ChoiceView($entity2, 2, 'Bar'),
         ), $view->vars['choices']);
 
         $this->assertEquals(json_encode(array(
@@ -199,8 +199,8 @@ class EntityAutocompleterTypeTest extends TypeTestCase
         )));
 
         $this->assertEquals(array(
-            1 => new ChoiceView(1, 'Foo'),
-            2 => new ChoiceView(2, 'Bar'),
+            1 => new ChoiceView($entity1, 1, 'Foo'),
+            2 => new ChoiceView($entity2, 2, 'Bar'),
         ), $view->vars['choices']);
 
         $this->assertEquals(json_encode(array(

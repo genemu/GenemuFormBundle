@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Genemu\Bundle\FormBundle\Form\Doctrine\ChoiceList\AjaxEntityChoiceList;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * AjaxDocumentType
@@ -38,19 +39,10 @@ class AjaxDocumentType extends AbstractType
         /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $registry = $this->registry;
-
-        $options = array(
+        $resolver->setDefaults(array(
             'document_manager' => null,
-            'em' => function (Options $options, $previousValue) use ($registry) {
-                if (isset($options['document_manager'])) {
-                    return $options['document_manager'];
-                }
-
-                return $previousValue;
-            },
             'class' => null,
             'property' => null,
             'query_builder' => null,
@@ -68,9 +60,8 @@ class AjaxDocumentType extends AbstractType
                     $options['ajax']
                 );
             }
-        );
+        ));
 
-        return $options;
     }
 
     /**

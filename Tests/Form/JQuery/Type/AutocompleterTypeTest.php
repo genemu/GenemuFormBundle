@@ -42,8 +42,8 @@ class AutocompleterTypeTest extends TypeTestCase
         $view = $form->createView();
 
         $this->assertEquals(array(
-            new ChoiceView('foo', 'Foo'),
-            new ChoiceView('bar', 'Bar'),
+            new ChoiceView('foo', 'foo', 'Foo'),
+            new ChoiceView('bar', 'bar', 'Bar'),
         ), $view->vars['choices']);
 
         $this->assertEquals(json_encode(array(
@@ -126,9 +126,9 @@ class AutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(array('foo'), $form->getData());
 
         $this->assertEquals(array(
-            new ChoiceView('foo', 'Foo'),
-            new ChoiceView('bar', 'Bar'),
-            new ChoiceView('ri', 'Ri'),
+            new ChoiceView('foo', 'foo', 'Foo'),
+            new ChoiceView('bar', 'bar', 'Bar'),
+            new ChoiceView('ri', 'ri', 'Ri'),
         ), $view->vars['choices']);
 
         $this->assertEquals(json_encode(array(
