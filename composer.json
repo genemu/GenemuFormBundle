@@ -1,6 +1,6 @@
 {
     "name": "genemu/form-bundle",
-    "type": "form-bundle",
+    "type": "symfony-bundle",
     "description": "Extra Form",
     "keywords": ["form", "extra form"],
     "version": "1.0",
