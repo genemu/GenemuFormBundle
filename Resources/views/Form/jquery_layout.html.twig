@@ -93,9 +93,9 @@
         {% if widget != "single_text" %}
             {% set id = "datepicker_" ~ id %}
 
-            var $year = $('#{{ form.year.getVar("id") }}');
-            var $month = $('#{{ form.month.getVar("id") }}');
-            var $day = $('#{{ form.day.getVar("id") }}');
+            var $year = $('#{{ form.year.vars.id }}');
+            var $month = $('#{{ form.month.vars.id }}');
+            var $day = $('#{{ form.day.vars.id }}');
 
             $configs.onSelect = function(date) {
                 $year.val(parseInt(date.substring(0, 4), 10));
