@@ -82,6 +82,10 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
             return $choices['value'];
         }
 
+        if (empty($choices)) {
+            return array();
+        }
+
         $choices = array_unique($choices, SORT_REGULAR);
 
         $values = array();

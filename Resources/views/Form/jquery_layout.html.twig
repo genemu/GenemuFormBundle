@@ -328,7 +328,11 @@
                     }, response);
                 };
             {% else %}
-                $configs.source = {{ choices|json_encode|raw }};
+                {% set sourceChoices = [] %}
+                {% for choice in choices %}
+                    {% set sourceChoices = sourceChoices|merge([{'value': choice.value, 'label': choice.label}]) %}
+                {% endfor %}
+                $configs.source = {{ sourceChoices|json_encode|raw }};
             {% endif %}
 
                 $autocompleter.autocomplete($configs);

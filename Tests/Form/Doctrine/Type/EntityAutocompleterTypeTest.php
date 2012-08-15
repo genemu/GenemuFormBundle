@@ -243,6 +243,21 @@ class EntityAutocompleterTypeTest extends TypeTestCase
         $this->assertEquals('Foo', $view->vars['autocompleter_value']);
     }
 
+    public function testNoValueAjaxMultiple()
+    {
+        $form = $this->factory->createNamed('name', new AutocompleterType('entity'), null, array(
+            'em' => 'default',
+            'class' => self::SINGLE_IDENT_CLASS,
+            'property' => 'name',
+            'route_name' => 'genemu_ajax',
+            'multiple' => true
+        ));
+
+        $form->bind(null);
+
+        $this->assertTrue($form->getData()->isEmpty());
+    }
+    
     public function testValueAjaxMultipleData()
     {
         $entity1 = new SingleIdentEntity(1, 'Foo');
