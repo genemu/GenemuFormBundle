@@ -24,6 +24,7 @@ class PlainType extends AbstractType
         return array(
             'widget'  => 'field',
             'read_only' => true,
+            'disabled' => true,
             'attr' => array(
                 'class' => $this->getName()
             )
