@@ -21,14 +21,14 @@ class PlainType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'widget'  => 'field',
             'read_only' => true,
             'disabled' => true,
             'attr' => array(
                 'class' => $this->getName()
             )
-        );
+        ));
     }
 
     /**
