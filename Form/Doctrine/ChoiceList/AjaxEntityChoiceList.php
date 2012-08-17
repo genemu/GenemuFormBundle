@@ -50,7 +50,7 @@ class AjaxEntityChoiceList extends EntityChoiceList
 
         $loader = $qb ? new ORMQueryBuilderLoader($qb, $em, $class) : null;
 
-        parent::__construct($em, $class, $property, $loader, $choices, $groupBy);
+        parent::__construct($em, $class, $property, $loader, $choices, array(), $groupBy);
     }
 
     /**
