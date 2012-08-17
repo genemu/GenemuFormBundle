@@ -428,6 +428,24 @@
 {% endspaceless %}
 {% endblock genemu_jquerychosen_javascript %}
 
+{% block genemu_jqueryselect2_javascript %}
+{% spaceless %}
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $field = $('#{{ id }}');
+
+            $field.select2({
+                {% if placeholder %}
+                placeholder: "{{ placeholder }}",
+                allowClear: {{ allowClear }},
+                {% endif %}
+                minimumInputLength: {{ minimumInputLength }}
+            });
+        });
+    </script>
+{% endspaceless %}
+{% endblock genemu_jqueryselect2_javascript %}
+
 {% block genemu_jquerygeolocation_javascript %}
 {% spaceless %}
     {% if map is sameas(true) %}
