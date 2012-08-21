@@ -5,10 +5,8 @@ php:
     - 5.4
 
 before_script:
-    - sh -c "psql -c 'create database test;' -U postgres;"
     - mongo test --eval 'db.addUser("travis", "test");'
-    - pecl install mongo > /dev/null
-    - echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
+    - ./bin/travis-mongo-installer.sh > /dev/null
     - wget http://getcomposer.org/composer.phar
     - php composer.phar install --dev
 
