@@ -14,6 +14,7 @@ namespace Genemu\Bundle\FormBundle\Tests\Form\Extension;
 use Doctrine\Bundle\MongoDBBundle\Form\DoctrineMongoDBExtension;
 
 use Genemu\Bundle\FormBundle\Form\Doctrine\Type;
+use Genemu\Bundle\FormBundle\Form\JQuery\Type\AutocompleteType;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
@@ -23,7 +24,8 @@ class DoctrineMongoExtensionTest extends DoctrineMongoDBExtension
     protected function loadTypes()
     {
         return array_merge(parent::loadTypes(), array(
-            new Type\AjaxDocumentType($this->registry)
+            new Type\AjaxDocumentType($this->registry),
+            new AutocompleteType('document', $this->registry),
         ));
     }
 }

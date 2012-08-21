@@ -362,7 +362,7 @@
 {% endspaceless %}
 {% endblock genemu_jqueryautocompleter_javascript %}
 
-{% block genemu_jqueryautocompleter_text_javascript %}
+{% block genemu_jqueryautocomplete_javascript %}
 {% spaceless %}
     <script type="text/javascript">
         jQuery(document).ready(function($) {
@@ -372,15 +372,7 @@
                     return false;
                 },
                 select: function(event, ui) {
-                    {% if multiple %}
-                        terms = this.value.split(/,\s*/);
-                        terms.pop();
-                        terms.push(ui.item.value);
-                        terms.push('');
-                        this.value = terms.join(', ');
-                    {% else %}
-                        this.value = ui.item.value;
-                    {% endif %}
+                    this.value = ui.item.value;
 
                     return false;
                 }
@@ -397,16 +389,6 @@
             {% endif %}
 
             $autocompleter.autocomplete($configs);
-
-            {% if multiple %}
-                var $source = $autocompleter.data('autocomplete').source;
-
-                $autocompleter.autocomplete('option', 'source', function(request, response) {
-                    request.term = request.term.split(/,\s*/).pop();
-
-                    $source(request, response);
-                });
-            {% endif %}
         });
     </script>
 {% endspaceless %}

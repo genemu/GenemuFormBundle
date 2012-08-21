@@ -14,6 +14,8 @@ namespace Genemu\Bundle\FormBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 
@@ -53,7 +55,7 @@ class GenemuFormExtension extends Extension
             $loader->load('mongodb.xml');
         }
 
-        foreach (array('captcha', 'recaptcha', 'tinymce', 'date', 'file', 'image') as $type) {
+        foreach (array('captcha', 'recaptcha', 'tinymce', 'date', 'file', 'image', 'autocomplete') as $type) {
             if (isset($configs[$type]) && !empty($configs[$type]['enabled'])) {
                 $method = 'register' . ucfirst($type) . 'Configuration';
 
@@ -215,6 +217,22 @@ class GenemuFormExtension extends Extension
         $container->setParameter('genemu.form.image.filters', $filters);
         $container->setParameter('genemu.form.image.selected', $configs['selected']);
         $container->setParameter('genemu.form.image.thumbnails', $configs['thumbnails']);
+    }
+
+    private function registerAutocompleteConfiguration(array $configs, ContainerBuilder $container)
+    {
+        $serviceId = 'genemu.form.jquery.type.autocomplete';
+        $textDef = new DefinitionDecorator($serviceId);
+        $textDef->addArgument('text')->addTag('form.type', array('alias' => 'genemu_jqueryautocomplete_text'));
+        $container->setDefinition($serviceId . '.text', $textDef);
+
+        $doctrineDef = new DefinitionDecorator($serviceId);
+        $doctrineDef
+            ->addArgument('entity')
+            ->addArgument(new Reference('doctrine', ContainerInterface::NULL_ON_INVALID_REFERENCE))
+            ->addTag('form.type', array('alias' => 'genemu_jqueryautocomplete_entity'))
+        ;
+        $container->setDefinition($serviceId . '.entity', $doctrineDef);
     }
 
     /**

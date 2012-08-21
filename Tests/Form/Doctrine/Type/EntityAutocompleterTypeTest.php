@@ -257,7 +257,7 @@ class EntityAutocompleterTypeTest extends TypeTestCase
 
         $this->assertTrue($form->getData()->isEmpty());
     }
-    
+
     public function testValueAjaxMultipleData()
     {
         $entity1 = new SingleIdentEntity(1, 'Foo');

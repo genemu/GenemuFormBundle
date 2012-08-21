@@ -41,6 +41,7 @@ class Configuration implements ConfigurationInterface
         $this->addImage($rootNode);
         $this->addAutocompleter($rootNode);
         $this->addTokeninput($rootNode);
+        $this->addAutocomplete($rootNode);
 
         return $treeBuilder;
     }
@@ -294,6 +295,30 @@ class Configuration implements ConfigurationInterface
                     ->canBeUnset()
                     ->addDefaultsIfNotSet()
                     ->children()
+                        ->booleanNode('doctrine')->defaultTrue()->end()
+                        ->booleanNode('mongodb')->defaultFalse()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * Add configuration Autocompleter
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addAutocomplete(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('autocomplete')
+                    ->canBeUnset()
+                    ->treatNullLike(array('enabled' => true))
+                    ->treatTrueLike(array('enabled' => true))
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultFalse()->end()
                         ->booleanNode('doctrine')->defaultTrue()->end()
                         ->booleanNode('mongodb')->defaultFalse()->end()
                     ->end()
