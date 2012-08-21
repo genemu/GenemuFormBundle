@@ -6,7 +6,8 @@ php:
 
 before_script:
     - mongo test --eval 'db.addUser("travis", "test");'
-    - ./bin/travis-mongo-installer.sh > /dev/null
+    - pecl install mongo > /dev/null
+    - echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
     - wget http://getcomposer.org/composer.phar
     - php composer.phar install --dev
 
