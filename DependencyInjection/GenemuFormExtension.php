@@ -233,6 +233,16 @@ class GenemuFormExtension extends Extension
             ->addTag('form.type', array('alias' => 'genemu_jqueryautocomplete_entity'))
         ;
         $container->setDefinition($serviceId . '.entity', $doctrineDef);
+
+        $mongoDef = new DefinitionDecorator($serviceId);
+        $mongoDef
+            ->addArgument('document')
+            ->addArgument(new Reference('doctrine_mongodb', ContainerInterface::NULL_ON_INVALID_REFERENCE))
+            ->addTag('form.type', array('alias' => 'genemu_jqueryautocomplete_document'))
+        ;
+        $container->setDefinition($serviceId . '.document', $mongoDef);
+
+
     }
 
     /**
