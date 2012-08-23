@@ -52,9 +52,7 @@
         <service id="genemu.form.jquery.type.slider" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\SliderType">
             <tag name="form.type" alias="genemu_jqueryslider" />
         </service>
-        <service id="genemu.form.jquery.type.tokeninput" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\TokeninputType">
-            <tag name="form.type" alias="genemu_jquerytokeninput" />
-        </service>
+        <service id="genemu.form.jquery.type.tokeninput" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\TokeninputType" abstract="true" />
     </services>
 
 </container>
