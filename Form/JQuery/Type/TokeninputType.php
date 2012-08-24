@@ -85,7 +85,7 @@ class TokeninputType extends AbstractType
             ->setAttribute('route_name', $options['route_name']);
 
         foreach ($this->_availableTokeninputOptions as $option) {
-            if (isset($options[$option])) {
+            if (null !== $options[$option]) {
                 $builder->setAttribute($option, $options[$option]);
             }
         }
@@ -131,9 +131,15 @@ class TokeninputType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+
+        $defaults = array_flip($this->_availableTokeninputOptions);
+        array_walk($defaults, function(&$option, $value) {
+            $option = null;
+        });
+
         $widget = $this->widget;
 
-        $resolver->setDefaults(array(
+        $defaults = array_merge($defaults, array(
             'route_name' => null,
             'ajax' => function (Options $options, $previousValue) {
                 if (null === $previousValue) {
@@ -157,6 +163,8 @@ class TokeninputType extends AbstractType
             'propertyToSearch' => 'label',
             'theme' => 'facebook'
         ));
+
+        $resolver->setDefaults($defaults);
     }
 
     /**
