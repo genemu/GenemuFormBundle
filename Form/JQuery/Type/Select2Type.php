@@ -11,15 +11,18 @@
 
 namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 
+use Genemu\Bundle\FormBundle\Form\JQuery\DataTransformer\ArrayToStringTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * Select2Type to JQueryLib
  *
- * @author Olivier Chauvel <olivier@generation-multiple.com>
+ * @author Bilal Amarni <bilal.amarni@gmail.com>
  * @author Chris Tickner <chris.tickner@gmail.com>
  */
 class Select2Type extends AbstractType
@@ -34,11 +37,27 @@ class Select2Type extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        if ('hidden' === $this->widget && isset($options['configs']['multiple']) && $options['configs']['multiple']) {
+            $builder->addViewTransformer(new ArrayToStringTransformer());
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['placeholder']        = $options['placeholder'];
-        $view->vars['allowClear']         = $options['allowClear'];
-        $view->vars['minimumInputLength'] = $options['minimumInputLength'];
+        $view->vars['configs'] = $options['configs'];
+
+        // Adds a custom block prefix
+        array_splice(
+            $view->vars['block_prefixes'],
+            array_search($this->getName(), $view->vars['block_prefixes']),
+            0,
+            'genemu_jqueryselect2'
+        );
     }
 
     /**
@@ -46,11 +65,22 @@ class Select2Type extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'placeholder'        => '',
-            'allowClear'         => 'true',
+        $defaults = array(
+            'placeholder'        => 'Select a value',
+            'allowClear'         => false,
             'minimumInputLength' => 0,
-        ));
+            'width'              => 'element',
+        );
+        $resolver
+            ->setDefaults(array(
+                'configs' => $defaults,
+            ))
+            ->setNormalizers(array(
+                'configs' => function (Options $options, $configs) use ($defaults) {
+                    return array_merge($defaults, $configs);
+                },
+            ))
+        ;
     }
 
     /**

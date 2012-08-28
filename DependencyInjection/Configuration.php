@@ -42,6 +42,7 @@ class Configuration implements ConfigurationInterface
         $this->addAutocompleter($rootNode);
         $this->addTokeninput($rootNode);
         $this->addAutocomplete($rootNode);
+        $this->addSelect2($rootNode);
 
         return $treeBuilder;
     }
@@ -321,6 +322,23 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('enabled')->defaultFalse()->end()
                         ->booleanNode('doctrine')->defaultTrue()->end()
                         ->booleanNode('mongodb')->defaultFalse()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    private function addSelect2(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('select2')
+                    ->canBeUnset()
+                    ->treatNullLike(array('enabled' => true))
+                    ->treatTrueLike(array('enabled' => true))
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultFalse()->end()
                     ->end()
                 ->end()
             ->end()
