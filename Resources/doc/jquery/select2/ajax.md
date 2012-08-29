@@ -11,7 +11,7 @@ this way :
 public function buildForm(FormBuilder $builder, array $options)
 {
     $builder
-        ->add('member', 'genemu_jquerychosen_hidden', array(
+        ->add('member', 'genemu_jqueryselect2_hidden', array(
             'configs' => array(
                 'multiple' => true // Wether or not multiple values are allowed (default to false)
             )

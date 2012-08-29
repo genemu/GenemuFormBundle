@@ -1,5 +1,13 @@
 # jQuery Select2 Field ([view demo](http://ivaynberg.github.com/select2/))
 
+## Enable it in your app configuration :
+``` yml
+# app/config/config.yml
+genemu_form:
+    select2: ~
+```
+
+
 ## Download the plugin and include its assets : http://ivaynberg.github.com/select2/
 
 ## Default Usage:
