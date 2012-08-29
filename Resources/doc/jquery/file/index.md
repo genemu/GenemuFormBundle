@@ -8,7 +8,7 @@
 # app/config/config.yml
 genemu_form:
     file:
-        uploader: /uploadify/uploadify.swf
+        swf: /uploadify/uploadify.swf
 ```
 
 ## Add in your routing.yml
