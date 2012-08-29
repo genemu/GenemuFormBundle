@@ -11,6 +11,7 @@
 
 namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Genemu\Bundle\FormBundle\Form\JQuery\DataTransformer\ArrayToStringTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,9 +30,13 @@ class Select2Type extends AbstractType
 {
     private $widget;
 
-    public function __construct($widget)
+    public function __construct($widget, ManagerRegistry $registry = null)
     {
         $this->widget = $widget;
+
+        if ($registry) {
+            parent::construct($registry);
+        }
     }
 
     /**
@@ -39,7 +44,7 @@ class Select2Type extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ('hidden' === $this->widget && isset($options['configs']['multiple']) && $options['configs']['multiple']) {
+        if ('hidden' === $this->widget && !empty($options['configs']['multiple'])) {
             $builder->addViewTransformer(new ArrayToStringTransformer());
         }
     }

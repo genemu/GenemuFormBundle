@@ -255,6 +255,12 @@ class GenemuFormExtension extends Extension
                 ->addTag('form.type', array('alias' => 'genemu_jqueryselect2_'.$type))
             ;
 
+            if ('doctrine' === $type) {
+                $typeDef->addArgument(new Reference('doctrine', ContainerInterface::NULL_ON_INVALID_REFERENCE));
+            } elseif ('document' === $type) {
+                $typeDef->addArgument(new Reference('doctrine_mongodb', ContainerInterface::NULL_ON_INVALID_REFERENCE));
+            }
+
             $container->setDefinition($serviceId.'.'.$type, $typeDef);
         }
     }
