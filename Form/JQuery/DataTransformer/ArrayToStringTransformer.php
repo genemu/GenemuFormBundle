@@ -27,10 +27,10 @@ class ArrayToStringTransformer implements DataTransformerInterface
     public function transform($array)
     {
         if (null === $array || !is_array($array)) {
-            return array();
+            return '';
         }
-        
-        return implode(', ', $array) . ', ';
+
+        return implode(',', $array);
     }
 
     /**
@@ -41,20 +41,7 @@ class ArrayToStringTransformer implements DataTransformerInterface
         if (is_array($string)) {
             return $string;
         }
-        
-        $array = explode(',', $string);
-        
-        foreach ($array as $key => $value) {
-            $value = trim($value);
-            
-            if (empty($value)) {
-                unset($array[$key]);
-                continue;
-            }
-            
-            $array[$key] = $value;
-        }
-        
-        return $array;
+
+        return explode(',', $string);
     }
 }

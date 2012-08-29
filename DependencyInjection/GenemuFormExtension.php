@@ -55,7 +55,7 @@ class GenemuFormExtension extends Extension
             $loader->load('mongodb.xml');
         }
 
-        foreach (array('captcha', 'recaptcha', 'tinymce', 'date', 'file', 'image', 'autocomplete') as $type) {
+        foreach (array('captcha', 'recaptcha', 'tinymce', 'date', 'file', 'image', 'autocomplete', 'select2') as $type) {
             if (isset($configs[$type]) && !empty($configs[$type]['enabled'])) {
                 $method = 'register' . ucfirst($type) . 'Configuration';
 
@@ -245,6 +245,20 @@ class GenemuFormExtension extends Extension
 
     }
 
+    private function registerSelect2Configuration(array $configs, ContainerBuilder $container)
+    {
+        $serviceId = 'genemu.form.jquery.type.select2';
+        foreach (array_merge($this->getChoiceTypeNames(), array('hidden')) as $type) {
+            $typeDef = new DefinitionDecorator($serviceId);
+            $typeDef
+                ->addArgument($type)
+                ->addTag('form.type', array('alias' => 'genemu_jqueryselect2_'.$type))
+            ;
+
+            $container->setDefinition($serviceId.'.'.$type, $typeDef);
+        }
+    }
+
     /**
      * Loads extended form types.
      *
@@ -254,11 +268,16 @@ class GenemuFormExtension extends Extension
      */
     private function loadExtendedTypes($serviceId, $name, ContainerBuilder $container)
     {
-        foreach (array('choice', 'language', 'country', 'timezone', 'locale', 'entity', 'document', 'model') as $type) {
+        foreach ($this->getChoiceTypeNames() as $type) {
             $typeDef = new DefinitionDecorator($serviceId);
             $typeDef->addArgument($type)->addTag('form.type', array('alias' => 'genemu_'.$name.'_'.$type));
 
             $container->setDefinition($serviceId.'.'.$type, $typeDef);
         }
+    }
+
+    private function getChoiceTypeNames()
+    {
+        return array('choice', 'language', 'country', 'timezone', 'locale', 'entity', 'document', 'model');
     }
 }
