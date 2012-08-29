@@ -710,3 +710,10 @@
 </script>
 {% endspaceless %}
 {% endblock genemu_jqueryimage_javascript %}
+
+{% block genemu_jqueryselect2_javascript %}
+    <script type="text/javascript">
+        $('#{{ id }}').select2({{ configs|json_encode|raw }});
+    </script>
+{% endblock %}
+
