@@ -1,4 +1,4 @@
-# Default configuration Tinymce Field:
+# Default configuration File Field:
 
 ``` yml
 # app/config/config.yml
