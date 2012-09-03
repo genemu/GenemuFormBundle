@@ -17,6 +17,10 @@ Now :
 $formBuilder->add('country', 'genemu_jquerychosen_country');
 ```
 
+### JQuery Autocompleter
+
+Same instructions than Chosen.
+
 ### Routing
 
 [BC BREAK] Routing is defined in xml files instead of annotations (to remove the depency with SensioFrameworkExtraBundle)
