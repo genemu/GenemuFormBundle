@@ -9,15 +9,9 @@ public function buildForm(FormBuilder $builder, array $options)
 {
     $builder
         // ...
-        ->add('country', 'genemu_jquerychosen', array(
-            'widget' => 'country'
-        ))
-        ->add('timezone', 'genemu_jquerychosen', array(
-            'widget' => 'timezone'
-        ))
-        ->add('language', 'genemu_jquerychosen', array(
-            'widget' => 'language'
-        ));
+        ->add('country', 'genemu_jquerychosen_country')
+        ->add('timezone', 'genemu_jquerychosen_timezone')
+        ->add('language', 'genemu_jquerychosen_language');
 }
 ```
 

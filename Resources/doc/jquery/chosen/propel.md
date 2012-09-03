@@ -8,13 +8,11 @@
 public function buildForm(FormBuilder $builder, array $options)
 {
     $builder
-        ->add('member', 'genemu_jquerychosen', array(
+        ->add('member', 'genemu_jquerychosen_model', array(
             'class' => 'Genemu\Bundle\ModelBundle\Model\Member',
-            'widget' => 'model'
         ))
-        ->add('cities', 'genemu_jquerychosen', array(
+        ->add('cities', 'genemu_jquerychosen_model', array(
             'class' => 'Genemu\Bundle\ModelBundle\Model\City',
-            'widget' => 'model',
             'multiple' => true
         ));
 }
