@@ -400,15 +400,17 @@
         jQuery(document).ready(function($) {
             $field = $('#{{ id }}');
 
-            $field.chosen({
-                no_results_text: "{{ no_results_text|trans({}, translation_domain) }}",
-                allow_single_deselect: {{ allow_single_deselect ? 'true' : 'false' }},
-                disable_search_threshold: {{ disable_search_threshold }}
-            });
+            {% block genemu_jquerychosen_javascript_prototype %}
+                $field.chosen({
+                    no_results_text: "{{ no_results_text|trans({}, translation_domain) }}",
+                    allow_single_deselect: {{ allow_single_deselect ? 'true' : 'false' }},
+                    disable_search_threshold: {{ disable_search_threshold }}
+                });
+            {% endblock %}
         });
     </script>
 {% endspaceless %}
-{% endblock genemu_jquerychosen_javascript %}
+{% endblock %}
 
 {% block genemu_jquerygeolocation_javascript %}
 {% spaceless %}
