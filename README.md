@@ -105,7 +105,11 @@ You send the image and crop or apply filter.
 
 ### Plain
 
-A Form type that just renders the field as a p tag. This is useful for forms where certain field need to be shown but not editable. 
+A Form type that just renders the field as a p tag. This is useful for forms where certain field need to be shown but not editable.
+
+## Tips
+
+[Prototype usage within form collections](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/tips/form_prototype.md)
 
 ## Note
 There is maybe bugs in this implementations, this package is just an idea of a form
