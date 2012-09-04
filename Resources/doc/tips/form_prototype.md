@@ -12,13 +12,7 @@ Here is an example (cf. the symfony collection tutorial), let's say you add some
 tags that are of select2 type :
 ```jinja
 <form action="...>
-
-    {{ form_widget(form.description) }}
-
-    <div id="tags" data-prototype="{{ form_widget(form.tags.vars.prototype)|e }}">
-        {{ form_widget(form.tags) }}
-    </div>
-
+<!-- Render the form -->
 </form>
 
 <script type="text/javascript">
@@ -30,23 +24,13 @@ function triggerJavascript(id)
     {{ form_javascript(form.tags.vars.prototype, true) }}
 }
 
-function addTagForm(collectionHolder, $newLinkLi) {
-/* Code from symfony cookbook
-    // Get the data-prototype we explained earlier
-    var prototype = collectionHolder.attr('data-prototype');
-
-    // Replace '__name__' in the prototype's HTML to
-    // instead be a number based on the current collection's length.
-    var id = collectionHolder.children().length;
-    var newForm = prototype.replace(/__name__/g, id);
-
-    // Display the form in the page in an li, before the "Add a tag" link li
-    var $newFormLi = $('<li></li>').append(newForm);
-    $newLinkLi.before($newFormLi);
-*/
+function addTagForm(collectionHolder, $newLinkLi)
+{
+    // Dynamically add the form and get its id
+    var id = '{{ form.tags.vars.id }}_' + id;
 
     // Once HTML has been added, let's trigger the javascript on it
-    triggerJavascript('{{ form.tags.vars.id }}_' + id);
+    triggerJavascript(id);
 }
 
 // ...
