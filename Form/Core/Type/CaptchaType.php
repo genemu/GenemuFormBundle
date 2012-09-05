@@ -49,7 +49,10 @@ class CaptchaType extends AbstractType
     {
         $this->captcha->setOptions($options);
 
-        $builder->addValidator(new CaptchaValidator($this->captcha));
+        $builder
+            ->addValidator(new CaptchaValidator($this->captcha))
+            ->setAttribute('captcha', $this->captcha)
+        ;
     }
 
     /**
