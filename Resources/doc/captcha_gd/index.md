@@ -10,6 +10,46 @@ genemu_form:
     captcha: ~
 ```
 
+## Allowing users to refresh the captcha
+
+In order to allow the captcha refresh, there is a route to call, but you have to use custom form templates, here is a ready-to-use example :
+
+1) Add the route :
+ ``` yml
+# app/config/routing.yml
+genemu_base64:
+    resource: "@GenemuFormBundle/Resources/config/routing/base64.xml"
+ ```
+
+2) Customize the templates
+
+``` jinja
+{# ... #}
+
+{% form_theme form _self %}
+
+{% block genemu_captcha_widget %}
+    <img id="{{ id }}_image" src="{{ src }}" width="{{ width }}" height="{{ height }}" title="{{ name|trans }}" />
+    {# We're putting a link there #}
+    <a id="{{ id }}_refresh">Refresh</a>
+    {{ block("field_widget") }}
+{% endblock %}
+
+{% block genemu_captcha_javascript %}
+    <script type="text/javascript">
+        $(function () {
+            {# Image will be refreshed when the link is clicked #}
+            $('#{{ id }}_refresh').click(function() {
+                $('#{{ id }}_image').attr('src', '{{ path('genemu_captcha_refresh') }}?' + Math.random());
+            });
+        });
+    </script>
+
+    {{ parent() }}
+{% endblock %}
+
+```
+
 ## Fix Bug to IE6 and IE7
 
 * add in your routing.yml
@@ -33,7 +73,7 @@ public function buildForm(FormBuilder $builder, array $options)
     $builder
         // ...
         ->add('captcha', 'genemu_captcha');
-        
+
         // If you are using form for adding/editing entity (for example with FOSUserBundle user registration form)
         // you may need to mark field as "not a property" by using code
 
