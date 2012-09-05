@@ -8,7 +8,6 @@ genemu_form:
         width:            100
         height:           40
         length:           4
-        position:         'left'
         format:           'png'
         chars:            '0123456789'
         font_size:        18

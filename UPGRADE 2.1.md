@@ -3,7 +3,7 @@ UPGRADE to Symfony 2.1
 
 ### JQuery Chosen
 
-[BC BREAK] Widget option cannot specify the choice type anymore, you have to append the widget in the type name instead :
+Widget option cannot specify the choice type anymore, you have to append the widget in the type name instead :
 
 Before :
 ``` php
@@ -23,7 +23,7 @@ Same instructions than Chosen.
 
 ### Routing
 
-[BC BREAK] Routing is defined in xml files instead of annotations (to remove the depency with SensioFrameworkExtraBundle)
+Routing is defined in xml files instead of annotations (to remove the depency with SensioFrameworkExtraBundle)
 
 Before :
  ``` yml
@@ -38,3 +38,7 @@ Now :
 genemu_base64:
     resource: "@GenemuFormBundle/Resources/config/routing/base64.xml"
  ```
+
+### Captcha
+
+The 'position' option has been removed, if you had it set to 'right', you should add your own template for this type.

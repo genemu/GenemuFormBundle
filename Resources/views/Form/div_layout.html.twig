@@ -1,14 +1,9 @@
 {% block genemu_captcha_widget %}
 {% spaceless %}
-    {% if position == "left" %}
-        <img src="{{ src }}" width="{{ width }}" height="{{ height }}" title="{{ name|trans }}" />
-        {{ block("field_widget") }}
-    {% else %}
-        {{ block("field_widget") }}
-        <img src="{{ src }}" width="{{ width }}" height="{{ height }}" title="{{ name|trans }}" />
-    {% endif %}
+    <img src="{{ src }}" width="{{ width }}" height="{{ height }}" title="{{ name|trans }}" />
+    {{ block("field_widget") }}
 {% endspaceless %}
-{% endblock genemu_captcha_widget %}
+{% endblock %}
 
 {% block genemu_recaptcha_widget %}
 {% spaceless %}

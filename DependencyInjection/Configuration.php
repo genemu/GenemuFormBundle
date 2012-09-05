@@ -64,7 +64,6 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->booleanNode('enabled')->defaultTrue()->end()
                         ->scalarNode('driver')->defaultValue('gd')->end()
-                        ->scalarNode('position')->defaultValue('left')->end()
                         ->scalarNode('width')->defaultValue(100)->end()
                         ->scalarNode('height')->defaultValue(30)->end()
                         ->scalarNode('length')->defaultValue(4)->end()

@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Genemu\Bundle\FormBundle\Gd\Type\Captcha;
 use Genemu\Bundle\FormBundle\Form\Core\Validator\CaptchaValidator;
@@ -48,11 +49,7 @@ class CaptchaType extends AbstractType
     {
         $this->captcha->setOptions($options);
 
-        $builder
-            ->addValidator(new CaptchaValidator($this->captcha))
-            ->setAttribute('captcha', $this->captcha)
-            ->setAttribute('format', $options['format'])
-            ->setAttribute('position', $options['position']);
+        $builder->addValidator(new CaptchaValidator($this->captcha));
     }
 
     /**
@@ -60,12 +57,11 @@ class CaptchaType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $captcha = $form->getAttribute('captcha');
+        $captcha = $this->captcha;
 
         $view->vars = array_replace($view->vars, array(
             'value' => '',
-            'position' => $form->getAttribute('position'),
-            'src' => $captcha->getBase64($form->getAttribute('format')),
+            'src' => $captcha->getBase64($options['format']),
             'width' => $captcha->getWidth(),
             'height' => $captcha->getHeight(),
         ));
@@ -74,13 +70,14 @@ class CaptchaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array_merge(array(
-            'attr' => array(
-                'autocomplete' => 'off'
-            )
-        ), $this->options);
+        $defaults = array_merge(
+            array('attr' => array('autocomplete' => 'off')),
+            $this->options
+        );
+
+        $resolver->setDefaults($defaults);
     }
 
     /**
