@@ -11,11 +11,11 @@
 
 namespace Genemu\Bundle\FormBundle\Form\Core\Type;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormValidatorInterface;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -35,12 +35,12 @@ class ReCaptchaType extends AbstractType
     /**
      * Constructs
      *
-     * @param FormValidatoInterface $validator
-     * @param string                $pulicKey
-     * @param string                $serverUrl
-     * @param array                 $options
+     * @param EventSubscriberInterface $validator
+     * @param string                   $pulicKey
+     * @param string                   $serverUrl
+     * @param array                    $options
      */
-    public function __construct(FormValidatorInterface $validator, $publicKey, $serverUrl, array $options)
+    public function __construct(EventSubscriberInterface $validator, $publicKey, $serverUrl, array $options)
     {
         if (empty($publicKey)) {
             throw new FormException('The child node "public_key" at path "genenu_form.captcha" must be configured.');
@@ -58,7 +58,7 @@ class ReCaptchaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->addValidator($this->validator)
+            ->addEventSubscriber($this->validator)
             ->setAttribute('option_validator', $options['validator'])
         ;
     }

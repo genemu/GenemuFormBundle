@@ -11,9 +11,11 @@
 
 namespace Genemu\Bundle\FormBundle\Form\Core\Validator;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormValidatorInterface;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class ReCaptchaValidator implements FormValidatorInterface
+class ReCaptchaValidator implements EventSubscriberInterface
 {
     private $httpRequest;
     private $request;
@@ -53,11 +55,10 @@ class ReCaptchaValidator implements FormValidatorInterface
         $this->httpRequest = implode("\r\n", $this->httpRequest)."\r\n\r\n%s";
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate(FormInterface $form)
+    public function validate(DataEvent $event)
     {
+        $form = $event->getForm();
+
         $error = '';
         $request = $this->request->request;
         $server = $this->request->server;
@@ -115,5 +116,10 @@ class ReCaptchaValidator implements FormValidatorInterface
         $answers = explode("\n", $response[1]);
 
         return 'true' === trim($answers[0]) ? true : $answers[1];
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return array(FormEvents::POST_BIND => 'validate');
     }
 }
