@@ -27,20 +27,10 @@ class ColorType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->setAttribute('widget', $options['widget'])
-            ->setAttribute('configs', $options['configs']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['widget'] = $form->getAttribute('widget');
-        $view->vars['configs'] = $form->getAttribute('configs');
+        $view->vars['widget'] = $options['widget'];
+        $view->vars['configs'] = $options['configs'];
     }
 
     /**
