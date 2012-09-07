@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * ColorType
@@ -38,34 +39,27 @@ class ColorType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-
-        $view
-            ->setVar('widget', $form->getAttribute('widget'))
-            ->setVar('configs', $form->getAttribute('configs'));
+        $view->vars['widget'] = $form->getAttribute('widget');
+        $view->vars['configs'] = $form->getAttribute('configs');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
-            'widget'  => 'field',
-            'configs' => array(),
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllowedOptionValues(array $options)
-    {
-        return array(
-            'widget' => array(
-                'field',
-                'image',
-            )
-        );
+        $resolver
+            ->setDefaults(array(
+                'widget'  => 'text',
+                'configs' => array(),
+            ))
+            ->setAllowedValues(array(
+                'widget' => array(
+                    'text',
+                    'image',
+                )
+            ))
+        ;
     }
 
     /**
@@ -73,7 +67,7 @@ class ColorType extends AbstractType
      */
     public function getParent()
     {
-        return 'field';
+        return 'text';
     }
 
     /**
