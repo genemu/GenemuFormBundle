@@ -83,12 +83,6 @@ class TokeninputType extends AbstractType
             ))
             ->setAttribute('choice_list', $options['choice_list'])
             ->setAttribute('route_name', $options['route_name']);
-
-        foreach ($this->_availableTokeninputOptions as $option) {
-            if (null !== $options[$option]) {
-                $builder->setAttribute($option, $options[$option]);
-            }
-        }
     }
 
     /**
@@ -113,8 +107,8 @@ class TokeninputType extends AbstractType
         $view->vars['route_name'] = $form->getAttribute('route_name');
 
         foreach ($this->_availableTokeninputOptions as $option) {
-            if ($form->hasAttribute($option)) {
-                $view->set($option, $form->getAttribute($option));
+            if (null !== $options[$option]) {
+                $view->vars[$option] = $options[$option];
             }
         }
 
