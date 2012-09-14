@@ -3,7 +3,6 @@
     "type": "symfony-bundle",
     "description": "Extra Form",
     "keywords": ["form", "extra form"],
-    "version": "1.0",
     "license": "MIT",
     "authors": [
         {
@@ -40,5 +39,10 @@
             "Genemu\\Bundle\\FormBundle": ""
         }
     },
-    "target-dir": "Genemu/Bundle/FormBundle"
+    "target-dir": "Genemu/Bundle/FormBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.1-dev"
+        }
+    }
 }

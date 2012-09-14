@@ -13,11 +13,13 @@ Installation is quick and easy, 5 steps process
 
 ### Step 1: Install GenemuFormBundle
 
-Check your Symfony2 version.
+Add the following dependency to your composer.json file:
 
-[Symfony2 branch v2.0.*](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/instalation/2.0.md)
-
-[Symfony2 branch master](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/instalation/master.md)
+    "require": {
+        # ..
+        "genemu/form-bundle": "2.1.*"
+        # ..
+    }
 
 ### Step 2: Enable the bundle
 
