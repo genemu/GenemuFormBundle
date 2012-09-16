@@ -41,6 +41,7 @@ class AutocompleteType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars = array_replace($view->vars, array(
+            'configs' => $options['configs'],
             'suggestions' => $options['suggestions'],
             'route_name' => $options['route_name'],
         ));
@@ -63,6 +64,7 @@ class AutocompleteType extends AbstractType
         $registry = $this->registry;
 
         $resolver->setDefaults(array(
+            'configs' => array(),
             'suggestions' => array(),
             'route_name' => null,
             'class' => null,

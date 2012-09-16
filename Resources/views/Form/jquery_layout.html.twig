@@ -367,16 +367,7 @@
     <script type="text/javascript">
         jQuery(document).ready(function($) {
             var $autocompleter = $('#{{ id }}');
-            var $configs = {
-                focus: function(event, ui) {
-                    return false;
-                },
-                select: function(event, ui) {
-                    this.value = ui.item.value;
-
-                    return false;
-                }
-            };
+            var $configs = {{ configs|json_encode|raw }};
 
             {% if route_name %}
                 $configs.source = function(request, response) {
@@ -389,6 +380,12 @@
             {% endif %}
 
             $autocompleter.autocomplete($configs);
+            
+            {% if configs.minLength is defined and 0 == configs.minLength %}
+                $autocompleter.focus(function() {
+                    $(this).autocomplete("search", "");
+                });
+            {% endif %}
         });
     </script>
 {% endspaceless %}
