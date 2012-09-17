@@ -284,7 +284,17 @@
                 onAdd: update_hidden_sourceinput,
                 onDelete: update_hidden_sourceinput
             };
-            $tokeninput.tokenInput({% if route_name %}'{{ path(route_name) }}'{% else %}{{ choices|json_encode|raw }}{% endif %}, $configs);
+            $tokeninput.tokenInput(
+                {% if route_name %}
+                    '{{ path(route_name) }}'
+                {% else %}
+                    {% set sourceChoices = [] %}
+                    {% for choice in choices %}
+                        {% set sourceChoices = sourceChoices|merge([{'value': choice.value, 'label': choice.label}]) %}
+                    {% endfor %}
+                    {{ sourceChoices|json_encode|raw }}
+                {% endif %},
+                $configs);
         });
     </script>
 {% endspaceless %}

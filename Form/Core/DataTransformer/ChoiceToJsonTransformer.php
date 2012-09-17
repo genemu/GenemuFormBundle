@@ -14,6 +14,7 @@ namespace Genemu\Bundle\FormBundle\Form\Core\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
+use Genemu\Bundle\FormBundle\Exception\WrongUsageOfOption;
 
 /**
  * ChoiceToJsonTransformer
@@ -79,6 +80,9 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
                 $this->choiceList->addAjaxChoice($choices);
             }
 
+            if (!array_key_exists('value', $choices)) {
+                throw new WrongUsageOfOption('It seems you setted "multiple" option to false although you passed an array, check the configuration of your FormType');
+            }
             return $choices['value'];
         }
 
@@ -91,6 +95,10 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
         $values = array();
 
         foreach ($choices as $choice) {
+            if (!is_array($choice)) {
+                throw new WrongUsageOfOption('It seems you setted "multiple" option to true although you passed a single value, check the configuration of your FormType');
+            }
+
             if ($this->ajax && !in_array($this->widget, array('entity', 'document', 'model'))) {
                 $this->choiceList->addAjaxChoice($choice);
             }
