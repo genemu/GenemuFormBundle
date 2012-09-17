@@ -7,8 +7,7 @@ php:
 before_script:
     - pecl install mongo > /dev/null
     - echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
-    - wget http://getcomposer.org/composer.phar
-    - php composer.phar install --dev
+    - composer install --dev
 
 notifications:
   email: travis-ci@generation-multiple.com
