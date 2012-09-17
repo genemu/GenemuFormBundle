@@ -4,6 +4,8 @@ php:
     - 5.3
     - 5.4
 
+services: mongodb
+
 before_script:
     - pecl install mongo > /dev/null
     - echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
