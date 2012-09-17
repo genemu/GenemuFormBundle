@@ -138,4 +138,34 @@ class TokeninputTypeTest extends TypeTestCase
 
         $this->assertEquals('Foo, Bar, ', $view->vars['tokeninput_value']);
     }
+
+    public function testCountry()
+    {
+        $form = $this->factory->create(new TokeninputType('country'));
+
+        $view = $form->createView();
+
+        $form->bind(json_encode(
+            array('label' => 'Belgium', 'value' => 'BE')
+        ));
+
+        $this->assertEquals(json_encode(
+            array('value' => 'BE', 'label' => 'Belgium')
+        ), $form->getClientData());
+    }
+
+    public function testMultipleContries()
+    {
+        $form = $this->factory->create(new TokeninputType('country'), null, array('multiple' => true));
+
+        $view = $form->createView();
+
+        $form->bind(json_encode(array(
+            array('label' => 'Belgium', 'value' => 'BE')
+        )));
+
+        $this->assertEquals(json_encode(array(
+            array('value' => 'BE', 'label' => 'Belgium')
+        )), $form->getClientData());
+    }
 }
