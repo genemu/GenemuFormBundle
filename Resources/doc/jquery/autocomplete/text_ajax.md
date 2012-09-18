@@ -8,7 +8,7 @@
 public function buildForm(FormBuilder $builder, array $options)
 {
     $builder
-        ->add('ajax_simple', 'genemu_jqueryautocompleter_text', array(
+        ->add('ajax_simple', 'genemu_jqueryautocomplete_text', array(
             'route_name' => 'ajax'
         ));
 }
