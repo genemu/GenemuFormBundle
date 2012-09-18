@@ -17,19 +17,19 @@ public function buildForm(FormBuilder $builder, array $options)
 {
     $builder
         // Text suggestions
-        ->add('soccer_player', 'genemu_jqueryautocompleter_text', array(
+        ->add('soccer_player', 'genemu_jqueryautocomplete_text', array(
             'suggestions' => array(
                 'Ozil',
                 'Van Persie'
             ),
         ))
         // Suggestions with doctrine orm
-        ->add('soccer_player', 'genemu_jqueryautocompleter_entity', array(
+        ->add('soccer_player', 'genemu_jqueryautocomplete_entity', array(
             'class' => 'MyBundle\Entity\MyEntity',
             'property' => 'name',
         ))
         // Suggestions with doctrine odm
-        ->add('soccer_player', 'genemu_jqueryautocompleter_document', array(
+        ->add('soccer_player', 'genemu_jqueryautocomplete_document', array(
             'class' => 'MyBundle\Document\MyDocument',
             'property' => 'name',
         ));
