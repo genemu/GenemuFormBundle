@@ -28,10 +28,11 @@ class FormPass implements CompilerPassInterface
     {
         $resources = $container->getParameter('twig.form.resources');
 
+        $items = array();
         foreach (array('div', 'jquery', 'stylesheet') as $template) {
-            $resources[] = 'GenemuFormBundle:Form:' . $template . '_layout.html.twig';
+            $items[] = 'GenemuFormBundle:Form:' . $template . '_layout.html.twig';
         }
 
-        $container->setParameter('twig.form.resources', $resources);
+        $container->setParameter('twig.form.resources', array_merge($items, $resources));
     }
 }
