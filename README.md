@@ -4,7 +4,7 @@
 
 ## Installation
 
-Installation is quick and easy, 5 steps process
+Installation is quick and easy, 3 steps process
 
 1. Install GenemuFormBundle
 2. Enable the bundle
