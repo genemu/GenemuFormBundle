@@ -8,18 +8,20 @@ Installation is quick and easy, 5 steps process
 
 1. Install GenemuFormBundle
 2. Enable the bundle
-3. Minimal configuration
-4. Initialize assets
+3. Initialize assets
 
 ### Step 1: Install GenemuFormBundle
 
 Add the following dependency to your composer.json file:
-
+``` json
+{
     "require": {
-        # ..
+        "_some_packages": "...",
+
         "genemu/form-bundle": "2.1.*"
-        # ..
     }
+}
+```
 
 ### Step 2: Enable the bundle
 
@@ -38,31 +40,17 @@ public function registerBundles()
 }
 ```
 
-### Step 3: Minimal configuration
-
-``` yaml
-# app/config/config.yml
-
-genemu_form: ~
-```
-
-### Step 4: Initialize assets
+### Step 3: Initialize assets
 
 ``` bash
 $ php app/console assets:install web/
 ```
 
-## Template
+## Form types
 
-You use GenemuFormBundle and you seen that it does not work!
-Maybe you have forgotten form_javascript or form_stylesheet.
+### Select2 ([view demo](http://ivaynberg.github.com/select2/)):
 
-The principle is to separate the javascript, stylesheet and html.
-This allows better integration of web pages.
-
-[View a template example form view](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/template.md)
-
-## FormType
+[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/select2/index.md)
 
 ### Captcha GD
 
@@ -80,7 +68,7 @@ This allows better integration of web pages.
 
 - [Datepicker](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/datepicker/index.md)
 - [Slider](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/slider/index.md)
-- [Autocomplete](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/autocomplete/index.md)
+- [Autocomplete](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/autocomplete/text.md)
 
 ### File ([uploadify library](http://www.uploadify.com)):
 
@@ -97,22 +85,30 @@ You send the image and crop or apply filter.
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/color/index.md)
 
-### Rating ([view demo](http://orkans-tmp.22web.net/star_rating/)):
+### Rating ([view demo](http://www.fyneworks.com/jquery/star-rating/#tab-Testing)):
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/rating/index.md)
 
-### Chosen ([view demo](http://harvesthq.github.com/chosen/)):
-
-[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/chosen/index.md)
-
 ### Plain
 
-A Form type that just renders the field as a p tag. This is useful for forms where certain field need to be shown but not editable.
+A Form type that just renders the field as a p tag.
+This is useful for forms where certain field need to be shown but not editable.
+
+The type name is ``genemu_plain``.
 
 ## Tips
 
 [Prototype usage within form collections](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/tips/form_prototype.md)
 
+## Template
+
+You use GenemuFormBundle and you seen that it does not work!
+Maybe you have forgotten ``form_javascript`` or ``form_stylesheet``.
+
+The principle is to separate the javascript, stylesheet and html. This allows better integration of web pages.
+
+[View a template example form view](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/template.md)
+
 ## Note
-There is maybe bugs in this implementations, this package is just an idea of a form
-field type which can be very useful for the Symfony2 project.
+
+There are maybe some bugs in those implementations, this package is just an idea of form types which can be very useful for your Symfony2 projects.
