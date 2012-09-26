@@ -56,7 +56,7 @@ $ php app/console assets:install web/
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/captcha_gd/index.md)
 
-### ReCaptcha ([Google librairie](http://www.google.com/recaptcha)):
+### ReCaptcha ([Google library](http://www.google.com/recaptcha)):
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/recaptcha/index.md)
 
