@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Symfony\Component\Form\Extension\Core\Type\DateType as BaseDateType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 /**
  * A Form type that just renders the field as a p tag. This is useful for forms where certain field
@@ -30,7 +30,6 @@ class PlainType extends AbstractType
             'date_format' => null,
             'date_pattern' => null,
             'time_format' => null,
-            'with_time' => true,
             'attr' => array(
                 'class' => $this->getName()
             )
@@ -54,8 +53,8 @@ class PlainType extends AbstractType
         } elseif (is_array($value)) {
             $value = implode(', ', $value);
         } elseif ($value instanceof \DateTime) {
-            $dateFormat = is_int($options['date_format']) ? $options['date_format'] : BaseDateType::DEFAULT_FORMAT;
-            $timeFormat = is_int($options['time_format']) ? $options['time_format'] : BaseDateType::DEFAULT_FORMAT;
+            $dateFormat = is_int($options['date_format']) ? $options['date_format'] : DateType::DEFAULT_FORMAT;
+            $timeFormat = is_int($options['time_format']) ? $options['time_format'] : DateType::DEFAULT_FORMAT;
             $calendar   = \IntlDateFormatter::GREGORIAN;
             $pattern    = is_string($options['date_pattern']) ? $options['date_pattern'] : null;
 
