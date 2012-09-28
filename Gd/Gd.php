@@ -36,7 +36,7 @@ class Gd implements GdInterface
         $function = 'image'.$format;
 
         if (!function_exists($function)) {
-            return $this->checkFormat('jpeg');
+            return 'jpeg';
         }
 
         return $format;
