@@ -74,18 +74,21 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
     public function reverseTransform($json)
     {
         $choices = json_decode(is_array($json) ? current($json) : $json, true);
-
+        
+        // Single choice list
         if (!$this->multiple) {
+            if (!is_array($choices)) {
+                return '';
+            }
+            
             if ($this->ajax && !in_array($this->widget, array('entity', 'document', 'model'))) {
                 $this->choiceList->addAjaxChoice($choices);
             }
 
-            if (!array_key_exists('value', $choices)) {
-                throw new WrongUsageOfOption('It seems you setted "multiple" option to false although you passed an array, check the configuration of your FormType');
-            }
             return $choices['value'];
         }
 
+        // Multiple choice list
         if (empty($choices)) {
             return array();
         }
