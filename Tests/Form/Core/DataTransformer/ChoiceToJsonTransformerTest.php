@@ -16,18 +16,33 @@ use Genemu\Bundle\FormBundle\Form\Core\DataTransformer\ChoiceToJsonTransformer;
 
 class ChoiceToJsonTransformerTest extends \PHPUnit_Framework_TestCase
 {
+    public function testReverseEmptySimpleValue()
+    {
+        $transformer = $this->createChoiceToJsonTransformer(
+            array(),
+            false
+        );
+
+        $this->assertEquals(NULL, $transformer->reverseTransform(''));
+    }
+
+    public function testReverseEmptyArrayValue()
+    {
+        $transformer = $this->createChoiceToJsonTransformer(
+            array(),
+            true
+        );
+
+        $this->assertEquals(array(), $transformer->reverseTransform('[]'));
+    }
+
     /**
      * @expectedException Genemu\Bundle\FormBundle\Exception\WrongUsageOfOption
      */
     public function testReverseMultipleShouldBeFalse()
     {
-        $list = new SimpleChoiceList(array(
-            'label' => 'Foo', 'value' => 'foo'
-        ));
-        $transformer = new ChoiceToJsonTransformer(
-            $list,
-            false,
-            'choice',
+        $transformer = $this->createChoiceToJsonTransformer(
+            array('label' => 'Foo', 'value' => 'foo'),
             true
         );
 
@@ -39,16 +54,25 @@ class ChoiceToJsonTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testReverseMultipleShouldBeTrue()
     {
-        $list = new SimpleChoiceList(array(
-            'label' => 'Foo', 'value' => 'foo'
-        ));
-        $transformer = new ChoiceToJsonTransformer(
-            $list,
-            false,
-            'choice',
+        $transformer = $this->createChoiceToJsonTransformer(
+            array('label' => 'Foo', 'value' => 'foo'),
             false
         );
 
         $transformer->reverseTransform('[{"label": "Foo", "value": "foo"}]');
+    }
+
+    protected function createChoiceToJsonTransformer($list, $multiple)
+    {
+        $simpleChoice = new SimpleChoiceList($list);
+
+        $transformer = new ChoiceToJsonTransformer(
+            $simpleChoice,
+            false,
+            'choice',
+            $multiple
+        );
+
+        return $transformer;
     }
 }
