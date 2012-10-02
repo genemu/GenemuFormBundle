@@ -80,7 +80,7 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
                 $this->choiceList->addAjaxChoice($choices);
             }
 
-            if (!array_key_exists('value', $choices)) {
+            if ($choices !== null && !array_key_exists('value', $choices)) {
                 throw new WrongUsageOfOption('It seems you setted "multiple" option to false although you passed an array, check the configuration of your FormType');
             }
             return $choices['value'];
