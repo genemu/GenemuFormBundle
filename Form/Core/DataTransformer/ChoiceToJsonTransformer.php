@@ -74,41 +74,69 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
     public function reverseTransform($json)
     {
         $choices = json_decode(is_array($json) ? current($json) : $json, true);
-        
-        // Single choice list
+
         if (!$this->multiple) {
-            if (!is_array($choices)) {
+            if (empty($choices)) {
                 return '';
             }
-            
-            if ($this->ajax && !in_array($this->widget, array('entity', 'document', 'model'))) {
-                $this->choiceList->addAjaxChoice($choices);
+
+            if (!$this->isSimpleValue($choices)) {
+                throw new WrongUsageOfOption('It seems you setted "multiple" option to false although you passed an array, check the configuration of your FormType');
             }
+
+            $this->addAjaxChoices($choices);
 
             return $choices['value'];
-        }
 
-        // Multiple choice list
-        if (empty($choices)) {
-            return array();
-        }
+        } else {
+            if (empty($choices)) {
+                return array();
+            }
 
-        $choices = array_unique($choices, SORT_REGULAR);
-
-        $values = array();
-
-        foreach ($choices as $choice) {
-            if (!is_array($choice)) {
+            if (!$this->isArrayValue($choices)) {
                 throw new WrongUsageOfOption('It seems you setted "multiple" option to true although you passed a single value, check the configuration of your FormType');
             }
+            $choices = array_unique($choices, SORT_REGULAR);
 
-            if ($this->ajax && !in_array($this->widget, array('entity', 'document', 'model'))) {
-                $this->choiceList->addAjaxChoice($choice);
+            $values = array();
+
+            foreach ($choices as $choice) {
+                $this->addAjaxChoices($choice);
+
+                $values[] = $choice['value'];
             }
 
-            $values[] = $choice['value'];
+            return $values;
         }
+    }
 
-        return $values;
+    private function addAjaxChoices(&$choices)
+    {
+        if ($this->ajax && !in_array($this->widget, array('entity', 'document', 'model'))) {
+            $this->choiceList->addAjaxChoice($choices);
+        }
+    }
+
+    /**
+     * Checks if the argument has 'value' and 'label' keys
+     */
+    private function isSimpleValue($array)
+    {
+        return is_array($array)
+            && array_key_exists('value', $array)
+            && array_key_exists('label', $array);
+    }
+
+    /**
+     * Checks if the argument is an array of simple values
+     */
+    private function isArrayValue($array)
+    {
+        foreach ($array as $item) {
+            if (!$this->isSimpleValue($item)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
