@@ -37,7 +37,7 @@ abstract class ChoiceToJsonTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Genemu\Bundle\FormBundle\Exception\WrongUsageOfOption
+     * @expectedException Symfony\Component\Form\Exception\TransformationFailedException
      */
     public function testReverseMultipleShouldBeFalse()
     {
@@ -50,7 +50,7 @@ abstract class ChoiceToJsonTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Genemu\Bundle\FormBundle\Exception\WrongUsageOfOption
+     * @expectedException Symfony\Component\Form\Exception\TransformationFailedException
      */
     public function testReverseMultipleShouldBeTrue()
     {

@@ -14,7 +14,7 @@ namespace Genemu\Bundle\FormBundle\Form\Core\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
-use Genemu\Bundle\FormBundle\Exception\WrongUsageOfOption;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
  * ChoiceToJsonTransformer
@@ -83,7 +83,7 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
             }
 
             if (!$this->isSimpleValue($choices)) {
-                throw new WrongUsageOfOption('The format of the $choices array is bad');
+                throw new TransformationFailedException('The format of the json array is bad');
             }
 
             $this->addAjaxChoices($choices);
@@ -97,8 +97,9 @@ class ChoiceToJsonTransformer implements DataTransformerInterface
             }
 
             if (!$this->isArrayValue($choices)) {
-                throw new WrongUsageOfOption('The format of the $choices array is bad');
+                throw new TransformationFailedException('The format of the json array is bad');
             }
+
             $choices = array_unique($choices, SORT_REGULAR);
 
             $values = array();
