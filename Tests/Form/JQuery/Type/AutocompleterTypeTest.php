@@ -32,6 +32,25 @@ class AutocompleterTypeTest extends TypeTestCase
         $this->assertNull($view->vars['route_name']);
     }
 
+    public function testEmptySimpleValue()
+    {
+        $form = $this->factory->create(new AutocompleterType('choice'), null, array(
+            'choices' => array()
+        ));
+        $form->bind('');
+        $this->assertEquals(null, $form->getData());
+    }
+
+    public function testEmptyArrayValue()
+    {
+        $form = $this->factory->create(new AutocompleterType('choice'), null, array(
+            'choices' => array(),
+            'multiple' => true
+        ));
+        $form->bind(array());
+        $this->assertEquals(array(), $form->getData());
+    }
+
     public function testValue()
     {
         $form = $this->factory->create(new AutocompleterType('choice'), null, array(
