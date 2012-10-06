@@ -14,7 +14,7 @@ namespace Genemu\Bundle\FormBundle\Tests\Core\DataTransformer;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Genemu\Bundle\FormBundle\Form\Core\DataTransformer\ChoiceToJsonTransformer;
 
-abstract class ChoiceToJsonTransformerTest extends \PHPUnit_Framework_TestCase
+class ChoiceToJsonTransformerTest extends \PHPUnit_Framework_TestCase
 {
     public function testReverseEmptySimpleValue()
     {
