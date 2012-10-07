@@ -722,11 +722,13 @@
 
 {% block genemu_jqueryselect2_javascript %}
     <script type="text/javascript">
+    jQuery(document).ready(function($) {
         $field = $('#{{ id }}');
 
         {% block genemu_jqueryselect2_javascript_prototype %}
             $field.select2({{ configs|json_encode|raw }});
         {% endblock %}
+    });
     </script>
 {% endblock %}
 
