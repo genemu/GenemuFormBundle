@@ -143,7 +143,7 @@ class Configuration implements ConfigurationInterface
                             ->children()
                                 ->booleanNode('enabled')->defaultFalse()->end()
                                 ->scalarNode('host')->end()
-                                ->scalarNode('port')->end()
+                                ->scalarNode('port')->defaultValue('80')->end()
                             ->end()
                         ->end()
                         ->arrayNode('ssl')
