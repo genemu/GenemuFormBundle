@@ -4,10 +4,19 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
+    <parameters>
+        <parameter key="genemu.form.captcha.options" type="collection" />
+    </parameters>
+
     <services>
         <service id="genemu.gd.captcha" class="Genemu\Bundle\FormBundle\Gd\Type\Captcha">
             <argument type="service" id="session" />
             <argument>%kernel.secret%</argument>
+        </service>
+        <service id="genemu.form.core.type.captcha" class="Genemu\Bundle\FormBundle\Form\Core\Type\CaptchaType">
+            <tag name="form.type" alias="genemu_captcha" />
+            <argument type="service" id="genemu.gd.captcha" />
+            <argument>%genemu.form.captcha.options%</argument>
         </service>
     </services>
 

@@ -11,10 +11,9 @@
 
 namespace Genemu\Bundle\FormBundle;
 
+use Genemu\Bundle\FormBundle\DependencyInjection\Compiler\FormPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-use Genemu\Bundle\FormBundle\DependencyInjection\Compiler\FormPass;
 
 /**
  * An extends of Symfony\Component\HttpKernel\Bundle\Bundle
@@ -23,12 +22,18 @@ use Genemu\Bundle\FormBundle\DependencyInjection\Compiler\FormPass;
  */
 class GenemuFormBundle extends Bundle
 {
+    public static $types = array(
+        'captcha', 'recaptcha', 'tinymce', 'date', 'file', 'image', 'autocomplete',
+        'select2', 'chosen', 'autocompleter', 'tokeninput'
+    );
+
     /**
      * {@inheritdoc}
      */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
+
         $container->addCompilerPass(new FormPass());
     }
 }
