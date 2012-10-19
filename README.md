@@ -8,6 +8,7 @@ Bundle minor versions are based on Symfony ones :
 
 - 2.0 provides compatibility with Symfony 2.0
 - 2.1 provides compatibility with Symfony 2.1
+- 2.2 provides compatibility with Symfony 2.2
 
 ## Installation
 
