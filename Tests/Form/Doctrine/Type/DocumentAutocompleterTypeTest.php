@@ -224,7 +224,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
 
         $this->assertEquals(array(), $view->vars['choices']);
         $this->assertEquals(json_encode(array(
-            'value' => '2',
+            'value' => 2,
             'label' => 'Bar',
         )), $form->getClientData());
         $this->assertSame($document2, $form->getData());
@@ -260,7 +260,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(array(), $view->vars['choices']);
 
         $this->assertEquals(json_encode(array(
-            array('value' => '2', 'label' => 'Bar')
+            array('value' => 2, 'label' => 'Bar')
         )), $form->getClientData());
 
         $this->assertSame($existing, $form->getData());
