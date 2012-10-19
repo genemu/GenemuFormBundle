@@ -4,10 +4,10 @@
 
 ## Branches
 
-Bundle minor versions are based on Symfony ones.
+Bundle minor versions are based on Symfony ones :
 
-2.0 provides compatibility with Symfony 2.0
-2.1 provides compatibility with Symfony 2.1
+- 2.0 provides compatibility with Symfony 2.0
+- 2.1 provides compatibility with Symfony 2.1
 
 ## Installation
 
