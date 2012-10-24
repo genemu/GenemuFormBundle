@@ -1,0 +1,6 @@
+The captcha is invalid.: Le captcha est invalide.
+
+genemu_form:
+    recaptcha:
+        incorrect-captcha-sol: Le captcha n'est pas valide.
+        invalid-site-private-key: La clé privée est invalide.
