@@ -140,7 +140,7 @@ class Configuration implements ConfigurationInterface
                             ->children()
                                 ->booleanNode('use')->defaultTrue()->end()
                                 ->scalarNode('server_url')
-                                    ->defaultValue('https://api-secure.recaptcha.net')
+                                    ->defaultValue('https://www.google.com/recaptcha/api/')
                                 ->end()
                             ->end()
                         ->end()
