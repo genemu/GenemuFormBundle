@@ -8,5 +8,5 @@ genemu_form:
         server_url: 'http://api.recaptcha.net'
         ssl:
             use:        true
-            server_url: 'https://api-secure.recaptcha.net'
+            server_url: 'https://www.google.com/recaptcha/api/'
 ```
