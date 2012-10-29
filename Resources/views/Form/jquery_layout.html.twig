@@ -485,21 +485,23 @@
         var $field = $('#{{ id }}_upload');
         {% block genemu_jqueryfile_javascript_prototype %}
         var $form = $field.closest('form');
-        var $queue = $form.find('#{{ id }}_queue');
+        var $input = $form.find('#{{ id }}');
+        {% set rand = random() %}
+        var $queue = $form.find('#{{ id }}_queue_{{ rand }}');
         var $nbQueue = 0;
 
         var $configs = $.extend({{ configs|merge({
             'swf':       asset(configs.swf),
             'cancelImg': asset(configs.cancelImg),
             'uploader':  path(configs.script),
-            'queueID':   id ~ '_queue'
+            'queueID':   id ~ '_queue_' ~ rand
         })|json_encode|raw }}, {
             onUploadSuccess: function(file, data, response) {
                 data = jQuery.parseJSON(data);
 
                 if (data.result == '1') {
                     {% if multiple %}
-                        var value = $field.val();
+                        var value = $input.val();
                         if (value != '') {
                             value += ",";
                         }
@@ -508,7 +510,7 @@
                         var value = data.file;
                     {% endif %}
 
-                    $field.val(value);
+                    $input.val(value);
                     $nbQueue--;
                 } else {
                     alert('Error');
@@ -543,7 +545,7 @@
 
         var $joinFiles = function() {
             if ($files = $field.data('files')) {
-                $field.val($files.join(','));
+            	$input.val($files.join(','));
             }
 
             return true;
@@ -559,16 +561,22 @@
 {% block genemu_jqueryimage_javascript %}
 {% spaceless %}
 <script type="text/javascript">
+	
     jQuery(document).ready(function($) {
         var $field   = $('#{{ id }}_upload');
         {% block genemu_jqueryimage_javascript_prototype %}
         var $form    = $field.closest('form');
+        var $input = $form.find('#{{ id }}');
         var $preview = $form.find('#{{ id }}_img_preview');
         var $options = $form.find('#{{ id }}_options');
-        // Base path for apps not on DocumentRoot
+		var queue = $form.find('#{{ id }}_queue');
+		{% set rand = random() %}
+		queue.attr('id', queue.attr('id')+'_{{ rand }}'); {# set random value (this is passed directly as ID to uploadify)#}
+		// Base path for apps not on DocumentRoot
         var $basePath = '{{ asset(configs.folder) }}';
-        $basePath = $basePath.substr(0, $basePath.length - '{{ configs.folder }}'.length);
+        $basePath = $basePath.substr(0, $basePath.length - {{ configs.folder|length }});
 
+		
         var $coords = {};
         var $crop = null;
         var $ratio = 1;
@@ -577,13 +585,13 @@
             'swf':       asset(configs.swf),
             'cancelImg': asset(configs.cancelImg),
             'uploader':  path(configs.script),
-            'queueID':   id ~ '_queue'
+            'queueID':   id ~ '_queue_' ~ rand
         })|json_encode|raw }}, {
             onUploadSuccess: function(file, data, response) {
                 data = jQuery.parseJSON(data);
 
                 if (data.result == '1') {
-                    $field.val(data.file);
+                	$input.val(data.file);
 
                     // add if and only if path is relative
                     if (data.thumbnail.file.search(/^[/\\]/) < 0) {
@@ -662,7 +670,7 @@
 
             var $data = {
                 filter: $filter,
-                image: $field.val(),
+                image: $input.val(),
                 opacity: 0.5
             };
 
@@ -683,7 +691,7 @@
                     dataType: 'json',
                     success: function(data) {
                         if (data.result == '1') {
-                            $field.val(data.file);
+                        	$input.val(data.file);
 
                             createCrop({
                                 image: data.image,
@@ -716,7 +724,7 @@
     {% else %}
         $options.hide();
     {% endif %}
-
+    
         $field.uploadify($configs);
         {% endblock %}
     });
