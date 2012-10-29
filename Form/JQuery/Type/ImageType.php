@@ -76,6 +76,7 @@ class ImageType extends AbstractType
             ));
         }
 
+        $view->vars['widthMax'] = $this->widthMax;
         $view->vars['filters'] = $this->filters;
     }
 
