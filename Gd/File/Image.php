@@ -171,13 +171,23 @@ class Image extends File
     }
 
     /**
-     * Add filter rotate to image
+     * Add filter rotate +90 to image
      *
      * @param int $rotate
      */
     public function addFilterRotate($rotate = 90)
     {
         $this->gd->addFilter(new Rotate($rotate));
+    }
+    
+    /**
+     * Add filter rotate -90 to image
+     *
+     * @param int $rotate
+     */
+    public function addFilterAntirotate($rotate = -90)
+    {
+    	$this->addFilterRotate($rotate);
     }
 
     /**

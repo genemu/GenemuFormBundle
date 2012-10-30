@@ -34,7 +34,10 @@ class ImageController extends ContainerAware
 
         switch ($request->get('filter')) {
             case 'rotate':
-                $handle->addFilterRotate(90);
+                $handle->addFilterRotate(); //+90
+                break;
+            case 'antirotate':
+                $handle->addFilterAntirotate(); //-90
                 break;
             case 'negative':
                 $handle->addFilterNegative();

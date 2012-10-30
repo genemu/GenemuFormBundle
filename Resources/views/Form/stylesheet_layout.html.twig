@@ -99,8 +99,13 @@
             cursor: pointer;
         }
 
-        #{{ id }}_options .rotate {
+        #{{ id }}_options .antirotate {
             background-position: 0 0;
+        }
+        
+        #{{ id }}_options .rotate {
+        	background: transparent url({{ asset('bundles/genemuform/images/icons_reversed.png') }});
+            background-position: -48px 0;
         }
 
         #{{ id }}_options .bw {
