@@ -24,8 +24,7 @@ class Base64Controller extends ContainerAware
     public function refreshCaptchaAction()
     {
         $captcha = $this->container->get('genemu.gd.captcha');
-        $options = $this->container->get('request')->query->all();
-        $captcha->setOptions($options);
+        $captcha->setOptions(array());
         $datas = preg_split('([;,]{1})', substr($captcha->getBase64(), 5));
 
         return new Response(base64_decode($datas[2]), 200, array('Content-Type' => $datas[0]));
