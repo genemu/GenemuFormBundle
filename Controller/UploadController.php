@@ -23,12 +23,25 @@ use Genemu\Bundle\FormBundle\Gd\File\Image;
  */
 class UploadController extends ContainerAware
 {
+    /**
+	 * Retrieve uploadDir parameter from config (this can be extended to allow dynamic uploadDir)
+	 */
+	protected function getUploadDir(){
+		return $this->container->getParameter('genemu.form.file.upload_dir');
+	}
+	/**
+	 * Retrieve folder parameter from config (this can be extended to allow dynamic folder)
+	 */	
+	protected function getFolder(){
+		return $this->container->getParameter('genemu.form.file.folder');
+	}
+	
     public function uploadAction()
     {
         $handle = $this->container->get('request')->files->get('Filedata');
 
-        $folder = $this->container->getParameter('genemu.form.file.folder');
-        $uploadDir = $this->container->getParameter('genemu.form.file.upload_dir');
+        $folder = $this->getFolder();
+        $uploadDir = $this->getUploadDir();
         $name = uniqid() . '.' . $handle->guessExtension();
 
         $json = array();

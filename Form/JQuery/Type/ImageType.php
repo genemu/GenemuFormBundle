@@ -52,6 +52,7 @@ class ImageType extends AbstractType
 
         if (!empty($data)) {
             if (!$data instanceof Image) {
+			    $value = $data;
                 $data = new Image($form->getAttribute('rootDir') . '/' . $data);
             }
 
@@ -66,8 +67,9 @@ class ImageType extends AbstractType
                     ));
             }
 
-            $value = $configs['folder'] . '/' . $data->getFilename();
-
+            if(!$value){
+                $value = $configs['folder'] . '/' . $data->getFilename();
+            }
             $view->vars = array_replace($view->vars, array(
                 'value' => $value,
                 'file' => $value,
