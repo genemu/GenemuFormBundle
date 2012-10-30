@@ -26,6 +26,11 @@ genemu_base64:
 ``` jinja
 {# ... #}
 
+{{ form_widget(form) }}
+{{ form_javascript(form) }}
+
+{# ... #}
+
 {% form_theme form _self %}
 
 {% block genemu_captcha_widget %}
@@ -37,10 +42,11 @@ genemu_base64:
 
 {% block genemu_captcha_javascript %}
     <script type="text/javascript">
+        {# Image will be refreshed when the link is clicked #}
         $(function () {
-            {# Image will be refreshed when the link is clicked #}
+            var params = {{ configs|json_encode|raw }};
             $('#{{ id }}_refresh').click(function() {
-                $('#{{ id }}_image').attr('src', '{{ path('genemu_captcha_refresh') }}?' + Math.random());
+                $('#{{ id }}_image').attr('src', '{{ path('genemu_captcha_refresh') }}?' + Math.random() + '&' + $.param(params));
             });
         });
     </script>
