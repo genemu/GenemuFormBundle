@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\Options;
 
 use Genemu\Bundle\FormBundle\Gd\Type\Captcha;
 use Genemu\Bundle\FormBundle\Form\Core\Validator\CaptchaValidator;
@@ -67,6 +68,7 @@ class CaptchaType extends AbstractType
             'src' => $captcha->getBase64($options['format']),
             'width' => $captcha->getWidth(),
             'height' => $captcha->getHeight(),
+            'configs' => $options['configs'],
         ));
     }
 
@@ -75,12 +77,30 @@ class CaptchaType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $captchaOptions = $this->options;
+
         $defaults = array_merge(
             array('attr' => array('autocomplete' => 'off')),
-            $this->options
+            array('configs' => array()),
+            $captchaOptions
         );
 
         $resolver->setDefaults($defaults);
+
+        $resolver->setNormalizers(array(
+            'configs' => function (Options $options, $previousValue) use ($captchaOptions) {
+                $configs = array();
+
+                foreach (array_keys($captchaOptions) as $key) {
+                    if (!empty($options[$key])) {
+                        $configs[$key] = $options[$key];
+                    }
+                }
+
+                return $configs;
+            }
+        ));
+        
     }
 
     /**
