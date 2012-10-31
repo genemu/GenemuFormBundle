@@ -57,7 +57,7 @@ class Captcha extends Gd
     {
         $this->session = $session;
         $this->secret = $secret;
-        $this->key = 'genemu_captcha';
+        $this->key = 'genemu_form.captcha';
     }
 
     public function setOptions(array $options)
@@ -99,6 +99,8 @@ class Captcha extends Gd
 
             $this->$key = $values;
         }
+
+        $this->session->set($this->key.'.options', $options);
     }
 
     /**
