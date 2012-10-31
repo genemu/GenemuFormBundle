@@ -84,7 +84,7 @@ class ReCaptchaType extends AbstractType
                 'lang' => \Locale::getDefault(),
             )),
             'validator' => array(
-                'host' => 'api-verify.recaptcha.net',
+                'host' => 'www.google.com/recaptcha/api',
                 'port' => 80,
                 'path' => '/verify',
                 'timeout' => 10,
