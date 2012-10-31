@@ -56,7 +56,7 @@ class FileToValueTransformer implements DataTransformerInterface
                     $data = new File($this->rootDir . '/' . $this->stripQueryString($data));
                 }
 
-                $value[] = $this->folder . '/' . $data->getFilename();
+                $value[] = str_replace($this->rootDir, "", $data->getPath()) . "/" . $data->getFilename();
             }
 
             $value = implode(',', $value);
@@ -65,7 +65,7 @@ class FileToValueTransformer implements DataTransformerInterface
                 $datas = new File($this->rootDir . '/' . $this->stripQueryString($datas));
             }
 
-            $value = $this->folder . '/' . $datas->getFilename();
+            $value = str_replace($this->rootDir, "", $datas->getPath()) . "/" . $datas->getFilename();
         }
 
         return $value;

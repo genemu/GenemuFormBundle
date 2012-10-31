@@ -485,21 +485,23 @@
         var $field = $('#{{ id }}_upload');
         {% block genemu_jqueryfile_javascript_prototype %}
         var $form = $field.closest('form');
-        var $queue = $('#{{ id }}_queue');
+        var $input = $form.find('#{{ id }}');
+        {% set rand = random() %}
+        var $queue = $form.find('#{{ id }}_queue_{{ rand }}');
         var $nbQueue = 0;
 
         var $configs = $.extend({{ configs|merge({
             'swf':       asset(configs.swf),
             'cancelImg': asset(configs.cancelImg),
             'uploader':  path(configs.script),
-            'queueID':   id ~ '_queue'
+            'queueID':   id ~ '_queue_' ~ rand
         })|json_encode|raw }}, {
             onUploadSuccess: function(file, data, response) {
                 data = jQuery.parseJSON(data);
 
                 if (data.result == '1') {
                     {% if multiple %}
-                        var value = $('#{{ id }}').val();
+                        var value = $input.val();
                         if (value != '') {
                             value += ",";
                         }
@@ -508,7 +510,7 @@
                         var value = data.file;
                     {% endif %}
 
-                    $('#{{ id }}').val(value);
+                    $input.val(value);
                     $nbQueue--;
                 } else {
                     alert('Error');
@@ -543,7 +545,7 @@
 
         var $joinFiles = function() {
             if ($files = $field.data('files')) {
-                $field.val($files.join(','));
+            	$input.val($files.join(','));
             }
 
             return true;
@@ -559,16 +561,22 @@
 {% block genemu_jqueryimage_javascript %}
 {% spaceless %}
 <script type="text/javascript">
+	
     jQuery(document).ready(function($) {
         var $field   = $('#{{ id }}_upload');
         {% block genemu_jqueryimage_javascript_prototype %}
         var $form    = $field.closest('form');
-        var $preview = $('#{{ id }}_img_preview');
-        var $options = $('#{{ id }}_options');
-        // Base path for apps not on DocumentRoot
+        var $input = $form.find('#{{ id }}');
+        var $preview = $form.find('#{{ id }}_img_preview');
+        var $options = $form.find('#{{ id }}_options');
+		var queue = $form.find('#{{ id }}_queue');
+		{% set rand = random() %}
+		queue.attr('id', queue.attr('id')+'_{{ rand }}'); {# set random value (this is passed directly as ID to uploadify)#}
+		// Base path for apps not on DocumentRoot
         var $basePath = '{{ asset(configs.folder) }}';
-        $basePath = $basePath.substr(0, $basePath.length - '{{ configs.folder }}'.length);
+        $basePath = $basePath.substr(0, $basePath.length - {{ configs.folder|length }});
 
+		
         var $coords = {};
         var $crop = null;
         var $ratio = 1;
@@ -577,13 +585,13 @@
             'swf':       asset(configs.swf),
             'cancelImg': asset(configs.cancelImg),
             'uploader':  path(configs.script),
-            'queueID':   id ~ '_queue'
+            'queueID':   id ~ '_queue_' ~ rand
         })|json_encode|raw }}, {
             onUploadSuccess: function(file, data, response) {
                 data = jQuery.parseJSON(data);
 
                 if (data.result == '1') {
-                    $('#{{ id }}').val(data.file);
+                	$input.val(data.file);
 
                     // add if and only if path is relative
                     if (data.thumbnail.file.search(/^[/\\]/) < 0) {
@@ -616,9 +624,9 @@
 
             console.log(data);
             $($img).load(function() {
-                {% set widthMax = data.thumbnail is defined ? data.thumbnail.width : 500 %}
-
-                $ratio = data.image.width > {{ widthMax }} ? data.image.width / {{ widthMax }} : 1;
+                var widthMax = data.thumbnail && data.thumbnail.width ? data.thumbnail.width : {{ widthMax }};
+				
+                $ratio = data.image.width > widthMax ? data.image.width / widthMax : 1;
                 $('.crop', $options).hide();
 
                 $preview
@@ -662,7 +670,7 @@
 
             var $data = {
                 filter: $filter,
-                image: $('#{{ id }}').val(),
+                image: $input.val(),
                 opacity: 0.5
             };
 
@@ -683,7 +691,7 @@
                     dataType: 'json',
                     success: function(data) {
                         if (data.result == '1') {
-                            $('#{{ id }}').val(data.file);
+                        	$input.val(data.file);
 
                             createCrop({
                                 image: data.image,
@@ -705,8 +713,8 @@
         createCrop({
             thumbnail: {
                 file: '{{ thumbnail is defined ? thumbnail.file : value }}',
-                width: {{ thumbnail is defined ? thumbnail.width : width }},
-                height: {{ thumbnail is defined ? thumbnail.height : height }},
+                width: {{ thumbnail is defined ? thumbnail.width : 'null' }}, {# with no thumbnail I still want the widthMax parameter working #}
+                height: {{ thumbnail is defined ? thumbnail.height : 'null' }},
             },
             image: {
                 width: {{ width }},
@@ -716,7 +724,7 @@
     {% else %}
         $options.hide();
     {% endif %}
-
+    
         $field.uploadify($configs);
         {% endblock %}
     });

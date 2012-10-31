@@ -120,7 +120,7 @@
                 <a id="{{ id }}_overlay" href="#">&nbsp;</a>
 
                 {% if value %}
-                    {% set widthMax = thumbnail is defined ? thumbnail.width : 500 %}
+                    {% set widthMax = thumbnail is defined ? thumbnail.width : widthMax %} {# widthMax is already set #}
                     {% set ratio = width > widthMax ? width / widthMax : 1 %}
                     {% set asset = asset(thumbnail is defined ? thumbnail.file : value) %}
                     {% set width = width / ratio %}

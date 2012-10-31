@@ -218,6 +218,7 @@ class GenemuFormExtension extends Extension
         $container->setParameter('genemu.form.image.filters', $filters);
         $container->setParameter('genemu.form.image.selected', $configs['selected']);
         $container->setParameter('genemu.form.image.thumbnails', $configs['thumbnails']);
+        $container->setParameter('genemu.form.image.widthMax', $configs['widthMax']);
     }
 
     private function registerAutocompleteConfiguration(array $configs, ContainerBuilder $container)

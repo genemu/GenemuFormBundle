@@ -23,18 +23,29 @@ use Genemu\Bundle\FormBundle\Gd\File\Image;
  */
 class ImageController extends ContainerAware
 {
-    public function changeAction()
+
+	/**
+	 * Retrieve folder parameter from config (this can be extended to allow dynamic folder)
+	 */
+    protected function getFolder(){
+		return $this->container->getParameter('genemu.form.file.folder');
+	}
+	
+    public function changeAction(Request $request)
     {
-        $request = $this->container->get('request');
+        //$request = $this->container->get('request');
         $rootDir = rtrim($this->container->getParameter('genemu.form.file.root_dir'), '/\\') . DIRECTORY_SEPARATOR;
-        $folder = rtrim($this->container->getParameter('genemu.form.file.folder'), '/\\') . DIRECTORY_SEPARATOR;
+        $folder = rtrim($this->getFolder(), '/\\') . DIRECTORY_SEPARATOR;
 
         $file = $request->get('image');
         $handle = new Image($rootDir . $this->stripQueryString($file));
 
         switch ($request->get('filter')) {
             case 'rotate':
-                $handle->addFilterRotate(90);
+                $handle->addFilterRotate(); //+90
+                break;
+            case 'antirotate':
+                $handle->addFilterAntirotate(); //-90
                 break;
             case 'negative':
                 $handle->addFilterNegative();
