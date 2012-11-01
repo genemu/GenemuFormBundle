@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="genemu.form.captcha.code_encoder.default" class="Genemu\Bundle\FormBundle\Captcha\DefaultCodeEncoder" public="false">
+            <argument>%secret%</argument>
+        </service>
+
+        <service id="genemu.form.captcha.code_generator.default" class="Genemu\Bundle\FormBundle\Captcha\DefaultCodeGenerator" public="false">
+            <argument>%secret%</argument>
+        </service>
+
+        <service id="genemu.form.captcha.storage" class="Genemu\Bundle\FormBundle\Captcha\CaptchaStorage" public="false">
+            <argument/>
+            <argument type="service" id="session" />
+        </service>
+    </services>
+
+</container>
