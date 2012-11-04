@@ -17,8 +17,8 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Genemu\Bundle\FormBundle\Gd\Type\Captcha;
 use Genemu\Bundle\FormBundle\Form\Core\Validator\CaptchaValidator;
+use Genemu\Bundle\FormBundle\Captcha\CaptchaService;
 
 /**
  * CaptchaType
@@ -27,18 +27,25 @@ use Genemu\Bundle\FormBundle\Form\Core\Validator\CaptchaValidator;
  */
 class CaptchaType extends AbstractType
 {
-    private $captcha;
+    /**
+     * @var
+     */
+    private $captchaService;
+
+    /**
+     * @var array
+     */
     private $options;
 
     /**
-     * Constructs
-     *
-     * @param Captcha $captcha
-     * @param array   $options
+     * @param \Genemu\Bundle\FormBundle\Captcha\CaptchaService $captchaService
+     * @param \Genemu\Bundle\FormBundle\Form\Core\Validator\CaptchaValidator $validator
+     * @param array $options
      */
-    public function __construct(Captcha $captcha, array $options)
+    public function __construct(CaptchaService $captchaService, CaptchaValidator $validator, array $options = array())
     {
-        $this->captcha = $captcha;
+        $this->captchaService = $captchaService;
+        $this->validator = $validator;
         $this->options = $options;
     }
 
@@ -47,11 +54,8 @@ class CaptchaType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->captcha->setOptions($options);
-
         $builder
-            ->addEventSubscriber(new CaptchaValidator($this->captcha))
-            ->setAttribute('captcha', $this->captcha)
+            ->addEventSubscriber($this->validator)
         ;
     }
 
@@ -60,11 +64,11 @@ class CaptchaType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $captcha = $this->captcha;
+        $captcha = $this->captchaService->createCaptcha($options['captcha_options']);
 
         $view->vars = array_replace($view->vars, array(
             'value' => '',
-            'src' => $captcha->getBase64($options['format']),
+            'src' => $captcha->getBase64($options['captcha_options']['format']),
             'width' => $captcha->getWidth(),
             'height' => $captcha->getHeight(),
         ));
@@ -75,12 +79,24 @@ class CaptchaType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $defaults = array_merge(
-            array('attr' => array('autocomplete' => 'off')),
-            $this->options
-        );
-
-        $resolver->setDefaults($defaults);
+        $resolver->setDefaults(array(
+            'attr'                  => array(
+                'autocomplete'      => 'off',
+            ),
+            'captcha_options'       => array_merge(array(
+                'width'             => 100,
+                'height'            => 30,
+                'format'            => 'png',
+                'background_color'  => 'DDDDDD',
+                'border_color'      => '000000',
+                'chars'             => range(0, 9),
+                'length'            => 4,
+                'font_size'         => 16,
+                'font_color'        => array('252525', '8B8787', '550707', '3526E6', '88531E'),
+                'grayscale'         => false,
+                'fonts'             => array('akbar.ttf', 'brushcut.ttf', 'molten.ttf', 'planetbe.ttf', 'whoobub.ttf'),
+            ), $this->options),
+        ));
     }
 
     /**

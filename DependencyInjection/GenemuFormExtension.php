@@ -99,13 +99,26 @@ class GenemuFormExtension extends Extension
             $configs['border_color'] = '000000';
         }
 
-        $codeEncoderId = 'genemu.form.captcha.code_encoder.default';
-        if ($configs['code_encoder'] && $container->hasDefinition($configs['code_encoder'])) {
-            $codeEncoderId = $configs['code_encoder'];
+        $validator = $container->getDefinition('genemu.form.captcha.validator');
+        $validator->replaceArgument(1, $configs['invalid_message']);
+
+        if (false == $configs['code_encoder'] || false == $container->hasDefinition($configs['code_encoder'])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Captcha code encoder service with id "%s" is not defined',
+                $configs['code_encoder']
+            ));
         }
 
-        $storage = $container->getDefinition('genemu.form.captcha.storage');
-        $storage->replaceArgument(1, $container->getDefinition($codeEncoderId));
+        if (false == $configs['code_generator'] || false == $container->hasDefinition($configs['code_generator'])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Captcha code generator service with id "%s" is not defined',
+                $configs['code_generator']
+            ));
+        }
+
+        $captchaService = $container->getDefinition('genemu.form.captcha.service');
+        $captchaService->replaceArgument(0, $container->getDefinition($configs['code_encoder']));
+        $captchaService->replaceArgument(1, $container->getDefinition($configs['code_generator']));
 
         $container->setParameter('genemu.form.captcha.options', $configs);
     }
