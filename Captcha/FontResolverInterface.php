@@ -4,9 +4,9 @@ namespace Genemu\Bundle\FormBundle\Captcha;
 interface FontResolverInterface
 {
     /**
-     * @param array $fonts
+     * @param string $font
      *
-     * @return array
+     * @return string
      */
-    public function resolve(array $fonts);
+    public function resolve($font);
 }

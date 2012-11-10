@@ -26,11 +26,9 @@ class DefaultFontResolverTest extends \PHPUnit_Framework_TestCase
         ;
 
         $resolver = new DefaultFontResolver($kernel, 'default/font/dir');
-        $result = $resolver->resolve(array(
-            '@BundleName/path/to/resource'
-        ));
+        $result = $resolver->resolve('@BundleName/path/to/resource');
 
-        $this->assertEquals(array('/full/path/to/resource'), $result);
+        $this->assertEquals('/full/path/to/resource', $result);
     }
 
     /**
@@ -47,18 +45,16 @@ class DefaultFontResolverTest extends \PHPUnit_Framework_TestCase
         ;
 
         $resolver = new DefaultFontResolver($kernel, 'default/font/dir');
-        $result = $resolver->resolve(array(
-            'resource'
-        ));
+        $result = $resolver->resolve('resource');
 
-        $this->assertEquals(array('/full/path/to/resource'), $result);
+        $this->assertEquals('/full/path/to/resource', $result);
     }
 
     /**
      * @test
      * @expectedException \InvalidArgumentException
      */
-    public function shouldThrowInvalidArgumentIfFontPathCouldNotBeResolved()
+    public function throwIfFontPathCouldNotBeResolved()
     {
         $kernel = $this->createKernelMock();
         $kernel
@@ -67,9 +63,7 @@ class DefaultFontResolverTest extends \PHPUnit_Framework_TestCase
         ;
 
         $resolver = new DefaultFontResolver($kernel, 'default/font/dir');
-        $result = $resolver->resolve(array(
-            '/unresolved/resource'
-        ));
+        $resolver->resolve('/unresolved/resource');
     }
 
     /**

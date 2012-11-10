@@ -28,34 +28,25 @@ class DefaultFontResolver implements FontResolverInterface
     /**
      * {@inherit}
      */
-    public function resolve(array $fonts)
+    public function resolve($font)
     {
-        $resolved = array();
-
-        foreach ($fonts as $font) {
-            if ('@' === $font[0]) {
-                $resolved[] = $this->kernel->locateResource($font);
-                continue;
-            }
-
-            $pathinfo = pathinfo($font);
-            if ('.' === $pathinfo['dirname']) {
-                $resolved[] = $this->kernel->locateResource(
-                   $this->defaultFontsDir . DIRECTORY_SEPARATOR . $pathinfo['basename']
-                );
-                continue;
-            }
-
-            if (is_file($font) && is_readable($font)) {
-                $resolved[] = $font;
-                continue;
-            }
-
-            throw new \InvalidArgumentException(sprintf(
-               'Could not resolve font "%s".', $font
-            ));
+        if ('@' === $font[0]) {
+            return $this->kernel->locateResource($font);
         }
 
-        return $resolved;
+        $pathinfo = pathinfo($font);
+        if ('.' === $pathinfo['dirname']) {
+            return $this->kernel->locateResource(
+               $this->defaultFontsDir . DIRECTORY_SEPARATOR . $pathinfo['basename']
+            );
+        }
+
+        if (is_file($font) && is_readable($font)) {
+            return $font;
+        }
+
+        throw new \InvalidArgumentException(sprintf(
+           'Could not resolve font "%s".', $font
+        ));
     }
 }
