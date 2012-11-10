@@ -1,25 +1,24 @@
 <?php
 namespace Genemu\Bundle\FormBundle\Captcha;
 
-use Symfony\Component\HttpFoundation\Session\Session;
 use Genemu\Bundle\FormBundle\Gd\Type\Captcha;
 
 class CaptchaService
 {
     /**
-     * @var \Symfony\Component\HttpFoundation\Session\Session
+     * @var CaptchaStorageInterface
      */
-    protected $session;
+    protected $captchaStorage;
 
     /**
      * @var CodeEncoderInterface
      */
-    protected $encoder;
+    protected $codeEncoder;
 
     /**
      * @var CodeGeneratorInterface
      */
-    protected $generator;
+    protected $codeGenerator;
 
     /**
      * @var FontResolverInterface
@@ -27,29 +26,19 @@ class CaptchaService
     protected $fontResolver;
 
     /**
-     * @var string
-     */
-    protected $sessionCodeKey = 'genemu_form.captcha.code';
-
-    /**
-     * @var string
-     */
-    protected $sessionOptionsKey = 'genemu_form.captcha.options';
-
-    /**
-     * @param CodeEncoderInterface $encoder
+     * @param CodeEncoderInterface $codeEncoder
      * @param \Symfony\Component\HttpFoundation\Session\Session $session
      */
     public function __construct(
-        CodeEncoderInterface $encoder,
-        CodeGeneratorInterface $generator,
+        CodeEncoderInterface $codeEncoder,
+        CodeGeneratorInterface $codeGenerator,
         FontResolverInterface $fontResolver,
-        Session $session
+        CaptchaStorageInterface $captchaStorage
     ) {
-        $this->encoder      = $encoder;
-        $this->generator    = $generator;
-        $this->fontResolver = $fontResolver;
-        $this->session      = $session;
+        $this->codeEncoder      = $codeEncoder;
+        $this->codeGenerator    = $codeGenerator;
+        $this->fontResolver     = $fontResolver;
+        $this->captchaStorage   = $captchaStorage;
     }
 
     /**
@@ -57,12 +46,11 @@ class CaptchaService
      *
      * @return \Genemu\Bundle\FormBundle\Gd\Type\Captcha
      */
-    public function createCaptcha($options)
+    public function generateCaptcha(array $options)
     {
-        $options['fonts'] = $this->fontResolver->resolve($options['fonts']);
-        $this->setOptions($options);
+        $options['fonts'] = $this->resolveFonts($options['fonts']);
 
-        return $this->generateCaptcha($options);
+        return $this->createCaptcha($options);
     }
 
     /**
@@ -72,7 +60,6 @@ class CaptchaService
      */
     public function createCaptchaWithLastOptions()
     {
-        $options = $this->getOptions();
         if(false == $options) {
             throw new \LogicException('Captcha should be created with options first');
         }
@@ -89,58 +76,30 @@ class CaptchaService
      */
     public function isCodeValid($code)
     {
-        return $this->encoder->encode($code) === $this->getCode();
+        return $this->codeEncoder->encode($code) === $this->captchaStorage->getCode();
     }
 
     /**
-     * Get code
+     * @param array $fonts
      *
-     * @return string
-     */
-    public function getCode()
-    {
-        return $this->session->get($this->sessionCodeKey);
-    }
-
-    /**
-     * Remove code
-     */
-    public function removeCode()
-    {
-        $this->session->remove($this->sessionCodeKey);
-    }
-
-    protected function generateCaptcha(array $options)
-    {
-        $code = $this->generator->generate($options['chars'], $options['length']);
-        $this->setCode($code);
-
-        return new Captcha($code, $options);
-    }
-
-    /**
-     * @param array $options
-     */
-    protected function setOptions(array $options)
-    {
-        $this->session->set($this->sessionOptionsKey, $options);
-    }
-
-    /**
      * @return array
      */
-    protected function getOptions()
+    protected function resolveFonts(array $fonts)
     {
-        return $this->session->get($this->sessionOptionsKey, array());
+        $resolvedFonts = array();
+
+        foreach ($fonts as $font) {
+            $resolvedFonts[] = $this->fontResolver->resolve($font);
+        }
+
+        return $resolvedFonts;
     }
 
-    /**
-     * Set code
-     *
-     * @param string
-     */
-    protected function setCode($code)
+    protected function createCaptcha(array $options)
     {
-        $this->session->set($this->sessionCodeKey, $this->encoder->encode($code));
+        $code = $this->codeGenerator->generate($options['chars'], $options['length']);
+        $this->captchaStorage->setCode($code);
+
+        return new Captcha($code, $options);
     }
 }
