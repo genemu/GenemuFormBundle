@@ -1,16 +1,16 @@
 <?php
 namespace Genemu\Bundle\FormBundle\Tests\Captcha;
 
-use Genemu\Bundle\FormBundle\Captcha\DefaultCodeGenerator;
+use Genemu\Bundle\FormBundle\Captcha\CodeGenerator;
 
-class DefaultCodeGeneratorTest extends \PHPUnit_Framework_TestCase
+class CodeGeneratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
      */
     public function couldBeConstructedWithoutArguments()
     {
-        new DefaultCodeGenerator();
+        new CodeGenerator();
     }
 
     /**
@@ -18,7 +18,7 @@ class DefaultCodeGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldGenerateCodeWithGivenLength()
     {
-        $generator = new DefaultCodeGenerator();
+        $generator = new CodeGenerator();
 
         $this->assertEquals(1, strlen($generator->generate(array('a'), 1)));
         $this->assertEquals(5, strlen($generator->generate(array('a'), 5)));
@@ -30,7 +30,7 @@ class DefaultCodeGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldGenerateCodeWithSpecifiedChars()
     {
-        $generator = new DefaultCodeGenerator();
+        $generator = new CodeGenerator();
 
         $this->assertEquals('aaaa', $generator->generate(array('a'), 4));
         $this->assertEquals('bbbbb', $generator->generate(array('b'), 5));

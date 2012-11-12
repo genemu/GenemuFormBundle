@@ -6,77 +6,90 @@ use Genemu\Bundle\FormBundle\Gd\Type\Captcha;
 class CaptchaService
 {
     /**
-     * @var CaptchaStorageInterface
+     * @var CaptchaStorage
      */
     protected $captchaStorage;
 
     /**
-     * @var CodeEncoderInterface
-     */
-    protected $codeEncoder;
-
-    /**
-     * @var CodeGeneratorInterface
+     * @var CodeGenerator
      */
     protected $codeGenerator;
 
     /**
-     * @var FontResolverInterface
+     * @var FontResolver
      */
     protected $fontResolver;
 
     /**
-     * @param CodeEncoderInterface $codeEncoder
-     * @param \Symfony\Component\HttpFoundation\Session\Session $session
+     * @var array
+     */
+    protected $options;
+
+    /**
+     * @param CodeGenerator $codeGenerator
+     * @param FontResolver $fontResolver
+     * @param CaptchaStorage $captchaStorage
+     * @param array $options
      */
     public function __construct(
-        CodeEncoderInterface $codeEncoder,
-        CodeGeneratorInterface $codeGenerator,
-        FontResolverInterface $fontResolver,
-        CaptchaStorageInterface $captchaStorage
+        CodeGenerator $codeGenerator,
+        FontResolver $fontResolver,
+        CaptchaStorage $captchaStorage,
+        array $options
     ) {
-        $this->codeEncoder      = $codeEncoder;
         $this->codeGenerator    = $codeGenerator;
         $this->fontResolver     = $fontResolver;
         $this->captchaStorage   = $captchaStorage;
+        $this->options          = $options;
     }
 
     /**
-     * @param $options
+     * @param string $name
      *
      * @return \Genemu\Bundle\FormBundle\Gd\Type\Captcha
      */
-    public function generateCaptcha(array $options)
+    public function generateCaptcha($name)
     {
+        $options = $this->getConfig($name);
+
         $options['fonts'] = $this->resolveFonts($options['fonts']);
 
-        return $this->createCaptcha($options);
-    }
+        $code = $this->codeGenerator->generate($options['chars'], $options['length']);
 
-    /**
-     * @return \Genemu\Bundle\FormBundle\Gd\Type\Captcha
-     *
-     * @throws \LogicException
-     */
-    public function createCaptchaWithLastOptions()
-    {
-        if(false == $options) {
-            throw new \LogicException('Captcha should be created with options first');
-        }
+        $this->captchaStorage->setCode($name, $code);
 
-        return $this->generateCaptcha($options);
+        return new Captcha($code, $options);
     }
 
     /**
      * Is code valid
      *
+     * @param $name
      * @param $code
      *
      * @return bool
      */
-    public function isCodeValid($code)
+    public function isCodeValid($name, $code)
     {
-        return $this->codeEncoder->encode($code) === $this->captchaStorage->getCode();
+        return $code ? $code === $this->captchaStorage->getCode($name) : false;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return array
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function getConfig($name)
+    {
+        if (isset($this->options[$name])) {
+            return $this->options[$name];
+        }
+
+        throw new \InvalidArgumentException(sprintf(
+            'Could not find captcha config "%s"', $name
+        ));
     }
 
     /**
@@ -93,13 +106,5 @@ class CaptchaService
         }
 
         return $resolvedFonts;
-    }
-
-    protected function createCaptcha(array $options)
-    {
-        $code = $this->codeGenerator->generate($options['chars'], $options['length']);
-        $this->captchaStorage->setCode($code);
-
-        return new Captcha($code, $options);
     }
 }

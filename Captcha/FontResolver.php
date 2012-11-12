@@ -3,7 +3,7 @@ namespace Genemu\Bundle\FormBundle\Captcha;
 
 use Symfony\Component\HttpKernel\Kernel;
 
-class DefaultFontResolver implements FontResolverInterface
+class FontResolver
 {
     /**
      * @var \Symfony\Component\HttpKernel\Kernel
@@ -24,9 +24,13 @@ class DefaultFontResolver implements FontResolverInterface
         $this->kernel               = $kernel;
         $this->defaultFontsDir      = $fontsDir;
     }
-    
+
     /**
-     * {@inherit}
+     * @param string $font
+     *
+     * @return array
+     *
+     * @throws \InvalidArgumentException
      */
     public function resolve($font)
     {
@@ -37,7 +41,7 @@ class DefaultFontResolver implements FontResolverInterface
         $pathinfo = pathinfo($font);
         if ('.' === $pathinfo['dirname']) {
             return $this->kernel->locateResource(
-               $this->defaultFontsDir . DIRECTORY_SEPARATOR . $pathinfo['basename']
+                $this->defaultFontsDir . DIRECTORY_SEPARATOR . $pathinfo['basename']
             );
         }
 
@@ -46,7 +50,7 @@ class DefaultFontResolver implements FontResolverInterface
         }
 
         throw new \InvalidArgumentException(sprintf(
-           'Could not resolve font "%s".', $font
+            'Could not resolve font "%s".', $font
         ));
     }
 }

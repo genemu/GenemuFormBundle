@@ -31,7 +31,7 @@ class TextTest extends \PHPUnit_Framework_TestCase
 
     public function testDefault()
     {
-        $filter = new Text('Foo', 12, array(new File(__DIR__ . '/../../Fixtures/fonts/akbar.ttf')), array('000'));
+        $filter = new Text('Foo', 12, array(new File(__DIR__ . '/../../Fixtures/fonts/akbar.ttf')), array('000'), array(1, 2), array(1, 2), array(1, 2), 1);
         $filter->setResource(imagecreatetruecolor(10, 10));
 
         $apply = $filter->apply();

@@ -31,20 +31,13 @@ class CaptchaValidator implements EventSubscriberInterface
     protected $service;
 
     /**
-     * @var string
-     */
-    protected $invalidMessage;
-
-    /**
      * Constructs
      *
      * @param \Genemu\Bundle\FormBundle\Captcha\CaptchaService $service
-     * @param string $invalidMessage
      */
-    public function __construct(CaptchaService $service, $invalidMessage)
+    public function __construct(CaptchaService $service)
     {
         $this->service          = $service;
-        $this->invalidMessage   = $invalidMessage;
     }
 
     /**
@@ -55,13 +48,16 @@ class CaptchaValidator implements EventSubscriberInterface
         $form = $event->getForm();
         $data = $event->getData();
 
-        if (false == $this->service->isCodeValid($data)) {
-            $form->addError(new FormError($this->invalidMessage));
-        }
+        $config = $form->getConfig()->getOption('config_name');
 
-        $this->service->removeCode();
+        if (false == $this->service->isCodeValid($config, $data)) {
+            $form->addError(new FormError('The captcha is invalid.'));
+        }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public static function getSubscribedEvents()
     {
         return array(FormEvents::POST_BIND => 'validate');

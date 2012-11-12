@@ -77,50 +77,8 @@ class GenemuFormExtension extends Extension
      */
     private function registerCaptchaConfiguration(array $configs, ContainerBuilder $container)
     {
-        if (!function_exists('image' . $configs['format'])) {
-            throw new \LogicException(sprintf('Format %s does not supported.', $configs['format']));
-        }
-
-        $fontDir = $container->getParameterBag()->resolveValue($configs['font_dir']);
-        foreach ($configs['fonts'] as $index => $font) {
-            if (is_file($fontDir . '/' . $font)) {
-                $configs['fonts'][$index] = $fontDir . '/' . $font;
-            }
-        }
-        unset($configs['font_dir']);
-
-        $backgroundColor = preg_replace('/[^0-9A-Fa-f]/', '', $configs['background_color']);
-        if (!in_array(strlen($backgroundColor), array(3, 6), true)) {
-            $configs['background_color'] = 'DDDDDD';
-        }
-
-        $borderColor = preg_replace('/[^0-9A-Fa-f]/', '', $configs['border_color']);
-        if (!in_array(strlen($borderColor), array(3, 6), true)) {
-            $configs['border_color'] = '000000';
-        }
-
-        $validator = $container->getDefinition('genemu.form.captcha.validator');
-        $validator->replaceArgument(1, $configs['invalid_message']);
-
-        if (false == $configs['code_encoder'] || false == $container->hasDefinition($configs['code_encoder'])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Captcha code encoder service with id "%s" is not defined',
-                $configs['code_encoder']
-            ));
-        }
-
-        if (false == $configs['code_generator'] || false == $container->hasDefinition($configs['code_generator'])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Captcha code generator service with id "%s" is not defined',
-                $configs['code_generator']
-            ));
-        }
-
-        $captchaService = $container->getDefinition('genemu.form.captcha.service');
-        $captchaService->replaceArgument(0, $container->getDefinition($configs['code_encoder']));
-        $captchaService->replaceArgument(1, $container->getDefinition($configs['code_generator']));
-
-        $container->setParameter('genemu.form.captcha.options', $configs);
+        $definition = $container->getDefinition('genemu.form.captcha.service');
+        $definition->replaceArgument(3, $configs['configs']);
     }
 
     /**

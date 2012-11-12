@@ -28,25 +28,23 @@ use Genemu\Bundle\FormBundle\Captcha\CaptchaService;
 class CaptchaType extends AbstractType
 {
     /**
-     * @var
+     * @var \Genemu\Bundle\FormBundle\Captcha\CaptchaService
      */
     private $captchaService;
 
     /**
-     * @var array
+     * @var \Genemu\Bundle\FormBundle\Form\Core\Validator\CaptchaValidator
      */
-    private $options;
+    private $validator;
 
     /**
      * @param \Genemu\Bundle\FormBundle\Captcha\CaptchaService $captchaService
      * @param \Genemu\Bundle\FormBundle\Form\Core\Validator\CaptchaValidator $validator
-     * @param array $options
      */
-    public function __construct(CaptchaService $captchaService, CaptchaValidator $validator, array $options = array())
+    public function __construct(CaptchaService $captchaService, CaptchaValidator $validator)
     {
         $this->captchaService = $captchaService;
         $this->validator = $validator;
-        $this->options = $options;
     }
 
     /**
@@ -64,13 +62,14 @@ class CaptchaType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $captcha = $this->captchaService->createCaptcha($options['captcha_options']);
+        $captcha = $this->captchaService->generateCaptcha($options['config_name']);
 
         $view->vars = array_replace($view->vars, array(
-            'value' => '',
-            'src' => $captcha->getBase64($options['captcha_options']['format']),
-            'width' => $captcha->getWidth(),
-            'height' => $captcha->getHeight(),
+            'value'                 => '',
+            'src'                   => $captcha->generate(),
+            'width'                 => $captcha->getWidth(),
+            'height'                => $captcha->getHeight(),
+            'config_name'           => $options['config_name'],
         ));
     }
 
@@ -83,19 +82,10 @@ class CaptchaType extends AbstractType
             'attr'                  => array(
                 'autocomplete'      => 'off',
             ),
-            'captcha_options'       => array_merge(array(
-                'width'             => 100,
-                'height'            => 30,
-                'format'            => 'png',
-                'background_color'  => 'DDDDDD',
-                'border_color'      => '000000',
-                'chars'             => range(0, 9),
-                'length'            => 4,
-                'font_size'         => 16,
-                'font_color'        => array('252525', '8B8787', '550707', '3526E6', '88531E'),
-                'grayscale'         => false,
-                'fonts'             => array('akbar.ttf', 'brushcut.ttf', 'molten.ttf', 'planetbe.ttf', 'whoobub.ttf'),
-            ), $this->options),
+        ));
+
+        $resolver->setRequired(array(
+            'config_name'
         ));
     }
 

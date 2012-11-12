@@ -1,7 +1,7 @@
 <?php
 namespace Genemu\Bundle\FormBundle\Captcha;
 
-class DefaultCodeGenerator implements CodeGeneratorInterface
+class CodeGenerator
 {
     /**
      * {@inheritDoc}

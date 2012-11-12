@@ -1,16 +1,16 @@
 <?php
 namespace Genemu\Bundle\FormBundle\Tests\Captcha;
 
-use Genemu\Bundle\FormBundle\Captcha\DefaultFontResolver;
+use Genemu\Bundle\FormBundle\Captcha\FontResolver;
 
-class DefaultFontResolverTest extends \PHPUnit_Framework_TestCase
+class FontResolverTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
      */
     public function couldBeConstructedWithRightArguments()
     {
-        new DefaultFontResolver($this->createKernelMock(), 'default/font/dir');
+        new FontResolver($this->createKernelMock(), 'default/font/dir');
     }
 
     /**
@@ -25,7 +25,7 @@ class DefaultFontResolverTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('/full/path/to/resource'))
         ;
 
-        $resolver = new DefaultFontResolver($kernel, 'default/font/dir');
+        $resolver = new FontResolver($kernel, 'default/font/dir');
         $result = $resolver->resolve('@BundleName/path/to/resource');
 
         $this->assertEquals('/full/path/to/resource', $result);
@@ -44,7 +44,7 @@ class DefaultFontResolverTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('/full/path/to/resource'))
         ;
 
-        $resolver = new DefaultFontResolver($kernel, 'default/font/dir');
+        $resolver = new FontResolver($kernel, 'default/font/dir');
         $result = $resolver->resolve('resource');
 
         $this->assertEquals('/full/path/to/resource', $result);
@@ -62,7 +62,7 @@ class DefaultFontResolverTest extends \PHPUnit_Framework_TestCase
             ->method('locateResource')
         ;
 
-        $resolver = new DefaultFontResolver($kernel, 'default/font/dir');
+        $resolver = new FontResolver($kernel, 'default/font/dir');
         $resolver->resolve('/unresolved/resource');
     }
 

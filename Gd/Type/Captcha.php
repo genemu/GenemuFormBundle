@@ -48,6 +48,14 @@ class Captcha extends Gd
     }
 
     /**
+     * @return string
+     */
+    public function generate()
+    {
+        return $this->getBase64($this->options['format']);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getBase64($format = 'png')
@@ -56,9 +64,18 @@ class Captcha extends Gd
 
         $this->addFilters(array(
             new Background($this->options['background_color']),
-            new Border($this->options['border_color']),
-            new Strip($this->options['font_color']),
-            new Text($this->code, $this->options['font_size'], $this->options['fonts'], $this->options['font_color']),
+            new Border($this->options['border_color'], $this->options['border_size']),
+            new Strip($this->options['font_color'], $this->options['background_stripes_number']),
+            new Text(
+                $this->code,
+                $this->options['font_size'],
+                $this->options['fonts'],
+                $this->options['font_color'],
+                $this->options['font_size_spreading_range'],
+                $this->options['chars_rotate_range'],
+                $this->options['chars_position_spreading_range'],
+                $this->options['chars_spacing']
+            ),
         ));
         if ($this->options['grayscale']) {
             $this->addFilter(new GrayScale());
