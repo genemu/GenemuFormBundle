@@ -73,18 +73,23 @@
 
 {% block genemu_jquerydate_javascript %}
 {% spaceless %}
-    {% if configs.buttonImage is defined %}
-        {% set configs = configs|merge({
-            "buttonImage": asset(configs.buttonImage)
-        }) %}
-    {% endif %}
-
-    {% if culture == "en" %}
-        {% set culture = "en-GB" %}
-    {% endif %}
 
     <script type="text/javascript">
         jQuery(document).ready(function($) {
+            $field = $('#{{ id }}');
+        
+        {% block genemu_jquerydate_javascript_prototype %}
+
+        {% if configs.buttonImage is defined %}
+            {% set configs = configs|merge({
+                "buttonImage": asset(configs.buttonImage)
+            }) %}
+        {% endif %}
+
+        {% if culture == "en" %}
+            {% set culture = "en-GB" %}
+        {% endif %}
+
             var $configs = $.extend({
                 minDate: new Date({{ min_year }}, 0, 1),
                 maxDate: new Date({{ max_year }}, 11, 31)
@@ -104,11 +109,12 @@
             }
         {% endif %}
 
-            $('#{{ id }}').datepicker($configs);
+            $field.datepicker($configs);
+        {% endblock %}
         });
     </script>
 {% endspaceless %}
-{% endblock genemu_jquerydate_javascript %}
+{% endblock %}
 
 {% block genemu_jqueryslider_javascript %}
 {% spaceless %}
