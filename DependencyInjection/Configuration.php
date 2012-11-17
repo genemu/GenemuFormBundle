@@ -84,7 +84,7 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->scalarNode('length')->defaultValue(4)->end()
                                 ->scalarNode('width')->defaultValue(100)->end()
-                                ->scalarNode('height')->defaultValue(30)->end()
+                                ->scalarNode('height')->defaultValue(40)->end()
                                 ->scalarNode('format')
                                     ->defaultValue('png')
                                     ->validate()
