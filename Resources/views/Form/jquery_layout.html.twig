@@ -76,7 +76,6 @@
 
     <script type="text/javascript">
         jQuery(document).ready(function($) {
-            $field = $('#{{ id }}');
         
         {% block genemu_jquerydate_javascript_prototype %}
 
@@ -109,7 +108,7 @@
             }
         {% endif %}
 
-            $field.datepicker($configs);
+            $('#{{ id }}').datepicker($configs);
         {% endblock %}
         });
     </script>
