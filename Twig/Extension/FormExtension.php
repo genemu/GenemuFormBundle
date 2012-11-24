@@ -11,7 +11,7 @@
 
 namespace Genemu\Bundle\FormBundle\Twig\Extension;
 
-use Symfony\Bridge\Twig\Extension\FormExtension as BaseFormExtension;
+use Symfony\Bridge\Twig\Form\TwigRendererInterface;
 use Symfony\Component\Form\FormView;
 
 /**
@@ -19,8 +19,21 @@ use Symfony\Component\Form\FormView;
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class FormExtension extends BaseFormExtension
+class FormExtension extends \Twig_Extension
 {
+    /**
+     * This property is public so that it can be accessed directly from compiled
+     * templates without having to call a getter, which slightly decreases performance.
+     *
+     * @var \Symfony\Component\Form\FormRendererInterface
+     */
+    public $renderer;
+
+    public function __construct(TwigRendererInterface $renderer)
+    {
+        $this->renderer = $renderer;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -35,8 +48,9 @@ class FormExtension extends BaseFormExtension
     /**
      * Render Function Form Javascript
      *
-     * @param FromView $view
+     * @param FormView $view
      *
+     * @param bool $prototype
      * @return string
      */
     public function renderJavascript(FormView $view, $prototype = false)
