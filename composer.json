@@ -1,5 +1,5 @@
 {
-    "name": "strate/genemu-form-bundle",
+    "name": "genemu/form-bundle",
     "type": "symfony-bundle",
     "description": "Extra Form",
     "keywords": ["form", "extra form"],
