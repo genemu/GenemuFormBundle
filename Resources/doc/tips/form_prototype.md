@@ -1,5 +1,8 @@
 # Prototype usage within form collections
 
+WARNING : This is currently not available for all types, please open an issue or
+a PR if it doesn't work for your type.
+
 If you dynamically add one of our field in your template using the Symfony protoype feature,
 you'd probably notify that it doesn't show up correctly. Indeed, most of our types require some javascript,
 but you only added some HTML.

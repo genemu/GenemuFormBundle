@@ -31,6 +31,7 @@
 
             {% set attr = {"size": 10}|merge(attr) %}
             {% set id = "datepicker_" ~ id %}
+            {% set value = '' %}
             {% set full_name = "datepicker_" ~ full_name %}
             {{ block("hidden_widget") }}
         </div>
