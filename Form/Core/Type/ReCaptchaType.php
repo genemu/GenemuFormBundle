@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormValidatorInterface;
 use Symfony\Component\Form\Exception\FormException;
+use Genemu\Bundle\FormBundle\Form\Core\Validator\ReCaptchaValidator;
 
 /**
  * ReCaptchaType
@@ -33,12 +34,12 @@ class ReCaptchaType extends AbstractType
     /**
      * Constructs
      *
-     * @param FormValidatoInterface $validator
+     * @param ReCaptchaValidator $validator
      * @param string                $pulicKey
      * @param string                $serverUrl
      * @param array                 $options
      */
-    public function __construct(FormValidatorInterface $validator, $publicKey, $serverUrl, array $options)
+    public function __construct(ReCaptchaValidator $validator, $publicKey, $serverUrl, array $options)
     {
         if (true === empty($publicKey)) {
             throw new FormException('The child node "public_key" at path "genemu_form.recaptcha" must be configured.');
@@ -56,6 +57,8 @@ class ReCaptchaType extends AbstractType
     public function buildForm(FormBuilder $builder, array $options)
     {
         $options = $this->getDefaultOptions($options);
+
+        $this->validator->invalidMessage = $options["invalid_message"];
 
         $builder
             ->addValidator($this->validator)
@@ -84,12 +87,13 @@ class ReCaptchaType extends AbstractType
                 'lang' => \Locale::getDefault(),
             )),
             'validator' => array(
-                'host' => 'www.google.com/recaptcha/api',
+                'host' => 'www.google.com',
                 'port' => 80,
-                'path' => '/verify',
+                'path' => '/recaptcha/api/verify',
                 'timeout' => 10,
             ),
             'error_bubbling' => false,
+            'invalid_message' => 'The captcha is not valid.'
         );
 
         return array_replace_recursive($defaultOptions, $options);
@@ -101,5 +105,10 @@ class ReCaptchaType extends AbstractType
     public function getName()
     {
         return 'genemu_recaptcha';
+    }
+
+    public function getParent(array $options)
+    {
+        return 'text';
     }
 }

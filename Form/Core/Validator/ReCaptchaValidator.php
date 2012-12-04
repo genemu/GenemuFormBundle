@@ -28,6 +28,8 @@ class ReCaptchaValidator implements FormValidatorInterface
     private $request;
     private $privateKey;
 
+    public $invalidMessage;
+
     /**
      * Constructs
      *
@@ -74,7 +76,8 @@ class ReCaptchaValidator implements FormValidatorInterface
         }
 
         if (true !== ($answer = $this->check($datas, $form->getAttribute('option_validator')))) {
-            $error = sprintf('Unable to check the captcha from the server. (%s)', $answer);
+            //$error = sprintf('Unable to check the captcha from the server. (%s)', $answer);
+            $error = $this->invalidMessage ? $this->invalidMessage : 'The captcha is not valid.';
         }
 
         if (false === empty($error)) {
