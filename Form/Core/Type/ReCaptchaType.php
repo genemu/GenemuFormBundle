@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the GenemuFormBundle package.
+ * This file is part of the Symfony package.
  *
  * (c) Olivier Chauvel <olivier@generation-multiple.com>
  *
@@ -11,14 +11,13 @@
 
 namespace Genemu\Bundle\FormBundle\Form\Core\Type;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormValidatorInterface;
 use Symfony\Component\Form\Exception\FormException;
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Genemu\Bundle\FormBundle\Form\Core\Validator\ReCaptchaValidator;
 
 /**
  * ReCaptchaType
@@ -35,15 +34,15 @@ class ReCaptchaType extends AbstractType
     /**
      * Constructs
      *
-     * @param EventSubscriberInterface $validator
-     * @param string                   $pulicKey
-     * @param string                   $serverUrl
-     * @param array                    $options
+     * @param ReCaptchaValidator $validator
+     * @param string                $pulicKey
+     * @param string                $serverUrl
+     * @param array                 $options
      */
-    public function __construct(EventSubscriberInterface $validator, $publicKey, $serverUrl, array $options)
+    public function __construct(FormValidatorInterface $validator, $publicKey, $serverUrl, array $options)
     {
-        if (empty($publicKey)) {
-            throw new FormException('The child node "public_key" at path "genenu_form.captcha" must be configured.');
+        if (true === empty($publicKey)) {
+            throw new FormException('The child node "public_key" at path "genemu_form.recaptcha" must be configured.');
         }
 
         $this->validator = $validator;
@@ -55,60 +54,50 @@ class ReCaptchaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilder $builder, array $options)
     {
+        $options = $this->getDefaultOptions($options);
+
+        $this->validator->invalidMessage = $options["invalid_message"];
+
         $builder
-            ->addEventSubscriber($this->validator)
+            ->addValidator($this->validator)
             ->setAttribute('option_validator', $options['validator'])
-        ;
+            ->setAttribute('configs', $options['configs']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form)
     {
-        $view->vars = array_replace($view->vars, array(
-            'public_key' => $this->publicKey,
-            'server' => $this->serverUrl,
-            'configs' => $options['configs'],
-        ));
+
+        $view
+            ->set('public_key', $this->publicKey)
+            ->set('server', $this->serverUrl)
+            ->set('configs', $form->getAttribute('configs'));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function getDefaultOptions(array $options)
     {
-        $configs = array_merge($this->options, array(
-            'lang' => \Locale::getDefault(),
-        ));
+        $defaultOptions = array(
+            'configs' => array_merge($this->options, array(
+                'lang' => \Locale::getDefault(),
+            )),
+            'validator' => array(
+                'host' => 'www.google.com',
+                'port' => 80,
+                'path' => '/recaptcha/api/verify',
+                'timeout' => 10,
+            ),
+            'error_bubbling' => false,
+            'invalid_message' => 'The captcha is not valid.'
+        );
 
-        $resolver
-            ->setDefaults(array(
-                'configs' => array(),
-                'validator' => array(),
-                'error_bubbling' => false,
-            ))
-            ->setAllowedTypes(array(
-                'configs' => 'array',
-                'validator' => 'array',
-            ))
-            ->setNormalizers(array(
-                'configs' => function (Options $options, $value) use ($configs) {
-                    return array_merge($configs, $value);
-                },
-                'validator' => function (Options $options, $value) {
-                    return array_merge(array(
-                            'host' => 'api-verify.recaptcha.net',
-                            'port' => 80,
-                            'path' => '/verify',
-                            'timeout' => 10,
-                        ), $value
-                    );
-                },
-            ))
-        ;
+        return array_replace_recursive($defaultOptions, $options);
     }
 
     /**
@@ -117,5 +106,10 @@ class ReCaptchaType extends AbstractType
     public function getName()
     {
         return 'genemu_recaptcha';
+    }
+
+    public function getParent(array $options)
+    {
+        return 'text';
     }
 }

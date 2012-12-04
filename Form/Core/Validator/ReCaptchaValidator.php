@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the GenemuFormBundle package.
+ * This file is part of the Symfony package.
  *
  * (c) Olivier Chauvel <olivier@generation-multiple.com>
  *
@@ -11,11 +11,9 @@
 
 namespace Genemu\Bundle\FormBundle\Form\Core\Validator;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormValidatorInterface;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -24,11 +22,13 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class ReCaptchaValidator implements EventSubscriberInterface
+class ReCaptchaValidator implements FormValidatorInterface
 {
     private $httpRequest;
     private $request;
     private $privateKey;
+
+    public $invalidMessage;
 
     /**
      * Constructs
@@ -38,10 +38,10 @@ class ReCaptchaValidator implements EventSubscriberInterface
      */
     public function __construct(Request $request, $privateKey)
     {
-        if (empty($privateKey)) {
-            throw new FormException('The child node "private_key" at path "genenu_form.captcha" must be configured.');
+        if (true === empty($privateKey)) {
+            throw new FormException('The child node "private_key" at path "genemu_form.recaptcha" must be configured.');
         }
-
+        
         $this->request = $request;
         $this->privateKey = $privateKey;
 
@@ -55,28 +55,32 @@ class ReCaptchaValidator implements EventSubscriberInterface
         $this->httpRequest = implode("\r\n", $this->httpRequest)."\r\n\r\n%s";
     }
 
-    public function validate(DataEvent $event)
+    /**
+     * {@inheritdoc}
+     */
+    public function validate(FormInterface $form)
     {
-        $form = $event->getForm();
-
         $error = '';
         $request = $this->request->request;
         $server = $this->request->server;
 
         $datas = array(
             'privatekey' => $this->privateKey,
-            'challenge' => $request->get('recaptcha_challenge_field'),
-            'response' => $request->get('recaptcha_response_field'),
-            'remoteip' => $server->get('REMOTE_ADDR')
+            'challenge'  => $request->get('recaptcha_challenge_field'),
+            'response'   => $request->get('recaptcha_response_field'),
+            'remoteip'   => $server->get('REMOTE_ADDR')
         );
 
-        if (empty($datas['challenge']) || empty($datas['response'])) {
-            $error = 'genemu_form.recaptcha.incorrect-captcha-sol';
-        } elseif (true !== ($answer = $this->check($datas, $form->getAttribute('option_validator')))) {
-            $error = 'genemu_form.recaptcha.'.$answer;
+        if (true === empty($datas['challenge']) || true === empty($datas['response'])) {
+            $error = 'The captcha is not valid.';
         }
 
-        if (!empty($error)) {
+        if (true !== ($answer = $this->check($datas, $form->getAttribute('option_validator')))) {
+            //$error = sprintf('Unable to check the captcha from the server. (%s)', $answer);
+            $error = $this->invalidMessage ? $this->invalidMessage : 'The captcha is not valid.';
+        }
+
+        if (false === empty($error)) {
             $form->addError(new FormError($error));
         }
     }
@@ -94,7 +98,6 @@ class ReCaptchaValidator implements EventSubscriberInterface
         $response = '';
         $datas = http_build_query($datas, null, '&');
         $httpRequest = sprintf($this->httpRequest, $options['path'], $options['host'], strlen($datas), $datas);
-
         if (false === ($fs = @fsockopen(
             $options['host'],
             $options['port'],
@@ -103,9 +106,8 @@ class ReCaptchaValidator implements EventSubscriberInterface
         ))) {
             return $errstr;
         }
-
         fwrite($fs, $httpRequest);
-        while (!feof($fs)) {
+        while (false === feof($fs)) {
             $response .= fgets($fs, 1160);
         }
         fclose($fs);
@@ -113,11 +115,10 @@ class ReCaptchaValidator implements EventSubscriberInterface
         $response = explode("\r\n\r\n", $response, 2);
         $answers = explode("\n", $response[1]);
 
-        return 'true' === trim($answers[0]) ? true : $answers[1];
-    }
+        if ('true' === trim($answers[0])) {
+            return true;
+        }
 
-    public static function getSubscribedEvents()
-    {
-        return array(FormEvents::POST_BIND => 'validate');
+        return $answers[1];
     }
 }
