@@ -11,6 +11,7 @@
 
 namespace Genemu\Bundle\FormBundle\DependencyInjection;
 
+use Genemu\Bundle\FormBundle\GenemuFormBundle;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -38,7 +39,6 @@ class GenemuFormExtension extends Extension
         $configs = $this->processConfiguration(new Configuration(), $configs);
 
         $loader->load('twig.xml');
-        $loader->load('imagine.xml');
         $loader->load('form.xml');
         $loader->load('model.xml');
         $loader->load('jquery.xml');
@@ -55,17 +55,12 @@ class GenemuFormExtension extends Extension
             $loader->load('mongodb.xml');
         }
 
-        foreach (array('captcha', 'recaptcha', 'tinymce', 'date', 'file', 'image', 'autocomplete', 'select2') as $type) {
+        foreach (GenemuFormBundle::$types as $type) {
             if (isset($configs[$type]) && !empty($configs[$type]['enabled'])) {
                 $method = 'register' . ucfirst($type) . 'Configuration';
-
-                $this->$method($configs[$type], $container);
+                $this->$method($configs[$type], $container, $loader);
             }
         }
-
-        $this->loadExtendedTypes('genemu.form.jquery.type.chosen', 'jquerychosen', $container);
-        $this->loadExtendedTypes('genemu.form.jquery.type.autocompleter', 'jqueryautocompleter', $container);
-        $this->loadExtendedTypes('genemu.form.jquery.type.tokeninput', 'jquerytokeninput', $container);
     }
 
     /**
@@ -74,11 +69,13 @@ class GenemuFormExtension extends Extension
      * @param array            $config    A configuration array
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    private function registerCaptchaConfiguration(array $configs, ContainerBuilder $container)
+    private function registerCaptchaConfiguration(array $configs, ContainerBuilder $container, $loader)
     {
         if (!function_exists('image' . $configs['format'])) {
             throw new \LogicException(sprintf('Format %s does not supported.', $configs['format']));
         }
+        
+        $loader->load('types/captcha.xml');
 
         $fontDir = $container->getParameterBag()->resolveValue($configs['font_dir']);
         foreach ($configs['fonts'] as $index => $font) {
@@ -107,7 +104,7 @@ class GenemuFormExtension extends Extension
      * @param array            $config    A configuration array
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    private function registerRecaptchaConfiguration(array $configs, ContainerBuilder $container)
+    private function registerRecaptchaConfiguration(array $configs, ContainerBuilder $container, $loader)
     {
         $serverUrl = $configs['server_url'];
         if (isset($configs['ssl']['use']) && !empty($configs['ssl']['use'])) {
@@ -122,6 +119,8 @@ class GenemuFormExtension extends Extension
             throw new \LogicException('Option recaptcha.public_key does not empty.');
         }
 
+        $loader->load('types/recaptcha.xml');
+        
         $container->setParameter('genemu.form.recaptcha.server_url', $serverUrl);
         $container->setParameter('genemu.form.recaptcha.private_key', $configs['private_key']);
         $container->setParameter('genemu.form.recaptcha.public_key', $configs['public_key']);
@@ -134,8 +133,10 @@ class GenemuFormExtension extends Extension
      * @param array            $config    A configuration array
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    private function registerTinymceConfiguration(array $configs, ContainerBuilder $container)
+    private function registerTinymceConfiguration(array $configs, ContainerBuilder $container, $loader)
     {
+        $loader->load('types/tinymce.xml');
+        
         if (isset($configs['script_url']) && !empty($configs['script_url'])) {
             $configs['configs'] = array_merge($configs['configs'], array(
                 'script_url' => $configs['script_url']
@@ -157,8 +158,9 @@ class GenemuFormExtension extends Extension
      * @param array            $config    A configuration array
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    private function registerDateConfiguration(array $configs, ContainerBuilder $container)
+    private function registerDateConfiguration(array $configs, ContainerBuilder $container, $loader)
     {
+        $loader->load('types/date.xml');
         $container->setParameter('genemu.form.date.options', $configs['configs']);
     }
 
@@ -168,8 +170,9 @@ class GenemuFormExtension extends Extension
      * @param array            $config    A configuration array
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    private function registerFileConfiguration(array $configs, ContainerBuilder $container)
+    private function registerFileConfiguration(array $configs, ContainerBuilder $container, $loader)
     {
+        $loader->load('types/file.xml');
         $rootDir = $container->getParameter('genemu.form.file.root_dir');
         $rootDir = $container->getParameterBag()->resolveValue($rootDir);
 
@@ -196,7 +199,7 @@ class GenemuFormExtension extends Extension
      * @param array            $config    A configuration array
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    private function registerImageConfiguration(array $configs, ContainerBuilder $container)
+    private function registerImageConfiguration(array $configs, ContainerBuilder $container, $loader)
     {
         if (empty($configs['selected'])) {
             throw new \LogicException('Your selected thumbnail does not empty.');
@@ -205,6 +208,8 @@ class GenemuFormExtension extends Extension
         if (!isset($configs['thumbnails'][$configs['selected']])) {
             throw new \LogicException(sprintf('Your selected %s is not thumbnail.', $configs['selected']));
         }
+        
+        $loader->load('types/image.xml');
 
         $filters = array();
         $reflection = new \ReflectionClass('Genemu\\Bundle\\FormBundle\\Gd\\File\\Image');
@@ -220,8 +225,10 @@ class GenemuFormExtension extends Extension
         $container->setParameter('genemu.form.image.thumbnails', $configs['thumbnails']);
     }
 
-    private function registerAutocompleteConfiguration(array $configs, ContainerBuilder $container)
+    private function registerAutocompleteConfiguration(array $configs, ContainerBuilder $container, $loader)
     {
+        $loader->load('types/autocomplete.xml');
+        
         $serviceId = 'genemu.form.jquery.type.autocomplete';
         $textDef = new DefinitionDecorator($serviceId);
         $textDef->addArgument('text')->addTag('form.type', array('alias' => 'genemu_jqueryautocomplete_text'));
@@ -246,8 +253,10 @@ class GenemuFormExtension extends Extension
 
     }
 
-    private function registerSelect2Configuration(array $configs, ContainerBuilder $container)
+    private function registerSelect2Configuration(array $configs, ContainerBuilder $container, $loader)
     {
+        $loader->load('types/select2.xml');
+
         $serviceId = 'genemu.form.jquery.type.select2';
         foreach (array_merge($this->getChoiceTypeNames(), array('hidden')) as $type) {
             $typeDef = new DefinitionDecorator($serviceId);
@@ -260,6 +269,21 @@ class GenemuFormExtension extends Extension
         }
     }
 
+    private function registerChosenConfiguration(array $configs, ContainerBuilder $container, $loader)
+    {
+        $this->loadExtendedTypes('genemu.form.jquery.type.chosen', 'jquerychosen', $container);
+    }
+    
+    private function registerAutocompleterConfiguration(array $configs, ContainerBuilder $container, $loader)
+    {
+        $this->loadExtendedTypes('genemu.form.jquery.type.autocompleter', 'jqueryautocompleter', $container);
+    }
+    
+    private function registerTokeninputConfiguration(array $configs, ContainerBuilder $container, $loader)
+    {
+        $this->loadExtendedTypes('genemu.form.jquery.type.tokeninput', 'jquerytokeninput', $container);
+    }
+    
     /**
      * Loads extended form types.
      *

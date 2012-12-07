@@ -42,7 +42,10 @@ class Configuration implements ConfigurationInterface
         $this->addAutocompleter($rootNode);
         $this->addTokeninput($rootNode);
         $this->addAutocomplete($rootNode);
-        $this->addSelect2($rootNode);
+        $this->addType($rootNode, 'select2');
+        $this->addType($rootNode, 'autocompleter');
+        $this->addType($rootNode, 'chosen');
+        $this->addType($rootNode, 'tokeninput');
 
         return $treeBuilder;
     }
@@ -57,12 +60,9 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('captcha')
-                    ->canBeUnset()
+                    ->canBeEnabled()
                     ->addDefaultsIfNotSet()
-                    ->treatNullLike(array('enabled' => true))
-                    ->treatTrueLike(array('enabled' => true))
                     ->children()
-                        ->booleanNode('enabled')->defaultTrue()->end()
                         ->scalarNode('driver')->defaultValue('gd')->end()
                         ->scalarNode('width')->defaultValue(100)->end()
                         ->scalarNode('height')->defaultValue(30)->end()
@@ -128,11 +128,8 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('recaptcha')
-                    ->canBeUnset()
-                    ->treatNullLike(array('enabled' => true))
-                    ->treatTrueLike(array('enabled' => true))
+                    ->canBeEnabled()
                     ->children()
-                        ->booleanNode('enabled')->defaultTrue()->end()
                         ->scalarNode('server_url')->defaultValue('http://api.recaptcha.net')->end()
                         ->scalarNode('public_key')->isRequired()->end()
                         ->scalarNode('private_key')->isRequired()->end()
@@ -164,12 +161,9 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('tinymce')
-                    ->canBeUnset()
+                    ->canBeEnabled()
                     ->addDefaultsIfNotSet()
-                    ->treatNullLike(array('enabled' => true))
-                    ->treatTrueLike(array('enabled' => true))
                     ->children()
-                        ->booleanNode('enabled')->defaultTrue()->end()
                         ->scalarNode('theme')->defaultValue('advanced')->end()
                         ->scalarNode('script_url')->end()
                         ->variableNode('configs')->defaultValue(array())->end()
@@ -189,12 +183,9 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('date')
-                    ->canBeUnset()
+                    ->canBeEnabled()
                     ->addDefaultsIfNotSet()
-                    ->treatNullLike(array('enabled' => true))
-                    ->treatTrueLike(array('enabled' => true))
                     ->children()
-                        ->booleanNode('enabled')->defaultTrue()->end()
                         ->variableNode('configs')->defaultValue(array())->end()
                     ->end()
                 ->end()
@@ -212,11 +203,8 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('file')
-                    ->canBeUnset()
-                    ->treatNullLike(array('enabled' => true))
-                    ->treatTrueLike(array('enabled' => true))
+                    ->canBeEnabled()
                     ->children()
-                        ->booleanNode('enabled')->defaultTrue()->end()
                         ->scalarNode('swf')->isRequired()->end()
                         ->scalarNode('cancel_img')->defaultValue('/bundles/genemuform/images/cancel.png')->end()
                         ->scalarNode('folder')->defaultValue('/upload')->end()
@@ -237,11 +225,8 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('image')
-                    ->canBeUnset()
-                    ->treatNullLike(array('enabled' => true))
-                    ->treatTrueLike(array('enabled' => true))
+                    ->canBeEnabled()
                     ->children()
-                        ->booleanNode('enabled')->defaultTrue()->end()
                         ->scalarNode('selected')->defaultValue('large')->end()
                         ->arrayNode('filters')
                             ->defaultValue(array('rotate', 'bw', 'negative', 'sepia', 'crop'))
@@ -271,7 +256,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('tokeninput')
-                    ->canBeUnset()
+                    ->canBeEnabled()
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('doctrine')->defaultTrue()->end()
@@ -292,7 +277,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('autocompleter')
-                    ->canBeUnset()
+                    ->canBeEnabled()
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('doctrine')->defaultTrue()->end()
@@ -313,12 +298,9 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('autocomplete')
-                    ->canBeUnset()
-                    ->treatNullLike(array('enabled' => true))
-                    ->treatTrueLike(array('enabled' => true))
+                    ->canBeEnabled()
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->booleanNode('enabled')->defaultFalse()->end()
                         ->booleanNode('doctrine')->defaultTrue()->end()
                         ->booleanNode('mongodb')->defaultFalse()->end()
                     ->end()
@@ -327,18 +309,12 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addSelect2(ArrayNodeDefinition $rootNode)
+    private function addType(ArrayNodeDefinition $rootNode, $name)
     {
         $rootNode
             ->children()
-                ->arrayNode('select2')
-                    ->canBeUnset()
-                    ->treatNullLike(array('enabled' => true))
-                    ->treatTrueLike(array('enabled' => true))
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->booleanNode('enabled')->defaultFalse()->end()
-                    ->end()
+                ->arrayNode($name)
+                    ->canBeEnabled()
                 ->end()
             ->end()
         ;

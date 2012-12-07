@@ -5,9 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="genemu.form.core.type.plain" class="Genemu\Bundle\FormBundle\Form\Core\Type\PlainType">
-            <tag name="form.type" alias="genemu_plain" />
-        </service>
+        <service id="genemu.form.jquery.type.select2" class="Genemu\Bundle\FormBundle\Form\JQuery\Type\Select2Type" abstract="true" />
     </services>
 
 </container>
