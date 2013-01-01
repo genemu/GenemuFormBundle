@@ -41,6 +41,8 @@ class Select2Type extends AbstractType
     {
         if ('hidden' === $this->widget && !empty($options['configs']['multiple'])) {
             $builder->addViewTransformer(new ArrayToStringTransformer());
+        } elseif ('hidden' === $this->widget && empty($options['configs']['multiple']) && null !== $options['transformer']) {
+            $builder->addModelTransformer($options['transformer']);
         }
     }
 
@@ -73,7 +75,8 @@ class Select2Type extends AbstractType
         );
         $resolver
             ->setDefaults(array(
-                'configs' => $defaults,
+                'configs'       => $defaults,
+                'transformer'   => null,
             ))
             ->setNormalizers(array(
                 'configs' => function (Options $options, $configs) use ($defaults) {
