@@ -27,11 +27,6 @@
             <argument>%genemu.form.recaptcha.server_url%</argument>
             <argument>%genemu.form.recaptcha.options%</argument>
         </service>
-        <service id="genemu.form.core.type.captcha" class="Genemu\Bundle\FormBundle\Form\Core\Type\CaptchaType">
-            <tag name="form.type" alias="genemu_captcha" />
-            <argument type="service" id="genemu.gd.captcha" />
-            <argument>%genemu.form.captcha.options%</argument>
-        </service>
         <service id="genemu.form.core.type.plain" class="Genemu\Bundle\FormBundle\Form\Core\Type\PlainType">
             <tag name="form.type" alias="genemu_plain" />
         </service>

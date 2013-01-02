@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="genemu.form.captcha.code_generator" class="Genemu\Bundle\FormBundle\Captcha\CodeGenerator" public="false">
+        </service>
+
+        <service id="genemu.form.captcha.font_resolver" class="Genemu\Bundle\FormBundle\Captcha\FontResolver" public="false">
+            <argument type="service" id="kernel" />
+            <argument>@GenemuFormBundle/Resources/fonts</argument>
+        </service>
+
+        <service id="genemu.form.captcha.storage" class="Genemu\Bundle\FormBundle\Captcha\CaptchaStorage" public="false">
+            <argument type="service" id="session" />
+        </service>
+
+        <service id="genemu.form.captcha.service" class="Genemu\Bundle\FormBundle\Captcha\CaptchaService" public="false">
+            <argument type="service" id="genemu.form.captcha.code_generator" />
+            <argument type="service" id="genemu.form.captcha.font_resolver" />
+            <argument type="service" id="genemu.form.captcha.storage" />
+            <argument />
+        </service>
+
+        <service id="genemu.form.captcha.validator" class="Genemu\Bundle\FormBundle\Form\Core\Validator\CaptchaValidator">
+            <argument type="service" id="genemu.form.captcha.service" />
+        </service>
+
+        <service id="genemu.form.core.type.captcha" class="Genemu\Bundle\FormBundle\Form\Core\Type\CaptchaType">
+            <tag name="form.type" alias="genemu_captcha" />
+            <argument type="service" id="genemu.form.captcha.service" />
+            <argument type="service" id="genemu.form.captcha.validator" />
+        </service>
+    </services>
+
+</container>

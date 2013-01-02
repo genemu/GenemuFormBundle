@@ -21,14 +21,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class Base64Controller extends ContainerAware
 {
-    public function refreshCaptchaAction()
+    public function refreshCaptchaAction($name)
     {
-        $captcha = $this->container->get('genemu.gd.captcha');
-        $options = $this->container->get('session')->get('genemu_form.captcha.options', array());
-        $captcha->setOptions($options);
-        $datas = preg_split('([;,]{1})', substr($captcha->getBase64(), 5));
+        $captcha = $this->container->get('genemu.form.captcha.service')->generateCaptcha($name);
 
-        return new Response(base64_decode($datas[2]), 200, array('Content-Type' => $datas[0]));
+        $data = preg_split('([;,]{1})', substr($captcha->generate(), 5));
+
+        return new Response(base64_decode($data[2]), 200, array('Content-Type' => $data[0]));
     }
 
     public function base64Action()

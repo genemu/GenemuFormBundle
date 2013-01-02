@@ -13,11 +13,10 @@ namespace Genemu\Bundle\FormBundle\Form\Core\Validator;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Event\DataEvent;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormError;
 
-use Genemu\Bundle\FormBundle\Gd\Type\Captcha;
+use Genemu\Bundle\FormBundle\Captcha\CaptchaService;
 
 /**
  * CaptchaValidator
@@ -26,16 +25,19 @@ use Genemu\Bundle\FormBundle\Gd\Type\Captcha;
  */
 class CaptchaValidator implements EventSubscriberInterface
 {
-    private $captcha;
+    /**
+     * @var \Genemu\Bundle\FormBundle\Captcha\CaptchaService
+     */
+    protected $service;
 
     /**
      * Constructs
      *
-     * @param Captcha $captcha
+     * @param \Genemu\Bundle\FormBundle\Captcha\CaptchaService $service
      */
-    public function __construct(Captcha $captcha)
+    public function __construct(CaptchaService $service)
     {
-        $this->captcha = $captcha;
+        $this->service          = $service;
     }
 
     /**
@@ -46,16 +48,16 @@ class CaptchaValidator implements EventSubscriberInterface
         $form = $event->getForm();
         $data = $event->getData();
 
-        if (
-            $this->captcha->getLength() !== strlen($data) ||
-            $this->captcha->getCode() !== $this->captcha->encode($data)
-        ) {
-            $form->addError(new FormError('The captcha is invalid'));
-        }
+        $config = $form->getConfig()->getOption('config_name');
 
-        $this->captcha->removeCode();
+        if (false == $this->service->isCodeValid($config, $data)) {
+            $form->addError(new FormError('The captcha is invalid.'));
+        }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public static function getSubscribedEvents()
     {
         return array(FormEvents::POST_BIND => 'validate');

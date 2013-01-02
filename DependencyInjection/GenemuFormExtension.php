@@ -42,6 +42,7 @@ class GenemuFormExtension extends Extension
         $loader->load('form.xml');
         $loader->load('model.xml');
         $loader->load('jquery.xml');
+        $loader->load('captcha.xml');
 
         if (!empty($configs['autocompleter']['doctrine']) ||
             !empty($configs['tokeninput']['doctrine'])
@@ -76,29 +77,8 @@ class GenemuFormExtension extends Extension
      */
     private function registerCaptchaConfiguration(array $configs, ContainerBuilder $container)
     {
-        if (!function_exists('image' . $configs['format'])) {
-            throw new \LogicException(sprintf('Format %s does not supported.', $configs['format']));
-        }
-
-        $fontDir = $container->getParameterBag()->resolveValue($configs['font_dir']);
-        foreach ($configs['fonts'] as $index => $font) {
-            if (is_file($fontDir . '/' . $font)) {
-                $configs['fonts'][$index] = $fontDir . '/' . $font;
-            }
-        }
-        unset($configs['font_dir']);
-
-        $backgroundColor = preg_replace('/[^0-9A-Fa-f]/', '', $configs['background_color']);
-        if (!in_array(strlen($backgroundColor), array(3, 6), true)) {
-            $configs['background_color'] = 'DDDDDD';
-        }
-
-        $borderColor = preg_replace('/[^0-9A-Fa-f]/', '', $configs['border_color']);
-        if (!in_array(strlen($borderColor), array(3, 6), true)) {
-            $configs['border_color'] = '000000';
-        }
-
-        $container->setParameter('genemu.form.captcha.options', $configs);
+        $definition = $container->getDefinition('genemu.form.captcha.service');
+        $definition->replaceArgument(3, $configs['configs']);
     }
 
     /**
