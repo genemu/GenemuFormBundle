@@ -50,7 +50,7 @@ genemu_base64:
 
 ```
 
-## Fix Bug to IE6 and IE7
+## Fixing Bug on IE6 and IE7
 
 * add in your routing.yml
 
@@ -62,6 +62,17 @@ genemu_base64:
 
 * also your captcha should be small, because IE supports only 2083 characters in requests (otherwise they are just skipped).
 Working example: 100x30, grayscale, gif
+
+## Hardcoding the captcha value (for testing)
+
+You can define a static code for your test environment :
+
+``` yml
+# app/config/config_test.yml
+genemu_form:
+    captcha:
+        code: 1234
+```
 
 ## Default Usage:
 
