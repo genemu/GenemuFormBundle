@@ -29,6 +29,7 @@ class ReCaptchaValidator implements EventSubscriberInterface
     private $httpRequest;
     private $request;
     private $privateKey;
+    private $code;
 
     /**
      * Constructs
@@ -36,23 +37,29 @@ class ReCaptchaValidator implements EventSubscriberInterface
      * @param Request $request
      * @param string  $privateKey
      */
-    public function __construct(Request $request, $privateKey)
+    public function __construct(Request $request, $privateKey, $code)
     {
-        if (empty($privateKey)) {
-            throw new FormException('The child node "private_key" at path "genenu_form.captcha" must be configured.');
-        }
-
+        // predefined code to validate against (for testing)
+        $this->code = $code;
         $this->request = $request;
-        $this->privateKey = $privateKey;
 
-        $this->httpRequest = array(
-            'POST %s HTTP/1.0',
-            'Host: %s',
-            'Content-Type: application/x-www-form-urlencoded',
-            'Content-Length: %d',
-            'User-Agent: reCAPTCHA/PHP'
-        );
-        $this->httpRequest = implode("\r\n", $this->httpRequest)."\r\n\r\n%s";
+        if(empty($code)) {
+            if (empty($privateKey)) {
+                throw new FormException('The child node "private_key" at path "genenu_form.captcha" must be configured.');
+            }
+
+            $this->request = $request;
+            $this->privateKey = $privateKey;
+
+            $this->httpRequest = array(
+                'POST %s HTTP/1.0',
+                'Host: %s',
+                'Content-Type: application/x-www-form-urlencoded',
+                'Content-Length: %d',
+                'User-Agent: reCAPTCHA/PHP'
+            );
+            $this->httpRequest = implode("\r\n", $this->httpRequest)."\r\n\r\n%s";
+        }
     }
 
     public function validate(DataEvent $event)
@@ -70,12 +77,19 @@ class ReCaptchaValidator implements EventSubscriberInterface
             'remoteip' => $server->get('REMOTE_ADDR')
         );
 
-        if (empty($datas['challenge']) || empty($datas['response'])) {
-            $error = 'The captcha is not valid.';
-        }
+        if(empty($this->code)) {
+            if (empty($datas['challenge']) || empty($datas['response'])) {
+                $error = 'The captcha is not valid.';
+            }
 
-        if (true !== ($answer = $this->check($datas, $form->getAttribute('option_validator')))) {
-            $error = sprintf('Unable to check the captcha from the server. (%s)', $answer);
+            if (true !== ($answer = $this->check($datas, $form->getAttribute('option_validator')))) {
+                $error = sprintf('Unable to check the captcha from the server. (%s)', $answer);
+            }
+        }
+        else {
+            if($this->code != $datas['response']) {
+                $error = "The captcha is not valid.";
+            }
         }
 
         if (!empty($error)) {

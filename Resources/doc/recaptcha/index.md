@@ -10,6 +10,17 @@ genemu_form:
         private_key: `your private key is required`
 ```
 
+## Hardcoding the captcha value (for testing)
+
+You can define a static code for your test environment:
+
+``` yml
+# app/config/config_test.yml
+genemu_form:
+    recaptcha:
+        code: 1234
+```
+
 ## Default Usage:
 
 ``` php
