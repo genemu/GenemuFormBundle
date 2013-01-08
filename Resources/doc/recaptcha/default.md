@@ -9,4 +9,9 @@ genemu_form:
         ssl:
             use:        true
             server_url: 'https://api-secure.recaptcha.net'
+        # use a proxy server for outgoing connections     
+        proxy:
+            enabled: false
+            host: '' # hostname of the proxyserver
+            port: 80
 ```

@@ -125,6 +125,7 @@ class GenemuFormExtension extends Extension
         $container->setParameter('genemu.form.recaptcha.server_url', $serverUrl);
         $container->setParameter('genemu.form.recaptcha.private_key', $configs['private_key']);
         $container->setParameter('genemu.form.recaptcha.public_key', $configs['public_key']);
+        $container->setParameter('genemu.form.recaptcha.proxy', $configs['proxy']);
         $container->setParameter('genemu.form.recaptcha.options', $configs['configs']);
     }
 

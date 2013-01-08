@@ -29,6 +29,7 @@ class ReCaptchaValidator implements EventSubscriberInterface
     private $httpRequest;
     private $request;
     private $privateKey;
+    private $proxy;
 
     /**
      * Constructs
@@ -36,7 +37,7 @@ class ReCaptchaValidator implements EventSubscriberInterface
      * @param Request $request
      * @param string  $privateKey
      */
-    public function __construct(Request $request, $privateKey)
+    public function __construct(Request $request, $privateKey, $proxy)
     {
         if (empty($privateKey)) {
             throw new FormException('The child node "private_key" at path "genenu_form.captcha" must be configured.');
@@ -44,6 +45,7 @@ class ReCaptchaValidator implements EventSubscriberInterface
 
         $this->request = $request;
         $this->privateKey = $privateKey;
+        $this->proxy = $proxy;
 
         $this->httpRequest = array(
             'POST %s HTTP/1.0',
@@ -96,8 +98,8 @@ class ReCaptchaValidator implements EventSubscriberInterface
         $httpRequest = sprintf($this->httpRequest, $options['path'], $options['host'], strlen($datas), $datas);
 
         if (false === ($fs = @fsockopen(
-            $options['host'],
-            $options['port'],
+            $this->proxy['enabled'] ? $this->proxy['host'] : $options['host'],
+            $this->proxy['enabled'] ? $this->proxy['port'] : $options['port'],
             $errno, $errstr,
             $options['timeout']
         ))) {
