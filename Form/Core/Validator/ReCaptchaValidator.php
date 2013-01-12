@@ -32,18 +32,16 @@ class ReCaptchaValidator implements EventSubscriberInterface
     private $code;
 
     /**
-     * Constructs
-     *
-     * @param Request $request
-     * @param string  $privateKey
+     * @param Request      $request
+     * @param string       $privateKey
+     * @param null|string  $code       Predefined code to validate against (for testing)
      */
-    public function __construct(Request $request, $privateKey, $code)
+    public function __construct(Request $request, $privateKey, $code = null)
     {
-        // predefined code to validate against (for testing)
         $this->code = $code;
         $this->request = $request;
 
-        if(empty($code)) {
+        if (empty($code)) {
             if (empty($privateKey)) {
                 throw new FormException('The child node "private_key" at path "genenu_form.captcha" must be configured.');
             }
@@ -77,19 +75,14 @@ class ReCaptchaValidator implements EventSubscriberInterface
             'remoteip' => $server->get('REMOTE_ADDR')
         );
 
-        if(empty($this->code)) {
+        if (empty($this->code)) {
             if (empty($datas['challenge']) || empty($datas['response'])) {
                 $error = 'The captcha is not valid.';
-            }
-
-            if (true !== ($answer = $this->check($datas, $form->getAttribute('option_validator')))) {
+            } elseif (true !== ($answer = $this->check($datas, $form->getAttribute('option_validator')))) {
                 $error = sprintf('Unable to check the captcha from the server. (%s)', $answer);
             }
-        }
-        else {
-            if($this->code != $datas['response']) {
-                $error = "The captcha is not valid.";
-            }
+        } elseif ($this->code != $datas['response']) {
+            $error = "The captcha is not valid.";
         }
 
         if (!empty($error)) {

@@ -12,6 +12,9 @@
 namespace Genemu\Bundle\FormBundle\Tests\Form\Core\Type;
 
 use Genemu\Bundle\FormBundle\Tests\Form\Type\TypeTestCase;
+use Genemu\Bundle\FormBundle\Form\Core\Type\ReCaptchaType;
+use Genemu\Bundle\FormBundle\Form\Core\Validator\ReCaptchaValidator;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
@@ -54,5 +57,31 @@ class ReCaptchaTypeTest extends TypeTestCase
             'path' => '/verify',
             'timeout' => 30
         ), $form->getAttribute('option_validator'));
+    }
+    
+    /**
+     * @dataProvider provideCodes
+     */
+    public function testCode($code, $isValid)
+    {
+        $request = new Request(array(), array('recaptcha_response_field' => $code));
+        $form = $this->factory->create(new ReCaptchaType(
+            new ReCaptchaValidator($request, 'privateKey', '1234'),
+            'publicKey',
+            'http://api.recaptcha.net',
+            array()
+        ));
+
+        $form->bind(null);
+
+        $this->assertEquals($isValid, $form->isValid());
+    }
+
+    public function provideCodes()
+    {
+        return array(
+            array('1234', true),
+            array('4321', false),
+        );
     }
 }
