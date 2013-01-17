@@ -60,7 +60,13 @@
 
         {%- if configs.script_url is defined %}
 
-            $('#{{ id }}').tinymce($configs);
+            var $textarea = jQuery('#{{ id }}');
+            if($textarea.is('[required]')) {
+                $configs.oninit = function(editor) {
+                    editor.onChange.add(function(ed, l) { ed.save(); });
+                };
+            }
+            $textarea.tinymce($configs);
         {% else %}
 
             tinyMCE.init($configs);
