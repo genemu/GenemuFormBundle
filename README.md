@@ -2,13 +2,6 @@
 
 [![Build Status](https://secure.travis-ci.org/genemu/GenemuFormBundle.png)](https://secure.travis-ci.org/genemu/GenemuFormBundle)
 
-## Branches
-
-Bundle minor versions are based on Symfony ones :
-
-- 2.0 provides compatibility with Symfony 2.0
-- 2.1 provides compatibility with Symfony 2.1
-
 ## Installation
 
 Installation is quick and easy, 3 steps process
