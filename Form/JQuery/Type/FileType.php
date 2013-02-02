@@ -81,6 +81,7 @@ class FileType extends AbstractType
 
         $resolver
             ->setDefaults(array(
+                'data_class' => null,
                 'required' => false,
                 'multiple' => false,
                 'configs' => array(),
