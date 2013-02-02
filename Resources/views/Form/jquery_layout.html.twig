@@ -30,7 +30,7 @@
 
 {% block genemu_recaptcha_javascript %}
 {% spaceless %}
-    <script type="text/javascript" src="{{ asset(server ~ "/js/recaptcha_ajax.js") }}"></script>
+    <script type="text/javascript" src="{{ asset("https://www.google.com/recaptcha/api/js/recaptcha_ajax.js") }}"></script>
     <script type="text/javascript">
         window.addEventListener(
             'load',

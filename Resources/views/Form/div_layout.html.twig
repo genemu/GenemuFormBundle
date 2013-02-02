@@ -9,7 +9,7 @@
 {% spaceless %}
     <div id="{{ id }}_div" style="display: none;"></div>
     <noscript>
-        <iframe src="{{ server }}/noscript?k={{ public_key }}" width="500" height="300" frameborder="0"></iframe>
+        <iframe src="http://www.google.com/recaptcha/api/noscript?k={{ public_key }}" width="500" height="300" frameborder="0"></iframe>
         <br />
         <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
         <input type="hidden" name="recaptcha_response_field" value="manual_challenge" />
