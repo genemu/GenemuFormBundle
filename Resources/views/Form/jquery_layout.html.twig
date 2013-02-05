@@ -32,11 +32,18 @@
 {% spaceless %}
     <script type="text/javascript" src="{{ asset("https://www.google.com/recaptcha/api/js/recaptcha_ajax.js") }}"></script>
     <script type="text/javascript">
-        window.addEventListener(
-            'load',
-            Recaptcha.create('{{ public_key }}', '{{ id }}_div', {{ configs|json_encode|raw }}),
-            false
-        );
+        function genemu_recaptcha_load()
+        {
+            Recaptcha.create('{{ public_key }}', '{{ id }}_div', {{ configs|json_encode|raw }});
+        }
+
+        if (window.addEventListener) {
+            window.addEventListener('load', genemu_recaptcha_load, false);
+        } else if (window.attachEvent) {
+            window.attachEvent('onload', genemu_recaptcha_load);
+        } else {
+            window.onload = genemu_recaptcha_load;
+        }
     </script>
 {% endspaceless %}
 {% endblock genemu_recaptcha_javascript %}
