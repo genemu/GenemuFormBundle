@@ -8,6 +8,7 @@
         <service id="genemu.gd.captcha" class="Genemu\Bundle\FormBundle\Gd\Type\Captcha">
             <argument type="service" id="session" />
             <argument>%kernel.secret%</argument>
+            <argument>%kernel.root_dir%/../</argument>
         </service>
     </services>
 

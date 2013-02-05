@@ -28,6 +28,7 @@ class Captcha extends Gd
 {
     protected $session;
     protected $secret;
+    protected $applcationRootDir;
     protected $code;
 
     protected $width;
@@ -53,10 +54,11 @@ class Captcha extends Gd
      * @param Session $session
      * @param string  $secret
      */
-    public function __construct(Session $session, $secret)
+    public function __construct(Session $session, $secret, $applicationRootDir)
     {
         $this->session = $session;
         $this->secret = $secret;
+        $this->applcationRootDir = realpath($applicationRootDir) . "/";
         $this->key = 'genemu_form.captcha';
     }
 
@@ -99,6 +101,12 @@ class Captcha extends Gd
 
             $this->$key = $values;
         }
+
+        $applicationRootDirPattern = sprintf("/%s/", addcslashes($this->applcationRootDir, '/'));
+
+        array_walk($options['fonts'], function(&$fontPath) use ($applicationRootDirPattern) {
+            $fontPath = preg_replace($applicationRootDirPattern, "", $fontPath, 1);
+        });
 
         $this->session->set($this->key.'.options', $options);
     }
