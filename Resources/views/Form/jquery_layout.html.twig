@@ -39,12 +39,17 @@
 {% spaceless %}
     <script type="text/javascript" src="{{ asset(server ~ "/js/recaptcha_ajax.js") }}"></script>
     <script type="text/javascript">
+        function genemu_recaptcha_load()
+        {
+            Recaptcha.create('{{ public_key }}', '{{ id }}_div', {{ configs|json_encode|raw }});
+        }
+
         if (window.addEventListener) {
-            window.addEventListener('load', Recaptcha.create('{{ public_key }}', '{{ id }}_div', {{ configs|json_encode|raw }}), false);
+            window.addEventListener('load', genemu_recaptcha_load, false);
         } else if (window.attachEvent) {
-            window.attachEvent('onload', Recaptcha.create('{{ public_key }}', '{{ id }}_div', {{ configs|json_encode|raw }}));
-        } else if (document.getElementById) {
-            window.onload = Recaptcha.create('{{ public_key }}', '{{ id }}_div', {{ configs|json_encode|raw }});
+            window.attachEvent('onload', genemu_recaptcha_load);
+        } else {
+            window.onload = genemu_recaptcha_load;
         }
     </script>
 {% endspaceless %}
