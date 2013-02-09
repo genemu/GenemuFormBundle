@@ -77,6 +77,17 @@ class ReCaptchaTypeTest extends TypeTestCase
         $this->assertEquals($isValid, $form->isValid());
     }
 
+    /**
+     * assert, that the proxy is disabled by default
+     */
+    public function testProxy() {
+        $request = new Request(array(), array('recaptcha_response_field' => 'foobar'));
+        $validator = new ReCaptchaValidator($request, 'privateKey', 'foobar');
+
+        $proxy = $validator->getProxy();
+        $this->assertFalse($proxy['enabled']);
+    }
+
     public function provideCodes()
     {
         return array(

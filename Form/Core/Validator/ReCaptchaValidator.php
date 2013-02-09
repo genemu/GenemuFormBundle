@@ -30,6 +30,7 @@ class ReCaptchaValidator implements EventSubscriberInterface
     private $request;
     private $privateKey;
     private $code;
+    private $proxy;
 
     /**
      * @param Request      $request
@@ -40,6 +41,8 @@ class ReCaptchaValidator implements EventSubscriberInterface
     {
         $this->code = $code;
         $this->request = $request;
+        // proxy is disabled by default
+        $this->proxy = array('enabled' => false);
 
         if (empty($code)) {
             if (empty($privateKey)) {
@@ -107,10 +110,9 @@ class ReCaptchaValidator implements EventSubscriberInterface
         $httpRequest = sprintf($this->httpRequest, $options['path'], $options['host'], strlen($datas), $datas);
 
 
-
         if (false === ($fs = @fsockopen(
-            $options['host'],
-            $options['port'],
+            $this->proxy['enabled'] ? $this->proxy['host'] : $options['host'],
+            $this->proxy['enabled'] ? $this->proxy['port'] : $options['port'],
             $errno, $errstr,
             $options['timeout']
         ))) {
@@ -132,5 +134,15 @@ class ReCaptchaValidator implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(FormEvents::POST_BIND => 'validate');
+    }
+
+    public function getProxy()
+    {
+        return $this->proxy;
+    }
+
+    public function setProxy($proxy)
+    {
+        $this->proxy = $proxy;
     }
 }

@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="genemu.form.recaptcha.public_key" />
         <parameter key="genemu.form.recaptcha.private_key" />
+        <parameter key="genemu.form.recaptcha.proxy" />
         <parameter key="genemu.form.recaptcha.server_url" />
         <parameter key="genemu.form.recaptcha.code" />
         <parameter key="genemu.form.recaptcha.options" type="collection" />
@@ -20,6 +21,9 @@
             <argument type="service" id="request" strict="false" />
             <argument>%genemu.form.recaptcha.private_key%</argument>
             <argument>%genemu.form.recaptcha.code%</argument>
+            <call method="setProxy">
+                <argument on-invalid="ignore">%genemu.form.recaptcha.proxy%</argument>
+            </call>
         </service>
 
         <service id="genemu.form.core.type.recaptcha" class="Genemu\Bundle\FormBundle\Form\Core\Type\ReCaptchaType">
