@@ -100,9 +100,13 @@ class ReCaptchaValidator implements EventSubscriberInterface
      */
     private function check(array $datas, array $options)
     {
+        $errno = 0;
+        $errstr = '';
         $response = '';
         $datas = http_build_query($datas, null, '&');
         $httpRequest = sprintf($this->httpRequest, $options['path'], $options['host'], strlen($datas), $datas);
+
+
 
         if (false === ($fs = @fsockopen(
             $options['host'],
