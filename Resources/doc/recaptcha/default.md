@@ -13,5 +13,6 @@ genenu_form:
             path:                 /verify
             timeout:              10
             code:                 ~
+            proxy:                ~
         configs:              [] 
 ```

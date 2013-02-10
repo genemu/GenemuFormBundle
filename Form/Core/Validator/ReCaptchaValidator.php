@@ -115,10 +115,13 @@ class ReCaptchaValidator implements EventSubscriberInterface
         $datas = http_build_query($datas, null, '&');
         $httpRequest = sprintf($this->httpRequest, $options['path'], $options['host'], strlen($datas), $datas);
 
+        $errno = 0;
+        $errstr = '';
         if (false === ($fs = @fsockopen(
-            $options['host'],
-            $options['port'],
-            $errno, $errstr,
+            empty($options['proxy']) ? $options['host'] : $options['proxy']['host'],
+            empty($options['proxy']) ? $options['port'] : $options['proxy']['port'],
+            $errno,
+            $errstr,
             $options['timeout']
         ))) {
             return $errstr;
