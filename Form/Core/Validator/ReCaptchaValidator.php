@@ -29,19 +29,19 @@ class ReCaptchaValidator implements EventSubscriberInterface
     private $httpRequest;
     private $request;
     private $privateKey;
-    private $code;
+    private $options;
 
     /**
      * @param Request      $request
      * @param string       $privateKey
-     * @param null|string  $code       Predefined code to validate against (for testing)
+     * @param array        $options    Validation options
      */
-    public function __construct(Request $request, $privateKey, $code = null)
+    public function __construct(Request $request, $privateKey, array $options = array())
     {
-        $this->code = $code;
+        $this->options = $options;
         $this->request = $request;
 
-        if (empty($code)) {
+        if (empty($options['code'])) {
             if (empty($privateKey)) {
                 throw new FormException('The child node "private_key" at path "genenu_form.captcha" must be configured.');
             }
@@ -60,6 +60,16 @@ class ReCaptchaValidator implements EventSubscriberInterface
         }
     }
 
+    public function addOptions(array $options)
+    {
+        $this->options = array_merge($this->options, $options);
+    }
+
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
     public function validate(DataEvent $event)
     {
         $form = $event->getForm();
@@ -75,13 +85,13 @@ class ReCaptchaValidator implements EventSubscriberInterface
             'remoteip' => $server->get('REMOTE_ADDR')
         );
 
-        if (empty($this->code)) {
+        if (empty($this->options['code'])) {
             if (empty($datas['challenge']) || empty($datas['response'])) {
                 $error = 'The captcha is not valid.';
             } elseif (true !== ($answer = $this->check($datas, $form->getAttribute('option_validator')))) {
                 $error = sprintf('Unable to check the captcha from the server. (%s)', $answer);
             }
-        } elseif ($this->code != $datas['response']) {
+        } elseif ($this->options['code'] != $datas['response']) {
             $error = "The captcha is not valid.";
         }
 
@@ -100,14 +110,18 @@ class ReCaptchaValidator implements EventSubscriberInterface
      */
     private function check(array $datas, array $options)
     {
+        $options = array_merge($this->options, $options);
         $response = '';
         $datas = http_build_query($datas, null, '&');
         $httpRequest = sprintf($this->httpRequest, $options['path'], $options['host'], strlen($datas), $datas);
 
+        $errno = 0;
+        $errstr = '';
         if (false === ($fs = @fsockopen(
-            $options['host'],
-            $options['port'],
-            $errno, $errstr,
+            empty($options['proxy']) ? $options['host'] : $options['proxy']['host'],
+            empty($options['proxy']) ? $options['port'] : $options['proxy']['port'],
+            $errno,
+            $errstr,
             $options['timeout']
         ))) {
             return $errstr;
