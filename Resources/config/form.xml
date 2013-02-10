@@ -10,6 +10,7 @@
         <parameter key="genemu.form.recaptcha.server_url" />
         <parameter key="genemu.form.recaptcha.code" />
         <parameter key="genemu.form.recaptcha.options" type="collection" />
+        <parameter key="genemu.form.recaptcha.validation.options" type="collection" />
 
         <parameter key="genemu.form.captcha.options" type="collection" />
         <parameter key="genemu.form.tinymce.configs" type="collection" />
@@ -19,7 +20,7 @@
         <service id="genemu.form.type_recaptcha.validator" class="Genemu\Bundle\FormBundle\Form\Core\Validator\ReCaptchaValidator">
             <argument type="service" id="request" strict="false" />
             <argument>%genemu.form.recaptcha.private_key%</argument>
-            <argument>%genemu.form.recaptcha.code%</argument>
+            <argument>%genemu.form.recaptcha.validation.options%</argument>
         </service>
 
         <service id="genemu.form.core.type.recaptcha" class="Genemu\Bundle\FormBundle\Form\Core\Type\ReCaptchaType">

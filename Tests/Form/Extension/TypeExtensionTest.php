@@ -75,7 +75,15 @@ class TypeExtensionTest extends CoreExtension
                 'folder' => '/upload'
             ), __DIR__.'/../../Fixtures'),
             new Form\Core\Type\ReCaptchaType(
-                new ReCaptchaValidator($this->request, 'privateKey'),
+                new ReCaptchaValidator(
+                    $this->request,
+                    'privateKey',
+                    array(
+                        'host' => 'api-verify.recaptcha.net',
+                        'port' => 80,
+                        'path' => '/verify',
+                        'timeout' => 10
+                    )),
                 'publicKey',
                 'http://api.recaptcha.net',
                 array()),

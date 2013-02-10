@@ -57,9 +57,11 @@ class ReCaptchaType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->validator->addOptions($options['validator']);
+
         $builder
             ->addEventSubscriber($this->validator)
-            ->setAttribute('option_validator', $options['validator'])
+            ->setAttribute('option_validator', $this->validator->getOptions())
         ;
     }
 
@@ -97,16 +99,7 @@ class ReCaptchaType extends AbstractType
             ->setNormalizers(array(
                 'configs' => function (Options $options, $value) use ($configs) {
                     return array_merge($configs, $value);
-                },
-                'validator' => function (Options $options, $value) {
-                    return array_merge(array(
-                            'host' => 'api-verify.recaptcha.net',
-                            'port' => 80,
-                            'path' => '/verify',
-                            'timeout' => 10,
-                        ), $value
-                    );
-                },
+                }
             ))
         ;
     }

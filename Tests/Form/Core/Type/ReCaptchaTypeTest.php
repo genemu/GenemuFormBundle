@@ -66,7 +66,7 @@ class ReCaptchaTypeTest extends TypeTestCase
     {
         $request = new Request(array(), array('recaptcha_response_field' => $code));
         $form = $this->factory->create(new ReCaptchaType(
-            new ReCaptchaValidator($request, 'privateKey', '1234'),
+            new ReCaptchaValidator($request, 'privateKey', array('code' => '1234')),
             'publicKey',
             'http://api.recaptcha.net',
             array()
