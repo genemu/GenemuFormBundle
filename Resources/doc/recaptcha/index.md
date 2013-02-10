@@ -18,7 +18,8 @@ You can define a static code for your test environment:
 # app/config/config_test.yml
 genemu_form:
     recaptcha:
-        code: 1234
+        validation:
+            code: 1234
 ```
 
 ## Default Usage:

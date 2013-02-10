@@ -127,6 +127,8 @@ class GenemuFormExtension extends Extension
         $container->setParameter('genemu.form.recaptcha.public_key', $configs['public_key']);
         $container->setParameter('genemu.form.recaptcha.code', $configs['code']);
         $container->setParameter('genemu.form.recaptcha.options', $configs['configs']);
+        $validationOptions = array_merge(array('code' => $configs['code']), $configs['validation']);
+        $container->setParameter('genemu.form.recaptcha.validation.options', $validationOptions);
     }
 
     /**
