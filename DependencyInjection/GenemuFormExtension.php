@@ -76,10 +76,6 @@ class GenemuFormExtension extends Extension
      */
     private function registerCaptchaConfiguration(array $configs, ContainerBuilder $container)
     {
-        if (!function_exists('image' . $configs['format'])) {
-            throw new \LogicException(sprintf('Format %s does not supported.', $configs['format']));
-        }
-
         $fontDir = $container->getParameterBag()->resolveValue($configs['font_dir']);
         foreach ($configs['fonts'] as $index => $font) {
             if (is_file($fontDir . '/' . $font)) {
