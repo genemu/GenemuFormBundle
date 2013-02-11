@@ -76,13 +76,12 @@ class ReCaptchaValidator implements EventSubscriberInterface
 
         $error = '';
         $request = $this->request->request;
-        $server = $this->request->server;
 
         $datas = array(
             'privatekey' => $this->privateKey,
             'challenge' => $request->get('recaptcha_challenge_field'),
             'response' => $request->get('recaptcha_response_field'),
-            'remoteip' => $server->get('REMOTE_ADDR')
+            'remoteip' => $this->request->getClientIp()
         );
 
         if (empty($this->options['code'])) {
