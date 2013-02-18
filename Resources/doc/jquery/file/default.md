@@ -5,6 +5,6 @@
 genemu_form:
     file:
         enabled:    true
-        cancel_img: '/bundes/genemuform/images/cancel.png'
+        cancel_img: '/bundles/genemuform/images/cancel.png'
         folder:     '/upload'
 ```
