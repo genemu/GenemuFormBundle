@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-## 2.2.2
+## 2.1.2
 
  * 87e517e [Captcha] DI - fixed bug when assets are not installed yet
  * 835ffa2 [Recaptcha] added support for a proxy forwarding the HTTP request
