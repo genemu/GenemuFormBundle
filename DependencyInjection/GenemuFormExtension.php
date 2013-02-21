@@ -80,9 +80,14 @@ class GenemuFormExtension extends Extension
         foreach ($configs['fonts'] as $index => $font) {
             if (is_file($fontDir . '/' . $font)) {
                 $configs['fonts'][$index] = $fontDir . '/' . $font;
+            } else {
+                unset($configs['fonts'][$index]);
             }
         }
         unset($configs['font_dir']);
+        if (empty($configs['fonts'])) {
+            unset($configs['fonts']);
+        }
 
         $backgroundColor = preg_replace('/[^0-9A-Fa-f]/', '', $configs['background_color']);
         if (!in_array(strlen($backgroundColor), array(3, 6), true)) {
