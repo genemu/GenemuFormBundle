@@ -82,7 +82,7 @@ class DateType extends AbstractType
 
         $resolver
             ->setDefaults(array(
-                'culture' => \Locale::getDefault(),
+                'culture' => \Locale::getPrimaryLanguage(\Locale::getDefault()),
                 'widget' => 'choice',
                 'years'  => range(date('Y') - 5, date('Y') + 5),
                 'configs' => array(
