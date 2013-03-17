@@ -6,10 +6,16 @@ php:
 
 services: mongodb
 
+env:
+  - SF_VERSION="2.1.*"
+  - SF_VERSION="2.2.*"
+  - SF_VERSION="2.3.*"
+
 before_script:
-    - pecl install mongo > /dev/null
+    - pecl -q install mongo
     - echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
-    - composer install --dev
+    - composer require -n --no-update symfony/framework-bundle:${SF_VERSION}
+    - composer update --dev
 
 notifications:
   email: travis-ci@generation-multiple.com
