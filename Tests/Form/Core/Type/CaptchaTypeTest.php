@@ -32,7 +32,7 @@ class CaptchaTypeTest extends TypeTestCase
     {
         $form = $this->factory->create('genemu_captcha');
         $view = $form->createView();
-        $captcha = $form->getAttribute('captcha');
+        $captcha = $form->getConfig()->getAttribute('captcha');
 
         $this->assertEquals(100, $view->vars['width']);
         $this->assertEquals(30, $view->vars['height']);
@@ -51,7 +51,7 @@ class CaptchaTypeTest extends TypeTestCase
         ));
 
         $view = $form->createView();
-        $captcha = $form->getAttribute('captcha');
+        $captcha = $form->getConfig()->getAttribute('captcha');
 
         $this->assertEquals(200, $view->vars['width']);
         $this->assertEquals(md5('1111s$cr$t'), $captcha->getCode());

@@ -95,7 +95,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         ), $view->vars['choices']);
 
         $this->assertNull($form->getData());
-        $this->assertEquals('', $form->getClientData());
+        $this->assertEquals('', $form->getViewData());
 
         $this->assertNull($view->vars['route_name']);
         $this->assertEquals('', $view->vars['autocompleter_value']);
@@ -124,7 +124,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         ), $view->vars['choices']);
 
         $this->assertNull($form->getData());
-        $this->assertEquals('', $form->getClientData());
+        $this->assertEquals('', $form->getViewData());
 
         $this->assertNull($view->vars['route_name']);
         $this->assertEquals('', $view->vars['autocompleter_value']);
@@ -157,7 +157,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(json_encode(array(
             'value' => '2',
             'label' => 'Bar'
-        )), $form->getClientData());
+        )), $form->getViewData());
         $this->assertSame($document2, $form->getData());
 
         $this->assertNull($view->vars['route_name']);
@@ -226,7 +226,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(json_encode(array(
             'value' => 2,
             'label' => 'Bar',
-        )), $form->getClientData());
+        )), $form->getViewData());
         $this->assertSame($document2, $form->getData());
 
         $this->assertEquals('Foo', $view->vars['autocompleter_value']);
@@ -261,7 +261,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
 
         $this->assertEquals(json_encode(array(
             array('value' => 2, 'label' => 'Bar')
-        )), $form->getClientData());
+        )), $form->getViewData());
 
         $this->assertSame($existing, $form->getData());
         $this->assertEquals('Foo, Bar, ', $view->vars['autocompleter_value']);

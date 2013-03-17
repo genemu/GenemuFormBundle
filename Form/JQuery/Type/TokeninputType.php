@@ -90,7 +90,7 @@ class TokeninputType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $datas = json_decode($form->getClientData(), true);
+        $datas = json_decode($form->getViewData(), true);
         $value = '';
 
         if (!empty($datas)) {
@@ -104,7 +104,7 @@ class TokeninputType extends AbstractType
         }
 
         $view->vars['tokeninput_value'] = $value;
-        $view->vars['route_name'] = $form->getAttribute('route_name');
+        $view->vars['route_name'] = $form->getConfig()->getAttribute('route_name');
 
         foreach ($this->_availableTokeninputOptions as $option) {
             if (null !== $options[$option]) {

@@ -13,6 +13,7 @@ namespace Genemu\Bundle\FormBundle\Form\Model\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Genemu\Bundle\FormBundle\Form\Model\ChoiceList\AjaxModelChoiceList;
 
@@ -26,9 +27,9 @@ class AjaxModelType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $options = array(
+        $resolver->setDefaults(array(
             'template'          => 'choice',
             'multiple'          => false,
             'expanded'          => false,
@@ -53,7 +54,7 @@ class AjaxModelType extends AbstractType
 
                 return null;
             }
-        );
+        ));
 
         return $options;
     }
