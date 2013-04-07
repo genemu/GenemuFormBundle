@@ -13,6 +13,7 @@ namespace Genemu\Bundle\FormBundle\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\File;
 
 use Genemu\Bundle\FormBundle\Gd\File\Image;
 
@@ -27,12 +28,13 @@ class UploadController extends ContainerAware
     {
         $handle = $this->container->get('request')->files->get('Filedata');
 
-        $folder = $this->container->getParameter('genemu.form.file.folder');
         $uploadDir = $this->container->getParameter('genemu.form.file.upload_dir');
         $name = uniqid() . '.' . $handle->guessExtension();
+        $subFolders = $this->getUploadSubFolders($handle, $name);
+        $folder = $this->container->getParameter('genemu.form.file.folder').$subFolders;
 
         $json = array();
-        if ($handle = $handle->move($uploadDir, $name)) {
+        if ($handle = $handle->move($uploadDir.$subFolders, $name)) {
             $json = array(
                 'result' => '1',
                 'thumbnail' => array(),
@@ -80,5 +82,17 @@ class UploadController extends ContainerAware
         }
 
         return new Response(json_encode($json));
+    }
+
+    /**
+     * Get upload dir for file $handle. Add subdirectories based on file name.
+     *
+     * @param File $handle
+     * @param string $fileName
+     * @return string
+     */
+    protected function getUploadSubFolders(File $handle, $fileName)
+    {
+        return sprintf('/%s/%s/%s', $fileName[0], $fileName[1], $fileName[2]);
     }
 }
