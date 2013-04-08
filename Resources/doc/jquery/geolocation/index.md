@@ -42,3 +42,5 @@ public function buildForm(FormBuilder $builder, array $options)
         ))
 }
 ```
+
+*To see which jQuery libraries to include, see the [html code](https://github.com/sgruhier/jquery-addresspicker/blob/master/demos/index.html) of the demo*
