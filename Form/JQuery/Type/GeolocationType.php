@@ -56,7 +56,8 @@ class GeolocationType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars = array_replace($view->vars, array(
-            'configs' => array('elements' => array()),
+            'configs'   => array(),
+            'elements'  => array(),
             'map' => $options['map']
         ));
     }
