@@ -1,4 +1,4 @@
-# JQueryAutocomplete Field ([view demo](http://jqueryui.com/demos/autocomplete/))
+# JQueryChosen Field ([view demo](http://davidwalsh.name/demo/jquery-chosen.php))
 
 ## Default Usage:
 
