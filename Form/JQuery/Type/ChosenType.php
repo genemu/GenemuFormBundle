@@ -32,6 +32,7 @@ class ChosenType extends AbstractType
                 ->setAttribute('route_name',            $options['route_name'])
                 ->setAttribute('query_param_name',      $options['query_param_name'])
                 ->setAttribute('typing_timeout',        $options['typing_timeout'])
+                ->setAttribute('typing_min_length',     $options['typing_min_length'])
                 ->setAttribute('json_transform_func',   $options['json_transform_func']);
     }
 
@@ -44,6 +45,7 @@ class ChosenType extends AbstractType
              ->set('route_name',            $form->getAttribute('route_name'))
              ->set('query_param_name',      $form->getAttribute('query_param_name'))
              ->set('typing_timeout',        $form->getAttribute('typing_timeout'))
+             ->set('typing_min_length',     $form->getAttribute('typing_min_length'))
              ->set('json_transform_func',   $form->getAttribute('json_transform_func'));
     }
 
@@ -65,36 +67,17 @@ class ChosenType extends AbstractType
             // for autocomplete: javascript function that is used to transform JSON data returned by requests to the
             //                   given route, this default implementation assumes that data returned is in the same format
             //                   as used by the 'jquery_autocomplete form-type' (also defined in the Bundle)
-            'json_transform_func'	=> '
-            function(data) {
+            'json_transform_func'	=> 'function(data) {
     			var terms = {};
     			$.each(data, function (k, v) {
         			if (v.value && v.label) terms[v.value] = v.label;
         		});
     			return terms;
-    		}'
+            };',
+            'typing_min_length'            => 3,
         );
 
         return array_replace($defaultOptions, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllowedOptionValues(array $options)
-    {
-        return array(
-            'widget' => array(
-                'choice',
-                'language',
-                'country',
-                'timezone',
-                'locale',
-                'entity',
-                'document',
-                'model',
-            )
-        );
     }
 
     /**
