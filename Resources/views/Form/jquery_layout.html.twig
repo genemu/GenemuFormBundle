@@ -160,6 +160,10 @@
         {% if widget == "image" %}
             ${{ id }}_picker = $('#{{ id }}_color');
 
+            $('div', ${{ id }}_picker).css({
+                backgroundColor: ${{ id }}_field.val()
+            });
+
             ${{ id }}_picker.ColorPicker($.extend({
                 onChange: function(hsb, hex, rgb) {
                     ${{ id }}_field.val('#' + hex);
