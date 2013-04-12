@@ -151,18 +151,22 @@
         jQuery(document).ready(function($) {
             var $field = $('#{{ id }}');
             var $configs = $.extend({
-                color: '#' + $field.val(),
+                color: $field.val(),
                 onBeforeShow: function() {
                     $(this).ColorPickerSetColor($field.val());
                 }
             }, {{ configs|json_encode|raw }});
 
         {% if widget == "image" %}
-            $picker = $('#{{ id }}_color');
+            var $picker = $('#{{ id }}_color');
+
+            $('div', $picker).css({
+                backgroundColor: $field.val()
+            });
 
             $picker.ColorPicker($.extend({
                 onChange: function(hsb, hex, rgb) {
-                    $field.val(hex);
+                    $field.val('#' + hex);
 
                     $('div', $picker).css({
                         backgroundColor: '#' + hex
@@ -170,9 +174,10 @@
                 }
             }, $configs));
         {% else %}
+            $field.css({backgroundColor: $field.val()});
             $field.ColorPicker($.extend({
                 onChange: function(hsb, hex, rgb) {
-                    $field.val(hex).css({
+                    $field.val('#' + hex).css({
                         backgroundColor: '#' + hex
                     });
                 }
