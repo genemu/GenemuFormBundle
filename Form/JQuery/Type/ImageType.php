@@ -59,7 +59,7 @@ class ImageType extends AbstractType
                 $thumbnail = $data->getThumbnail($this->selected);
 
                 $view
-                    ->setVar('thumbnail', array(
+                    ->set('thumbnail', array(
                         'file' => $configs['folder'] . '/' . $thumbnail->getFilename(),
                         'width' => $thumbnail->getWidth(),
                         'height' => $thumbnail->getHeight(),
