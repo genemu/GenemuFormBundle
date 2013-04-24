@@ -28,7 +28,7 @@ use Genemu\Bundle\FormBundle\Gd\Filter\Opacity;
  */
 class Image extends File
 {
-    protected $gd;
+    protected $gd = null;
 
     /**
      * {@inheritdoc}
@@ -38,14 +38,8 @@ class Image extends File
         parent::__construct($path, $checkPath);
 
         if (false === strpos($this->getMimeType(), 'image')) {
-            throw new \Exception(sprintf('Is not a image file. (%s)', $this->getMimeType()));
+            throw new \Exception(sprintf('Is not an image file. (%s)', $this->getMimeType()));
         }
-
-        $format = $this->checkFormat($this->guessExtension());
-        $generate = 'imagecreatefrom' . $format;
-
-        $this->gd = new Gd();
-        $this->gd->setResource($generate($this->getPathname()));
     }
 
     /**
@@ -79,9 +73,9 @@ class Image extends File
         $path .= $this->getBasename('.' . $ext) . $name;
         $path .= '.' . $ext;
 
-        $thumbnail = $this->gd->createThumbnail($name, $path, $width, $height, $ext, $quality);
+        $thumbnail = $this->getGd()->createThumbnail($name, $path, $width, $height, $ext, $quality);
 
-        $this->gd->setThumbnail($name, new Image($thumbnail->getPathname()));
+        $this->getGd()->setThumbnail($name, new Image($thumbnail->getPathname()));
     }
 
     /**
@@ -108,7 +102,7 @@ class Image extends File
             $thumbnails[$thumbnail] = $file;
         }
 
-        $this->gd->setThumbnails($thumbnails);
+        $this->getGd()->setThumbnails($thumbnails);
     }
 
     /**
@@ -124,7 +118,7 @@ class Image extends File
             $this->searchThumbnails();
         }
 
-        return $this->gd->getThumbnail($name);
+        return $this->getGd()->getThumbnail($name);
     }
 
     /**
@@ -134,11 +128,11 @@ class Image extends File
      */
     public function getThumbnails()
     {
-        if (!$this->gd->getThumbnails()) {
+        if (!$this->getGd()->getThumbnails()) {
             $this->searchThumbnails();
         }
 
-        return $this->gd->getThumbnails();
+        return $this->getGd()->getThumbnails();
     }
 
     /**
@@ -150,11 +144,11 @@ class Image extends File
      */
     public function hasThumbnail($name)
     {
-        if (!$this->gd->getThumbnails()) {
+        if (!$this->getGd()->getThumbnails()) {
             $this->searchThumbnails();
         }
 
-        return $this->gd->hasThumbnail($name);
+        return $this->getGd()->hasThumbnail($name);
     }
 
     /**
@@ -167,7 +161,7 @@ class Image extends File
      */
     public function addFilterCrop($x, $y, $w, $h)
     {
-        $this->gd->addFilter(new Crop($x, $y, $w, $h));
+        $this->getGd()->addFilter(new Crop($x, $y, $w, $h));
     }
 
     /**
@@ -177,7 +171,7 @@ class Image extends File
      */
     public function addFilterRotate($rotate = 90)
     {
-        $this->gd->addFilter(new Rotate($rotate));
+        $this->getGd()->addFilter(new Rotate($rotate));
     }
 
     /**
@@ -185,7 +179,7 @@ class Image extends File
      */
     public function addFilterNegative()
     {
-        $this->gd->addFilter(new Negate());
+        $this->getGd()->addFilter(new Negate());
     }
 
     /**
@@ -195,7 +189,7 @@ class Image extends File
      */
     public function addFilterSepia($color)
     {
-        $this->gd->addFilters(array(
+        $this->getGd()->addFilters(array(
             new GrayScale(),
             new Colorize($color)
         ));
@@ -206,7 +200,7 @@ class Image extends File
      */
     public function addFilterBw()
     {
-        $this->gd->addFilter(new GrayScale());
+        $this->getGd()->addFilter(new GrayScale());
     }
 
     /**
@@ -214,7 +208,7 @@ class Image extends File
      */
     public function addFilterBlur()
     {
-        $this->gd->addFilter(new Blur());
+        $this->getGd()->addFilter(new Blur());
     }
 
     /**
@@ -222,16 +216,24 @@ class Image extends File
      */
     public function addFilterOpacity($opacity)
     {
-        $this->gd->addFilter(new Opacity($opacity));
+        $this->getGd()->addFilter(new Opacity($opacity));
     }
 
     /**
-     * Get gd
+     * Get gd manipulator
      *
-     * @return Gd $gd
+     * @return \Genemu\Bundle\FormBundle\Gd\Gd
      */
     public function getGd()
     {
+        if (is_null($this->gd)) {
+            $format = $this->checkFormat($this->guessExtension());
+            $generate = 'imagecreatefrom' . $format;
+
+            $this->gd = new Gd();
+            $this->gd->setResource($generate($this->getPathname()));
+        }
+
         return $this->gd;
     }
 
@@ -242,7 +244,7 @@ class Image extends File
      */
     public function getWidth()
     {
-        return $this->gd->getWidth();
+        return $this->getGd()->getWidth();
     }
 
     /**
@@ -252,7 +254,7 @@ class Image extends File
      */
     public function getHeight()
     {
-        return $this->gd->getHeight();
+        return $this->getGd()->getHeight();
     }
 
     /**
@@ -262,7 +264,7 @@ class Image extends File
      */
     public function getBase64()
     {
-        return $this->gd->getBase64($this->guessExtension());
+        return $this->getGd()->getBase64($this->guessExtension());
     }
 
     /**
@@ -272,6 +274,6 @@ class Image extends File
      */
     public function save($quality = 90)
     {
-        $this->gd->save($this->getPathname(), $this->guessExtension(), $quality);
+        $this->getGd()->save($this->getPathname(), $this->guessExtension(), $quality);
     }
 }
