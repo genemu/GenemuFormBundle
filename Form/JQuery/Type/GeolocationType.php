@@ -31,13 +31,13 @@ class GeolocationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('address', 'field');
+        $builder->add('address', 'text');
 
         foreach (array('latitude', 'longitude', 'locality', 'country') as $field) {
             $option = $options[$field];
 
             if (isset($option['enabled']) && !empty($option['enabled'])) {
-                $type = 'field';
+                $type = 'text';
                 if (isset($option['hidden']) && !empty($option['hidden'])) {
                     $type = 'hidden';
                 }
