@@ -438,44 +438,30 @@
 
 {% block genemu_jquerygeolocation_javascript %}
 {% spaceless %}
+    {# Elements generation #}
     {% if map is sameas(true) %}
-        {% set configs = configs|merge({
-            "elements": configs.elements|merge({
-                "map": "#" ~ id ~ "_map"
-            })
-        }) %}
+        {% set elements = elements|merge({"map": "#" ~ id ~ "_map"}) %}
     {% endif %}
 
     {% if form.latitude is defined %}
-        {% set configs = configs|merge({
-            "elements": configs.elements|merge({
-                "lat": "#" ~ form.latitude.get("id")
-            })
-        }) %}
+        {% set elements = elements|merge({"lat": "#" ~ form.latitude.get("id")}) %}
     {% endif %}
 
     {% if form.longitude is defined %}
-        {% set configs = configs|merge({
-            "elements": configs.elements|merge({
-                "lng": "#" ~ form.longitude.get("id")
-            })
-        }) %}
+        {% set elements = elements|merge({"lng": "#" ~ form.longitude.get("id")}) %}
     {% endif %}
 
     {% if form.locality is defined %}
-        {% set configs = configs|merge({
-            "elements": configs.elements|merge({
-                "locality": "#" ~ form.locality.get("id")
-            })
-        }) %}
+        {% set elements = elements|merge({"locality": "#" ~ form.locality.get("id")}) %}
     {% endif %}
 
     {% if form.country is defined %}
-        {% set configs = configs|merge({
-            "elements": configs.elements|merge({
-                "country": "#" ~ form.country.get("id")
-            })
-        }) %}
+        {% set elements = elements|merge({"country": "#" ~ form.country.get("id")}) %}
+    {% endif %}
+
+    {# Configs generation #}
+    {% if elements | length > 0 %}
+        {% set configs = configs|merge({"elements": elements}) %}
     {% endif %}
 
     <script type="text/javascript">
