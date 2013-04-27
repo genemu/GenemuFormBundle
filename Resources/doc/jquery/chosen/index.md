@@ -1,4 +1,4 @@
-# JQueryAutocomplete Field ([view demo](http://jqueryui.com/demos/autocomplete/))
+# JQueryChosen Field ([view demo](http://harvesthq.github.io/chosen/)) 
 
 ## Default Usage:
 
