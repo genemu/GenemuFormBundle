@@ -67,6 +67,7 @@ $ php app/console assets:install web/
 ### JQueryUi ([download](http://jqueryui.com/)):
 
 - [Datepicker](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/datepicker/index.md)
+- [AddressPicker](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/geolocation/index.md)
 - [Slider](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/slider/index.md)
 - [Autocomplete](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/autocomplete/text.md)
 
