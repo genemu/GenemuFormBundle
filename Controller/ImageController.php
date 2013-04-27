@@ -27,7 +27,7 @@ class ImageController extends ContainerAware
     {
         $request = $this->container->get('request');
         $rootDir = rtrim($this->container->getParameter('genemu.form.file.root_dir'), '/\\') . DIRECTORY_SEPARATOR;
-        $folder = rtrim($this->container->getParameter('genemu.form.file.folder'), '/\\') . DIRECTORY_SEPARATOR;
+        $folder = rtrim($this->container->getParameter('genemu.form.file.folder'), '/\\');
 
         $file = $request->get('image');
         $handle = new Image($rootDir . $this->stripQueryString($file));
