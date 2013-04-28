@@ -99,7 +99,7 @@ class AutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(json_encode(array(
             'value' => 'bar',
             'label' => 'bar',
-        )), $form->getViewData());
+        )), $form->getClientData());
     }
 
     public function testValueMultipleWithAjax()
@@ -140,7 +140,7 @@ class AutocompleterTypeTest extends TypeTestCase
 
         $this->assertEquals(json_encode(array(
             array('value' => 'foo', 'label' => 'Foo'),
-        )), $form->getViewData());
+        )), $form->getClientData());
 
         $this->assertEquals(array('foo'), $form->getData());
 

@@ -80,7 +80,7 @@ class TokeninputTypeTest extends TypeTestCase
         $this->assertEquals(json_encode(array(
             'value' => 'bar',
             'label' => 'bar',
-        )), $form->getViewData());
+        )), $form->getClientData());
     }
 
     public function testValueMultipleWithAjax()
@@ -121,7 +121,7 @@ class TokeninputTypeTest extends TypeTestCase
 
         $this->assertEquals(json_encode(array(
             array('value' => 'foo', 'label' => 'Foo'),
-        )), $form->getViewData());
+        )), $form->getClientData());
 
         $this->assertEquals(array('foo'), $form->getData());
 
@@ -151,7 +151,7 @@ class TokeninputTypeTest extends TypeTestCase
 
         $this->assertEquals(json_encode(
             array('value' => 'BE', 'label' => 'Belgium')
-        ), $form->getViewData());
+        ), $form->getClientData());
     }
 
     public function testMultipleContries()
@@ -166,6 +166,6 @@ class TokeninputTypeTest extends TypeTestCase
 
         $this->assertEquals(json_encode(array(
             array('value' => 'BE', 'label' => 'Belgium')
-        )), $form->getViewData());
+        )), $form->getClientData());
     }
 }

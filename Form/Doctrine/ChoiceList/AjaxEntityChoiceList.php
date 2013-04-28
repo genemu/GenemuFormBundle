@@ -12,9 +12,8 @@
 namespace Genemu\Bundle\FormBundle\Form\Doctrine\ChoiceList;
 
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
-use Symfony\Component\PropertyAccess\PropertyPath;
+use Symfony\Component\Form\Util\PropertyPath;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\ORMQueryBuilderLoader;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -126,7 +125,7 @@ class AjaxEntityChoiceList extends EntityChoiceList
                 $id = current($this->classMetadata->getIdentifierValues($entity));
 
                 if ($this->propertyPath) {
-                    $label = PropertyAccess::getPropertyAccessor()->getValue($entity, $this->propertyPath);
+                    $label = $this->propertyPath->getValue($entity);
                 } else {
                     $label = (string) $entity;
                 }

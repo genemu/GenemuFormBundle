@@ -14,7 +14,6 @@ namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Genemu\Bundle\FormBundle\Gd\File\Image;
 
@@ -49,11 +48,11 @@ class ImageType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $configs = $options['configs'];
-        $data = $form->getViewData();
+        $data = $form->getClientData();
 
         if (!empty($data)) {
             if (!$data instanceof Image) {
-                $data = new Image($form->getConfig()->getAttribute('rootDir') . '/' . $data);
+                $data = new Image($form->getAttribute('rootDir') . '/' . $data);
             }
 
             if ($data->hasThumbnail($this->selected)) {
@@ -82,14 +81,14 @@ class ImageType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function getDefaultOptions(array $options)
     {
-        $resolver->setDefaults(array(
+        return array(
             'configs' => array(
                 'fileExt' => '*.jpg;*.gif;*.png;*.jpeg',
                 'fileDesc' => 'Web Image Files (.jpg, .gif, .png, .jpeg)',
             )
-        ));
+        );
     }
 
     /**
