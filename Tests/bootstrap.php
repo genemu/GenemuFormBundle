@@ -19,3 +19,5 @@ use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver;
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
 AnnotationDriver::registerAnnotationClasses();
+
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);

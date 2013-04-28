@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+## 2.1.3
+
+ * fa1f544 ImageController: We should not add "directory separator" twice on "folder"
+ * d9df90c Load resource file only if required
+ * a3ea244 Fix empty array js issue when using genemu_jquerygeolocation with no option
+
 ## 2.1.2
 
  * 87e517e [Captcha] DI - fixed bug when assets are not installed yet

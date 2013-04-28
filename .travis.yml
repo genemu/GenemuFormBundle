@@ -9,11 +9,17 @@ services: mongodb
 env:
   - SF_VERSION="2.1.*"
   - SF_VERSION="2.2.*"
+  - SF_VERSION="2.3.*"
+
+matrix:
+  allow_failures:
+    - env: SF_VERSION="2.3.*"
 
 before_script:
     - pecl -q install mongo
     - echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
     - composer require -n --no-update symfony/framework-bundle:${SF_VERSION}
+    - composer require -n --no-update symfony/form:${SF_VERSION}
     - composer update --dev
 
 notifications:
