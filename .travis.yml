@@ -20,6 +20,7 @@ before_script:
     - echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
     - composer require -n --no-update symfony/framework-bundle:${SF_VERSION}
     - composer require -n --no-update symfony/form:${SF_VERSION}
+    - composer require -n --no-update symfony/doctrine-bridge:${SF_VERSION}
     - composer update --dev
 
 notifications:
