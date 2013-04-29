@@ -1,5 +1,5 @@
-UPGRADE to Symfony 2.1
-======================
+UPGRADE to 2.1
+==============
 
 ### JQuery Chosen
 

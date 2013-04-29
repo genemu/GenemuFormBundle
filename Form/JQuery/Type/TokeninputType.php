@@ -28,34 +28,6 @@ class TokeninputType extends AbstractType
 {
     private $widget;
 
-    /**
-     * Available options to set
-     *
-     * @var array
-     */
-    protected $_availableTokeninputOptions = array(
-        'method',
-        'queryParam',
-        'searchDelay',
-        'minChars',
-        'propertyToSearch',
-        'jsonContainer',
-        'crossDomain',
-        'prePopulate',
-        'hintText',
-        'noResultsText',
-        'searchingText',
-        'deleteText',
-        'animateDropdown',
-        'theme',
-        'resultsFormatter',
-        'tokenFormatter',
-        'tokenLimit',
-        'tokenDelimiter',
-        'preventDuplicates',
-        'tokenValue'
-    );
-
     public function __construct($widget)
     {
         $this->widget = $widget;
@@ -66,12 +38,12 @@ class TokeninputType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (isset($options['tokenLimit']) && is_numeric($options['tokenLimit']) && $options['tokenLimit'] > 0) {
-            $options['multiple'] = (1 != $options['tokenLimit']);
+        if (isset($options['configs']['tokenLimit']) && is_numeric($options['configs']['tokenLimit']) && $options['configs']['tokenLimit'] > 0) {
+            $options['multiple'] = (1 != $options['configs']['tokenLimit']);
         }
 
         if (!$options['multiple']) {
-            $options['tokenLimit'] = 1;
+            $options['configs']['tokenLimit'] = 1;
         }
 
         $builder
@@ -104,13 +76,8 @@ class TokeninputType extends AbstractType
         }
 
         $view->vars['tokeninput_value'] = $value;
-        $view->vars['route_name'] = $form->getAttribute('route_name');
-
-        foreach ($this->_availableTokeninputOptions as $option) {
-            if (null !== $options[$option]) {
-                $view->vars[$option] = $options[$option];
-            }
-        }
+        $view->vars['configs'] = $options['configs'];
+        $view->vars['route_name'] = $form->getConfig()->getAttribute('route_name');
 
         array_splice(
             $view->vars['block_prefixes'],
@@ -125,40 +92,43 @@ class TokeninputType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-
-        $defaults = array_flip($this->_availableTokeninputOptions);
-        array_walk($defaults, function(&$option, $value) {
-            $option = null;
-        });
-
         $widget = $this->widget;
 
-        $defaults = array_merge($defaults, array(
-            'route_name' => null,
-            'ajax' => function (Options $options, $previousValue) {
-                if (null === $previousValue) {
-                    if (false === empty($options['route_name'])) {
-                        return true;
-                    }
-                }
-
-                return false;
-            },
-            'choice_list' => function (Options $options, $previousValue) use ($widget) {
-                if (!in_array($widget, array('entity', 'document', 'model'))) {
-                    return new AjaxSimpleChoiceList($options['choices'], $options['ajax']);
-                }
-
-                return $previousValue;
-            },
+        $defaults = array(
             'queryParam' => 'term',
             'preventDuplicates' => true,
             'tokenValue' => 'value',
             'propertyToSearch' => 'label',
-            'theme' => 'facebook'
-        ));
+            'theme' => 'facebook',
+        );
 
-        $resolver->setDefaults($defaults);
+        $resolver
+            ->setDefaults(array(
+                'route_name' => null,
+                'ajax' => function (Options $options, $previousValue) {
+                    if (null === $previousValue) {
+                        if (false === empty($options['route_name'])) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                },
+                'choice_list' => function (Options $options, $previousValue) use ($widget) {
+                    if (!in_array($widget, array('entity', 'document', 'model'))) {
+                        return new AjaxSimpleChoiceList($options['choices'], $options['ajax']);
+                    }
+
+                    return $previousValue;
+                },
+                'configs' => $defaults,
+            ))
+            ->setNormalizers(array(
+                'configs' => function (Options $options, $configs) use ($defaults) {
+                    return array_merge($defaults, $configs);
+                },
+            ))
+        ;
     }
 
     /**
