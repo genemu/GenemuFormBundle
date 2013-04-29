@@ -12,7 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Form\Core\Validator;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Event\DataEvent;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
@@ -70,7 +70,7 @@ class ReCaptchaValidator implements EventSubscriberInterface
         return $this->options;
     }
 
-    public function validate(DataEvent $event)
+    public function validate(FormEvent $event)
     {
         $form = $event->getForm();
 

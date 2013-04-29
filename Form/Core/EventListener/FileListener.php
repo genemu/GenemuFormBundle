@@ -12,7 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Form\Core\EventListener;
 
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\Event\DataEvent;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -44,7 +44,7 @@ class FileListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function onBind(DataEvent $event)
+    public function onBind(FormEvent $event)
     {
         $data = $event->getData();
 

@@ -12,7 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Form\Core\Validator;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Event\DataEvent;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormError;
@@ -41,7 +41,7 @@ class CaptchaValidator implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function validate(DataEvent $event)
+    public function validate(FormEvent $event)
     {
         $form = $event->getForm();
         $data = $event->getData();
