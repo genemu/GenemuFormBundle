@@ -9,11 +9,6 @@ services: mongodb
 env:
   - SF_VERSION="2.1.*"
   - SF_VERSION="2.2.*"
-  - SF_VERSION="2.3.*"
-
-matrix:
-  allow_failures:
-    - env: SF_VERSION="2.3.*"
 
 before_script:
     - pecl -q install mongo
