@@ -103,7 +103,7 @@ class EntityAutocompleterTypeTest extends TypeTestCase
         ), $view->vars['choices']);
 
         $this->assertNull($form->getData());
-        $this->assertEquals('', $form->getClientData());
+        $this->assertEquals('', $form->getViewData());
 
         $this->assertNull($view->vars['route_name']);
         $this->assertEquals('', $view->vars['autocompleter_value']);
@@ -133,7 +133,7 @@ class EntityAutocompleterTypeTest extends TypeTestCase
             ), $view->vars['choices']);
 
         $this->assertNull($form->getData());
-        $this->assertEquals('', $form->getClientData());
+        $this->assertEquals('', $form->getViewData());
 
         $this->assertNull($view->vars['route_name']);
         $this->assertEquals('', $view->vars['autocompleter_value']);
@@ -167,7 +167,7 @@ class EntityAutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(json_encode(array(
             'value' => '2',
             'label' => 'Bar'
-        )), $form->getClientData());
+        )), $form->getViewData());
         $this->assertSame($entity2, $form->getData());
 
         $this->assertNull($view->vars['route_name']);
@@ -206,7 +206,7 @@ class EntityAutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(json_encode(array(
             array('value' => '1', 'label' => 'Foo'),
             array('value' => '2', 'label' => 'Bar'),
-        )), $form->getClientData());
+        )), $form->getViewData());
         $this->assertSame($existing, $form->getData());
 
         $this->assertEquals('Foo, ', $view->vars['autocompleter_value']);
@@ -237,7 +237,7 @@ class EntityAutocompleterTypeTest extends TypeTestCase
         $this->assertEquals(json_encode(array(
             'value' => 2,
             'label' => 'Bar',
-        )), $form->getClientData());
+        )), $form->getViewData());
         $this->assertSame($entity2, $form->getData());
 
         $this->assertEquals('Foo', $view->vars['autocompleter_value']);
@@ -287,7 +287,7 @@ class EntityAutocompleterTypeTest extends TypeTestCase
 
         $this->assertEquals(json_encode(array(
             array('value' => 2, 'label' => 'Bar')
-        )), $form->getClientData());
+        )), $form->getViewData());
 
         $this->assertSame($existing, $form->getData());
         $this->assertEquals('Foo, Bar, ', $view->vars['autocompleter_value']);

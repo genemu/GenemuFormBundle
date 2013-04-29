@@ -62,7 +62,7 @@ class TokeninputType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $datas = json_decode($form->getClientData(), true);
+        $datas = json_decode($form->getViewData(), true);
         $value = '';
 
         if (!empty($datas)) {

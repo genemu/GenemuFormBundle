@@ -12,7 +12,8 @@
 namespace Genemu\Bundle\FormBundle\Form\Model\ChoiceList;
 
 use Symfony\Bridge\Propel1\Form\ChoiceList\ModelChoiceList;
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * AjaxModelChoiceList
@@ -88,7 +89,7 @@ class AjaxModelChoiceList extends ModelChoiceList
                 $model = $this->getModel($id);
 
                 if ($this->propertyPath) {
-                    $label = $this->propertyPath->getValue($model);
+                    $label = PropertyAccess::getPropertyAccessor()->getValue($model, $this->propertyPath);
                 } else {
                     $label = (string) $model;
                 }

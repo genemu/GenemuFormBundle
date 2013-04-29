@@ -18,7 +18,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * @author Bilal Amarni <bilal.amarni@gmail.com>
@@ -103,7 +104,7 @@ class AutocompleteType extends AbstractType
                             $objects = $options['em']->getRepository($options['class'])->findAll();
                             foreach ($objects as $object) {
                                 if ($propertyPath) {
-                                    $suggestions[] = $propertyPath->getValue($object);
+                                    $suggestions[] = PropertyAccess::getPropertyAccessor()->getValue($object, $propertyPath);
                                 } elseif (method_exists($object, '__toString')) {
                                     $suggestions[] = (string) $object;
                                 } else {

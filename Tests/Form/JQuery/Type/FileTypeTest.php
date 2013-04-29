@@ -42,7 +42,7 @@ class FileTypeTest extends TypeTestCase
 
         $this->assertEquals('', $view->vars['value']);
         $this->assertFalse($view->vars['required']);
-        $this->assertEquals(realpath(__DIR__.'/../../../Fixtures'), realpath($form->getAttribute('rootDir')));
+        $this->assertEquals(realpath(__DIR__.'/../../../Fixtures'), realpath($form->getConfig()->getAttribute('rootDir')));
 
         $this->assertEquals('/upload', $configs['folder']);
         $this->assertEquals('/swf/uploadify.swf', $configs['uploader']);

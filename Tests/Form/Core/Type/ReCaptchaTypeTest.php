@@ -35,7 +35,7 @@ class ReCaptchaTypeTest extends TypeTestCase
             'port' => 80,
             'path' => '/verify',
             'timeout' => 10,
-        ), $form->getAttribute('option_validator'));
+        ), $form->getConfig()->getAttribute('option_validator'));
     }
 
     public function testConfigs()
@@ -56,7 +56,7 @@ class ReCaptchaTypeTest extends TypeTestCase
             'port' => 80,
             'path' => '/verify',
             'timeout' => 30
-        ), $form->getAttribute('option_validator'));
+        ), $form->getConfig()->getAttribute('option_validator'));
     }
     
     /**
