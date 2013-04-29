@@ -20,4 +20,4 @@ AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
 AnnotationDriver::registerAnnotationClasses();
 
-error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+error_reporting(E_ALL ^ E_NOTICE);
