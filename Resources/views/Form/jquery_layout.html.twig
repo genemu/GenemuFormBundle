@@ -450,15 +450,35 @@
     {% if form.longitude is defined %}
         {% set elements = elements|merge({"lng": "#" ~ form.longitude.vars.id}) %}
     {% endif %}
+    
+    {% if form.postal_code is defined %}
+        {% set elements = elements|merge({"postal_code": "#" ~ form.postal_code.vars.id}) %}
+    {% endif %}
 
     {% if form.locality is defined %}
         {% set elements = elements|merge({"locality": "#" ~ form.locality.vars.id}) %}
     {% endif %}
 
+    {% if form.street_number is defined %}
+        {% set elements = elements|merge({"street_number": "#" ~ form.street_number.vars.id}) %}
+    {% endif %}
+
+    {% if form.route is defined %}
+        {% set elements = elements|merge({"route": "#" ~ form.route.vars.id}) %}
+    {% endif %}
+
+    {% if form.admin_area_level1 is defined %}
+        {% set elements = elements|merge({"administrative_area_level_1": "#" ~ form.admin_area_level1.vars.id}) %}
+    {% endif %}
+
+     {% if form.admin_area_level2 is defined %}
+        {% set elements = elements|merge({"administrative_area_level_2": "#" ~ form.admin_area_level2.vars.id}) %}
+    {% endif %}
+
     {% if form.country is defined %}
         {% set elements = elements|merge({"country": "#" ~ form.country.vars.id}) %}
     {% endif %}
-
+    
     {# Configs generation #}
     {% if elements | length > 0 %}
         {% set configs = configs|merge({"elements": elements}) %}

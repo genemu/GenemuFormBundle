@@ -19,7 +19,7 @@ class AddressGeolocation
     private $address;
     private $street_number;
     private $route;
-    private $postalcode;
+    private $postal_code;
     private $admin_area_level2;
     private $admin_area_level1;           
     private $latitude;
@@ -28,7 +28,7 @@ class AddressGeolocation
     private $country;
 
     public function __construct(
-            $address, $latitude = null, $longitude = null, $locality = null, $country = null, $street_number = null, $route = null, $postal_code = null, $admin_area_level2 = null, $admin_area_level1 = null)
+            $address, $latitude = null, $longitude = null, $locality = null, $country = null, $street_number = null, $route = null, $postal_code = null, $admin_area_level1 = null, $admin_area_level2 = null)
     {
         $this->address = $address;
         $this->latitude = $latitude;
