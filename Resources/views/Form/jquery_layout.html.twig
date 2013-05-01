@@ -478,7 +478,6 @@
     {% if form.country is defined %}
         {% set elements = elements|merge({"country": "#" ~ form.country.vars.id}) %}
     {% endif %}
-    
     {# Configs generation #}
     {% if elements | length > 0 %}
         {% set configs = configs|merge({"elements": elements}) %}

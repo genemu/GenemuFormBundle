@@ -33,7 +33,7 @@ class GeolocationType extends AbstractType
     {
         $builder->add('address', 'text');
 
-        foreach (array('latitude', 'longitude', 'locality', 'country','street_number','route','admin_area_level2','admin_area_level1','postal_code') as $field) {
+        foreach (array('latitude', 'longitude', 'locality', 'country', 'street_number' , 'route' , 'admin_area_level2' , 'admin_area_level1' , 'postal_code') as $field) {
             $option = $options[$field];
 
             if (isset($option['enabled']) && !empty($option['enabled'])) {
