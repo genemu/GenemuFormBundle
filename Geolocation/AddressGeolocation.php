@@ -20,15 +20,15 @@ class AddressGeolocation
     private $street_number;
     private $route;
     private $postalcode;
-    private $admin_area_level_2;
-    private $admin_area_level_1;           
+    private $admin_area_level2;
+    private $admin_area_level1;           
     private $latitude;
     private $longitude;
     private $locality;
     private $country;
 
     public function __construct(
-            $address, $latitude = null, $longitude = null, $locality = null, $country = null, $street_number = null, $route = null, $postal_code = null, $admin_area_level_2 = null, $admin_area_level_1 = null)
+            $address, $latitude = null, $longitude = null, $locality = null, $country = null, $street_number = null, $route = null, $postal_code = null, $admin_area_level2 = null, $admin_area_level1 = null)
     {
         $this->address = $address;
         $this->latitude = $latitude;
@@ -37,8 +37,8 @@ class AddressGeolocation
         $this->country = $country;
         $this->street_number = $street_number;
         $this->route = $route;
-        $this->admin_area_level_1 = $admin_area_level_1;
-        $this->admin_area_level_2 = $admin_area_level_2;
+        $this->admin_area_level1 = $admin_area_level1;
+        $this->admin_area_level2 = $admin_area_level2;
         $this->postal_code = $postal_code;
     }
 
@@ -84,11 +84,11 @@ class AddressGeolocation
     
     public function getAdminAreaLevel2()
     {
-        return $this->admin_area_level_2;
+        return $this->admin_area_level2;
     }
     
     public function getAdminAreaLevel1()
     {
-        return $this->admin_area_level_1;
+        return $this->admin_area_level1;
     }
 }
