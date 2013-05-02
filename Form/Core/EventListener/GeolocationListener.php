@@ -46,7 +46,7 @@ class GeolocationListener implements EventSubscriberInterface
         $admin_area_level2 = isset($data['admin_area_level2']) ? $data['admin_area_level2'] : null;
         $postal_code = isset($data['postal_code']) ? $data['postal_code'] : null;
 
-        $geo = new AddressGeolocation($address, $latitude, $longitude, $locality, $country,$street_number,$route,$postal_code,$admin_area_level1,$admin_area_level2);
+        $geo = new AddressGeolocation($address, $latitude, $longitude, $locality, $country, $street_number, $route, $postal_code, $admin_area_level1, $admin_area_level2);
 
         $event->setData($geo);
     }
