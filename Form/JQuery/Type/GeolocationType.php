@@ -69,6 +69,7 @@ class GeolocationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
+            'configs' => array(),
             'map' => false,
             'latitude' => array(
                 'enabled' => false,
