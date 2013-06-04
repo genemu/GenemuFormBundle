@@ -32,7 +32,8 @@ class PlainType extends AbstractType
             'time_format' => null,
             'attr' => array(
                 'class' => $this->getName()
-            )
+            ),
+            'compound' => false,
         ));
     }
 
@@ -77,14 +78,6 @@ class PlainType extends AbstractType
         }
 
         $view->vars['value'] = (string) $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'field';
     }
 
     /**
