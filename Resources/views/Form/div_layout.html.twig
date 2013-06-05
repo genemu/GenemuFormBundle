@@ -1,7 +1,7 @@
 {% block genemu_captcha_widget %}
 {% spaceless %}
     <img src="{{ src }}" width="{{ width }}" height="{{ height }}" title="{{ name|trans }}" />
-    {{ block("field_widget") }}
+    {{ block("form_widget_simple") }}
 {% endspaceless %}
 {% endblock %}
 
@@ -20,7 +20,7 @@
 {% block genemu_jquerydate_widget %}
 {% spaceless %}
     {% if widget == "single_text" %}
-        {{ block("field_widget") }}
+        {{ block("form_widget_simple") }}
     {% else %}
         <div {{ block("widget_container_attributes") }}>
             {{ date_pattern|replace({
@@ -53,7 +53,7 @@
     {% set id = "autocompleter_" ~ id %}
     {% set full_name = "autocompleter_" ~ full_name %}
     {% set value = autocompleter_value %}
-    {{ block("field_widget") }}
+    {{ block("form_widget_simple") }}
 {% endspaceless %}
 {% endblock genemu_jqueryautocompleter_widget %}
 
@@ -95,7 +95,7 @@
             {{ block("hidden_widget") }}
         </div>
     {% else %}
-        {{ block("field_widget") }}
+        {{ block("form_widget_simple") }}
     {% endif %}
 {% endspaceless %}
 {% endblock genemu_jquerycolor_widget %}
@@ -155,7 +155,7 @@
 {% set id = "tokeninput_" ~ id %}
 {% set full_name = "tokeninput_" ~ full_name %}
 {% set value = tokeninput_value %}
-{{ block("field_widget") }}
+{{ block("form_widget_simple") }}
 {% endspaceless %}
 {% endblock genemu_jquerytokeninput_widget %}
 

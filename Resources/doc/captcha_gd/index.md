@@ -32,7 +32,7 @@ genemu_base64:
     <img id="{{ id }}_image" src="{{ src }}" width="{{ width }}" height="{{ height }}" title="{{ name|trans }}" />
     {# We're putting a link there #}
     <a id="{{ id }}_refresh">Refresh</a>
-    {{ block("field_widget") }}
+    {{ block("form_widget_simple") }}
 {% endblock %}
 
 {% block genemu_captcha_javascript %}
