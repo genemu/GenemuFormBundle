@@ -70,6 +70,13 @@ class AutocompleterType extends AbstractType
             'free_values' => $options['free_values'],
         ));
 
+        // check if the view is a prototype
+        $view->vars['is_prototype'] = isset($view->parent) && isset($view->parent->parent) && !empty($view->parent->parent->vars['allow_add']);
+        if ($view->vars['is_prototype']) {
+            // add a additional unique id for selection of prototypes
+            $view->vars['attr']['data-unique-autocompleter-id'] = md5(uniqid().rand(1000, 9999));
+        }
+
         // Adds a custom block prefix
         array_splice(
             $view->vars['block_prefixes'],
