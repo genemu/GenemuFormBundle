@@ -249,12 +249,13 @@
     <script type="text/javascript">
         {% if is_prototype %}
             {% set selector = ':input[data-unique-autocompleter-id="' ~ attr['data-unique-autocompleter-id'] ~ '"]' %}
-            jQuery('body').on('focus', '{{ selector | raw }}:visible', function(event) {
+            jQuery('body').on('focus', '{{ selector | raw }}:visible', function() {
                 var $field = $('{{ selector | raw }}:hidden');
                 var $autocompleter = $(this);
                 genemu_jqueryautocompleter_observer_{{ id }}($autocompleter, $field);
 
-                jQuery('body').off(event); // remove the event handler again. it's not needed anymore
+                // remove unique-id so that autocomplete is not applied multiple
+                $autocompleter.removeAttr('data-unique-autocompleter-id');
             });
         {% else %}
             jQuery(document).ready(function($) {
