@@ -2,9 +2,9 @@
 {% spaceless %}
     {% for child in form %}
         {{ form_javascript(child) }}
-        {% if child.vars.prototype is defined %}
+        {#% if child.vars.prototype is defined %}
             {{ form_javascript(child.vars.prototype) }}
-        {% endif %}
+        {% endif %#}
     {% endfor %}
 {% endspaceless %}
 {% endblock form_javascript %}
@@ -93,7 +93,7 @@
     <script type="text/javascript">
         jQuery(document).ready(function($) {
             $field = $('#{% if widget != "single_text" %}datepicker_{% endif %}{{ id }}');
-        
+
         {% block genemu_jquerydate_javascript_prototype %}
 
         {% if configs.buttonImage is defined %}
@@ -250,7 +250,7 @@
         {% if is_prototype %}
             {% set selector = ':input[data-unique-autocompleter-id="' ~ attr['data-unique-autocompleter-id'] ~ '"]' %}
             jQuery('body').on('focus', '{{ selector | raw }}:visible', function() {
-                var $field = $('{{ selector | raw }}:hidden');
+                var $field = $('#' + this.id.substr('autocompleter_'.length));
                 var $autocompleter = $(this);
                 genemu_jqueryautocompleter_observer_{{ id }}($autocompleter, $field);
 
@@ -350,7 +350,7 @@
             {% endif %}
 
             $autocompleter.autocomplete($configs);
-            
+
             {% if configs.minLength is defined and 0 == configs.minLength %}
                 $autocompleter.focus(function() {
                     $(this).autocomplete("search", "");
