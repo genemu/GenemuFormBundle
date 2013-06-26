@@ -40,8 +40,9 @@ class GeolocationListener implements EventSubscriberInterface
         $longitude = isset($data['longitude']) ? $data['longitude'] : null;
         $locality = isset($data['locality']) ? $data['locality'] : null;
         $country = isset($data['country']) ? $data['country'] : null;
+        $postal_code = isset($data['postal_code']) ? $data['postal_code'] : null;
 
-        $geo = new AddressGeolocation($address, $latitude, $longitude, $locality, $country);
+        $geo = new AddressGeolocation($address, $latitude, $longitude, $locality, $country, $postal_code);
 
         $event->setData($geo);
     }
