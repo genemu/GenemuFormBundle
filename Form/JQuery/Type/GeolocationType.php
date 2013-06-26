@@ -15,7 +15,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Genemu\Bundle\FormBundle\Form\Core\EventListener\GeolocationListener;
 
@@ -33,7 +32,7 @@ class GeolocationType extends AbstractType
     {
         $builder->add('address', 'text');
 
-        foreach (array('latitude', 'longitude', 'locality', 'country') as $field) {
+        foreach (array('latitude', 'longitude', 'locality', 'country', 'postal_code') as $field) {
             $option = $options[$field];
 
             if (isset($option['enabled']) && !empty($option['enabled'])) {
@@ -65,9 +64,9 @@ class GeolocationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function getDefaultOptions(array $options)
     {
-        $resolver->setDefaults(array(
+        return array(
             'map' => false,
             'latitude' => array(
                 'enabled' => false,
@@ -85,7 +84,11 @@ class GeolocationType extends AbstractType
                 'enabled' => false,
                 'hidden' => false,
             ),
-        ));
+            'postal_code' => array(
+                'enabled' => false,
+                'hidden' => false,
+            ),
+        );
     }
 
     /**

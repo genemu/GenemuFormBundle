@@ -21,14 +21,16 @@ class AddressGeolocation
     private $longitude;
     private $locality;
     private $country;
+    private $postal_code;
 
-    public function __construct($address, $latitude = null, $longitude = null, $locality = null, $country = null)
+    public function __construct($address, $latitude = null, $longitude = null, $locality = null, $country = null, $postal_code = null)
     {
         $this->address = $address;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->locality = $locality;
         $this->country = $country;
+        $this->postal_code = $postal_code;
     }
 
     public function getAddress()
@@ -54,5 +56,10 @@ class AddressGeolocation
     public function getCountry()
     {
         return $this->country;
+    }
+
+    public function getPostalCode()
+    {
+        return $this->postal_code;
     }
 }

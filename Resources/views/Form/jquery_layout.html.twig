@@ -202,40 +202,116 @@
 
             var update_hidden_sourceinput = function(item) {
                 var $val = $tokeninput.tokenInput('get');
-            {% if multiple is empty %}
+{% if multiple is empty %}                // get first (and only one) element from object
                 for (first in $val) break;
-                $val = $val[first];
-            {% endif %}
+                $val = $val[first];{% endif %}
 
                 $field.val(JSON.stringify($val));
             };
 
-            {% if value is not empty %}
-                {% if multiple is empty %}
-                    {% set prePopulate = '[' ~ value ~ ']' %}
-                {% else %}
-                    {% set prePopulate = value %}
-                {% endif %}
+{% if value is not empty %}
+            {% if multiple is empty %}
+                {% set prePopulate = '[' ~ value ~ ']' %}
+            {% else %}
+                {% set prePopulate = value %}
             {% endif %}
-
-            var $configs = $.extend({{ configs|json_encode|raw }}, {
+{% endif %}
+            var $configs = {
+{% if method is defined %}                // The HTTP method (eg. GET, POST) to use for the server request. default: “GET”.
+                method: '{{ method }}',
+{% endif %}
+{% if queryParam is defined %}                // The name of the query param which you expect to contain the search term on the server-side. default: “q”.
+                queryParam: '{{ queryParam }}',
+{% endif %}
+{% if searchDelay is defined %}                // The delay, in milliseconds, between the user finishing typing and the search being performed. default: 300
+                searchDelay: {{ searchDelay }},
+{% endif %}
+{% if minChars is defined %}                // The minimum number of characters the user must enter before a search is performed. default: 1
+                minChars: {{ minChars }},
+{% endif %}
+{% if propertyToSearch is defined %}                // The javascript/json object attribute to search. default: “name”
+                propertyToSearch: '{{ propertyToSearch }}',
+{% endif %}
+{% if tokenValue is defined %}                // The value of the token input when the input is submitted.
+                // Set it to id in order to get a concatenation of token IDs, or to name in order to get a concatenation of names.
+                // default: id
+                tokenValue: '{{ tokenValue }}',
+{% endif %}
+{% if jsonContainer is defined %}                // The name of the json object in the response which contains the search results. This is typically used
+                // when your endpoint returns other data in addition to your search results. Use null to use the top level
+                // response object. default: null.
+                jsonContainer: '{{ jsonContainer }}',
+{% endif %}
+{% if crossDomain is defined %}                // Force JSONP cross-domain communication to the server instead of a normal ajax request.
+                // Note: JSONP is automatically enabled if we detect the search request is a cross-domain request.
+                // default: false.
+                crossDomain: {{ crossDomain }},
+{% endif %}
+{% if prePopulate is defined %}                // Prepopulate the tokeninput with existing data. Set to an array of JSON objects,
+                // eg: [{id: 3, name: "test"}, {id: 5, name: "awesome"}] to pre-fill the input. default: null.
                 prePopulate: {{ prePopulate|raw }},
+{% endif %}
+{% if hintText is defined %}                // The text to show in the dropdown label which appears when you first click in the search field.
+                // default: “Type in a search term”
+                hintText: '{{ hintText }}',
+{% endif %}
+{% if noResultsText is defined %}                // The text to show in the dropdown label when no results are found which match the current query.
+                // default: “No results”.
+                noResultsText: '{{ noResultsText }}',
+{% endif %}
+{% if searchingText is defined %}                // The text to show in the dropdown label when a search is currently in progress.
+                // default: “Searching…”.
+                searchingText: '{{ searchingText }}',
+{% endif %}
+{% if deleteText is defined %}                // The text to show on each token which deletes the token when clicked.
+                // If you wish to hide the delete link, provide an empty string here.
+                // Alternatively you can provide a html string here if you would like to show an image for deleting tokens.
+                // default: ×.
+                deleteText: '{{ deleteText }}',
+{% endif %}
+{% if animateDropdown is defined %}                // Set this to false to disable animation of the dropdown default: true.
+                animateDropdown: {{ animateDropdown }},
+{% endif %}
+{% if theme is defined %}                // Set this to a string, eg “facebook” when including theme css files to set the css class suffix.
+                theme: '{{ theme }}',
+{% endif %}
+{% if resultsFormatter is defined %}                // A function that returns an interpolated HTML string for each result.
+                // Use this function with a templating system of your choice, such as jresig microtemplates or mustache.js.
+                // Use this when you want to include images or multiline formatted results
+                // default: function(item){ return “<li>” + item.propertyToSearch + “</li>” }.
+                resultsFormatter: {{ resultsFormatter }},
+{% endif %}
+{% if tokenFormatter is defined %}                // A function that returns an interpolated HTML string for each token.
+                // Use this function with a templating system of your choice, such as jresig microtemplates or mustache.js.
+                // Use this when you want to include images or multiline formatted tokens.
+                // Quora’s people invite token field that returns avatar tokens is a good example of what can be done this option.
+                // default: function(item){ return “<li><p>” + item.propertyToSearch + “</p></li>” }.
+                tokenFormatter: {{ tokenFormatter }},
+{% endif %}
+{% if tokenLimit is defined or multiple %}                // The maximum number of results allowed to be selected by the user. Use null to allow unlimited selections.
+                // default: null.
+                tokenLimit: {% if multiple %}{% if tokenLimit is defined %}{{ tokenLimit }}{% else %}null{% endif %}{% else %}1{% endif %},
+{% endif %}
+{% if tokenDelimiter is defined %}                // The separator to use when sending the results back to the server. default: “,”.
+                tokenDelimiter: '{{ tokenDelimiter }}',
+{% endif %}
+{% if preventDuplicates is defined %}                // Prevent user from selecting duplicate values by setting this to true. default: false.
+                preventDuplicates: {{ preventDuplicates }},
+{% endif %}
                 onAdd: update_hidden_sourceinput,
                 onDelete: update_hidden_sourceinput
-            });
-
+            };
             $tokeninput.tokenInput(
-            {% if route_name %}
-                '{{ path(route_name) }}'
-            {% else %}
-                {% set sourceChoices = [] %}
-                {% for choice in choices %}
-                    {% set sourceChoices = sourceChoices|merge([{'value': choice.value, 'label': choice.label}]) %}
-                {% endfor %}
-                {{ sourceChoices|json_encode|raw }}
-            {% endif %},
-                $configs
-            );
+                {% if route_name %}
+                    '{{ path(route_name) }}'
+                {% else %}
+                    {% set sourceChoices = [] %}
+                    {% for choice in choices %}
+                        {% set sourceChoices = sourceChoices|merge([{'value': choice.value, 'label': choice.label}]) %}
+                    {% endfor %}
+                    {{ sourceChoices|json_encode|raw }}
+                {% endif %},
+                $configs);
         });
     </script>
 {% endspaceless %}
@@ -381,6 +457,10 @@
 
     {% if form.country is defined %}
         {% set elements = elements|merge({"country": "#" ~ form.country.vars.id}) %}
+    {% endif %}
+
+    {% if form.postal_code is defined %}
+        {% set elements = elements|merge({"postal_code": "#" ~ form.postal_code.vars.id}) %}
     {% endif %}
 
     {# Configs generation #}
