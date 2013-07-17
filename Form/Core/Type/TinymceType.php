@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Templating\Helper\CoreAssetsHelper;
 
 /**
  * TinymceType
@@ -24,6 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class TinymceType extends AbstractType
 {
+    private $assetsHelper;
     private $options;
 
     /**
@@ -31,8 +33,9 @@ class TinymceType extends AbstractType
      *
      * @param array $options
      */
-    public function __construct(array $options)
+    public function __construct(CoreAssetsHelper $assetsHelper, array $options)
     {
+        $this->assetsHelper = $assetsHelper;
         $this->options = $options;
     }
 
@@ -42,6 +45,19 @@ class TinymceType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['configs'] = $options['configs'];
+
+        if (isset($view->vars['configs']['script_url'])) {
+            $view->vars['configs']['script_url'] = $this->assetsHelper->getUrl($view->vars['configs']['script_url']);
+        } else {
+            $view->vars['configs']['mode'] = 'exact';
+            $view->vars['configs']['elements'] = $view->vars['id'];
+        }
+
+        if (isset($view->vars['configs']['content_css']) && is_array($view->vars['configs']['content_css'])) {
+            foreach ($view->vars['configs']['content_css'] as $index => $path) {
+                $view->vars['configs']['content_css'][$index] = $this->assetsHelper->getUrl($path);
+            }
+        }
     }
 
     /**

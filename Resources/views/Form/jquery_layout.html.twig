@@ -50,17 +50,6 @@
 
 {% block genemu_tinymce_javascript %}
 {% spaceless %}
-    {% if configs.script_url is defined %}
-        {% set configs = configs|merge({
-            "script_url": asset(configs.script_url)
-        }) %}
-    {% else %}
-        {% set configs = configs|merge({
-            "mode": "exact",
-            "elements": id
-        }) %}
-    {% endif %}
-
     <script type="text/javascript">
         jQuery(document).ready(function($) {
             var $configs = {{ configs|json_encode|raw }};
