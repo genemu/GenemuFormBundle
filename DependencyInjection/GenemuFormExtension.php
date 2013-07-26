@@ -283,6 +283,6 @@ class GenemuFormExtension extends Extension
 
     private function getChoiceTypeNames()
     {
-        return array('choice', 'language', 'country', 'timezone', 'locale', 'entity', 'document', 'model');
+        return array('choice', 'language', 'country', 'timezone', 'locale', 'entity', 'document', 'model', 'currency');
     }
 }
