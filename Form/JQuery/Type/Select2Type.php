@@ -71,7 +71,7 @@ class Select2Type extends AbstractType
             'placeholder'        => 'Select a value',
             'allowClear'         => false,
             'minimumInputLength' => 0,
-            'width'              => 'element',
+            'width'              => 'off',
         );
         $resolver
             ->setDefaults(array(
