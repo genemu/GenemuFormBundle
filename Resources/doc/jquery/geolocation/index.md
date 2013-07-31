@@ -23,7 +23,7 @@ public function buildForm(FormBuilder $builder, array $options)
         // ...
         ->add('geolocation', 'genemu_jquerygeolocation', array(
             'map'       => false,
-            'latidude'  => array(
+            'latitude'  => array(
                 'enabled'   => false,
                 'hidden'    => true,
             ),
