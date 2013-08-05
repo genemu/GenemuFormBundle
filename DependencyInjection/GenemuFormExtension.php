@@ -258,6 +258,7 @@ class GenemuFormExtension extends Extension
             $typeDef
                 ->addArgument($type)
                 ->addTag('form.type', array('alias' => 'genemu_jqueryselect2_'.$type))
+                ->addMethodCall('initConfig', array($configs['configs']))
             ;
 
             $container->setDefinition($serviceId.'.'.$type, $typeDef);
