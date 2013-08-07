@@ -1,6 +1,8 @@
-# jQuery Select2: Set the default configuration
+# jQuery Select2 configuration
 
-### Default configuration:
+By default, just use the default configuration of select2.
+
+### Configuration example:
 ``` yml
 # app/config/config.yml
 genemu_form:
@@ -13,15 +15,5 @@ genemu_form:
             minimumInputLength: 0
 ```
 
-### Other options:
-- maximumInputLength
-- separator
-- minimumResultsForSearch
-- closeOnSelect
-- openOnEnter
-- dropdownAutoWidth
-- selectOnBlur
-- loadMorePadding
-
 see officiel select2's documentation for more information:
-http://ivaynberg.github.io/select2/
+http://ivaynberg.github.io/select2/#documentation

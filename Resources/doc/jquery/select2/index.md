@@ -43,4 +43,4 @@ documentation.
 ## Extra
 
 1. [Ajax](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/select2/ajax.md)
-2. [Default configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/select2/config.md)
+2. [Configuration example](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/select2/config.md)
