@@ -31,12 +31,9 @@ class Select2Type extends AbstractType
     
     private $configs;
 
-    public function __construct($widget)
+    public function __construct($widget, array $configs = array())
     {
         $this->widget = $widget;
-    }
-    
-    public function initConfig(array $configs) {
         $this->configs = $configs;
     }
 
