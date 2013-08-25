@@ -38,7 +38,6 @@ class SliderType extends AbstractType
             'max' => 100,
             'step' => 1,
             'range' => true,
-            'minRange' => 0,
             'orientation' => 'horizontal'
         ));
 
