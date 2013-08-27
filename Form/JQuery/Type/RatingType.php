@@ -40,6 +40,9 @@ class RatingType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['configs'] = $form->getConfig()->getAttribute('configs');
+        if (!isset($view->vars['configs']['required'])) {
+            $view->vars['configs']['required'] = $options['required'];
+        }
     }
 
     /**
