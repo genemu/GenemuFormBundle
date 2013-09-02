@@ -257,6 +257,7 @@ class GenemuFormExtension extends Extension
             $typeDef = new DefinitionDecorator($serviceId);
             $typeDef
                 ->addArgument($type)
+                ->addArgument($configs['configs'])
                 ->addTag('form.type', array('alias' => 'genemu_jqueryselect2_'.$type))
             ;
 
@@ -283,6 +284,6 @@ class GenemuFormExtension extends Extension
 
     private function getChoiceTypeNames()
     {
-        return array('choice', 'language', 'country', 'timezone', 'locale', 'entity', 'document', 'model');
+        return array('choice', 'language', 'country', 'timezone', 'locale', 'entity', 'document', 'model', 'currency');
     }
 }

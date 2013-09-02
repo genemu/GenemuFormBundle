@@ -28,10 +28,13 @@ use Symfony\Component\OptionsResolver\Options;
 class Select2Type extends AbstractType
 {
     private $widget;
+    
+    private $configs;
 
-    public function __construct($widget)
+    public function __construct($widget, array $configs = array())
     {
         $this->widget = $widget;
+        $this->configs = $configs;
     }
 
     /**
@@ -67,12 +70,7 @@ class Select2Type extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $defaults = array(
-            'placeholder'        => 'Select a value',
-            'allowClear'         => false,
-            'minimumInputLength' => 0,
-            'width'              => 'element',
-        );
+        $defaults = $this->configs;
         $resolver
             ->setDefaults(array(
                 'configs'       => $defaults,
