@@ -250,14 +250,14 @@
 {% spaceless %}
     <script type="text/javascript">
         {% if is_prototype %}
-            {% set selector = ':input[data-unique-autocompleter-id="' ~ attr['data-unique-autocompleter-id'] ~ '"]' %}
+            {% set selector = ':input[data-autocompleter-id-hash="' ~ attr['data-autocompleter-id-hash'] ~ '"]' %}
             jQuery('body').on('focus', '{{ selector | raw }}:visible', function() {
                 var $field = $('#' + this.id.substr('autocompleter_'.length));
                 var $autocompleter = $(this);
                 genemu_jqueryautocompleter_observer_{{ id }}($autocompleter, $field);
 
                 // remove unique-id so that autocomplete is not applied multiple
-                $autocompleter.removeAttr('data-unique-autocompleter-id');
+                $autocompleter.removeAttr('data-autocompleter-id-hash');
             });
         {% else %}
             jQuery(document).ready(function($) {
