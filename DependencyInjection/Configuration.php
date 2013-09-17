@@ -31,10 +31,10 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('genenu_form');
+        $rootNode = $treeBuilder->root('genemu_form');
 
         $this->addCaptcha($rootNode);
-        $this->addRecaptcha($rootNode);
+        $this->addRecaptcha($rootNode;)
         $this->addTinymce($rootNode);
         $this->addDate($rootNode);
         $this->addFile($rootNode);
