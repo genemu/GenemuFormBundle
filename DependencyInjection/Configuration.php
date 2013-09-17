@@ -34,7 +34,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('genemu_form');
 
         $this->addCaptcha($rootNode);
-        $this->addRecaptcha($rootNode;)
+        $this->addRecaptcha($rootNode);
         $this->addTinymce($rootNode);
         $this->addDate($rootNode);
         $this->addFile($rootNode);
