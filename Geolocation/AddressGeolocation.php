@@ -14,7 +14,7 @@ namespace Genemu\Bundle\FormBundle\Geolocation;
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class AddressGeolocation
+class AddressGeolocation implements \Serializable
 {
     private $address;
     private $latitude;
@@ -54,5 +54,27 @@ class AddressGeolocation
     public function getCountry()
     {
         return $this->country;
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+                'address'   => $this->address,
+                'latitude'  => $this->latitude,
+                'longitude' => $this->longitude,
+                'locality'  => $this->locality,
+                'country'   => $this->country
+            ));
+    }
+
+    public function unserialize($serialized)
+    {
+        $data = unserialize($serialized);
+
+        $this->address  = $data['address']  ?: null;
+        $this->latitude = $data['latitude'] ?: null;
+        $this->longitude = $data['longitude'] ?: null;
+        $this->locality = $data['locality'] ?: null;
+        $this->country = $data['country'] ?: null;
     }
 }
