@@ -1,6 +1,6 @@
 {% block genemu_captcha_widget %}
 {% spaceless %}
-    <img src="{{ src }}" width="{{ width }}" height="{{ height }}" title="{{ name|trans }}" />
+    <img src="{{ src }}" width="{{ width }}" height="{{ height }}" title="{{ name|trans }}" alt="{{ name|trans }}" />
     {{ block("form_widget_simple") }}
 {% endspaceless %}
 {% endblock %}
