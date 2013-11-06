@@ -42,7 +42,7 @@ class ReCaptchaValidator implements EventSubscriberInterface
 
         if (empty($options['code'])) {
             if (empty($privateKey)) {
-                throw new InvalidConfigurationException('The child node "private_key" at path "genenu_form.captcha" must be configured.');
+                throw new InvalidConfigurationException('The child node "private_key" at path "genenu_form.recaptcha" must be configured.');
             }
 
             $this->request = $request;
