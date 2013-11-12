@@ -31,7 +31,12 @@ class GeolocationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('address', 'text');
+        $addressOption = array();
+        $option = $options['address'];
+        if (isset($option['label_hidden']) && !empty($option['label_hidden']))
+            $addressOption = array('label_render' => false);
+            
+        $builder->add('address', 'text', $addressOption);
 
         foreach (array('latitude', 'longitude', 'locality', 'country') as $field) {
             $option = $options[$field];
@@ -69,6 +74,9 @@ class GeolocationType extends AbstractType
     {
         $resolver->setDefaults(array(
             'map' => false,
+            'address' => array{
+                'label_hidden' => false
+            }
             'latitude' => array(
                 'enabled' => false,
                 'hidden' => false,
