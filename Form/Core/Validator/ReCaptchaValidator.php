@@ -13,10 +13,9 @@ namespace Genemu\Bundle\FormBundle\Form\Core\Validator;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\Exception\FormException;
+use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -43,7 +42,7 @@ class ReCaptchaValidator implements EventSubscriberInterface
 
         if (empty($options['code'])) {
             if (empty($privateKey)) {
-                throw new FormException('The child node "private_key" at path "genenu_form.captcha" must be configured.');
+                throw new InvalidConfigurationException('The child node "private_key" at path "genenu_form.recaptcha" must be configured.');
             }
 
             $this->request = $request;
