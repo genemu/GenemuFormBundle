@@ -49,9 +49,10 @@ class TinymceType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $configs = array_merge($this->options, array(
+        $configs = array_merge(array(
             'language' => \Locale::getDefault(),
-        ));
+        ),
+		$this->options);
 
         $resolver
             ->setDefaults(array(
