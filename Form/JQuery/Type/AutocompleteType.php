@@ -69,7 +69,7 @@ class AutocompleteType extends AbstractType
             'suggestions' => array(),
             'route_name' => null,
             'class' => null,
-        	'group_by' => null,
+      	    'group_by' => null,
             'property' => null,
             'em' => null,
             'document_manager' => null,
@@ -108,7 +108,7 @@ class AutocompleteType extends AbstractType
                                 $qb = $repository->createQueryBuilder('u')->groupBy('u.'.$groupBy);
                                 $objects = $qb->getQuery()->getResult();
                             } else 
-	                            $objects = $repository->findAll();
+	                        $objects = $repository->findAll();
                             foreach ($objects as $object) {
                                 if ($propertyPath) {
                                     $suggestions[] = PropertyAccess::getPropertyAccessor()->getValue($object, $propertyPath);
