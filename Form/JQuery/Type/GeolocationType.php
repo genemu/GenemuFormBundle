@@ -74,9 +74,9 @@ class GeolocationType extends AbstractType
     {
         $resolver->setDefaults(array(
             'map' => false,
-            'address' => array{
+            'address' => array(
                 'label_hidden' => false
-            }
+            ),
             'latitude' => array(
                 'enabled' => false,
                 'hidden' => false,
