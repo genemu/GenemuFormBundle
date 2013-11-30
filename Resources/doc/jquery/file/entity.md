@@ -35,8 +35,7 @@ class MyClassController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $test = $this->getDoctrine()->getEntityManager();
-        $file = $test->getRepository('GenemuEntityBundle:File')->find(1);
+        $file = $em->getRepository('GenemuEntityBundle:File')->find(1);
 
         $form = $this->createForm(new FileType(), $file);
 
