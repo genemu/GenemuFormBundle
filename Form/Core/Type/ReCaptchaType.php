@@ -82,9 +82,9 @@ class ReCaptchaType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $configs = array_merge($this->options, array(
+        $configs = array_merge(array(
             'lang' => \Locale::getDefault(),
-        ));
+            ), $this->options);
 
         $resolver
             ->setDefaults(array(
