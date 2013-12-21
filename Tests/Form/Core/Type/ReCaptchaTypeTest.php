@@ -27,13 +27,13 @@ class ReCaptchaTypeTest extends TypeTestCase
         $view = $form->createView();
 
         $this->assertEquals('publicKey', $view->vars['public_key']);
-        $this->assertEquals('http://api.recaptcha.net', $view->vars['server']);
+        $this->assertEquals('http://www.google.com/recaptcha/api', $view->vars['server']);
         $this->assertEquals(array('lang' => 'en'), $view->vars['configs']);
 
         $this->assertEquals(array(
-            'host' => 'api-verify.recaptcha.net',
+            'host' => 'www.google.com',
             'port' => 80,
-            'path' => '/verify',
+            'path' => '/recaptcha/api/verify',
             'timeout' => 10,
         ), $form->getConfig()->getAttribute('option_validator'));
     }
@@ -52,9 +52,9 @@ class ReCaptchaTypeTest extends TypeTestCase
         $this->assertEquals(array('theme' => 'blackglass', 'lang' => 'en'), $view->vars['configs']);
 
         $this->assertEquals(array(
-            'host' => 'api-verify.recaptcha.net',
+            'host' => 'www.google.com',
             'port' => 80,
-            'path' => '/verify',
+            'path' => '/recaptcha/api/verify',
             'timeout' => 30
         ), $form->getConfig()->getAttribute('option_validator'));
     }
@@ -68,7 +68,7 @@ class ReCaptchaTypeTest extends TypeTestCase
         $form = $this->factory->create(new ReCaptchaType(
             new ReCaptchaValidator($request, 'privateKey', array('code' => '1234')),
             'publicKey',
-            'http://api.recaptcha.net',
+            'http://www.google.com/recaptcha/api',
             array()
         ));
 

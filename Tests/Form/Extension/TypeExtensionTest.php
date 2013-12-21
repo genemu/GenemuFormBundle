@@ -79,13 +79,13 @@ class TypeExtensionTest extends CoreExtension
                     $this->request,
                     'privateKey',
                     array(
-                        'host' => 'api-verify.recaptcha.net',
+                        'host' => 'www.google.com',
                         'port' => 80,
-                        'path' => '/verify',
+                        'path' => '/recaptcha/api/verify',
                         'timeout' => 10
                     )),
                 'publicKey',
-                'http://api.recaptcha.net',
+                'http://www.google.com/recaptcha/api',
                 array()),
             new Form\JQuery\Type\ImageType('medium', array(
                 'small' => array(100, 100),

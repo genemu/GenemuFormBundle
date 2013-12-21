@@ -8,9 +8,9 @@ genenu_form:
         public_key:           ~ # Required
         private_key:          ~ # Required
         validation:
-            host:                 api-verify.recaptcha.net
+            host:                 www.google.com
             port:                 80
-            path:                 /verify
+            path:                 /recaptcha/api/verify
             timeout:              10
             code:                 ~
             proxy:                ~
