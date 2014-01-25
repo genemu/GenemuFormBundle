@@ -241,6 +241,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('swf')->isRequired()->end()
                         ->scalarNode('cancel_img')->defaultValue('/bundles/genemuform/images/cancel.png')->end()
                         ->scalarNode('folder')->defaultValue('/upload')->end()
+                        ->scalarNode('script')->defaultValue('genemu_upload')->end()                       
                         ->variableNode('configs')->defaultValue(array())->end()
                     ->end()
                 ->end()
