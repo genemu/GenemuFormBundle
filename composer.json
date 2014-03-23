@@ -25,7 +25,6 @@
         "symfony/form": "~2.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "3.7.*",
         "symfony/doctrine-bridge": "~2.3",
         "symfony/finder": "2.*",
         "doctrine/orm": "2.*",
