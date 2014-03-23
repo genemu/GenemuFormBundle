@@ -44,3 +44,8 @@ public function buildForm(FormBuilder $builder, array $options)
 ```
 
 *To see which jQuery libraries to include, see the [html code](https://github.com/sgruhier/jquery-addresspicker/blob/master/demos/index.html) of the demo*
+
+## Underlying data
+
+The mapped property (in this example "geolocation") will receive an ``AddressGeolocation`` object.
+This object is serializable, for example you can map it to a Doctrine `object` field.
