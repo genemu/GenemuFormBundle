@@ -92,7 +92,7 @@
     <script type="text/javascript">
         jQuery(document).ready(function($) {
             $field = $('#{% if widget != "single_text" %}datepicker_{% endif %}{{ id }}');
-        
+
         {% block genemu_jquerydate_javascript_prototype %}
 
         {% if configs.buttonImage is defined %}
@@ -160,7 +160,7 @@
             }, {{ configs|json_encode|raw }});
 
         {% if widget == "image" %}
-            $picker = $('#{{ id }}_color');
+            var $picker = $('#{{ id }}_color');
 
             $picker.ColorPicker($.extend({
                 onChange: function(hsb, hex, rgb) {
@@ -333,7 +333,7 @@
             {% endif %}
 
             $autocompleter.autocomplete($configs);
-            
+
             {% if configs.minLength is defined and 0 == configs.minLength %}
                 $autocompleter.focus(function() {
                     $(this).autocomplete("search", "");
