@@ -87,7 +87,7 @@ class ReCaptchaValidator implements EventSubscriberInterface
         if (empty($this->options['code'])) {
             if (empty($datas['challenge']) || empty($datas['response'])) {
                 $error = 'The captcha is not valid.';
-            } elseif (true !== ($answer = $this->check($datas, $form->getAttribute('option_validator')))) {
+            } elseif (true !== ($answer = $this->check($datas, $form->getConfig()->getAttribute('option_validator')))) {
                 $error = sprintf('Unable to check the captcha from the server. (%s)', $answer);
             }
         } elseif ($this->options['code'] != $datas['response']) {
