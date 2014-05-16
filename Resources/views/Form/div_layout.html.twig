@@ -104,7 +104,7 @@
 {% spaceless %}
     <div {{ block("widget_container_attributes") }}>
     {% for child in form %}
-        {{ form_widget(child) }}
+        {{ form_widget(child, {'attr': {'class': 'star'}}) }}
     {% endfor %}
     </div>
 {% endspaceless %}
