@@ -1,0 +1,4 @@
+genemu_form:
+    recaptcha:
+        incorrect-captcha-sol: Koda ni vnesena pravilno.
+        invalid-site-private-key: Privatni ključ ni pravilen.
