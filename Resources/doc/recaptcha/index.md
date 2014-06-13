@@ -35,6 +35,22 @@ public function buildForm(FormBuilder $builder, array $options)
 }
 ```
 
+## Common usages:
+### Add captcha in an entity form:
+
+If the captcha field is included in an entity form (eg: User registration), you might have an NoSuchPropertyException. As the captcha is not part of the entity, you have to set the ```mapped``` option to ```false```.
+
+``` php
+<?php
+// ...
+public function buildForm(FormBuilder $builder, array $options)
+{
+    $builder
+        // ...
+        ->add('captcha', 'genemu_recaptcha', array('mapped' => false));
+}
+```
+
 ## Extra:
 
 [Configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/recaptcha/default.md)
