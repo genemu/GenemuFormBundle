@@ -2,3 +2,4 @@ genemu_form:
     recaptcha:
         incorrect-captcha-sol: Der angegebene Captcha ist nicht korrekt.
         invalid-site-private-key: Der 'private key' ist nicht korrekt.
+        unable-to-check-the-captcha-from-the-server: Captcha vom Server zu überprüfen.
