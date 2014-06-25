@@ -25,15 +25,15 @@ public function buildForm(FormBuilder $builder, array $options)
             'map'       => false,
             'latitude'  => array(
                 'enabled'   => false,
-                'hidden'    => true,
+                'hidden'    => false,
             ),
             'longitude' => array(
                 'enabled'   => false,
-                'hidden'    => true,
+                'hidden'    => false,
             ),
             'locality'  => array(
                 'enabled'   => false,
-                'hidden'    => true,
+                'hidden'    => false,
             ),
             'country'   => array(
                 'enabled'   => false,
@@ -49,3 +49,11 @@ public function buildForm(FormBuilder $builder, array $options)
 
 The mapped property (in this example "geolocation") will receive an ``AddressGeolocation`` object.
 This object is serializable, for example you can map it to a Doctrine `object` field.
+
+## Using map display
+
+If you display the map, do not forget to enabled `latitude` and `logitude`.
+Those fields are use to update the marker on the map, especially when you are on a form edit.
+If you do not need to display those fields, set `hidden` to true.
+
+
