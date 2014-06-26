@@ -79,16 +79,10 @@ class DateType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $configs = $this->options;
-        
-        try {
-            $culture = \Locale::getPrimaryLanguage(\Locale::getDefault());
-        } catch (\Symfony\Component\Intl\Exception\MethodNotImplementedException $e) {
-            $culture = \Locale::getDefault();
-        }
-        
+
         $resolver
             ->setDefaults(array(
-                'culture' => $culture,
+                'culture' => \Locale::getPrimaryLanguage(\Locale::getDefault()),
                 'widget' => 'choice',
                 'years'  => range(date('Y') - 5, date('Y') + 5),
                 'configs' => array(
