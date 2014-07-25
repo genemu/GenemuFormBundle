@@ -88,7 +88,7 @@ public function buildForm(FormBuilder $builder, array $options)
         // If you are using form for adding/editing entity (for example with FOSUserBundle user registration form)
         // you may need to mark field as "not a property" by using code
 
-        // ->add('captcha', 'genemu_captcha',array("property_path" => false,));
+        // ->add('captcha', 'genemu_captcha',array('mapped' => false,));
 }
 ```
 
