@@ -35,6 +35,8 @@ public function buildForm(FormBuilder $builder, array $options)
 }
 ```
 
+Do not forget to include jQuery.
+
 ## Extra:
 
 [Configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/recaptcha/default.md)
