@@ -39,3 +39,9 @@ function addTagForm(collectionHolder, $newLinkLi)
 // ...
 </script>
 ```
+
+NOTA: For the select2 fields, the current implementation is a bit off and require some additional tweaks:
+In the triggerJavascript you should use for the select2 fields:
+```jinja
+    {{ form_javascript(form.myCollection.vars.prototype.mySelect2Field, true) }}
+```
