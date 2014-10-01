@@ -1,0 +1,4 @@
+genemu_form:
+    recaptcha:
+        incorrect-captcha-sol: Podany kod jest nieprawidłowy
+        invalid-site-private-key: Klucz prywatny jest nieprawidłowy
