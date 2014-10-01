@@ -26,7 +26,7 @@ Then you'll have to customize the javascript template in your view :
 
 {% form_theme form _self %}
 
-{% block genemu_jqueryselect2_javascript %}
+{% block genemu_jqueryselect2_hidden_javascript %}
 
     <script type="text/javascript">
         $field = $('#{{ id }}');
