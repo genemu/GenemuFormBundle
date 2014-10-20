@@ -1,0 +1,4 @@
+genemu_form:
+    recaptcha:
+        incorrect-captcha-sol: Текст с картинки введен неверно.
+        invalid-site-private-key: Секретный ключ задан неверно.
