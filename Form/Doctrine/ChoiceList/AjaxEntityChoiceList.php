@@ -126,7 +126,7 @@ class AjaxEntityChoiceList extends EntityChoiceList
                 $id = current($this->classMetadata->getIdentifierValues($entity));
 
                 if ($this->propertyPath) {
-                    $label = PropertyAccess::getPropertyAccessor()->getValue($entity, $this->propertyPath);
+                    $label = PropertyAccess::createPropertyAccessor()->getValue($entity, $this->propertyPath);
                 } else {
                     $label = (string) $entity;
                 }
