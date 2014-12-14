@@ -14,7 +14,7 @@ namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Genemu\Bundle\FormBundle\Gd\File\Image;
 
@@ -82,7 +82,7 @@ class ImageType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'configs' => array(

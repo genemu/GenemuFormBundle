@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Genemu\Bundle\FormBundle\Form\Core\ChoiceList\AjaxSimpleChoiceList;
 use Genemu\Bundle\FormBundle\Form\Core\DataTransformer\ChoiceToJsonTransformer;
@@ -90,7 +90,7 @@ class TokeninputType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $widget = $this->widget;
 

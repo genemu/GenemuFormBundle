@@ -14,7 +14,7 @@ namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * SliderType
@@ -31,7 +31,7 @@ class SliderType extends AbstractType
         $view->vars['configs'] = $options;
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'min' => 0,

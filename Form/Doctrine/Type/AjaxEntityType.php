@@ -13,7 +13,7 @@ namespace Genemu\Bundle\FormBundle\Form\Doctrine\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -41,7 +41,7 @@ class AjaxEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $registry = $this->registry;
 
