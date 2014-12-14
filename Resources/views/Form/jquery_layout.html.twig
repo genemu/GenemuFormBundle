@@ -88,7 +88,6 @@
 
 {% block genemu_jquerydate_javascript %}
 {% spaceless %}
-
     <script type="text/javascript">
         jQuery(document).ready(function($) {
             $field = $('#{% if widget != "single_text" %}datepicker_{% endif %}{{ id }}');
@@ -664,4 +663,3 @@
     });
     </script>
 {% endblock %}
-

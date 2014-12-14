@@ -34,9 +34,9 @@
     },
     "suggest": {
         "symfony/twig-bridge": "For integration into Twig templates",
-        "symfony/doctrine-bundle": "In order to use some form types with Doctrine",
+        "doctrine/doctrine-bundle": "In order to use some form types with Doctrine",
         "symfony/finder": "For an image type",
-        "symfony/mongodb-odm-bundle": "For MongoDB integration"
+        "doctrine/mongodb-odm-bundle": "For MongoDB integration"
     },
     "autoload": {
         "psr-0": {

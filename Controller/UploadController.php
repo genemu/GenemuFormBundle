@@ -12,8 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Genemu\Bundle\FormBundle\Gd\File\Image;
 
 /**
@@ -79,6 +78,6 @@ class UploadController extends ContainerAware
             $json['result'] = '0';
         }
 
-        return new Response(json_encode($json));
+        return new JsonResponse($json);
     }
 }

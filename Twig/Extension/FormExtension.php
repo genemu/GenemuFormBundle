@@ -29,6 +29,11 @@ class FormExtension extends \Twig_Extension
      */
     public $renderer;
 
+    /**
+     * Constructs.
+     *
+     * @param TwigRendererInterface $renderer
+     */
     public function __construct(TwigRendererInterface $renderer)
     {
         $this->renderer = $renderer;
@@ -49,7 +54,7 @@ class FormExtension extends \Twig_Extension
      * Render Function Form Javascript
      *
      * @param FormView $view
-     * @param bool $prototype
+     * @param bool     $prototype
      *
      * @return string
      */

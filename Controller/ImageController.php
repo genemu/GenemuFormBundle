@@ -12,8 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Genemu\Bundle\FormBundle\Gd\File\Image;
 
 /**
@@ -35,15 +34,19 @@ class ImageController extends ContainerAware
         switch ($request->get('filter')) {
             case 'rotate':
                 $handle->addFilterRotate(90);
+
                 break;
             case 'negative':
                 $handle->addFilterNegative();
+
                 break;
             case 'bw':
                 $handle->addFilterBw();
+
                 break;
             case 'sepia':
                 $handle->addFilterSepia('#C68039');
+
                 break;
             case 'crop':
                 $x = $request->get('x');
@@ -52,9 +55,11 @@ class ImageController extends ContainerAware
                 $h = $request->get('h');
 
                 $handle->addFilterCrop($x, $y, $w, $h);
+
                 break;
             case 'blur':
                 $handle->addFilterBlur();
+
             default:
                 break;
         }
@@ -91,7 +96,7 @@ class ImageController extends ContainerAware
             )
         );
 
-        return new Response(json_encode($json));
+        return new JsonResponse($json);
     }
 
     /**
