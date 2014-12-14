@@ -17,7 +17,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Genemu\Bundle\FormBundle\Form\Core\EventListener\FileListener;
 use Genemu\Bundle\FormBundle\Form\JQuery\DataTransformer\FileToValueTransformer;
@@ -75,7 +75,7 @@ class FileType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $configs = $this->options;
 
