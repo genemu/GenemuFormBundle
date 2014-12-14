@@ -191,7 +191,7 @@ class Configuration implements ConfigurationInterface
                     ->treatTrueLike(array('enabled' => true))
                     ->children()
                         ->booleanNode('enabled')->defaultTrue()->end()
-                        ->scalarNode('theme')->defaultValue('advanced')->end()
+                        ->scalarNode('theme')->defaultValue('modern')->end()
                         ->scalarNode('script_url')->end()
                         ->variableNode('configs')->defaultValue(array())->end()
                     ->end()
