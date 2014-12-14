@@ -100,6 +100,12 @@
             }) %}
         {% endif %}
 
+        {% if configs.buttonText is defined %}
+            {% set configs = configs|merge({
+                "buttonText": (configs.buttonText | trans)
+            }) %}
+        {% endif %}
+
         {% if culture == "en" %}
             {% set culture = "en-GB" %}
         {% endif %}
