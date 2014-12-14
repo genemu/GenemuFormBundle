@@ -85,12 +85,12 @@ class ReCaptchaValidator implements EventSubscriberInterface
 
         if (empty($this->options['code'])) {
             if (empty($datas['challenge']) || empty($datas['response'])) {
-                $error = 'The captcha is not valid.';
+                $error = 'genemu_form.recaptcha.incorrect-captcha-sol';
             } elseif (true !== ($answer = $this->check($datas, $form->getConfig()->getAttribute('option_validator')))) {
-                $error = sprintf('Unable to check the captcha from the server. (%s)', $answer);
+                $error = 'genemu_form.recaptcha.unable-to-check-the-captcha-from-the-server';
             }
         } elseif ($this->options['code'] != $datas['response']) {
-            $error = "The captcha is not valid.";
+            $error = 'genemu_form.recaptcha.incorrect-captcha-sol';
         }
 
         if (!empty($error)) {
