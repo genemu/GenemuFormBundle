@@ -21,11 +21,11 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.2",
-        "symfony/framework-bundle": ">=2.3,<2.6-dev",
+        "symfony/framework-bundle": ">=2.3",
         "symfony/form": ">=2.3,<2.6-dev"
     },
     "require-dev": {
-        "symfony/doctrine-bridge": ">=2.3,<2.6-dev",
+        "symfony/doctrine-bridge": ">=2.3",
         "symfony/finder": "2.*",
         "doctrine/orm": "2.*",
         "doctrine/doctrine-bundle": "1.*",
