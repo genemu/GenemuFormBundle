@@ -656,6 +656,10 @@
     <script type="text/javascript">
     jQuery(document).ready(function($) {
         $field = $('#{{ id }}');
+        
+        {% if configs.placeholder is defined %}
+            {% set configs = {'placeholder': configs.placeholder|trans} + configs %}
+        {% endif %}
 
         {% block genemu_jqueryselect2_javascript_prototype %}
             $field.select2({{ configs|json_encode|raw }});
