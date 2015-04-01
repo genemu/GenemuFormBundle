@@ -30,6 +30,7 @@ class PlainType extends AbstractType
             'date_format' => null,
             'date_pattern' => null,
             'time_format' => null,
+            'time_zone' => 'UTC',
             'attr' => array(
                 'class' => $this->getName()
             ),
@@ -63,7 +64,7 @@ class PlainType extends AbstractType
                 \Locale::getDefault(),
                 $dateFormat,
                 $timeFormat,
-                'UTC',
+                $options['time_zone'],
                 $calendar,
                 $pattern
             );
