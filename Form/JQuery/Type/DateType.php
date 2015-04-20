@@ -15,7 +15,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 use Symfony\Component\Form\Extension\Core\Type\DateType as BaseDateType;
 
 /**
@@ -36,7 +38,7 @@ class DateType extends AbstractType
     {
         $this->options = $options;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -75,8 +77,18 @@ class DateType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @todo Remove it when bumping requirements to SF 2.7+
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $this->configureOptions($resolver);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
     {
         $configs = $this->options;
 
