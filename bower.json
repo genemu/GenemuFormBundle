@@ -1,0 +1,24 @@
+{
+    "name": "genemu-form-bundle",
+    "homepage": "https://github.com/genemu/GenemuFormBundle/blob/master/README.md",
+    "authors": [
+        {
+            "name": "Olivier Chauvel",
+            "email": "olivier@generation-multiple.com"
+        },
+        {
+            "name": "Bilal Amarni",
+            "email": "bilal.amarni@gmail.com"
+        },
+        {
+            "name": "Community contributions",
+            "homepage": "https://github.com/genemu/GenemuFormBundle/contributors"
+        }
+    ],
+    "dependencies": {
+    },
+    "license": "MIT",
+    "ignore": [
+        "*"
+    ]
+}
