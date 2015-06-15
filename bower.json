@@ -18,6 +18,7 @@
     "dependencies": {
     },
     "license": "MIT",
+    "private": true,
     "ignore": [
         "*"
     ]
