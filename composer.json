@@ -46,7 +46,7 @@
     "target-dir": "Genemu/Bundle/FormBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.2-dev"
+            "dev-master": "2.3.x-dev"
         }
     }
 }
