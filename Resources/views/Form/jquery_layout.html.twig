@@ -323,67 +323,69 @@
         jQuery(document).ready(function($) {
             var $field = $('#{{ id }}');
             var $autocompleter = $('#autocompleter_{{ id }}');
+            {% block genemu_jqueryautocompleter_javascript_prototype %}
             var $configs = {
-                focus: function(event, ui) {
-                    return false;
-                },
-                select: function(event, ui) {
-                {% if multiple %}
-                    terms = this.value.split(/,\s*/);
-                    terms.pop();
-                    terms.push(ui.item.label);
-                    terms.push('');
-                    this.value = terms.join(', ');
+                    focus: function(event, ui) {
+                        return false;
+                    },
+                    select: function(event, ui) {
+                    {% if multiple %}
+                        terms = this.value.split(/,\s*/);
+                        terms.pop();
+                        terms.push(ui.item.label);
+                        terms.push('');
+                        this.value = terms.join(', ');
 
-                    terms = $field.val();
-                    terms = !terms?[]:JSON.parse(terms);
-                    terms.push(ui.item);
-                {% else %}
-                    this.value = ui.item.label;
-                    terms = ui.item;
-                {% endif %}
-                    $field.val(JSON.stringify(terms));
+                        terms = $field.val();
+                        terms = !terms?[]:JSON.parse(terms);
+                        terms.push(ui.item);
+                    {% else %}
+                        this.value = ui.item.label;
+                        terms = ui.item;
+                    {% endif %}
+                        $field.val(JSON.stringify(terms));
 
-                    return false;
-                }
-            };
-
-            {% if route_name %}
-                $configs.source = function(request, response) {
-                    $.getJSON('{{ path(route_name) }}', {
-                        term: request.term
-                    }, response);
+                        return false;
+                    }
                 };
-            {% else %}
-                {% set sourceChoices = [] %}
-                {% for choice in choices %}
-                    {% set sourceChoices = sourceChoices|merge([{'value': choice.value, 'label': choice.label}]) %}
-                {% endfor %}
-                $configs.source = {{ sourceChoices|json_encode|raw }};
-            {% endif %}
 
-                $autocompleter.autocomplete($configs);
+                {% if route_name %}
+                    $configs.source = function(request, response) {
+                        $.getJSON('{{ path(route_name) }}', {
+                            term: request.term
+                        }, response);
+                    };
+                {% else %}
+                    {% set sourceChoices = [] %}
+                    {% for choice in choices %}
+                        {% set sourceChoices = sourceChoices|merge([{'value': choice.value, 'label': choice.label}]) %}
+                    {% endfor %}
+                    $configs.source = {{ sourceChoices|json_encode|raw }};
+                {% endif %}
 
-            {% if free_values %}
-                $autocompleter.keyup(function(){
-                    var val ={}
-                    var fieldval = $(this).val();
-                    val['value'] = fieldval;
-                    val['label'] = fieldval;
+                    $autocompleter.autocomplete($configs);
 
-                    $field.val(JSON.stringify(val));
-                });
-            {% endif %}
+                {% if free_values %}
+                    $autocompleter.keyup(function(){
+                        var val ={}
+                        var fieldval = $(this).val();
+                        val['value'] = fieldval;
+                        val['label'] = fieldval;
 
-            {% if multiple %}
-                var $source = $autocompleter.data('autocomplete').source;
+                        $field.val(JSON.stringify(val));
+                    });
+                {% endif %}
 
-                $autocompleter.autocomplete('option', 'source', function(request, response) {
-                    request.term = request.term.split(/,\s*/).pop();
+                {% if multiple %}
+                    var $source = $autocompleter.data('autocomplete').source;
 
-                    $source(request, response);
-                });
-            {% endif %}
+                    $autocompleter.autocomplete('option', 'source', function(request, response) {
+                        request.term = request.term.split(/,\s*/).pop();
+
+                        $source(request, response);
+                    });
+                {% endif %}
+            {% endblock %}
         });
     </script>
 {% endspaceless %}
