@@ -16,14 +16,11 @@ Add the following dependency to your composer.json file:
 ``` json
 {
     "require": {
-        "_some_packages": "...",
-
-        "genemu/form-bundle": "2.1.*" => for Symfony 2.1 and 2.2
-
-        "genemu/form-bundle": "2.2.*" => for Symfony 2.3
+        "genemu/form-bundle": "2.2.*"
     }
 }
 ```
+> Note:-  For Symfony 2.1 and 2.2 use `2.1.*` 
 
 ### Step 2: Enable the bundle
 
