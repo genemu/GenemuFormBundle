@@ -19,6 +19,7 @@
         }
     ],
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": ">=5.3.2",
         "symfony/framework-bundle": "~2.6",
@@ -30,7 +31,7 @@
         "symfony/finder": "2.*",
         "doctrine/orm": "2.*",
         "doctrine/doctrine-bundle": "1.*",
-        "doctrine/mongodb-odm-bundle": "*",
+        "doctrine/mongodb-odm-bundle": "~3.0,>=3.0.0-BETA6",
         "propel/propel-bundle": "*"
     },
     "suggest": {
