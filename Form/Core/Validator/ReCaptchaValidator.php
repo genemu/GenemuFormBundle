@@ -139,6 +139,6 @@ class ReCaptchaValidator implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::POST_BIND => 'validate');
+        return array(FormEvents::POST_SUBMIT => 'validate');
     }
 }

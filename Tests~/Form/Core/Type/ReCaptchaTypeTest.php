@@ -72,7 +72,7 @@ class ReCaptchaTypeTest extends TypeTestCase
             array()
         ));
 
-        $form->submit(null);
+        $form->bind(null);
 
         $this->assertEquals($isValid, $form->isValid());
     }
