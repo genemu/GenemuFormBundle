@@ -11,6 +11,7 @@
 
 namespace Genemu\Bundle\FormBundle\Form\Doctrine\ChoiceList;
 
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\ORMQueryBuilderLoader;
@@ -60,7 +61,11 @@ class AjaxEntityChoiceList extends EntityChoiceList
     protected function load()
     {
         if (!$this->ajax) {
-            parent::load();
+            //TODO: load is a private method and EntityChoiceList is depricated use DoctrineChoiceLoader
+            if (Kernel::MAJOR_VERSION == 2 AND Kernel::MINOR_VERSION < 7)
+            {
+                parent::load();
+            }
         }
     }
 
