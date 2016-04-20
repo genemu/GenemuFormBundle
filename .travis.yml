@@ -5,17 +5,11 @@ php:
     - 5.4
     - 5.5
     - 5.6
-    - hhvm
- 
-matrix:
-    allow_failures:
-        - php: hhvm
-
-services: mongodb
+    - 7.0
 
 before_script:
-    - echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
-    - composer update --dev
+    - composer update --prefer-lowest --prefer-dist
 
 notifications:
-  email: travis-ci@generation-multiple.com
+  email: false
+

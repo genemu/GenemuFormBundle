@@ -91,7 +91,7 @@ class CaptchaTypeTest extends TypeTestCase
         $form = $this->factory->create('genemu_captcha');
         $form->createView();
 
-        $form->submit('1234');
+        $form->bind('1234');
 
         $this->assertTrue($form->isValid());
     }
@@ -101,7 +101,7 @@ class CaptchaTypeTest extends TypeTestCase
         $form = $this->factory->create('genemu_captcha');
         $form->createView();
 
-        $form->submit('4321');
+        $form->bind('4321');
 
         $this->assertFalse($form->isValid());
     }

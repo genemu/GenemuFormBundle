@@ -13,5 +13,11 @@ if (!@$loader = include __DIR__.'/../vendor/autoload.php') {
     throw new RuntimeException('Install dependencies to run test suite.');
 }
 
-error_reporting(E_ALL);
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver;
 
+AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
+
+AnnotationDriver::registerAnnotationClasses();
+
+error_reporting(E_ALL ^ E_NOTICE);
