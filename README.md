@@ -15,10 +15,8 @@ Installation is quick and easy, 3 steps process
 Run the following command :
 
 ``` bash
-$ composer require genemu/form-bundle "^3.0"
+$ composer require genemu/form-bundle "^3.0@dev"
 ```
-
-*For older versions cf. 2.X branches.*
 
 ### Step 2: Enable the bundle
 
