@@ -14,7 +14,7 @@ namespace Genemu\Bundle\FormBundle\Tests\Form\Extension;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 use Genemu\Bundle\FormBundle\Gd\Type\Captcha;
 use Genemu\Bundle\FormBundle\Form\Core\Validator\ReCaptchaValidator;
@@ -25,11 +25,11 @@ use Genemu\Bundle\FormBundle\Form;
  */
 class TypeExtensionTest extends CoreExtension
 {
-    protected $request;
+    protected $requestStack;
 
-    public function __construct(Request $request)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
     }
 
     protected function loadTypes()
@@ -67,13 +67,14 @@ class TypeExtensionTest extends CoreExtension
             )),
             new Form\Core\Type\ReCaptchaType(
                 new ReCaptchaValidator(
-                    $this->request,
+                    $this->requestStack,
                     'privateKey',
                     array(
                         'host' => 'www.google.com',
                         'port' => 80,
                         'path' => '/recaptcha/api/verify',
-                        'timeout' => 10
+                        'timeout' => 10,
+                        'code' => '1234',
                     )),
                 'publicKey',
                 'http://www.google.com/recaptcha/api',

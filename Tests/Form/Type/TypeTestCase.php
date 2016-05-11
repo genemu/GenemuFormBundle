@@ -19,6 +19,8 @@ use Genemu\Bundle\FormBundle\Tests\Form\Extension\TypeExtensionTest;
  */
 abstract class TypeTestCase extends BaseTypeTestCase
 {
+    protected $requestStack;
+
     public function setUp()
     {
         parent::setUp();
@@ -29,12 +31,12 @@ abstract class TypeTestCase extends BaseTypeTestCase
     protected function getExtensions()
     {
         return array(
-            new TypeExtensionTest($this->createRequestMock())
+            new TypeExtensionTest($this->createRequestStackMock())
         );
     }
 
-    protected function createRequestMock()
+    protected function createRequestStackMock()
     {
-        return $this->getMock('Symfony\Component\HttpFoundation\Request');
+        return $this->requestStack = $this->getMock('Symfony\Component\HttpFoundation\RequestStack');
     }
 }

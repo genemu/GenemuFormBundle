@@ -88,13 +88,21 @@ class CaptchaType extends AbstractType
      */
     public function getParent()
     {
-        return 'text';
+        return 'Symfony\Component\Form\Extension\Core\Type\TextType';
     }
 
     /**
      * {@inheritdoc}
      */
     public function getName()
+    {
+        return 'genemu_captcha';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return 'genemu_captcha';
     }
