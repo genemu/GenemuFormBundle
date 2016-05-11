@@ -18,7 +18,7 @@
 
     <services>
         <service id="genemu.form.type_recaptcha.validator" class="Genemu\Bundle\FormBundle\Form\Core\Validator\ReCaptchaValidator">
-            <argument type="service" id="request" strict="false" />
+            <argument type="service" id="request_stack" />
             <argument>%genemu.form.recaptcha.private_key%</argument>
             <argument>%genemu.form.recaptcha.validation.options%</argument>
         </service>
