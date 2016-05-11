@@ -20,5 +20,5 @@ All other types should be considered as removed.
 
 ### Symfony version
 
-The bundle supports Symfony 2.7, 2.8 and Symfony 3 as well.
+The bundle supports Symfony 2.8 and Symfony 3 as well.
 

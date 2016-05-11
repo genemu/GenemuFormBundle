@@ -12,6 +12,7 @@ env:
   - COMPOSER_OPTIONS="--prefer-source --prefer-lowest"
 
 before_script:
+    - phpenv config-rm xdebug.ini
     - composer update $COMPOSER_OPTIONS
 
 notifications:
