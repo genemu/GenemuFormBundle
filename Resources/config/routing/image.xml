@@ -4,7 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="genemu_form_image" pattern="/genemu_change_image">
+    <route id="genemu_form_image" path="/genemu_change_image">
         <default key="_controller">GenemuFormBundle:Image:change</default>
     </route>
 
