@@ -4,7 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="genemu_upload" pattern="/genemu_upload">
+    <route id="genemu_upload" path="/genemu_upload">
         <default key="_controller">GenemuFormBundle:Upload:upload</default>
     </route>
 
