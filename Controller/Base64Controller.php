@@ -11,7 +11,8 @@
 
 namespace Genemu\Bundle\FormBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,8 +21,10 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class Base64Controller extends ContainerAware
+class Base64Controller implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     public function refreshCaptchaAction()
     {
         $captcha = $this->container->get('genemu.gd.captcha');
