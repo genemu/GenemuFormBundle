@@ -16,7 +16,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
 
 /**
@@ -28,7 +28,7 @@ use Symfony\Component\OptionsResolver\Options;
 class Select2Type extends AbstractType
 {
     private $widget;
-    
+
     private $configs;
 
     public function __construct($widget, array $configs = array())
@@ -68,7 +68,7 @@ class Select2Type extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $defaults = $this->configs;
         $resolver
@@ -76,11 +76,12 @@ class Select2Type extends AbstractType
                 'configs'       => $defaults,
                 'transformer'   => null,
             ))
-            ->setNormalizers(array(
-                'configs' => function (Options $options, $configs) use ($defaults) {
+            ->setNormalizer(
+                'configs',
+                function (Options $options, $configs) use ($defaults) {
                     return array_merge($defaults, $configs);
-                },
-            ))
+                }
+            )
         ;
     }
 
@@ -89,13 +90,16 @@ class Select2Type extends AbstractType
      */
     public function getParent()
     {
-        return $this->widget;
+        if (class_exists('Symfony\Component\Form\Extension\Core\Type\\' . ucfirst($this->widget) . 'Type')) {
+            return 'Symfony\Component\Form\Extension\Core\Type\\' . ucfirst($this->widget) . 'Type';
+        }
+        return 'Symfony\Bridge\Doctrine\Form\Type\\' . ucfirst($this->widget) . 'Type';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'genemu_jqueryselect2_' . $this->widget;
     }
