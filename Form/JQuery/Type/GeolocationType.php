@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Genemu\Bundle\FormBundle\Form\Core\EventListener\GeolocationListener;
 
@@ -32,7 +33,7 @@ class GeolocationType extends AbstractType
     {
         $builder->add('address', 'text');
 
-        foreach (array('latitude', 'longitude', 'locality', 'country') as $field) {
+        foreach (array('latitude', 'longitude', 'locality', 'country','street_number','route','admin_area_level2','admin_area_level1','postal_code') as $field) {
             $option = $options[$field];
 
             if (isset($option['enabled']) && !empty($option['enabled'])) {
@@ -64,9 +65,10 @@ class GeolocationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions(array $options)
+    
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'map' => false,
             'latitude' => array(
                 'enabled' => false,
@@ -84,7 +86,27 @@ class GeolocationType extends AbstractType
                 'enabled' => false,
                 'hidden' => false,
             ),
-        );
+            'street_number' => array(
+                'enabled' => false,
+                'hidden' => false,
+            ),
+            'route' => array(
+                'enabled' => false,
+                'hidden' => false,
+            ),            
+            'postal_code' => array(
+                'enabled' => false,
+                'hidden' => false,
+            ),
+            'admin_area_level1' => array(
+                'enabled' => false,
+                'hidden' => false,
+            ),
+            'admin_area_level2' => array(
+                'enabled' => false,
+                'hidden' => false,
+            ),
+        ));
     }
 
     /**
