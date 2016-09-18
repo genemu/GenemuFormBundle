@@ -38,11 +38,7 @@
     "target-dir": "Genemu/Bundle/FormBundle",
     "extra": {
         "branch-alias": {
-<<<<<<< HEAD
-            "dev-master": "2.3.x-dev"
-=======
             "dev-master": "3.0-dev"
->>>>>>> 582b03b46df54c6a1a30e28e7bccc80860d41d48
         }
     }
 }
