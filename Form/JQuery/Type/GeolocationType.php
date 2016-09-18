@@ -16,11 +16,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Genemu\Bundle\FormBundle\Form\Core\EventListener\GeolocationListener;
 
 /**
- * GeolocationType to JQueryLib
+ * GeolocationType to JQueryLib.
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
@@ -31,7 +30,7 @@ class GeolocationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('address', 'text');
+        $builder->add('address', 'text', array('required' => false));
 
         foreach (array('latitude', 'longitude', 'locality', 'country') as $field) {
             $option = $options[$field];
@@ -56,9 +55,9 @@ class GeolocationType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars = array_replace($view->vars, array(
-            'configs'   => array(),
-            'elements'  => array(),
-            'map' => $options['map']
+            'configs' => $options['configs'],
+            'elements' => array(),
+            'map' => $options['map'],
         ));
     }
 
@@ -68,6 +67,8 @@ class GeolocationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
+            'configs' => array(),
+            //'data_class' => 'Genemu\Bundle\FormBundle\Geolocation\AddressGeolocation',
             'map' => false,
             'latitude' => array(
                 'enabled' => false,

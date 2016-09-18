@@ -1,3 +1,8 @@
+#How to update from orginal repo
+
+git pull genemu master
+git push origin
+
 #FormBundle
 
 [![Build Status](https://secure.travis-ci.org/genemu/GenemuFormBundle.png)](https://travis-ci.org/genemu/GenemuFormBundle)

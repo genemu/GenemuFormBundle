@@ -416,12 +416,12 @@
         var $queue = $('#{{ id }}_queue');
         var $nbQueue = 0;
 
-        var $configs = $.extend({{ configs|merge({
+        var $configs = $.extend({{ {
             'swf':       asset(configs.swf),
             'cancelImg': asset(configs.cancelImg),
             'uploader':  path(configs.script),
             'queueID':   id ~ '_queue'
-        })|json_encode|raw }}, {
+        }|merge(configs)|json_encode|raw }}, {
             onUploadSuccess: function(file, data, response) {
                 data = jQuery.parseJSON(data);
 
@@ -501,12 +501,12 @@
         var $crop = null;
         var $ratio = 1;
 
-        var $configs = $.extend({{ configs|merge({
+        var $configs = $.extend({{ {
             'swf':       asset(configs.swf),
             'cancelImg': asset(configs.cancelImg),
             'uploader':  path(configs.script),
             'queueID':   id ~ '_queue'
-        })|json_encode|raw }}, {
+        }|merge(configs)|json_encode|raw }}, {
             onUploadSuccess: function(file, data, response) {
                 data = jQuery.parseJSON(data);
 

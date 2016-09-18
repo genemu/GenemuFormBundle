@@ -14,7 +14,7 @@ namespace Genemu\Bundle\FormBundle\Geolocation;
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class AddressGeolocation implements \Serializable
+class AddressGeolocation implements \Serializable, \ArrayAccess
 {
     private $address;
     private $latitude;
@@ -36,9 +36,19 @@ class AddressGeolocation implements \Serializable
         return $this->address;
     }
 
+    public function setAddress($a = null)
+    {
+        $this->address = $a;
+    }
+
     public function getLatitude()
     {
         return $this->latitude;
+    }
+
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
     }
 
     public function getLongitude()
@@ -46,9 +56,24 @@ class AddressGeolocation implements \Serializable
         return $this->longitude;
     }
 
+    public function setLongitude($long)
+    {
+        $this->longitude = $long;
+    }
+
     public function getLocality()
     {
         return $this->locality;
+    }
+
+    public function setLocality($locality)
+    {
+        $this->locality = $locality;
+    }
+
+    public function setCountry($country)
+    {
+        $this->country = $country;
     }
 
     public function getCountry()
@@ -59,11 +84,11 @@ class AddressGeolocation implements \Serializable
     public function serialize()
     {
         return serialize(array(
-                'address'   => $this->address,
-                'latitude'  => $this->latitude,
+                'address' => $this->address,
+                'latitude' => $this->latitude,
                 'longitude' => $this->longitude,
-                'locality'  => $this->locality,
-                'country'   => $this->country
+                'locality' => $this->locality,
+                'country' => $this->country,
             ));
     }
 
@@ -71,10 +96,30 @@ class AddressGeolocation implements \Serializable
     {
         $data = unserialize($serialized);
 
-        $this->address  = $data['address']  ?: null;
+        $this->address = $data['address']  ?: null;
         $this->latitude = $data['latitude'] ?: null;
         $this->longitude = $data['longitude'] ?: null;
         $this->locality = $data['locality'] ?: null;
         $this->country = $data['country'] ?: null;
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->$offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->$offset = $value;
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->$offset;
+    }
+
+    public function offsetUnset($offset)
+    {
+        $this->$offset = null;
     }
 }
