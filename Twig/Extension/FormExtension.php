@@ -29,6 +29,11 @@ class FormExtension extends \Twig_Extension
      */
     public $renderer;
 
+    /**
+     * Constructs.
+     *
+     * @param TwigRendererInterface $renderer
+     */
     public function __construct(TwigRendererInterface $renderer)
     {
         $this->renderer = $renderer;
@@ -40,8 +45,11 @@ class FormExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'form_javascript' => new \Twig_Function_Method($this, 'renderJavascript', array('is_safe' => array('html'))),
-            'form_stylesheet' => new \Twig_Function_Node('Symfony\Bridge\Twig\Node\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('form_javascript', array($this, 'renderJavascript'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('form_stylesheet', null, array(
+                'is_safe' => array('html'),
+                'node_class' => 'Symfony\Bridge\Twig\Node\SearchAndRenderBlockNode',
+            )),
         );
     }
 
@@ -49,7 +57,7 @@ class FormExtension extends \Twig_Extension
      * Render Function Form Javascript
      *
      * @param FormView $view
-     * @param bool $prototype
+     * @param bool     $prototype
      *
      * @return string
      */

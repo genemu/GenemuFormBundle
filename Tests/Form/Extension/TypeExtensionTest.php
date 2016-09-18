@@ -14,7 +14,7 @@ namespace Genemu\Bundle\FormBundle\Tests\Form\Extension;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 use Genemu\Bundle\FormBundle\Gd\Type\Captcha;
 use Genemu\Bundle\FormBundle\Form\Core\Validator\ReCaptchaValidator;
@@ -25,19 +25,16 @@ use Genemu\Bundle\FormBundle\Form;
  */
 class TypeExtensionTest extends CoreExtension
 {
-    protected $request;
+    protected $requestStack;
 
-    public function __construct(Request $request)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
     }
 
     protected function loadTypes()
     {
         return array_merge(parent::loadTypes(), array(
-            new Form\Core\Type\TinymceType(array()),
-            new Form\JQuery\Type\DateType(array()),
-            new Form\JQuery\Type\SliderType(),
             new Form\Core\Type\CaptchaType(new Captcha(new Session(new MockArraySessionStorage()), 's$cr$t'), array(
                 'script' => 'genemu_upload',
                 'uploader' => '/js/uploadify.swf',
@@ -68,37 +65,20 @@ class TypeExtensionTest extends CoreExtension
                 'border_color' => '000000',
                 'code' => '1234',
             )),
-            new Form\JQuery\Type\FileType(array(
-                'script' => 'genemu_upload',
-                'uploader' => '/swf/uploadify.swf',
-                'cancel_img' => '/images/cancel.png',
-                'folder' => '/upload'
-            ), __DIR__.'/../../Fixtures'),
             new Form\Core\Type\ReCaptchaType(
                 new ReCaptchaValidator(
-                    $this->request,
+                    $this->requestStack,
                     'privateKey',
                     array(
                         'host' => 'www.google.com',
                         'port' => 80,
                         'path' => '/recaptcha/api/verify',
-                        'timeout' => 10
+                        'timeout' => 10,
+                        'code' => '1234',
                     )),
                 'publicKey',
                 'http://www.google.com/recaptcha/api',
                 array()),
-            new Form\JQuery\Type\ImageType('medium', array(
-                'small' => array(100, 100),
-                'medium' => array(200, 200),
-                'large' => array(500, 500),
-                'extra' => array(1024, 768)
-            ), array(
-                'rotate',
-                'bw',
-                'negative',
-                'sepia',
-                'crop'
-            )),
         ));
     }
 }

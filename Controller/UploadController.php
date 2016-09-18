@@ -11,21 +11,35 @@
 
 namespace Genemu\Bundle\FormBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Genemu\Bundle\FormBundle\Gd\File\Image;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Upload Controller
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class UploadController extends ContainerAware
+class UploadController implements ContainerAwareInterface
 {
-    public function uploadAction()
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
     {
-        $handle = $this->container->get('request')->files->get('Filedata');
+        $this->container = $container;
+    }
+
+    public function uploadAction(Request $request)
+    {
+        $handle = $request->files->get('Filedata');
 
         $folder = $this->container->getParameter('genemu.form.file.folder');
         $uploadDir = $this->container->getParameter('genemu.form.file.upload_dir');
@@ -79,6 +93,6 @@ class UploadController extends ContainerAware
             $json['result'] = '0';
         }
 
-        return new Response(json_encode($json));
+        return new JsonResponse($json);
     }
 }

@@ -60,9 +60,9 @@
 {% block genemu_jquerychosen_widget %}
 {% spaceless %}
     {% set attr = {
-            "data-placeholder": empty_value,
-            "class": "chzn-select"
-        }|merge(attr) %}
+        "data-placeholder": empty_value,
+        "class": "chzn-select"
+    }|merge(attr) %}
     {{ block("choice_widget") }}
 {% endspaceless %}
 {% endblock genemu_jquerychosen_widget %}
@@ -71,7 +71,7 @@
 {% spaceless %}
     {{ form_rest(form) }}
 
-    {% if map is sameas(true) %}
+    {% if map is same as(true) %}
         <div id="{{ id }}_map">&nbsp;</div>
     {% endif %}
 {% endspaceless %}

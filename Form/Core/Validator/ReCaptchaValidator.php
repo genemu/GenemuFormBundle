@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * ReCaptchaValidator
@@ -31,21 +32,20 @@ class ReCaptchaValidator implements EventSubscriberInterface
     private $options;
 
     /**
-     * @param Request      $request
+     * @param RequestStack $requestStack
      * @param string       $privateKey
      * @param array        $options    Validation options
      */
-    public function __construct(Request $request, $privateKey, array $options = array())
+    public function __construct(RequestStack $requestStack, $privateKey, array $options = array())
     {
         $this->options = $options;
-        $this->request = $request;
+        $this->request = $requestStack->getMasterRequest();
 
         if (empty($options['code'])) {
             if (empty($privateKey)) {
                 throw new InvalidConfigurationException('The child node "private_key" at path "genenu_form.recaptcha" must be configured.');
             }
 
-            $this->request = $request;
             $this->privateKey = $privateKey;
 
             $this->httpRequest = array(
@@ -85,12 +85,12 @@ class ReCaptchaValidator implements EventSubscriberInterface
 
         if (empty($this->options['code'])) {
             if (empty($datas['challenge']) || empty($datas['response'])) {
-                $error = 'The captcha is not valid.';
+                $error = 'genemu_form.recaptcha.incorrect-captcha-sol';
             } elseif (true !== ($answer = $this->check($datas, $form->getConfig()->getAttribute('option_validator')))) {
-                $error = sprintf('Unable to check the captcha from the server. (%s)', $answer);
+                $error = 'genemu_form.recaptcha.unable-to-check-the-captcha-from-the-server';
             }
         } elseif ($this->options['code'] != $datas['response']) {
-            $error = "The captcha is not valid.";
+            $error = 'genemu_form.recaptcha.incorrect-captcha-sol';
         }
 
         if (!empty($error)) {
@@ -139,6 +139,6 @@ class ReCaptchaValidator implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::POST_BIND => 'validate');
+        return array(FormEvents::POST_SUBMIT => 'validate');
     }
 }

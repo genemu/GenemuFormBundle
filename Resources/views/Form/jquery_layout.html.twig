@@ -88,11 +88,10 @@
 
 {% block genemu_jquerydate_javascript %}
 {% spaceless %}
-
     <script type="text/javascript">
         jQuery(document).ready(function($) {
             $field = $('#{% if widget != "single_text" %}datepicker_{% endif %}{{ id }}');
-        
+
         {% block genemu_jquerydate_javascript_prototype %}
 
         {% if configs.buttonImage is defined %}
@@ -333,7 +332,7 @@
             {% endif %}
 
             $autocompleter.autocomplete($configs);
-            
+
             {% if configs.minLength is defined and 0 == configs.minLength %}
                 $autocompleter.focus(function() {
                     $(this).autocomplete("search", "");
@@ -365,7 +364,7 @@
 {% block genemu_jquerygeolocation_javascript %}
 {% spaceless %}
     {# Elements generation #}
-    {% if map is sameas(true) %}
+    {% if map is same as(true) %}
         {% set elements = elements|merge({"map": "#" ~ id ~ "_map"}) %}
     {% endif %}
 
@@ -396,7 +395,7 @@
 
             $field.addresspicker({{ configs|json_encode|raw }});
 
-            {% if map is sameas(true) %}
+            {% if map is same as(true) %}
                 var gmarker = $field.addresspicker('marker');
                 gmarker.setVisible(true);
 
@@ -451,7 +450,7 @@
             }
         });
 
-    {% if configs.auto is not defined or configs.auto is sameas(false) %}
+    {% if configs.auto is not defined or configs.auto is same as(false) %}
         $configs.onAllComplete = function(event, data) {
             $form.submit();
         };
@@ -664,4 +663,3 @@
     });
     </script>
 {% endblock %}
-

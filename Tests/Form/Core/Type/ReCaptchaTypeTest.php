@@ -23,7 +23,7 @@ class ReCaptchaTypeTest extends TypeTestCase
 {
     public function testDefaultConfigs()
     {
-        $form = $this->factory->create('genemu_recaptcha');
+        $form = $this->factory->create('Genemu\Bundle\FormBundle\Form\Core\Type\ReCaptchaType');
         $view = $form->createView();
 
         $this->assertEquals('publicKey', $view->vars['public_key']);
@@ -35,12 +35,13 @@ class ReCaptchaTypeTest extends TypeTestCase
             'port' => 80,
             'path' => '/recaptcha/api/verify',
             'timeout' => 10,
+            'code' => '1234',
         ), $form->getConfig()->getAttribute('option_validator'));
     }
 
     public function testConfigs()
     {
-        $form = $this->factory->create('genemu_recaptcha', null, array(
+        $form = $this->factory->create('Genemu\Bundle\FormBundle\Form\Core\Type\ReCaptchaType', null, array(
             'configs' => array(
                 'theme' => 'blackglass',
             ),
@@ -55,7 +56,8 @@ class ReCaptchaTypeTest extends TypeTestCase
             'host' => 'www.google.com',
             'port' => 80,
             'path' => '/recaptcha/api/verify',
-            'timeout' => 30
+            'timeout' => 30,
+            'code' => '1234',
         ), $form->getConfig()->getAttribute('option_validator'));
     }
     
@@ -65,14 +67,11 @@ class ReCaptchaTypeTest extends TypeTestCase
     public function testCode($code, $isValid)
     {
         $request = new Request(array(), array('recaptcha_response_field' => $code));
-        $form = $this->factory->create(new ReCaptchaType(
-            new ReCaptchaValidator($request, 'privateKey', array('code' => '1234')),
-            'publicKey',
-            'http://www.google.com/recaptcha/api',
-            array()
-        ));
+        $this->requestStack->method('getMasterRequest')->willReturn($request);
 
-        $form->bind(null);
+        $form = $this->factory->create('Genemu\Bundle\FormBundle\Form\Core\Type\ReCaptchaType');
+
+        $form->submit(null);
 
         $this->assertEquals($isValid, $form->isValid());
     }

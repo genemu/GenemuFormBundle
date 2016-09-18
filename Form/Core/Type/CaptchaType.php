@@ -15,7 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Genemu\Bundle\FormBundle\Gd\Type\Captcha;
 use Genemu\Bundle\FormBundle\Form\Core\Validator\CaptchaValidator;
@@ -73,7 +73,7 @@ class CaptchaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $defaults = array_merge(
             array('attr' => array('autocomplete' => 'off')),
@@ -88,13 +88,21 @@ class CaptchaType extends AbstractType
      */
     public function getParent()
     {
-        return 'text';
+        return 'Symfony\Component\Form\Extension\Core\Type\TextType';
     }
 
     /**
      * {@inheritdoc}
      */
     public function getName()
+    {
+        return 'genemu_captcha';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return 'genemu_captcha';
     }

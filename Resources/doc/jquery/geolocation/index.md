@@ -1,4 +1,4 @@
-# JQueryAddressPicker Field ([view demo](http://xilinus.com/jquery-addresspicker/demos/))
+# JQueryAddressPicker Field ([view demo](http://xilinus.com/jquery-addresspicker/demos/index.html))
 
 ## Default Usage:
 

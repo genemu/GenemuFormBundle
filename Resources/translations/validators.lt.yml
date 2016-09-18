@@ -1,0 +1,5 @@
+genemu_form:
+    recaptcha:
+        incorrect-captcha-sol: Įvestas kodas neteisingas.
+        invalid-site-private-key: Neteisingas privatus raktas.
+        unable-to-check-the-captcha-from-the-server: Nepavyko patikrinti įvesto kodo serveryje.

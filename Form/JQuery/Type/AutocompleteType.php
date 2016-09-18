@@ -104,11 +104,16 @@ class AutocompleteType extends AbstractType
                             $objects = $options['em']->getRepository($options['class'])->findAll();
                             foreach ($objects as $object) {
                                 if ($propertyPath) {
-                                    $suggestions[] = PropertyAccess::getPropertyAccessor()->getValue($object, $propertyPath);
+                                    $suggestions[] = PropertyAccess::createPropertyAccessor()->getValue($object, $propertyPath);
                                 } elseif (method_exists($object, '__toString')) {
                                     $suggestions[] = (string) $object;
                                 } else {
-                                    throw new \RuntimeException('Cannot cast object of type "'.get_class($object).'" to string, please implement a __toString method or set the "property" option to the desired value.');
+                                    throw new \RuntimeException(sprintf(
+                                        'Cannot cast object of type "%s" to string, ' .
+                                        'please implement a __toString method or ' .
+                                        'set the "property" option to the desired value.',
+                                        get_class($object)
+                                    ));
                                 }
                             }
 

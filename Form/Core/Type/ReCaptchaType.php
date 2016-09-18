@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * ReCaptchaType
@@ -80,7 +80,7 @@ class ReCaptchaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $configs = array_merge(array(
             'lang' => \Locale::getDefault(),
@@ -92,15 +92,12 @@ class ReCaptchaType extends AbstractType
                 'validator' => array(),
                 'error_bubbling' => false,
             ))
-            ->setAllowedTypes(array(
-                'configs' => 'array',
-                'validator' => 'array',
-            ))
-            ->setNormalizers(array(
-                'configs' => function (Options $options, $value) use ($configs) {
+            ->setAllowedTypes('configs', 'array')
+            ->setAllowedTypes('validator', 'array')
+            ->setNormalizer('configs', function (Options $options, $value) use ($configs) {
                     return array_merge($configs, $value);
                 }
-            ))
+            )
         ;
     }
 
@@ -108,6 +105,14 @@ class ReCaptchaType extends AbstractType
      * {@inheritdoc}
      */
     public function getName()
+    {
+        return 'genemu_recaptcha';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return 'genemu_recaptcha';
     }

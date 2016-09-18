@@ -1,3 +1,8 @@
+#How to update from orginal repo
+
+git pull genemu master
+git push origin
+
 #FormBundle
 
 [![Build Status](https://secure.travis-ci.org/genemu/GenemuFormBundle.png)](https://travis-ci.org/genemu/GenemuFormBundle)
@@ -12,17 +17,10 @@ Installation is quick and easy, 3 steps process
 
 ### Step 1: Install GenemuFormBundle
 
-Add the following dependency to your composer.json file:
-``` json
-{
-    "require": {
-        "_some_packages": "...",
+Run the following command :
 
-        "genemu/form-bundle": "2.1.*" => for Symfony 2.1 and 2.2
-
-        "genemu/form-bundle": "2.2.*" => for Symfony 2.3
-    }
-}
+``` bash
+$ composer require genemu/form-bundle "^3.0@dev"
 ```
 
 ### Step 2: Enable the bundle
@@ -62,35 +60,9 @@ $ php app/console assets:install web/
 
 [View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/recaptcha/index.md)
 
-### Tinymce ([download](http://www.tinymce.com/)):
-
-[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/tinymce/index.md)
-
 ### JQueryUi ([download](http://jqueryui.com/)):
 
-- [Datepicker](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/datepicker/index.md)
-- [AddressPicker](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/geolocation/index.md)
-- [Slider](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/slider/index.md)
 - [Autocomplete](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/autocomplete/text.md)
-
-### File ([uploadify library](http://www.uploadify.com)):
-
-You can use [jcrop](http://deepliquid.com/content/Jcrop.html) to uploadify.
-You send the image and crop or apply filter.
-
-[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/file/index.md)
-
-### Image ([view demo](http://tympanus.net/codrops/2009/11/04/jquery-image-cropper-with-uploader-v1-1/)):
-
-[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/image/index.md)
-
-### Colorpicker ([view demo](http://www.eyecon.ro/colorpicker/)):
-
-[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/color/index.md)
-
-### Rating ([view demo](http://www.fyneworks.com/jquery/star-rating/#tab-Testing)):
-
-[View configuration](https://github.com/genemu/GenemuFormBundle/blob/master/Resources/doc/jquery/rating/index.md)
 
 ### Plain
 

@@ -1,0 +1,5 @@
+genemu_form:
+    recaptcha:
+        incorrect-captcha-sol: Wprowadzony kod jest nieprawidłowy
+        invalid-site-private-key: Prywatny klucz jest nieprawidłowy.
+        unable-to-check-the-captcha-from-the-server: Unable to check the captcha from the server.

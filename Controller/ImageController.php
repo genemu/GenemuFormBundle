@@ -11,21 +11,34 @@
 
 namespace Genemu\Bundle\FormBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Genemu\Bundle\FormBundle\Gd\File\Image;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class ImageController
  *
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class ImageController extends ContainerAware
+class ImageController implements ContainerAwareInterface
 {
-    public function changeAction()
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
     {
-        $request = $this->container->get('request');
+        $this->container = $container;
+    }
+
+    public function changeAction(Request $request)
+    {
         $rootDir = rtrim($this->container->getParameter('genemu.form.file.root_dir'), '/\\') . DIRECTORY_SEPARATOR;
         $folder = rtrim($this->container->getParameter('genemu.form.file.folder'), '/\\');
 
@@ -35,15 +48,19 @@ class ImageController extends ContainerAware
         switch ($request->get('filter')) {
             case 'rotate':
                 $handle->addFilterRotate(90);
+
                 break;
             case 'negative':
                 $handle->addFilterNegative();
+
                 break;
             case 'bw':
                 $handle->addFilterBw();
+
                 break;
             case 'sepia':
                 $handle->addFilterSepia('#C68039');
+
                 break;
             case 'crop':
                 $x = $request->get('x');
@@ -52,9 +69,11 @@ class ImageController extends ContainerAware
                 $h = $request->get('h');
 
                 $handle->addFilterCrop($x, $y, $w, $h);
+
                 break;
             case 'blur':
                 $handle->addFilterBlur();
+
             default:
                 break;
         }
@@ -91,7 +110,7 @@ class ImageController extends ContainerAware
             )
         );
 
-        return new Response(json_encode($json));
+        return new JsonResponse($json);
     }
 
     /**
