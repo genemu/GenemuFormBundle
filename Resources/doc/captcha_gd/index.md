@@ -40,7 +40,7 @@ genemu_base64:
         $(function () {
             {# Image will be refreshed when the link is clicked #}
             $('#{{ id }}_refresh').click(function() {
-                $('#{{ id }}_image').attr('src', '{{ path('genemu_captcha_refresh') }}?' + Math.random());
+                $('#{{ id }}_image').attr('src', '{{ path('genemu_captcha_refresh') }}');
             });
         });
     </script>

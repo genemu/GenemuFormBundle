@@ -43,7 +43,11 @@ class Base64Controller implements ContainerAwareInterface
         $captcha->setOptions($options);
         $datas = preg_split('([;,]{1})', substr($captcha->getBase64(), 5));
 
-        return new Response(base64_decode($datas[2]), 200, array('Content-Type' => $datas[0]));
+        return new Response(base64_decode($datas[2]), 200, array(
+            'Content-Type' => $datas[0],
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => 0));
     }
 
     public function base64Action(Request $request)
