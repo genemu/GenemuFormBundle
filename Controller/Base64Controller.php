@@ -40,6 +40,17 @@ class Base64Controller implements ContainerAwareInterface
     {
         $captcha = $this->container->get('genemu.gd.captcha');
         $options = $this->container->get('session')->get('genemu_form.captcha.options', array());
+
+        $applicationRootDir = realpath($this->container->get('kernel')->getRootDir() . '/../');
+
+        if (isset($options['fonts'])) {
+            array_walk($options['fonts'], function(&$fontPath) use ($applicationRootDir) {
+                if (strncmp($fontPath, '/', 1)) {
+                    $fontPath = sprintf("%s/%s", $applicationRootDir, $fontPath);
+                }
+            });
+        }
+
         $captcha->setOptions($options);
         $datas = preg_split('([;,]{1})', substr($captcha->getBase64(), 5));
 
