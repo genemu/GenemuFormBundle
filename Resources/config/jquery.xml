@@ -17,6 +17,7 @@
         <parameter key="genemu.form.image.selected" />
         <parameter key="genemu.form.image.thumbnails" type="collection" />
         <parameter key="genemu.form.image.filters" type="collection" />
+        <parameter key="genemu.form.image.widthMax" />
     </parameters>
 
     <services>

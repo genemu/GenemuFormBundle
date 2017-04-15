@@ -263,6 +263,7 @@ class Configuration implements ConfigurationInterface
                     ->treatTrueLike(array('enabled' => true))
                     ->children()
                         ->booleanNode('enabled')->defaultTrue()->end()
+                        ->scalarNode('widthMax')->defaultValue(500)->end()
                         ->scalarNode('selected')->defaultValue('large')->end()
                         ->arrayNode('filters')
                             ->defaultValue(array('rotate', 'bw', 'negative', 'sepia', 'crop'))
