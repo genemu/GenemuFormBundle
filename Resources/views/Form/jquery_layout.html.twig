@@ -2,6 +2,9 @@
 {% spaceless %}
     {% for child in form %}
         {{ form_javascript(child) }}
+        {#% if child.vars.prototype is defined %}
+            {{ form_javascript(child.vars.prototype) }}
+        {% endif %#}
     {% endfor %}
 {% endspaceless %}
 {% endblock form_javascript %}
@@ -245,9 +248,25 @@
 {% block genemu_jqueryautocompleter_javascript %}
 {% spaceless %}
     <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            var $field = $('#{{ id }}');
-            var $autocompleter = $('#autocompleter_{{ id }}');
+        {% if is_prototype %}
+            {% set selector = ':input[data-autocompleter-id-hash="' ~ attr['data-autocompleter-id-hash'] ~ '"]' %}
+            jQuery('body').on('focus', '{{ selector | raw }}:visible', function() {
+                var $field = $('#' + this.id.substr('autocompleter_'.length));
+                var $autocompleter = $(this);
+                genemu_jqueryautocompleter_observer_{{ id }}($autocompleter, $field);
+
+                // remove unique-id so that autocomplete is not applied multiple
+                $autocompleter.removeAttr('data-autocompleter-id-hash');
+            });
+        {% else %}
+            jQuery(document).ready(function($) {
+                var $field = $('#{{ id }}');
+                var $autocompleter = $('#autocompleter_{{ id }}');
+                genemu_jqueryautocompleter_observer_{{ id }}($autocompleter, $field);
+            });
+        {% endif %}
+
+        var genemu_jqueryautocompleter_observer_{{ id }} = function($autocompleter, $field) {
             var $configs = {
                 focus: function(event, ui) {
                     return false;
@@ -309,7 +328,7 @@
                     $source(request, response);
                 });
             {% endif %}
-        });
+        };
     </script>
 {% endspaceless %}
 {% endblock genemu_jqueryautocompleter_javascript %}
