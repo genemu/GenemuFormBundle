@@ -37,6 +37,7 @@ class SliderType extends AbstractType
             'min' => 0,
             'max' => 100,
             'step' => 1,
+            'range' => true,
             'orientation' => 'horizontal'
         ));
 
@@ -44,7 +45,11 @@ class SliderType extends AbstractType
             'orientation' => array(
                 'horizontal',
                 'vertical'
-            )
+            ),
+            'range' => array(
+                true,
+                false
+            ),
         ));
     }
 
