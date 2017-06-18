@@ -22,7 +22,7 @@
         "php": ">=5.3.2",
         "symfony/framework-bundle": "~2.8 || ^3.0",
         "symfony/form": "~2.8 || ^3.0",
-        "twig/twig": "~1.14"
+        "twig/twig": "~1.14 || ~2.0"
     },
     "suggest": {
         "symfony/twig-bridge": "For integration into Twig templates",
@@ -38,7 +38,7 @@
     "target-dir": "Genemu/Bundle/FormBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "3.0-dev"
+            "dev-master": "3.0.x-dev"
         }
     }
 }
