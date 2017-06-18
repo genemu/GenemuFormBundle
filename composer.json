@@ -38,8 +38,7 @@
     "target-dir": "Genemu/Bundle/FormBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "3.0.x-dev",
-            "dev-twig2": "3.1.x-dev"
+            "dev-master": "3.0.x-dev"
         }
     }
 }
