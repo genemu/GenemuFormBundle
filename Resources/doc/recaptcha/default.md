@@ -2,7 +2,7 @@
 
 ``` yml
 # app/config/config.yml
-genenu_form:
+genemu_form:
     recaptcha:
         enabled:              true
         public_key:           ~ # Required
