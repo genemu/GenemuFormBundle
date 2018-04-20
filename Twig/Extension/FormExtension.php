@@ -12,7 +12,7 @@
 namespace Genemu\Bundle\FormBundle\Twig\Extension;
 
 use Symfony\Component\Form\FormView;
-use Symfony\Bridge\Twig\Form\TwigRendererInterface;
+use Symfony\Component\Form\FormRenderer;
 
 /**
  * FormExtension extends Twig with form capabilities.
@@ -25,16 +25,16 @@ class FormExtension extends \Twig_Extension
      * This property is public so that it can be accessed directly from compiled
      * templates without having to call a getter, which slightly decreases performance.
      *
-     * @var \Symfony\Component\Form\FormRendererInterface
+     * @var \Symfony\Component\Form\FormRenderer
      */
     public $renderer;
 
     /**
      * Constructs.
      *
-     * @param TwigRendererInterface $renderer
+     * @param FormRenderer $renderer
      */
-    public function __construct(TwigRendererInterface $renderer)
+    public function __construct(FormRenderer $renderer)
     {
         $this->renderer = $renderer;
     }
