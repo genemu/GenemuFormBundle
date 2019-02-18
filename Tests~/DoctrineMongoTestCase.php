@@ -25,7 +25,7 @@ use Doctrine\Common\Cache\ArrayCache;
  */
 abstract class DoctrineMongoTestCase extends \PHPUnit_Framework_TestCase
 {
-    protected function setUp(): void
+    protected function setUp()
     {
         if (!class_exists('Mongo')) {
             $this->markTestSkipped('Mongo PHP/PECL Extension is not available.');

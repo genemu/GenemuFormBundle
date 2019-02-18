@@ -21,7 +21,7 @@ abstract class TypeTestCase extends BaseTypeTestCase
 {
     protected $requestStack;
 
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 

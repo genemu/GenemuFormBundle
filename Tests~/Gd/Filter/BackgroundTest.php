@@ -18,7 +18,7 @@ use Genemu\Bundle\FormBundle\Gd\Filter\Background;
  */
 class BackgroundTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 

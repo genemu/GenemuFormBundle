@@ -18,7 +18,7 @@ use Genemu\Bundle\FormBundle\Gd\Filter\Colorize;
  */
 class ColorizeTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 

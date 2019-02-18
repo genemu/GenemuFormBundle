@@ -31,7 +31,7 @@ class EntityAutocompleterTypeTest extends TypeTestCase
 
     private $em;
 
-    public function setUp(): void
+    public function setUp()
     {
         if (!class_exists('Doctrine\\Common\\Version')) {
             $this->markTestSkipped('Doctrine is not available.');
@@ -58,7 +58,7 @@ class EntityAutocompleterTypeTest extends TypeTestCase
         }
     }
 
-    protected function tearDown(): void
+    protected function tearDown()
     {
         parent::tearDown();
 

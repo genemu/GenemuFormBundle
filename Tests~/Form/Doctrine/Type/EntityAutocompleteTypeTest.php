@@ -24,7 +24,7 @@ class EntityAutocompleteTypeTest extends AbstractAutocompleteTypeTestCase
 {
     const SINGLE_IDENT_CLASS = 'Genemu\Bundle\FormBundle\Tests\Fixtures\Entity\SingleIdentEntity';
 
-    public function setUp(): void
+    public function setUp()
     {
         if (!class_exists('Doctrine\\Common\\Version')) {
             $this->markTestSkipped('Doctrine is not available.');
@@ -51,7 +51,7 @@ class EntityAutocompleteTypeTest extends AbstractAutocompleteTypeTestCase
         }
     }
 
-    protected function tearDown(): void
+    protected function tearDown()
     {
         parent::tearDown();
 

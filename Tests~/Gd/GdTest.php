@@ -18,7 +18,7 @@ use Genemu\Bundle\FormBundle\Gd\Gd;
  */
 class GdTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 

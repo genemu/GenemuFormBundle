@@ -24,7 +24,7 @@ abstract class AbstractAutocompleteTypeTestCase extends TypeTestCase
 {
     protected $em;
 
-    protected function tearDown(): void
+    protected function tearDown()
     {
         parent::tearDown();
 

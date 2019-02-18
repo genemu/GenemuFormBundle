@@ -31,7 +31,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
 
     private $documentManager;
 
-    public function setUp(): void
+    public function setUp()
     {
         if (!class_exists('Mongo')) {
             $this->markTestSkipped('Mongo PHP/PECL Extension is not available.');
@@ -50,7 +50,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         parent::setUp();
     }
 
-    protected function tearDown(): void
+    protected function tearDown()
     {
         parent::tearDown();
 

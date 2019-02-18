@@ -20,7 +20,7 @@ use Genemu\Bundle\FormBundle\Gd\Filter\Text;
  */
 class TextTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 
