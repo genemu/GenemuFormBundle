@@ -6,7 +6,6 @@ php:
 
 env:
   - COMPOSER_OPTIONS="--prefer-source"
-  - COMPOSER_OPTIONS="--prefer-source --prefer-lowest"
 
 before_script:
     - phpenv config-rm xdebug.ini
