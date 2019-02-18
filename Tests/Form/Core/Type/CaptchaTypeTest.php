@@ -20,7 +20,7 @@ use Genemu\Bundle\FormBundle\Form\Core\Type\CaptchaType;
  */
 class CaptchaTypeTest extends TypeTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

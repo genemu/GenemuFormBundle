@@ -30,7 +30,7 @@ class DocumentAutocompleteTypeTest extends AbstractAutocompleteTypeTestCase
 
     const SINGLE_IDENT_CLASS = 'Genemu\Bundle\FormBundle\Tests\Fixtures\Document\SingleIdentDocument';
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists('Mongo')) {
             $this->markTestSkipped('Mongo PHP/PECL Extension is not available.');

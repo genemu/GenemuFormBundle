@@ -24,7 +24,7 @@ class ImageTypeTest extends TypeTestCase
     const FILE_CLASS = 'Symfony\Component\HttpFoundation\File\File';
     const IMAGE_CLASS = 'Genemu\Bundle\FormBundle\Gd\File\Image';
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

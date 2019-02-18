@@ -31,7 +31,7 @@ class EntityAutocompleterTypeTest extends TypeTestCase
 
     private $em;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists('Doctrine\\Common\\Version')) {
             $this->markTestSkipped('Doctrine is not available.');
@@ -58,7 +58,7 @@ class EntityAutocompleterTypeTest extends TypeTestCase
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -295,7 +295,7 @@ class EntityAutocompleterTypeTest extends TypeTestCase
 
     protected function createRegistryMock($name, $em)
     {
-        $registry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $registry = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
         $registry->expects($this->any())
             ->method('getManager')
             ->with($this->equalTo($name))

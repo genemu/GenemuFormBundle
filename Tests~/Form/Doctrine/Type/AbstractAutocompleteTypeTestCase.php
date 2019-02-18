@@ -24,7 +24,7 @@ abstract class AbstractAutocompleteTypeTestCase extends TypeTestCase
 {
     protected $em;
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -119,7 +119,7 @@ abstract class AbstractAutocompleteTypeTestCase extends TypeTestCase
 
     protected function createRegistryMock($name, $em)
     {
-        $registry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $registry = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
         $registry->expects($this->any())
             ->method('getManager')
             ->with($this->equalTo($name))

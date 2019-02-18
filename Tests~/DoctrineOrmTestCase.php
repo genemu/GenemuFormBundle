@@ -23,7 +23,7 @@ use Doctrine\Common\Cache\ArrayCache;
  */
 abstract class DoctrineOrmTestCase extends \PHPUnit_Framework_TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!class_exists('Doctrine\\Common\\Version')) {
             $this->markTestSkipped('Doctrine is not available.');

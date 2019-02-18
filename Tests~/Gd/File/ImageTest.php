@@ -19,7 +19,7 @@ use Genemu\Bundle\FormBundle\Gd\Filter\Background;
  */
 class ImageTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

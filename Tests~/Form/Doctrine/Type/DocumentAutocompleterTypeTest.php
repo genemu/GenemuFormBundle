@@ -31,7 +31,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
 
     private $documentManager;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists('Mongo')) {
             $this->markTestSkipped('Mongo PHP/PECL Extension is not available.');
@@ -50,7 +50,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
         parent::setUp();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -269,7 +269,7 @@ class DocumentAutocompleterTypeTest extends TypeTestCase
 
     protected function createRegistryMock($name, $dm)
     {
-        $registry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $registry = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
         $registry->expects($this->any())
             ->method('getManager')
             ->with($this->equalTo($name))
