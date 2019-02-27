@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="genemu.gd.captcha" class="Genemu\Bundle\FormBundle\Gd\Type\Captcha">
+        <service id="genemu.gd.captcha" class="Genemu\Bundle\FormBundle\Gd\Type\Captcha" public="true">
             <argument type="service" id="session" />
             <argument>%kernel.secret%</argument>
         </service>
