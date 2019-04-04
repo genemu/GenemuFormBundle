@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -44,15 +45,12 @@ class TinymceType extends AbstractType
         $view->vars['configs'] = $options['configs'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $configs = array_merge(array(
             'language' => \Locale::getDefault(),
         ),
-		$this->options);
+            $this->options);
 
         $resolver
             ->setDefaults(array(
@@ -60,15 +58,14 @@ class TinymceType extends AbstractType
                 'required' => false,
                 'theme' => 'default',
             ))
-            ->setAllowedTypes(array(
-                'configs' => 'array',
-                'theme' => 'string',
-            ))
-            ->setNormalizers(array(
-                'configs' => function (Options $options, $value) use ($configs) {
+            ->setAllowedTypes('configs','array')
+            ->setAllowedTypes('theme','string')
+
+            ->setNormalizer(
+                'configs', function (Options $options, $value) use ($configs) {
                     return array_merge($configs, $value);
-                },
-            ))
+                }
+            )
         ;
     }
 
