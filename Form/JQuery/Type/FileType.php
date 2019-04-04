@@ -101,9 +101,14 @@ class FileType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+        public function getParent()
     {
-        return 'file';
+        return \Symfony\Component\Form\Extension\Core\Type\FileType::class;
+    }
+
+
+    public function getBlockPrefix(){
+        return 'genumu_' . parent::getBlockPrefix();
     }
 
     /**
