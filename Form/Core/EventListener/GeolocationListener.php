@@ -51,6 +51,6 @@ class GeolocationListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::BIND => 'onBind');
+        return array(FormEvents::PRE_SET_DATA => 'onBind');
     }
 }
