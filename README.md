@@ -1,3 +1,5 @@
+**⚠️ This project is not maintained anymore. If you're interested in maintaining it please get in touch with @genemu ⚠️**
+
 # FormBundle
 
 [![Build Status](https://secure.travis-ci.org/genemu/GenemuFormBundle.png)](https://travis-ci.org/genemu/GenemuFormBundle)
