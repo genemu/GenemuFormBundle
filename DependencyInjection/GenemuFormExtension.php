@@ -183,7 +183,7 @@ class GenemuFormExtension extends Extension
         }
 
         $configs['configs'] = array_merge($configs['configs'], array(
-            'script'    => 'genemu_upload',
+            'script'    => $configs['script'],
             'swf'       => $configs['swf'],
             'cancelImg' => $configs['cancel_img'],
             'folder'    => $configs['folder']
