@@ -28,7 +28,15 @@ class SliderType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['configs'] = $options;
+        // Separate slider configs from options
+        $configs = array();
+        foreach (array('min', 'max', 'step', 'orientation', 'animate', 'disabled') as $config) {
+            if (isset($options[$config])) {
+                $configs[$config] = $options[$config];
+            }
+        }
+
+        $view->vars['configs'] = $configs;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -39,15 +47,23 @@ class SliderType extends AbstractType
             'step' => 1,
             'orientation' => 'horizontal'
         ));
-
+        
+        $resolver->setOptional(array(
+            'animate'
+        ));
+        
         $resolver->setAllowedValues(array(
             'orientation' => array(
                 'horizontal',
                 'vertical'
             )
         ));
-    }
 
+        $resolver->setAllowedTypes(array(
+            'animate' => array('string', 'integer', 'bool')
+        ));
+    }
+    
     /**
      * {@inheritdoc}
      */
