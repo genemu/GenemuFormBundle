@@ -219,11 +219,70 @@
                 {% endif %}
             {% endif %}
 
-            var $configs = $.extend({{ configs|json_encode|raw }}, {
-                prePopulate: {{ prePopulate|raw }},
-                onAdd: update_hidden_sourceinput,
-                onDelete: update_hidden_sourceinput
-            });
+            var $configs = {
+    {% if configs.method is defined %}
+            method: '{{ configs.method }}',
+    {% endif %}
+    {% if configs.queryParam is defined %}
+            queryParam: '{{ configs.queryParam }}',
+    {% endif %}
+    {% if configs.searchDelay is defined %}
+            searchDelay: {{ configs.searchDelay }},
+    {% endif %}
+    {% if configs.minChars is defined %}
+            minChars: {{ configs.minChars }},
+    {% endif %}
+    {% if configs.propertyToSearch is defined %}
+            propertyToSearch: '{{ configs.propertyToSearch }}',
+    {% endif %}
+    {% if configs.tokenValue is defined %}
+            tokenValue: '{{ configs.tokenValue }}',
+    {% endif %}
+    {% if configs.jsonContainer is defined %} 
+            jsonContainer: '{{ configs.jsonContainer }}',
+    {% endif %}
+    {% if configs.crossDomain is defined %}
+            crossDomain: {{ configs.crossDomain }},
+    {% endif %}
+    {% if prePopulate is defined %}
+            prePopulate: {{ prePopulate|raw }},
+    {% endif %}
+    {% if configs.hintText is defined %}
+            hintText: '{{ configs.hintText }}',
+    {% endif %}
+    {% if configs.noResultsText is defined %}       
+            noResultsText: '{{ configs.noResultsText }}',
+    {% endif %}
+    {% if configs.searchingText is defined %}       
+            searchingText: '{{ configs.searchingText }}',
+    {% endif %}
+    {% if configs.deleteText is defined %}     
+            deleteText: '{{ configs.deleteText }}',
+    {% endif %}
+    {% if configs.animateDropdown is defined %}
+            animateDropdown: {{ configs.animateDropdown }},
+    {% endif %}
+    {% if configs.theme is defined %}
+            theme: '{{ configs.theme }}',
+    {% endif %}
+    {% if configs.resultsFormatter is defined %} 
+            resultsFormatter: {{ configs.resultsFormatter|raw }},
+    {% endif %}
+    {% if configs.tokenFormatter is defined %}
+            tokenFormatter: {{ configs.tokenFormatter|raw }},
+    {% endif %}
+    {% if configs.tokenLimit is defined or multiple %}
+            tokenLimit: {% if multiple %}{% if configs.tokenLimit is defined %}{{ configs.tokenLimit }}{% else %}null{% endif %}{% else %}1{% endif %},
+    {% endif %}
+    {% if configs.tokenDelimiter is defined %} 
+                    tokenDelimiter: '{{ configs.tokenDelimiter }}',
+    {% endif %}
+    {% if configs.preventDuplicates is defined %}           
+                    preventDuplicates: {{ configs.preventDuplicates }},
+    {% endif %}
+               onAdd: update_hidden_sourceinput,
+               onDelete: update_hidden_sourceinput
+            };
 
             $tokeninput.tokenInput(
             {% if route_name %}
