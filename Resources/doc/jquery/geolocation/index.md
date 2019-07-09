@@ -22,22 +22,29 @@ public function buildForm(FormBuilder $builder, array $options)
     $builder
         // ...
         ->add('geolocation', 'genemu_jquerygeolocation', array(
+            'address'  => array(
+                'options'   => array('label' => 'Enter your address'),
+            ),
             'map'       => false,
             'latitude'  => array(
                 'enabled'   => false,
                 'hidden'    => true,
+                'options'   => array('label' => 'Latitude'),
             ),
             'longitude' => array(
                 'enabled'   => false,
                 'hidden'    => true,
+                'options'   => array('label' => 'Longitude'),
             ),
             'locality'  => array(
                 'enabled'   => false,
                 'hidden'    => true,
+                'options'   => array('label' => 'Locality'),
             ),
             'country'   => array(
                 'enabled'   => false,
                 'hidden'    => false,
+                'options'   => array('label' => 'Country'),
             ),
         ))
 }
