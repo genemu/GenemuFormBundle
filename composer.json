@@ -1,5 +1,5 @@
 {
-    "name": "genemu/form-bundle",
+    "name": "lendable/form-bundle",
     "type": "symfony-bundle",
     "description": "Extra form types for your Symfony2 projects",
     "keywords": ["form", "extra form"],
