@@ -301,7 +301,7 @@
             {% endif %}
 
             {% if multiple %}
-                var $source = $autocompleter.data('autocomplete').source;
+                var $source = $autocompleter.data('ui-autocomplete').source;
 
                 $autocompleter.autocomplete('option', 'source', function(request, response) {
                     request.term = request.term.split(/,\s*/).pop();
