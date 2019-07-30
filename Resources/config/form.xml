@@ -38,8 +38,9 @@
         <service id="genemu.form.core.type.plain" class="Genemu\Bundle\FormBundle\Form\Core\Type\PlainType">
             <tag name="form.type" alias="genemu_plain" />
         </service>
-        <service id="genemu.form.core.type.tinymce" class="Genemu\Bundle\FormBundle\Form\Core\Type\TinymceType">
+        <service id="genemu.form.core.type.tinymce" class="Genemu\Bundle\FormBundle\Form\Core\Type\TinymceType" scope="request">
             <tag name="form.type" alias="genemu_tinymce" />
+            <argument type="service" id="templating.helper.assets"/>
             <argument>%genemu.form.tinymce.configs%</argument>
         </service>
     </services>
