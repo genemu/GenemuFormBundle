@@ -14,6 +14,8 @@ namespace Genemu\Bundle\FormBundle\Form\JQuery\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -28,24 +30,29 @@ class SliderType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['configs'] = $options;
+        $view->vars['configs'] = $options['configs'];
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $defaults = array(
             'min' => 0,
             'max' => 100,
             'step' => 1,
-            'orientation' => 'horizontal'
-        ));
-
-        $resolver->setAllowedValues(array(
-            'orientation' => array(
-                'horizontal',
-                'vertical'
-            )
-        ));
+            'orientation' => 'horizontal',
+            'range' => false
+        );
+        
+        $resolver
+            ->setDefaults(array(
+                'configs' => $defaults
+            ))
+            ->setNormalizers(array(
+                'configs' => function (Options $options, $configs) use ($defaults) {
+                    return array_merge($defaults, $configs);
+                },
+            ))
+        ;
     }
 
     /**
@@ -53,7 +60,7 @@ class SliderType extends AbstractType
      */
     public function getParent()
     {
-        return 'integer';
+        return 'text';
     }
 
     /**
