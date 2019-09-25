@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * SliderType
@@ -33,6 +34,11 @@ class SliderType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $this->configureOptions($resolver);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
             'min' => 0,
             'max' => 100,
@@ -40,12 +46,21 @@ class SliderType extends AbstractType
             'orientation' => 'horizontal'
         ));
 
-        $resolver->setAllowedValues(array(
-            'orientation' => array(
-                'horizontal',
-                'vertical'
+        $resolver->setAllowedValues("orientation", ["horizontal", "vertical"]);
+    }
+
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        parent::finishView($view, $form, $options);
+        $view->vars = array_replace(
+            $view->vars,
+            array(
+                'min' => $form->getConfig()->getAttribute('min'),
+                'max' => $form->getConfig()->getAttribute('max'),
+                'step' => $form->getConfig()->getAttribute('step'),
+                'orientation' => $form->getConfig()->getAttribute('orientation'),
             )
-        ));
+        );
     }
 
     /**
@@ -60,6 +75,14 @@ class SliderType extends AbstractType
      * {@inheritdoc}
      */
     public function getName()
+    {
+        return $this->getBlockPrefix;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return 'genemu_jqueryslider';
     }
