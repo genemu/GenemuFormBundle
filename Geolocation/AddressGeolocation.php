@@ -14,7 +14,7 @@ namespace Genemu\Bundle\FormBundle\Geolocation;
 /**
  * @author Olivier Chauvel <olivier@generation-multiple.com>
  */
-class AddressGeolocation implements \Serializable
+class AddressGeolocation implements \Serializable, \ArrayAccess
 {
     private $address;
     private $latitude;
@@ -76,5 +76,25 @@ class AddressGeolocation implements \Serializable
         $this->longitude = $data['longitude'] ?: null;
         $this->locality = $data['locality'] ?: null;
         $this->country = $data['country'] ?: null;
+    }
+    
+    public function offsetExists($offset)
+    {
+        return isset($this->$offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->$offset = $value;
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->$offset;
+    }
+
+    public function offsetUnset($offset)
+    {
+        $this->$offset = null;
     }
 }
