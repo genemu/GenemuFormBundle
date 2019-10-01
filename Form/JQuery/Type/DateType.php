@@ -127,7 +127,7 @@ class DateType extends AbstractType
     protected function getJavascriptPattern(\IntlDateFormatter $formatter)
     {
         $pattern = $formatter->getPattern();
-        $patterns = preg_split('([\\\/.:_;,\s-\ ]{1})', $pattern);
+        $patterns = preg_split('([\\\/.:_;,\s\-\ ]{1})', $pattern);
         $exits = array();
 
         // Transform pattern for JQuery ui datepicker
