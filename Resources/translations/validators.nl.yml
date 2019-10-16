@@ -1,0 +1,5 @@
+genemu_form:
+    recaptcha:
+        incorrect-captcha-sol: De captcha is ongeldig.
+        invalid-site-private-key: De  privé sleutel is ongeldig.
+        unable-to-check-the-captcha-from-the-server: Kan de captcha niet controleren vanaf de server.
