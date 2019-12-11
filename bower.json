@@ -1,0 +1,35 @@
+{
+  "name": "genemu-form-bundle",
+  "homepage": "https://github.com/genemu/GenemuFormBundle/blob/master/README.md",
+  "authors": [
+    {
+      "name": "Olivier Chauvel",
+      "email": "olivier@generation-multiple.com"
+    },
+    {
+      "name": "Bilal Amarni",
+      "email": "bilal.amarni@gmail.com"
+    },
+    {
+      "name": "Community contributions",
+      "homepage": "https://github.com/genemu/GenemuFormBundle/contributors"
+    }
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "jquery-ui": "~1.11.4",
+    "select2": "~4.0.0",
+    "chosen": "~1.4.2",
+    "colorpicker": "http://www.eyecon.ro/colorpicker/colorpicker.zip",
+    "uploadify": "http://www.uploadify.com/wp-content/uploads/files/uploadify.zip",
+    "addresspicker": "*",
+    "jcrop": "~0.9.12",
+    "jquery-star-rating": "*",
+    "tinymce": "~4.1.10"
+  },
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "*"
+  ]
+}
