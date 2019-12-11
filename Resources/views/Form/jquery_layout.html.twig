@@ -159,7 +159,7 @@
             }, {{ configs|json_encode|raw }});
 
         {% if widget == "image" %}
-            $picker = $('#{{ id }}_color');
+            var $picker = $('#{{ id }}_color');
 
             $picker.ColorPicker($.extend({
                 onChange: function(hsb, hex, rgb) {
