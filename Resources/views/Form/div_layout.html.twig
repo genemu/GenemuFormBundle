@@ -1,12 +1,9 @@
 {% block genemu_captcha_widget %}
-{% spaceless %}
     <img src="{{ src }}" width="{{ width }}" height="{{ height }}" title="{{ name|trans }}" alt="{{ name|trans }}" />
     {{ block("form_widget_simple") }}
-{% endspaceless %}
 {% endblock %}
 
 {% block genemu_recaptcha_widget %}
-{% spaceless %}
     <div id="{{ id }}_div" style="display: none;"></div>
     <noscript>
         <iframe src="http://www.google.com/recaptcha/api/noscript?k={{ public_key }}" width="500" height="300" frameborder="0"></iframe>
@@ -14,11 +11,9 @@
         <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
         <input type="hidden" name="recaptcha_response_field" value="manual_challenge" />
     </noscript>
-{% endspaceless %}
 {% endblock genemu_recaptcha_widget %}
 
 {% block genemu_jquerydate_widget %}
-{% spaceless %}
     {% if widget == "single_text" %}
         {{ block("form_widget_simple") }}
     {% else %}
@@ -36,59 +31,47 @@
             {{ block("hidden_widget") }}
         </div>
     {% endif %}
-{% endspaceless %}
 {% endblock genemu_jquerydate_widget %}
 
 {% block genemu_jqueryslider_widget %}
-{% spaceless %}
     {{ block("hidden_widget") }}
     <div id="{{ id }}_slider"></div>
-{% endspaceless %}
 {% endblock genemu_jqueryslider_widget %}
 
 {% block genemu_jqueryautocompleter_widget %}
-{% spaceless %}
     {{ block("hidden_widget") }}
 
     {% set id = "autocompleter_" ~ id %}
     {% set full_name = "autocompleter_" ~ full_name %}
     {% set value = autocompleter_value %}
     {{ block("form_widget_simple") }}
-{% endspaceless %}
 {% endblock genemu_jqueryautocompleter_widget %}
 
 {% block genemu_jquerychosen_widget %}
-{% spaceless %}
     {% set attr = {
         "data-placeholder": empty_value,
         "class": "chzn-select"
     }|merge(attr) %}
     {{ block("choice_widget") }}
-{% endspaceless %}
 {% endblock genemu_jquerychosen_widget %}
 
 {% block genemu_jquerygeolocation_widget %}
-{% spaceless %}
     {{ form_rest(form) }}
 
     {% if map is same as(true) %}
         <div id="{{ id }}_map">&nbsp;</div>
     {% endif %}
-{% endspaceless %}
 {% endblock genemu_jquerygeolocation_widget %}
 
 {% block genemu_jqueryfile_widget %}
-{% spaceless %}
     {{ block("hidden_widget") }}
     <div id="{{ id }}_upload"></div>
     <div class="queue">
         <div id="{{ id }}_queue"></div>
     </div>
-{% endspaceless %}
 {% endblock genemu_jqueryfile_widget %}
 
 {% block genemu_jquerycolor_widget %}
-{% spaceless %}
     {% if widget == "image" %}
         <div id="{{ id }}_color" {{ block("widget_container_attributes") }}>
             <div{% if value %} style="background-color: #{{ value }};"{% endif %}>&nbsp;</div>
@@ -97,21 +80,17 @@
     {% else %}
         {{ block("form_widget_simple") }}
     {% endif %}
-{% endspaceless %}
 {% endblock genemu_jquerycolor_widget %}
 
 {% block genemu_jqueryrating_widget %}
-{% spaceless %}
     <div {{ block("widget_container_attributes") }}>
     {% for child in form %}
         {{ form_widget(child) }}
     {% endfor %}
     </div>
-{% endspaceless %}
 {% endblock genemu_jqueryrating_widget %}
 
 {% block genemu_jqueryimage_widget %}
-{% spaceless %}
     <div id="{{ id }}_container">
         <div class="left">
             <div id="{{ id }}_preview">
@@ -145,18 +124,15 @@
             </div>
         </div>
     </div>
-{% endspaceless %}
 {% endblock genemu_jqueryimage_widget %}
 
 {% block genemu_jquerytokeninput_widget %}
-{% spaceless %}
 {{ block("hidden_widget") }}
 
 {% set id = "tokeninput_" ~ id %}
 {% set full_name = "tokeninput_" ~ full_name %}
 {% set value = tokeninput_value %}
 {{ block("form_widget_simple") }}
-{% endspaceless %}
 {% endblock genemu_jquerytokeninput_widget %}
 
 {% block genemu_plain_widget %}
