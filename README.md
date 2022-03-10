@@ -1,3 +1,5 @@
+**⚠️ This project is not maintained anymore. If you're interested in maintaining it please get in touch with @genemu ⚠️**
+
 # FormBundle
 
 [![Build Status](https://secure.travis-ci.org/genemu/GenemuFormBundle.png)](https://travis-ci.org/genemu/GenemuFormBundle)
@@ -15,7 +17,7 @@ Installation is quick and easy, 3 steps process
 Run the following command :
 
 ``` bash
-$ composer require genemu/form-bundle "^3.0@dev"
+$ composer require genemu/form-bundle "^4.0"
 ```
 
 ### Step 2: Enable the bundle
