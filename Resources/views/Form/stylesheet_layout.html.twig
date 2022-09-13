@@ -1,9 +1,7 @@
 {% block form_stylesheet %}
-{% spaceless %}
     {% for child in form %}
         {{ form_stylesheet(child) }}
     {% endfor %}
-{% endspaceless %}
 {% endblock form_stylesheet %}
 
 {% block field_stylesheet "" %}
@@ -11,7 +9,6 @@
 {% block button_stylesheet "" %}
 
 {% block genemu_jquerycolor_stylesheet %}
-{% spaceless %}
 {% if widget == "image" %}
     <style type="text/css" media="screen">
         #{{ id }}_color {
@@ -32,22 +29,18 @@
         }
     </style>
 {% endif %}
-{% endspaceless %}
 {% endblock genemu_jquerycolor_stylesheet %}
 
 {% block genemu_jquerygeolocation_stylesheet %}
-{% spaceless %}
     <style type="text/css" media="screen">
         #{{ id }}_map {
             width: 300px;
             height: 300px;
         }
     </style>
-{% endspaceless %}
 {% endblock genemu_jquerygeolocation_stylesheet %}
 
 {% block genemu_jqueryimage_stylesheet %}
-{% spaceless %}
     <style type="text/css" media="screen">
         #{{ id }}_container {
             overflow: hidden;
@@ -130,5 +123,4 @@
             height: 11px;
         }
     </style>
-{% endspaceless %}
 {% endblock genemu_jqueryimage_stylesheet %}

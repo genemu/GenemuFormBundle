@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="genemu_upload" path="/genemu_upload">
-        <default key="_controller">GenemuFormBundle:Upload:upload</default>
+        <default key="_controller">Genemu\Bundle\FormBundle\Controller\UploadController:uploadAction</default>
     </route>
 
 </routes>

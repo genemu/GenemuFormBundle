@@ -5,11 +5,11 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="genemu_captcha_refresh" path="/genemu-captcha-refresh">
-        <default key="_controller">GenemuFormBundle:Base64:refreshCaptcha</default>
+        <default key="_controller">Genemu\Bundle\FormBundle\Controller\Base64Controller:refreshCaptchaAction</default>
     </route>
 
     <route id="genemu_base64" path="/genemu_base64">
-        <default key="_controller">GenemuFormBundle:Base64:base64</default>
+        <default key="_controller">Genemu\Bundle\FormBundle\Controller\Base64Controller:base64Action</default>
     </route>
 
 </routes>

@@ -11,13 +11,13 @@
 
 namespace Genemu\Bundle\FormBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 
 /**
  * GenemuFormExtension.
